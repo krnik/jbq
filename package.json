@@ -1,0 +1,33 @@
+{
+  "name": "yavalidator",
+  "version": "0.0.1",
+  "description": "Yet another JSON validator.",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "tsc": "node_modules/.bin/tsc",
+    "tsc:watch": "node_modules/.bin/tsc -w",
+    "test": "node_modules/.bin/mocha ./lib/test/test.js"
+  },
+  "keywords": [
+    "validator",
+    "json"
+  ],
+  "author": "krnik",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/faker": "^4.1.2",
+    "@types/mocha": "^5.2.4",
+    "@types/node": "^10.1.2",
+    "chai": "^4.1.2",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "tslint": "^5.11.0"
+  }
+}
