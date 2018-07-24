@@ -1,47 +1,38 @@
 import Types from 'types/Wrapper';
-import { SYM } from '../constants';
+import { SYM, TYPE_METHOD } from '../constants';
 import { E } from '../utils/index';
 import parsePattern, { IPattern, IPatternConfig, IPatterns, IPatternsInput, IProperty } from './PatternParser';
+const { TYPE } = TYPE_METHOD;
 
 const PATTERNS = Symbol('validator_patterns');
-interface IValidationParam<T> {
+interface IValidatorParam<T> {
     [k: string]: T | undefined;
 }
-class ValidationError extends Error {
-    msg: string;
+interface IValidationError {
     val: any;
-    constructor (msg: string, val: any) {
-        super();
-        this.msg = msg;
-        this.val = val;
-    }
+    msg: string;
 }
-type ValidatorResult<T> = [(undefined | ValidationError), T];
+type ValidatorResult<T> = [(undefined | IValidationError), T];
 
 export default class Validator {
-    public static validateSync<T extends IValidationParam<T>> (pattern: IPattern | IProperty, data: T): T {
-        function invokeChecks<Y> (pattern: IPattern | IProperty, data: Y): Y {
-            // Figure out something to check type first and then other properties
+    public static validateSync<T extends IValidatorParam<T>> (pattern: IPattern | IProperty, data: T): void {
+        function invokeChecks<Y> (pattern: IPattern | IProperty, data: Y): void {
+            // Data has additional properties not specified in pattern? What to do?
+            // Data does not have properties specified in pattern? What to do?
+            console.log((pattern as IProperty)[TYPE].check(pattern[TYPE].base, data));
             for (const [key, req] of Object.entries(pattern))
-                // check if any of entries evals to false
-                // if false then break loop and return false
                 console.log(key, data, req.check(req.base, data));
             if (pattern[SYM.OBJECT])
-                // if false then return false
                 Validator.validateSync(pattern[SYM.OBJECT] as IPattern, data);
             if (pattern[SYM.COLLECTION])
                 if (!(data as any)[Symbol.iterator]) throw new ValidationError(E.msg.nonIterable(), data);
-                for (const val of (data as any as Iterable<Y>))
-                    // if any of iteration evals to false break and return false
+                for (const val of data)
                     Validator.validateSync(pattern[SYM.COLLECTION] as IPattern, val);
-            return data;
         }
         if (pattern[SYM.FLAT])
             return invokeChecks(pattern, data);
         else {
-            if (data == null) throw new ValidationError(E.msg.nullValue(), data);
-            // What if data has additional keys
-            // Copy object properties
+            if (data == null) throw { msg: E.msg.nullValue(), val: data } as IValidationError;
             for (const [propName, requirements] of Object.entries(pattern))
                 invokeChecks(requirements, data[propName]);
         }
@@ -72,13 +63,12 @@ export default class Validator {
     public validateSync<T> (patternName: string, data: T): ValidatorResult<T> {
         const pattern = this[PATTERNS][patternName];
         try {
-            const _data = Validator.validateSync(pattern, data);
-            return [undefined, _data];
+            Validator.validateSync(pattern, data);
+            return [undefined, data];
         } catch (err) {
-            return [err as ValidationError, data];
+            return [err, data];
         }
     }
-
     // public validate (patternName: string, data: any): Primise<boolean> {
     //     const pattern = this[PATTERNS][patternName];
     //     return Validator

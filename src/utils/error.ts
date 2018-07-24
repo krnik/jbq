@@ -45,7 +45,7 @@ export const E = {
     },
     msg: {
         nullValue () {
-            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM.FLAT} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
+            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM.FLAT.toString()} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
         },
         nonIterable () {
             return `Attempted to iterate over data value. But it does not have defined ${Symbol.iterator.toString()} property.`
