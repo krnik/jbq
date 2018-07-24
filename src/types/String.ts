@@ -1,8 +1,7 @@
-import { TYPE_METHOD } from '../constants';
+import { ITypePrototype, LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
-const { VALIDATE, REGEX, MIN_LEN, MAX_LEN, LEN, PARSE } = TYPE_METHOD;
 
-const TypeString = {
+export const TypeString: ITypePrototype = {
     [MIN_LEN] (base: number, value: any) {
         return value.length > base;
     },
@@ -15,22 +14,25 @@ const TypeString = {
     [LEN] (base: number, value: any) {
         return value.length === base;
     },
-    [VALIDATE]: {
+    [SYM_TYPE_VALIDATE]: {
         [MIN_LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(MIN_LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MIN_LEN, 'number primitive', typeof(value));
         },
         [MAX_LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(MAX_LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MAX_LEN, 'number primitive', typeof(value));
         },
         [REGEX] (value: any) {
             if (!isType.objectInstance(value, 'RegExp'))
-                E.validateMatchError(REGEX, typeof(value));
+                E.typeValidateError(REGEX, 'RegExp', typeof(value));
         },
         [LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(LEN, 'number primitive', typeof(value));
         },
     },
-    [PARSE]: {
+    [SYM_TYPE_PARSE]: {
         [MIN_LEN] (key: string, value: any): { base: any, check: any } {
             return {
                 base: value,
@@ -57,5 +59,3 @@ const TypeString = {
         },
     },
 };
-
-export default TypeString;

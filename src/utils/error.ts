@@ -1,4 +1,4 @@
-import { SYM } from '../constants';
+import { SYM_SCHEMA_FLAT } from '../constants';
 
 export const E = {
     param () {
@@ -13,6 +13,10 @@ export const E = {
     },
     validateTypeError (propName: string, valueType: string) {
         const errorMessage = `[${propName}] property requires value to be string primitive. Got "${valueType}" type instead.`;
+        throw Error(errorMessage);
+    },
+    typeValidateError (propName: string, desired: string, valueType: string) {
+        const errorMessage = `[${propName}] property requires value to be a ${desired}. Got ${valueType} instead.`;
         throw Error(errorMessage);
     },
     validateRequiredError (propName: string, valueType: string) {
@@ -45,10 +49,10 @@ export const E = {
     },
     msg: {
         nullValue () {
-            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM.FLAT.toString()} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
+            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM_SCHEMA_FLAT.FLAT.toString()} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
         },
         nonIterable () {
-            return `Attempted to iterate over data value. But it does not have defined ${Symbol.iterator.toString()} property.`
+            return `Attempted to iterate over data value. But it does not have defined ${Symbol.iterator.toString()} property.`;
         },
     },
 };

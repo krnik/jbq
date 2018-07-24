@@ -1,46 +1,36 @@
 /**
  * TYPE CONSTANTS, NAMES, INTERFACES
  */
-// Properties
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const SYM_TYPE_PARSE = Symbol.for('type_parse');
-const PERMISSION = 'permission';
-const REQUIRED = 'required';
-const MIN_LEN = 'minLen';
-const MAX_LEN = 'maxLen';
-const REGEX = 'regex';
-const TYPE = 'type';
-const LEN = 'len';
-const MIN = 'min';
-const MAX = 'max';
-export const TYPE_PROPERTY = {
-    PERMISSION,
-    REQUIRED,
-    MIN_LEN,
-    MAX_LEN,
-    REGEX,
-    TYPE,
-    LEN,
-    MIN,
-    MAX,
-};
-// Type Names
+export const PERMISSION = 'permission';
+export const REQUIRED = 'required';
+export const INCLUDES = 'includes';
+export const MIN_LEN = 'minLen';
+export const MAX_LEN = 'maxLen';
+export const REGEX = 'regex';
+export const EVERY = 'every';
+export const TYPE = 'type';
+export const SOME = 'some';
+export const LEN = 'len';
+export const MIN = 'min';
+export const MAX = 'max';
 export const TYPE_NAME = {
     BOOLEAN: 'boolean',
     STRING: 'string',
     NUMBER: 'number',
     OBJECT: 'object',
     ARRAY: 'array',
-    ROOT: 'root',
+    ROOT: Symbol('type_root'),
  };
 
 type TypePrototypeParseMethod = (...args: any[]) => { base: any, check: TypePrototypeMethod };
 type TypePrototypeValidateMethod = (...args: any[]) => void;
 type TypePrototypeMethod = (...args: any[]) => boolean;
-interface ITypePrototypeParse {
+export interface ITypePrototypeParse {
     [method: string]: TypePrototypeParseMethod;
 }
-interface ITypePrototypeValidate {
+export interface ITypePrototypeValidate {
     [method: string]: TypePrototypeValidateMethod;
 }
 export interface ITypePrototype {

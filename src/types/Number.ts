@@ -1,23 +1,24 @@
-import { TYPE_METHOD } from '../constants';
+import { ITypePrototype, MAX, MIN, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
-const { VALIDATE, MIN, MAX, PARSE } = TYPE_METHOD;
 
-const TypeNumber = {
+export const TypeNumber: ITypePrototype = {
     [MIN] (base: number, value: any) {
         return base < value;
     },
     [MAX] (base: number, value: any) {
         return base > value;
     },
-    [VALIDATE]: {
+    [SYM_TYPE_VALIDATE]: {
         [MIN] (value: any = E.param()) {
-            if (!isType.number(value)) E.validateNotNumberError(MIN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MIN, 'number primitive', typeof(value));
         },
         [MAX] (value: any = E.param()) {
-            if (!isType.number(value)) E.validateNotNumberError(MAX, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MAX, 'number primitive', typeof(value));
         },
     },
-    [PARSE]: {
+    [SYM_TYPE_PARSE]: {
         [MIN] (key: string = E.param(), value: any = E.param()): { base: any, check: any } {
             return {
                 base: value,
@@ -32,5 +33,3 @@ const TypeNumber = {
         },
     },
 };
-
-export default TypeNumber;

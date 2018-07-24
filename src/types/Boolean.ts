@@ -1,3 +1,3 @@
-const TypeBoolean = {};
+import { ITypePrototype } from '../constants';
 
-export default TypeBoolean;
+export const TypeBoolean: ITypePrototype = {};

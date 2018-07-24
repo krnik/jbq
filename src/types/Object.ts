@@ -1,3 +1,3 @@
-const TypeObject = {};
+import { ITypePrototype } from '../constants';
 
-export default TypeObject;
+export const TypeObject: ITypePrototype = {};
