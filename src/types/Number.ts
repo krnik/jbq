@@ -3,8 +3,12 @@ import { E, isType } from '../utils/index';
 const { VALIDATE, MIN, MAX, PARSE } = TYPE_METHOD;
 
 const TypeNumber = {
-    [MIN] (base: number, value: any) {},
-    [MAX] (base: number, value: any) {},
+    [MIN] (base: number, value: any) {
+        return base < value;
+    },
+    [MAX] (base: number, value: any) {
+        return base > value;
+    },
     [VALIDATE]: {
         [MIN] (value: any = E.param()) {
             if (!isType.number(value)) E.validateNotNumberError(MIN, typeof(value));

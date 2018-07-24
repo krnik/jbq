@@ -9,7 +9,7 @@ export const TYPE_METHOD = {
     LEN: 'len',
     MIN: 'min',
     MAX: 'max',
-    MATCH: 'match',
+    REGEX: 'regex',
 };
 
 export const TYPE = {

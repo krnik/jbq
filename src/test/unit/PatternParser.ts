@@ -2,7 +2,7 @@ import { SYM, TYPE_METHOD } from '../../constants';
 import patternParser, { IPatternsInput, IProperty } from '../../core/PatternParser';
 import { types } from '../../index';
 import { patterns } from '../data/index';
-const { TYPE } = TYPE_METHOD;
+const { TYPE, REGEX, MIN_LEN, MIN } = TYPE_METHOD;
 
 export default () => describe('Pattern Parser', () => {
     it(`it should recognize ${SYM.OBJECT.toString()}`, () => {
@@ -117,5 +117,36 @@ export default () => describe('Pattern Parser', () => {
             done();
         }
     });
-    // it('it should parse nested patterns', () => {});
+    it('it should parse nested patterns', () => {
+        const addressObject: { [k: string]: {} } = {
+            zipCode: {
+                [TYPE]: 'string',
+                [REGEX]: /^\d{2}-\d{3}$/,
+            },
+            street: {
+                [TYPE]: 'string',
+                [MIN_LEN]: 4,
+            },
+            city: {
+                [TYPE]: 'string',
+                [MIN_LEN]: 2,
+            },
+            buildingNo: {
+                [TYPE]: 'number',
+                [MIN]: 1,
+            },
+            flatNo: {
+                [TYPE]: 'number',
+                [MIN]: 1,
+            },
+        };
+        const personObject = {
+            type: 'object',
+            [SYM.FLAT]: true,
+            [SYM.OBJECT]: addressObject,
+        };
+        const parsedPatterns = patternParser(types, { Test: personObject }, {});
+        for (const [key, val] of Object.entries(parsedPatterns.Test[SYM.OBJECT]))
+            addressObject[key].should.have.all.keys(Object.keys(val));
+    });
 });

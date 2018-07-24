@@ -1,3 +1,5 @@
+import { SYM } from '../constants';
+
 export const E = {
     param () {
         const errorMessage = 'Parameter is required. Got undefined instead.';
@@ -36,5 +38,17 @@ export const E = {
     typeProtoInvalidMethod (typeName: string, methodName: string, type: string) {
         const errorMessage = `[${typeName}] type must have [${methodName}] method validator and parser functions defined in [PARSE] and [VALIDATE] properties. Got ${type}.`;
         throw Error(errorMessage);
+    },
+    validatorDuplicateKeys (patternName: string) {
+        const errorMessage = `Property '${patternName}' already exist on validator instance.`;
+        throw Error(errorMessage);
+    },
+    msg: {
+        nullValue () {
+            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM.FLAT} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
+        },
+        nonIterable () {
+            return `Attempted to iterate over data value. But it does not have defined ${Symbol.iterator.toString()} property.`
+        },
     },
 };

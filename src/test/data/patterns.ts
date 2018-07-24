@@ -1,6 +1,6 @@
 import { IPatternsInput } from 'core/PatternParser';
 import { SYM, TYPE_METHOD } from '../../constants';
-const { TYPE, MAX_LEN, MIN_LEN, LEN, MAX, MIN, MATCH } = TYPE_METHOD;
+const { TYPE, MAX_LEN, MIN_LEN, LEN, MAX, MIN, REGEX } = TYPE_METHOD;
 
 export const patterns: IPatternsInput = {
     Test: {
@@ -9,7 +9,7 @@ export const patterns: IPatternsInput = {
             [MAX_LEN]: 64,
             [MIN_LEN]: 2,
             [LEN]: 32,
-            [MATCH]: /.+/,
+            [REGEX]: /.+/,
             [Symbol.for('faker')]: ['internet.email'],
         },
         number: {
@@ -59,7 +59,7 @@ export const patterns: IPatternsInput = {
         [MIN_LEN]: 2,
         [MAX_LEN]: 64,
         [LEN]: 32,
-        [MATCH]: /.+/,
+        [REGEX]: /.+/,
         [SYM.FLAT]: true,
         [Symbol.for('faker')]: ['lorem.word'],
     },
