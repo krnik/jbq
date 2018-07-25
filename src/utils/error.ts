@@ -1,8 +1,10 @@
 import { SYM_SCHEMA_FLAT } from '../constants';
 
 export const E = {
-    param () {
-        const errorMessage = 'Parameter is required. Got undefined instead.';
+    param (paramName?: string, desired?: string, actual?: string) {
+        const errorMessage = !paramName
+        ? 'Parameter is required. Got undefined instead.'
+        : `Parameter ${paramName} requires to be a ${desired}. Got '${actual}' instead.`;
         throw Error(errorMessage);
     },
     nullValue (propName?: string) {

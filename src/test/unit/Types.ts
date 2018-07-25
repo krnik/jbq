@@ -7,6 +7,7 @@ import { TypeNumber } from '../../types/Number';
 import { TypeString } from '../../types/String';
 import { TypeObject } from '../../types/Object';
 import { TypeRoot } from '../../types/Root';
+import { TypeWrapper } from '../../types/Wrapper';
 
 export default () => describe('Types', () => {
     describe(TYPE_NAME.ARRAY, () => {
@@ -575,5 +576,33 @@ export default () => describe('Types', () => {
             });
         });
     });
-    describe('Wrapper', () => {});
+    describe('Wrapper', () => {
+        it('It should accept valid Type as root and on .set()', () => {
+            const types = new TypeWrapper(TypeRoot);
+            types.set(TYPE_NAME.ARRAY, TypeArray);
+        });
+        it('It should reject type that lacks method validation', (done) => {
+            const type: any = { someMethod () {} };
+            try {
+                new TypeWrapper(TypeRoot).set('someType', type);
+                done('Should throw an error');
+            } catch (err) {
+                done();
+            }
+        });
+        it('It should throw an error if type name to be set is not a string', (done) => {
+            try {
+                new TypeWrapper(TypeRoot).set(123 as any, TypeArray);
+                done('Should throw an error');
+            } catch (err) {
+                done();
+            }
+        });
+        it('It should return boolean on .has()', () => {
+            const types = new TypeWrapper(TypeRoot);
+            types.set(TYPE_NAME.ARRAY, TypeArray);
+            types.has(TYPE_NAME.ARRAY).should.be.equal(true);
+            types.has(TYPE_NAME.BOOLEAN).should.be.equal(false);
+        });
+    });
 });

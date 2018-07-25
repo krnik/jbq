@@ -9,15 +9,16 @@ export class TypeWrapper {
         this.types.set(TYPE_NAME.ROOT, root);
     }
 
+    private get (name: key) {
+        return this.types.get(name);
+    }
+
     public has (name: string) {
         return this.types.has(name);
     }
 
-    public get (name: key) {
-        return this.types.get(name);
-    }
-
     public set (name: string, type: ITypePrototype) {
+        if (!isType.string(name)) E.param('name', 'string primitive', typeof(name));
         const ROOT = this.get(TYPE_NAME.ROOT) as ITypePrototype;
         Object.setPrototypeOf(type, ROOT);
         const proto = Object.getPrototypeOf(type);
