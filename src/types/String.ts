@@ -3,16 +3,16 @@ import { E, isType } from '../utils/index';
 
 export const TypeString: ITypePrototype = {
     [MIN_LEN] (base: number, value: any) {
-        return value.length > base;
+        if (value.length < base) throw { args: { base, value }, msg: E.msg.validationError(MIN_LEN) };
     },
     [MAX_LEN] (base: number, value: any) {
-        return value.length < base;
+        if (value.length > base) throw { args: { base, value }, msg: E.msg.validationError(MAX_LEN) };
     },
     [REGEX] (base: RegExp, value: any) {
-        return base.test(value);
+        if(!base.test(value)) throw { args: { base, value }, msg: E.msg.validationError(REGEX) };
     },
     [LEN] (base: number, value: any) {
-        return value.length === base;
+        if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };
     },
     [SYM_TYPE_VALIDATE]: {
         [MIN_LEN] (value: any) {

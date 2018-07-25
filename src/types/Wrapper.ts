@@ -1,4 +1,4 @@
-import { ITypePrototype, ITypePrototypeParse, ITypePrototypeValidate, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE, TYPE_NAME } from '../constants';
+import { ITypePrototype, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE, TYPE_NAME } from '../constants';
 import { E, isType } from '../utils/index';
 
 type key = string | symbol;
@@ -9,11 +9,11 @@ export class TypeWrapper {
         this.types.set(TYPE_NAME.ROOT, root);
     }
 
-    public has (name: string): boolean {
+    public has (name: string) {
         return this.types.has(name);
     }
 
-    public get (name: key): ITypePrototype | undefined {
+    public get (name: key) {
         return this.types.get(name);
     }
 

@@ -5,6 +5,9 @@ export const isType = {
     number (value: any) {
         return typeof(value) === 'number' && value !== Object(value) && value === value;
     },
+    string (value: any) {
+        return typeof(value) === 'string' && value !== Object(value);
+    },
     objectInstance (value: any, constructorName: string) {
         return value == null ? value : Object.getPrototypeOf(value).constructor.name === constructorName;
     },

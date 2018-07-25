@@ -1,5 +1,5 @@
 import { ITypePrototype, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E } from '../utils/index';
+import { E, isType } from '../utils/index';
 
 export const TypeRoot: ITypePrototype = {
     [TYPE] (base: string, value: any) {
@@ -10,13 +10,12 @@ export const TypeRoot: ITypePrototype = {
         case 'object':
         case 'string':
         default:
-            return base === typeof value;
+            if(base !== typeof value) throw { args: { base, value }, msg: E.msg.validationError(TYPE) };
         }
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.param()) {
-            if (value === Object(value) || typeof(value) !== 'string')
-                E.typeValidateError(TYPE, 'string primitive', typeof(value));
+            if (!isType.string(value)) E.typeValidateError(TYPE, 'string primitive', typeof(value));
         },
     },
     [SYM_TYPE_PARSE]: {

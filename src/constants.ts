@@ -3,6 +3,8 @@
  */
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const SYM_TYPE_PARSE = Symbol.for('type_parse');
+export const CONSTRUCTOR_NAME = 'constructorName';
+export const INSTANCE_OF = 'instanceOf';
 export const PERMISSION = 'permission';
 export const REQUIRED = 'required';
 export const INCLUDES = 'includes';
@@ -10,6 +12,7 @@ export const MIN_LEN = 'minLen';
 export const MAX_LEN = 'maxLen';
 export const REGEX = 'regex';
 export const EVERY = 'every';
+export const VALUE = 'value';
 export const TYPE = 'type';
 export const SOME = 'some';
 export const LEN = 'len';
@@ -26,7 +29,7 @@ export const TYPE_NAME = {
 
 type TypePrototypeParseMethod = (...args: any[]) => { base: any, check: TypePrototypeMethod };
 type TypePrototypeValidateMethod = (...args: any[]) => void;
-type TypePrototypeMethod = (...args: any[]) => boolean;
+type TypePrototypeMethod = (...args: any[]) => void;
 export interface ITypePrototypeParse {
     [method: string]: TypePrototypeParseMethod;
 }
