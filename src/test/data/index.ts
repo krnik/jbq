@@ -1,10 +1,10 @@
-// import { createData } from './create';
-// import { patterns } from './patterns';
+import { createData } from './create';
+import { patterns } from './patterns';
 
-// export {
-//   patterns,
-//   createData,
-//  };
+export {
+  patterns,
+  createData,
+ };
 
 export const values = {
   non: {

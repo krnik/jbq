@@ -1,8 +1,6 @@
-import { IPatternsInput } from 'core/PatternParser';
-import { SYM, TYPE_METHOD } from '../../constants';
-const { TYPE, MAX_LEN, MIN_LEN, LEN, MAX, MIN, REGEX } = TYPE_METHOD;
+import { TYPE, MIN_LEN, MAX_LEN, LEN, REGEX, MIN, MAX, SYM_SCHEMA_OBJECT, SYM_SCHEMA_FLAT, SYM_SCHEMA_COLLECTION } from '../../constants';
 
-export const patterns: IPatternsInput = {
+export const patterns = {
     Test: {
         string: {
             [TYPE]: 'string',
@@ -24,7 +22,7 @@ export const patterns: IPatternsInput = {
         },
         object: {
             [TYPE]: 'object',
-            [SYM.OBJECT]: {
+            [SYM_SCHEMA_OBJECT]: {
                 prop1: {
                     [TYPE]: 'string',
                     [Symbol.for('faker')]: ['lorem.word'],
@@ -37,16 +35,16 @@ export const patterns: IPatternsInput = {
         },
         array: {
             [TYPE]: 'array',
-            [SYM.FLAT]: true,
-            [SYM.COLLECTION]: {
+            [SYM_SCHEMA_FLAT]: true,
+            [SYM_SCHEMA_COLLECTION]: {
                 [TYPE]: 'string',
-                [SYM.FLAT]: true,
+                [SYM_SCHEMA_FLAT]: true,
             },
             [Symbol.for('faker')]: ['lorem.word'],
         },
         arrayOfObjects: {
             [TYPE]: 'array',
-            [SYM.COLLECTION]: {
+            [SYM_SCHEMA_COLLECTION]: {
                 prop1: {
                     [TYPE]: 'string',
                     [Symbol.for('faker')]: ['lorem.word'],
@@ -60,7 +58,7 @@ export const patterns: IPatternsInput = {
         [MAX_LEN]: 64,
         [LEN]: 32,
         [REGEX]: /.+/,
-        [SYM.FLAT]: true,
+        [SYM_SCHEMA_FLAT]: true,
         [Symbol.for('faker')]: ['lorem.word'],
     },
 };
