@@ -1,13 +1,12 @@
-import { createTypes } from '../../index';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
 import { TypeArray } from '../../types/Array';
 import { TypeBoolean } from '../../types/Boolean';
-import { values } from '../data/index';
-import { TYPE_NAME, LEN, MAX_LEN, MIN_LEN, INCLUDES, EVERY, SOME, VALUE, SYM_TYPE_VALIDATE, MIN, MAX, REGEX, INSTANCE_OF, CONSTRUCTOR_NAME, TYPE } from '../../constants';
 import { TypeNumber } from '../../types/Number';
-import { TypeString } from '../../types/String';
 import { TypeObject } from '../../types/Object';
 import { TypeRoot } from '../../types/Root';
+import { TypeString } from '../../types/String';
 import { TypeWrapper } from '../../types/Wrapper';
+import { values } from '../data/index';
 
 export default () => describe('Types', () => {
     describe(TYPE_NAME.ARRAY, () => {
@@ -36,14 +35,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][LEN](value);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
             // TODO: SYM_TYPE_PARSE
@@ -73,14 +71,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](value);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -109,14 +106,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](value);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -145,14 +141,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][INCLUDES](value);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.null) {
+                for (const value of values.null)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][INCLUDES](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -179,14 +174,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][EVERY](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.function) {
+                for (const value of values.non.function)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][EVERY](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -213,14 +207,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][SOME](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.function) {
+                for (const value of values.non.function)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][SOME](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -249,14 +242,13 @@ export default () => describe('Types', () => {
                 TypeBoolean[SYM_TYPE_VALIDATE][VALUE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.boolean) {
+                for (const value of values.non.boolean)
                     try {
                         TypeBoolean[SYM_TYPE_VALIDATE][VALUE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -285,14 +277,13 @@ export default () => describe('Types', () => {
                 TypeNumber[SYM_TYPE_VALIDATE][MIN](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeNumber[SYM_TYPE_VALIDATE][MIN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -319,14 +310,13 @@ export default () => describe('Types', () => {
                 TypeNumber[SYM_TYPE_VALIDATE][MAX](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeNumber[SYM_TYPE_VALIDATE][MAX](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -355,14 +345,13 @@ export default () => describe('Types', () => {
                 TypeString[SYM_TYPE_VALIDATE][MIN_LEN](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeString[SYM_TYPE_VALIDATE][MIN_LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -389,14 +378,13 @@ export default () => describe('Types', () => {
                 TypeString[SYM_TYPE_VALIDATE][MAX_LEN](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeString[SYM_TYPE_VALIDATE][MAX_LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -423,14 +411,13 @@ export default () => describe('Types', () => {
                 TypeString[SYM_TYPE_VALIDATE][REGEX](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.regex) {
+                for (const value of values.non.regex)
                     try {
                         TypeString[SYM_TYPE_VALIDATE][REGEX](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -457,14 +444,13 @@ export default () => describe('Types', () => {
                 TypeString[SYM_TYPE_VALIDATE][LEN](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.number) {
+                for (const value of values.non.number)
                     try {
                         TypeString[SYM_TYPE_VALIDATE][LEN](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -493,14 +479,13 @@ export default () => describe('Types', () => {
                 TypeObject[SYM_TYPE_VALIDATE][INSTANCE_OF](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.function) {
+                for (const value of values.non.function)
                     try {
                         TypeObject[SYM_TYPE_VALIDATE][INSTANCE_OF](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -527,14 +512,13 @@ export default () => describe('Types', () => {
                 TypeObject[SYM_TYPE_VALIDATE][CONSTRUCTOR_NAME](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeObject[SYM_TYPE_VALIDATE][CONSTRUCTOR_NAME](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -564,14 +548,13 @@ export default () => describe('Types', () => {
                 TypeRoot[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} should throw an error`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeRoot[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -582,7 +565,7 @@ export default () => describe('Types', () => {
             types.set(TYPE_NAME.ARRAY, TypeArray);
         });
         it('It should reject type that lacks method validation', (done) => {
-            const type: any = { someMethod () {} };
+            const type: any = { someMethod () { return; } };
             try {
                 new TypeWrapper(TypeRoot).set('someType', type);
                 done('Should throw an error');

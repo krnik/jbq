@@ -1,4 +1,4 @@
-import { ITypePrototype, CONSTRUCTOR_NAME, INSTANCE_OF, SYM_TYPE_VALIDATE, SYM_TYPE_PARSE } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, ITypePrototype, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
 
 export const TypeObject: ITypePrototype = {
@@ -6,7 +6,7 @@ export const TypeObject: ITypePrototype = {
     if (Object.getPrototypeOf(value).constructor.name !== base)
       throw { args: { base, value }, msg: E.msg.validationError(CONSTRUCTOR_NAME) };
   },
-  [INSTANCE_OF] (base: Function, value: any) {
+  [INSTANCE_OF] (base: () => void, value: any) {
     if (!(value instanceof base)) throw { args: { base, value }, msg: E.msg.validationError(INSTANCE_OF) };
   },
   [SYM_TYPE_VALIDATE]: {

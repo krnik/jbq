@@ -9,7 +9,7 @@ export const TypeString: ITypePrototype = {
         if (value.length > base) throw { args: { base, value }, msg: E.msg.validationError(MAX_LEN) };
     },
     [REGEX] (base: RegExp, value: any) {
-        if(!base.test(value)) throw { args: { base, value }, msg: E.msg.validationError(REGEX) };
+        if (!base.test(value)) throw { args: { base, value }, msg: E.msg.validationError(REGEX) };
     },
     [LEN] (base: number, value: any) {
         if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };

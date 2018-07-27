@@ -9,10 +9,6 @@ export class TypeWrapper {
         this.types.set(TYPE_NAME.ROOT, root);
     }
 
-    private get (name: key) {
-        return this.types.get(name);
-    }
-
     public has (name: string) {
         return this.types.has(name);
     }
@@ -37,7 +33,7 @@ export class TypeWrapper {
                         : prop;
                 }
                 return isType.objectInstance(proto[SYM_TYPE_PARSE][key], 'Function')
-                    ? proto[SYM_TYPE_PARSE][key].bind(type)
+                ? proto[SYM_TYPE_PARSE][key].bind(type)
                     : proto[SYM_TYPE_PARSE][key];
             },
         });
@@ -47,5 +43,9 @@ export class TypeWrapper {
                 E.typeProtoInvalidMethod(name, key, typeof(type[SYM_TYPE_VALIDATE][key]));
         this.types.set(name, type);
         return this;
+    }
+
+    private get (name: key) {
+        return this.types.get(name);
     }
 }

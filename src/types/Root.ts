@@ -10,7 +10,7 @@ export const TypeRoot: ITypePrototype = {
         case 'object':
         case 'string':
         default:
-            if(base !== typeof value) throw { args: { base, value }, msg: E.msg.validationError(TYPE) };
+            if (base !== typeof value) throw { args: { base, value }, msg: E.msg.validationError(TYPE) };
         }
     },
     [SYM_TYPE_VALIDATE]: {
