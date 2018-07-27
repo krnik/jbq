@@ -45,7 +45,7 @@ export class TypeWrapper {
         return this;
     }
 
-    private get (name: key) {
+    public get (name: key) {
         return this.types.get(name);
     }
 }

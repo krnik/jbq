@@ -49,16 +49,19 @@ export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
 export const SYM_SCHEMA_FLAT = Symbol.for('schema_flat');
 export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
 
-interface ISchemaConfig {
+export interface ISchemaConfig {
     [TYPE]: string;
-    [setting: string]: any;
+    [option: string]: any;
 }
-interface ISchema {
+interface ISchemaProperty {
+    [property: string]: unknown;
+}
+export interface ISchema {
     [SYM_SCHEMA_FLAT]?: boolean;
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_OBJECT]?: ISchema;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [property: string]: any;
+    [property: string]: ISchemaProperty | ISchema;
 }
 export interface ISchemas {
     [schema: string]: ISchema;

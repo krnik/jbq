@@ -1,4 +1,7 @@
-import SchemaParserTest from './SchemaParser';
+import ParserTest from './Parser';
 import TypesTest from './Types';
 
-export default [TypesTest, SchemaParserTest];
+export default [
+  // TypesTest,
+  ParserTest,
+];

@@ -53,10 +53,10 @@ export const patterns = {
         },
     },
     PrimitiveString: {
-        [TYPE]: 'string',
         [MIN_LEN]: 2,
         [MAX_LEN]: 64,
         [LEN]: 32,
+        [TYPE]: 'string',
         [REGEX]: /.+/,
         [SYM_SCHEMA_FLAT]: true,
         [Symbol.for('faker')]: ['lorem.word'],
