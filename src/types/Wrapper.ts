@@ -1,7 +1,23 @@
-import { ITypePrototype, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE, TYPE_NAME } from '../constants';
+import { SYM_TYPE_PARSE, SYM_TYPE_VALIDATE, TYPE_NAME } from '../constants';
 import { E, isType } from '../utils/index';
 
+
+type TypePrototypeParseMethod = (...args: any[]) => { base: any, check: TypePrototypeMethod };
+type TypePrototypeValidateMethod = (...args: any[]) => void;
+type TypePrototypeMethod = (...args: any[]) => void;
+interface ITypePrototypeParse {
+    [method: string]: TypePrototypeParseMethod;
+}
+interface ITypePrototypeValidate {
+    [method: string]: TypePrototypeValidateMethod;
+}
+interface ITypePrototype {
+    [SYM_TYPE_PARSE]: ITypePrototypeParse;
+    [SYM_TYPE_VALIDATE]: ITypePrototypeValidate;
+    [method: string]: TypePrototypeMethod;
+}
 type key = string | symbol;
+
 export class TypeWrapper {
     private types: Map<key, ITypePrototype> = new Map();
 

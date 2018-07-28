@@ -26,21 +26,6 @@ export const TYPE_NAME = {
     ARRAY: 'array',
     ROOT: Symbol('type_root'),
  };
-
-type TypePrototypeParseMethod = (...args: any[]) => { base: any, check: TypePrototypeMethod };
-type TypePrototypeValidateMethod = (...args: any[]) => void;
-type TypePrototypeMethod = (...args: any[]) => void;
-export interface ITypePrototypeParse {
-    [method: string]: TypePrototypeParseMethod;
-}
-export interface ITypePrototypeValidate {
-    [method: string]: TypePrototypeValidateMethod;
-}
-export interface ITypePrototype {
-    [SYM_TYPE_PARSE]: ITypePrototypeParse;
-    [SYM_TYPE_VALIDATE]: ITypePrototypeValidate;
-    [method: string]: TypePrototypeMethod;
-}
 /**
  * SCHEMA CONSTANTS, INTERFACES
  */
