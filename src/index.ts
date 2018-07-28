@@ -1,4 +1,4 @@
-import Validator from './core/Validator';
+import { Validator } from './core/Validator';
 import types, { createTypes } from './types/index';
 
-export { createTypes, Validator };
+export { types, createTypes, Validator };

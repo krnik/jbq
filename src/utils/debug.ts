@@ -1,5 +1,5 @@
 export function debug (col: string, msg: string, indent?: string) {
-  if (process.env.NODE_ENV === 'production') return;
+  if (process.env.NODE_ENV !== 'debug') return;
   const colors: { [k: string]: string } = {
       reset: '\x1b[0m',
       red: '\x1b[31m',

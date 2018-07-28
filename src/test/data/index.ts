@@ -1,16 +1,16 @@
 import { createData } from './create';
-import { patterns } from './patterns';
+import { schemas } from './schemas';
 
 export {
-  patterns,
+  schemas,
   createData,
  };
 
 export const values = {
   non: {
     regex: ['', 1, Symbol('unique symbol'), null, undefined, {}, []],
-    number: ['', true, Symbol('unique symbol'), null, undefined, {}, [], () => {}],
-    string: [true, 1, Symbol('unique symbol'), null, undefined, {}, [], () => {}],
+    number: ['', true, Symbol('unique symbol'), null, undefined, {}, [], () => undefined],
+    string: [true, 1, Symbol('unique symbol'), null, undefined, {}, [], () => undefined],
     boolean: ['', 1, Symbol('unique symbol'), null, undefined, {}, []],
     function: ['', 1, true, Symbol('unique symbol'), null, undefined, {}, []],
   },

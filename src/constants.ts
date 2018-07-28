@@ -48,21 +48,4 @@ export const SYM_SCHEMA_OBJECT = Symbol.for('schema_object');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
 export const SYM_SCHEMA_FLAT = Symbol.for('schema_flat');
 export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
-
-export interface ISchemaConfig {
-    [TYPE]: string;
-    [option: string]: any;
-}
-interface ISchemaProperty {
-    [property: string]: unknown;
-}
-export interface ISchema {
-    [SYM_SCHEMA_FLAT]?: boolean;
-    [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
-    [SYM_SCHEMA_OBJECT]?: ISchema;
-    [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [property: string]: ISchemaProperty | ISchema;
-}
-export interface ISchemas {
-    [schema: string]: ISchema;
-}
+export const SYM_SCHEMA_CHECK = Symbol('schema_check');
