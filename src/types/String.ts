@@ -1,28 +1,38 @@
-import { TYPE_METHOD } from '../constants';
+import { ITypePrototype, LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
-const { VALIDATE, MATCH, MIN_LEN, MAX_LEN, LEN, PARSE } = TYPE_METHOD;
 
-const TypeString = {
-    [MIN_LEN] (base: number, value: any) {},
-    [MAX_LEN] (base: number, value: any) {},
-    [MATCH] (base: RegExp, value: any) {},
-    [LEN] (base: number, value: any) {},
-    [VALIDATE]: {
+export const TypeString: ITypePrototype = {
+    [MIN_LEN] (base: number, value: any) {
+        if (value.length < base) throw { args: { base, value }, msg: E.msg.validationError(MIN_LEN) };
+    },
+    [MAX_LEN] (base: number, value: any) {
+        if (value.length > base) throw { args: { base, value }, msg: E.msg.validationError(MAX_LEN) };
+    },
+    [REGEX] (base: RegExp, value: any) {
+        if (!base.test(value)) throw { args: { base, value }, msg: E.msg.validationError(REGEX) };
+    },
+    [LEN] (base: number, value: any) {
+        if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };
+    },
+    [SYM_TYPE_VALIDATE]: {
         [MIN_LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(MIN_LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MIN_LEN, 'number primitive', typeof(value));
         },
         [MAX_LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(MAX_LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(MAX_LEN, 'number primitive', typeof(value));
         },
-        [MATCH] (value: any) {
+        [REGEX] (value: any) {
             if (!isType.objectInstance(value, 'RegExp'))
-                E.validateMatchError(MATCH, typeof(value));
+                E.typeValidateError(REGEX, 'RegExp', typeof(value));
         },
         [LEN] (value: any) {
-            if (!isType.number(value)) E.validateNotNumberError(LEN, typeof(value));
+            if (!isType.number(value))
+                E.typeValidateError(LEN, 'number primitive', typeof(value));
         },
     },
-    [PARSE]: {
+    [SYM_TYPE_PARSE]: {
         [MIN_LEN] (key: string, value: any): { base: any, check: any } {
             return {
                 base: value,
@@ -35,7 +45,7 @@ const TypeString = {
                 check: this[key],
             };
         },
-        [MATCH] (key: string, value: any): { base: any, check: any } {
+        [REGEX] (key: string, value: any): { base: any, check: any } {
             return {
                 base: value,
                 check: this[key],
@@ -49,5 +59,3 @@ const TypeString = {
         },
     },
 };
-
-export default TypeString;

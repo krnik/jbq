@@ -1,5 +1,9 @@
-import PatternParserTest from './PatternParser';
+import ParserTest from './Parser';
 import TypesTest from './Types';
-import Validator from './Validator';
+import ValidatorTest from './Validator';
 
-export default [PatternParserTest, TypesTest, Validator];
+export default [
+    ParserTest,
+    TypesTest,
+    ValidatorTest,
+];

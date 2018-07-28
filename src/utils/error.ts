@@ -1,6 +1,10 @@
+import { SYM_SCHEMA_FLAT } from '../constants';
+
 export const E = {
-    param () {
-        const errorMessage = 'Parameter is required. Got undefined instead.';
+    param (paramName?: string, desired?: string, actual?: string) {
+        const errorMessage = !paramName
+        ? 'Parameter is required. Got undefined instead.'
+        : `Parameter ${paramName} requires to be a ${desired}. Got '${actual}' instead.`;
         throw Error(errorMessage);
     },
     nullValue (propName?: string) {
@@ -11,6 +15,10 @@ export const E = {
     },
     validateTypeError (propName: string, valueType: string) {
         const errorMessage = `[${propName}] property requires value to be string primitive. Got "${valueType}" type instead.`;
+        throw Error(errorMessage);
+    },
+    typeValidateError (propName: string, desired: string, valueType: string) {
+        const errorMessage = `[${propName}] property requires value to be a ${desired}. Got ${valueType} instead.`;
         throw Error(errorMessage);
     },
     validateRequiredError (propName: string, valueType: string) {
@@ -36,5 +44,20 @@ export const E = {
     typeProtoInvalidMethod (typeName: string, methodName: string, type: string) {
         const errorMessage = `[${typeName}] type must have [${methodName}] method validator and parser functions defined in [PARSE] and [VALIDATE] properties. Got ${type}.`;
         throw Error(errorMessage);
+    },
+    validatorDuplicateKeys (patternName: string) {
+        const errorMessage = `Property '${patternName}' already exist on validator instance.`;
+        throw Error(errorMessage);
+    },
+    msg: {
+        nullValue () {
+            return `Attempted to get properties of values undefined or null. If you want to validate primitive values such as undefined or null please add ${SYM_SCHEMA_FLAT.toString()} symbol to the pattern. Then whole data value will be passed to check invoking function.`;
+        },
+        nonIterable () {
+            return `Attempted to iterate over data value. But it does not have defined ${Symbol.iterator.toString()} property.`;
+        },
+        validationError (propName: string) {
+            return `Validation error - value failed check at [${propName}].`;
+        }
     },
 };

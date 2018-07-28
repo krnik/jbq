@@ -1,15 +1,17 @@
 {
-  "name": "yavalidator",
+  "name": "valid-js",
   "version": "0.0.1",
-  "description": "Yet another JSON validator.",
+  "description": "Yet another JS schema validator.",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "tsc": "node_modules/.bin/tsc",
-    "tsc:watch": "node_modules/.bin/tsc -w",
-    "test": "node_modules/.bin/mocha ./lib/test/test.js"
+    "tsc": "node_modules/.bin/tsc -p ./tsconfig.json",
+    "tsc:dev": "node_modules/.bin/tsc -p ./tsconfig.dev.json",
+    "tsc:dev:watch": "node_modules/.bin/tsc -w -p ./tsconfig.dev.json",
+    "test": "node_modules/.bin/mocha ./lib/test/test.js",
+    "test:perf": "node ./lib/test/perf/benchmark.js"
   },
   "keywords": [
     "validator",
@@ -17,17 +19,27 @@
   ],
   "author": "krnik",
   "license": "ISC",
-  "devDependencies": {
-    "@types/chai": "^4.1.4",
-    "@types/faker": "^4.1.2",
-    "@types/mocha": "^5.2.4",
-    "@types/node": "^10.1.2",
-    "chai": "^4.1.2",
-    "faker": "^4.1.0",
-    "mocha": "^5.2.0",
-    "typescript": "^2.9.2"
+  "homepage": "https://github.com/krnik/valid-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krnik/valid-js"
   },
-  "dependencies": {
-    "tslint": "^5.11.0"
-  }
+  "devDependencies": {
+    "@types/benchmark": "1.0.31",
+    "@types/chai": "4.1.4",
+    "@types/faker": "4.1.2",
+    "@types/mocha": "5.2.4",
+    "@types/node": "10.1.2",
+    "ajv": "6.5.2",
+    "benchmark": "2.1.4",
+    "chai": "4.1.2",
+    "djv": "2.1.0",
+    "faker": "4.1.0",
+    "jsen": "0.6.6",
+    "json-schema-validator-generator": "1.1.11",
+    "mocha": "5.2.0",
+    "tslint": "5.11.0",
+    "typescript": "3.1.0-dev.20180724"
+  },
+  "dependencies": {}
 }
