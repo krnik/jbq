@@ -1,6 +1,5 @@
 import chai from 'chai';
-import unit from './unit/index';
+import { unitTests } from './unit/index';
 chai.should();
 
-for (const test of unit) test();
-
+for (const test of unitTests) test();

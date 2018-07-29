@@ -2,7 +2,6 @@
  * TYPE CONSTANTS, NAMES, INTERFACES
  */
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
-export const SYM_TYPE_PARSE = Symbol.for('type_parse');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
 export const PERMISSION = 'permission';

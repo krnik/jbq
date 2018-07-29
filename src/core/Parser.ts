@@ -1,5 +1,5 @@
-import { ITypePrototype, SYM_SCHEMA_CHECK, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_FLAT, SYM_SCHEMA_OBJECT, TYPE } from '../constants';
-import { TypeWrapper } from '../types/Wrapper';
+import { SYM_SCHEMA_CHECK, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_FLAT, SYM_SCHEMA_OBJECT, TYPE } from '../constants';
+import { TypeWrapper, ITypePrototype } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 const INDENT = Symbol('schema_parser_indent');
 

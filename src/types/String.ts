@@ -1,7 +1,7 @@
-import { ITypePrototype, LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
+import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
 
-export const TypeString: ITypePrototype = {
+export const TypeString = {
     [MIN_LEN] (base: number, value: any) {
         if (value.length < base) throw { args: { base, value }, msg: E.msg.validationError(MIN_LEN) };
     },
@@ -30,32 +30,6 @@ export const TypeString: ITypePrototype = {
         [LEN] (value: any) {
             if (!isType.number(value))
                 E.typeValidateError(LEN, 'number primitive', typeof(value));
-        },
-    },
-    [SYM_TYPE_PARSE]: {
-        [MIN_LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [MAX_LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [REGEX] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
         },
     },
 };

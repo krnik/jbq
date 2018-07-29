@@ -1,8 +1,8 @@
-import { EVERY, INCLUDES, ITypePrototype, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
+import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE } from '../constants';
 import { E, isType } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index: number, arr: any[], thisArg?: any) => boolean;
-export const TypeArray: ITypePrototype = {
+export const TypeArray = {
     [EVERY] (base: arrMethodCallback, value: any[]) {
         if (!value.every(base)) throw { args: { base, value }, msg: E.msg.validationError(EVERY) };
     },
@@ -20,44 +20,6 @@ export const TypeArray: ITypePrototype = {
     },
     [LEN] (base: number, value: any[]) {
         if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };
-    },
-    [SYM_TYPE_PARSE]: {
-        [EVERY] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
-        [SOME] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
-        [INCLUDES] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
-        [MIN_LEN] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
-        [MAX_LEN] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
-        [LEN] (key: string, base: any): { base: any, check: any } {
-            return {
-                base,
-                check: this[key],
-            };
-        },
     },
     [SYM_TYPE_VALIDATE]: {
         [EVERY] (value: any = E.param()) {

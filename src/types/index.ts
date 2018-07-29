@@ -15,10 +15,3 @@ export function createTypes () {
         .set(TYPE_NAME.OBJECT, TypeObject)
         .set(TYPE_NAME.ARRAY, TypeArray);
 }
-
-export default new TypeWrapper(TypeRoot)
-    .set(TYPE_NAME.STRING, TypeString)
-    .set(TYPE_NAME.BOOLEAN, TypeBoolean)
-    .set(TYPE_NAME.NUMBER, TypeNumber)
-    .set(TYPE_NAME.OBJECT, TypeObject)
-    .set(TYPE_NAME.ARRAY, TypeArray);

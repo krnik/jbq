@@ -1,6 +1,6 @@
 import Benchmark from 'benchmark';
 import { Validator } from '../../core/Validator';
-import types from '../../types/index';
+import { createTypes } from '../../types/index';
 import { createData, schemas } from '../data/index';
 import ajv from 'ajv';
 
@@ -110,7 +110,7 @@ const ajvschemas = {
 const data = createData(schemas);
 const createTest = {
     vjs (schemaName, data) {
-        const validator = new Validator(types, schemas, {});
+        const validator = new Validator(createTypes(), schemas, {});
         return validator[`${schemaName}Sync`].bind(null, data);
     },
     ajv (schema, data) {
