@@ -1,8 +1,9 @@
 import Benchmark from 'benchmark';
-import { Validator } from '../../core/Validator';
+import { ValidatorFN } from '../../core/ValidatorFN';
 import { createTypes } from '../../types/index';
 import { createData, schemas } from '../data/index';
 import ajv from 'ajv';
+import util from 'util';
 
 const name = {
     type: 'string',
@@ -110,11 +111,13 @@ const ajvschemas = {
 const data = createData(schemas);
 const createTest = {
     vjs (schemaName, data) {
-        const validator = new Validator(createTypes(), schemas, {});
+        const validator = new ValidatorFN(createTypes(), schemas, {});
         return validator[`${schemaName}Sync`].bind(null, data);
     },
     ajv (schema, data) {
+        console.log(schema);
         const AJV = new ajv().compile(schema);
+        console.log(AJV.toString());
         return AJV.bind(null, data);
     }
 };

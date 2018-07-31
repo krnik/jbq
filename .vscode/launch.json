@@ -18,6 +18,15 @@
                 "${workspaceFolder}/lib/test"
             ],
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Perf Tests",
+            "args": [
+                "${workspaceFolder}/lib/test/perf/benchmark.js"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

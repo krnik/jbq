@@ -4,22 +4,22 @@ import { E, isType } from '../utils/index';
 type arrMethodCallback = (elem: any, index: number, arr: any[], thisArg?: any) => boolean;
 export const TypeArray = {
     [EVERY] (base: arrMethodCallback, value: any[]) {
-        if (!value.every(base)) throw { args: { base, value }, msg: E.msg.validationError(EVERY) };
+        if (!value.every(base)) throw { base, value };
     },
     [SOME] (base: arrMethodCallback, value: any[]) {
-        if (!value.some(base)) throw { args: { base, value }, msg: E.msg.validationError(SOME) };
+        if (!value.some(base)) throw { base, value };
     },
     [INCLUDES] (base: any, value: any[]) {
-        if (!value.includes(base)) throw { args: { base, value }, msg: E.msg.validationError(INCLUDES) };
+        if (!value.includes(base)) throw { base, value };
     },
     [MIN_LEN] (base: number, value: any[]) {
-        if (value.length < base) throw { args: { base, value }, msg: E.msg.validationError(MIN_LEN) };
+        if (value.length < base) throw { base, value };
     },
     [MAX_LEN] (base: number, value: any[]) {
-        if (value.length > base) throw { args: { base, value }, msg: E.msg.validationError(MAX_LEN) };
+        if (value.length > base) throw { base, value };
     },
     [LEN] (base: number, value: any[]) {
-        if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };
+        if (value.length !== base) throw { base, value };
     },
     [SYM_TYPE_VALIDATE]: {
         [EVERY] (value: any = E.param()) {

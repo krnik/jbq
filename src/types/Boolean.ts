@@ -3,7 +3,7 @@ import { E, isType } from '../utils/index';
 
 export const TypeBoolean = {
   [VALUE] (base: boolean, value: any) {
-    if (base !== value) throw { args: { base, value }, msg: E.msg.validationError(VALUE) };
+    if (base !== value) throw { base, value };
   },
   [SYM_TYPE_VALIDATE]: {
     [VALUE] (value: any = E.param()) {
