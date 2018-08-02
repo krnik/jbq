@@ -66,7 +66,7 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
     fn = new Function([...argNames, 'value'].toString(), fn);
     // console.log(fn.toString());
     pattern[SYM_SCHEMA_CHECK] = fn.bind(null, ...args);
-    pattern[SYM_SCHEMA_CHECK](...[...args, 'Mario']);
+    // pattern[SYM_SCHEMA_CHECK](...[...args, 'Mario']);
     // console.log(pattern[SYM_SCHEMA_CHECK]);
     if (schema.hasOwnProperty(SYM_SCHEMA_FLAT)) pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
     if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))

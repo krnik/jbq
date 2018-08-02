@@ -115,7 +115,7 @@ const createTest = {
         return validator[`${schemaName}Sync`].bind(null, data);
     },
     ajv (schema, data) {
-        console.log(schema);
+        // console.log(schema);
         const AJV = new ajv().compile(schema);
         console.log(AJV.toString());
         return AJV.bind(null, data);
@@ -147,4 +147,4 @@ new Benchmark.Suite()
     .on('complete', function () {
         console.log('Fastest is ' + this.filter('fastest').map('name'));
     })
-    .run({ 'async': true });
+    .run(/**{ 'async': true }*/);
