@@ -10,7 +10,7 @@ export const TypeRoot = {
         case 'object':
         case 'string':
         default:
-            if (base !== typeof value) throw { base, value };
+            if (base !== typeof value) return { base, value };
         }
     },
     [SYM_TYPE_VALIDATE]: {

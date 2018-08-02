@@ -14,7 +14,7 @@ export interface ISchema {
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_OBJECT]?: ISchema;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [SYM_SCHEMA_CHECK]?: Array<() => void>;
+    [SYM_SCHEMA_CHECK]?: (v: any) => void;
     [property: string]: ISchema | any;
 }
 export interface ISchemas {
@@ -30,10 +30,28 @@ function getSchemaEntries<T> (schema: { [k: string]: T }, config: ISchemaConfig,
     };
 }
 
-function typePropFirst (entries: [string, any][]) {
-    const _type = entries.filter((e) => e[0] === TYPE);
-    const _rest = entries.filter((e) => e[0] !== TYPE);
-    return [..._type, ..._rest];
+function typePropFirst (entries: Array<[string, any]>) {
+    const type = entries.filter((e) => e[0] === TYPE);
+    const rest = entries.filter((e) => e[0] !== TYPE);
+    return [...type, ...rest];
+}
+
+function createFN (typeName: string, type: ITypePrototype, entries: Array<[string, any]>, config: ISchemaConfig): (v: any) => void {
+    let fn = `'use strict';`;
+    const paramsNames: string[] = [];
+    const paramsValues: any[] = [];
+    for (const [key, value] of entries) {
+        debug('magenta', key, config[INDENT]);
+        const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
+        const paramName = `__${typeName}_${key}`;
+        const indent = typeMethodBody.match(/([^\n]+)}$/) || '';
+        fn = `${fn}\n${indent && indent[1]}${typeMethodBody.replace(/\bbase\b/g, paramName)}`;
+        paramsNames.push(paramName);
+        paramsValues.push(value);
+    }
+    console.log(fn);
+    const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
+    return resultFn.bind(null, ...paramsValues);
 }
 
 function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig, name: string) {
@@ -46,29 +64,10 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
         config: schemaConfig,
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
-    let fn = `
-      'use strict';
-`;
-    const argNames = [];
-    const args = [];
-    for (const [key, value] of typePropFirst(schemaEntries)) {
-        debug('magenta', key, schemaConfig[INDENT]);
-        let fnBody = type[key].toString().match(/{[\W\w]+}/g)[0];
-        const argName = `__${typeName}_${key}`;
-        fnBody = fnBody.replace(/\bbase\b/g, argName);
-        argNames.push(argName);
-        args.push(value);
-        fn = fn + '\n' + fnBody;
-    }
-    // console.log(fn);
-    // fn = fn + '}';
-    // fn = fn.replace(/<args>/g, [...argNames, 'value']);
-    fn = new Function([...argNames, 'value'].toString(), fn);
-    // console.log(fn.toString());
-    pattern[SYM_SCHEMA_CHECK] = fn.bind(null, ...args);
-    // pattern[SYM_SCHEMA_CHECK](...[...args, 'Mario']);
-    // console.log(pattern[SYM_SCHEMA_CHECK]);
-    if (schema.hasOwnProperty(SYM_SCHEMA_FLAT)) pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
+    if (schemaEntries.length)
+        pattern[SYM_SCHEMA_CHECK] = createFN(typeName, type, typePropFirst(schemaEntries), schemaConfig);
+    if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
+        pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
     if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
         pattern[SYM_SCHEMA_OBJECT] = parserFN(types, { [name]: schema[SYM_SCHEMA_OBJECT] as ISchema }, schemaConfig)[name];
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION))

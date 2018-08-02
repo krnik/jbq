@@ -4,10 +4,10 @@ import { E, isType } from '../utils/index';
 export const TypeObject = {
   [CONSTRUCTOR_NAME] (base: string, value: any) {
     if (Object.getPrototypeOf(value).constructor.name !== base)
-    throw { base, value };
+        return { base, value };
   },
   [INSTANCE_OF] (base: () => void, value: any) {
-    if (!(value instanceof base)) throw { base, value };
+    if (!(value instanceof base)) return { base, value };
   },
   [SYM_TYPE_VALIDATE]: {
     [CONSTRUCTOR_NAME] (value: any = E.param()) {

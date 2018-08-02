@@ -3,10 +3,10 @@ import { E, isType } from '../utils/index';
 
 export const TypeNumber = {
     [MIN] (base: number, value: any) {
-        if (base > value) throw { base, value };
+        if (base > value) return { base, value };
     },
     [MAX] (base: number, value: any) {
-        if (base < value) throw { base, value };
+        if (base < value) return { base, value };
     },
     [SYM_TYPE_VALIDATE]: {
         [MIN] (value: any = E.param()) {

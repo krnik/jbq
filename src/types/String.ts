@@ -3,16 +3,16 @@ import { E, isType } from '../utils/index';
 
 export const TypeString = {
     [MIN_LEN] (base: number, value: any) {
-        if (value.length < base) throw { base, value };
+        if (value.length < base) return { base, value };
     },
     [MAX_LEN] (base: number, value: any) {
-        if (value.length > base) throw { base, value };
+        if (value.length > base) return { base, value };
     },
     [REGEX] (base: RegExp, value: any) {
-        if (!base.test(value)) throw { base, value };
+        if (!base.test(value)) return { base, value };
     },
     [LEN] (base: number, value: any) {
-        if (value.length !== base) throw { base, value };
+        if (value.length !== base) return { base, value };
     },
     [SYM_TYPE_VALIDATE]: {
         [MIN_LEN] (value: any) {
