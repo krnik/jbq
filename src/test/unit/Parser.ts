@@ -13,8 +13,9 @@ export default () => describe('Parser', () => {
       parsed.UserResources.files.should.have.property(SYM_SCHEMA_CHECK as any);
       parsed.UserResources.comments.should.have.property(SYM_SCHEMA_CHECK as any);
   });
-  it.only('asd', () => {
-    const sc = parser(createTypes(), { Name: schemas.Name }, {});
-    console.log(sc);
-  });
+  // it('asd', () => {
+  //   const sc = parser(createTypes(), { Name: schemas.Name }, {});
+  //   console.log(sc.Name[SYM_SCHEMA_CHECK].toString());
+  //   sc.Name[SYM_SCHEMA_CHECK]('Marcin');
+  // });
 });

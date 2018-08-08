@@ -4,24 +4,25 @@ import {
     SYM_SCHEMA_CONFIG,
     SYM_SCHEMA_FLAT,
     SYM_SCHEMA_OBJECT,
+    SYM_TYPE_USES_EXTERNALS,
     TYPE,
 } from '../constants';
 import { ITypePrototype, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
-const INDENT = Symbol('schema_parser_indent');
 
+const INDENT = Symbol('schema_parser_indent');
+type shemaCheck = (v: any) => string | undefined;
 export interface ISchemaConfig {
     [INDENT]?: string;
     [TYPE]?: string;
     [option: string]: unknown;
 }
-
 export interface ISchema {
     [SYM_SCHEMA_FLAT]?: boolean;
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_OBJECT]?: ISchema;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [SYM_SCHEMA_CHECK]?: (v: any) => boolean | undefined;
+    [SYM_SCHEMA_CHECK]?: shemaCheck;
     [property: string]: ISchema | any;
 }
 export interface ISchemas {
@@ -48,7 +49,7 @@ function createFN (
     type: ITypePrototype,
     entries: Array<[string, any]>,
     config: ISchemaConfig,
-): (v: any) => boolean | undefined {
+): shemaCheck {
     let fn = '\'use strict\';';
     const paramsNames: string[] = [];
     const paramsValues: any[] = [];
@@ -65,6 +66,27 @@ function createFN (
     return resultFn.bind(null, ...paramsValues);
 }
 
+function createFNExt (
+    typeName: string,
+    type: ITypePrototype,
+    entries: Array<[string, any]>,
+    config: ISchemaConfig,
+): shemaCheck {
+    let fn = '\'use strict\';';
+    const paramsNames: string[] = [];
+    const paramsValues: any[] = [];
+    for (const [key, value] of entries) {
+        debug('magenta', key, config[INDENT]);
+        const typeMethod = type[key].bind(null, value);
+        const paramName = `__${typeName}__${key}`;
+        fn = `${fn}\n${paramName}(value);`;
+        paramsNames.push(paramName);
+        paramsValues.push(typeMethod);
+    }
+    const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
+    return resultFn.bind(null, ...paramsValues);
+}
+
 function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig, name: string) {
     const pattern: ISchema = {};
     const typeName: string = schema[TYPE] || config[TYPE];
@@ -75,8 +97,10 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
         config: schemaConfig,
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
-    if (schemaEntries.length)
-        pattern[SYM_SCHEMA_CHECK] = createFN(typeName, type, typePropFirst(schemaEntries), schemaConfig);
+    if (schemaEntries.length) {
+        const factoryFn = type[SYM_TYPE_USES_EXTERNALS] ? createFNExt : createFN;
+        pattern[SYM_SCHEMA_CHECK] = factoryFn(typeName, type, typePropFirst(schemaEntries), schemaConfig);
+    }
     if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
         pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
     if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
