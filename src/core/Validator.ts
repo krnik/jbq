@@ -13,15 +13,23 @@ export class Validator {
             .catch((err) => [err, data]);
     }
 
-    private static _validateSync (schema: ISchema, data: any) {
-        if (schema.hasOwnProperty(SYM_SCHEMA_CHECK))
-            (schema[SYM_SCHEMA_CHECK] as (v: any) => void)(data);
-        if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
-            Validator.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
+    private static _validateSync (schema: ISchema, data: any): string | undefined {
+        if (schema.hasOwnProperty(SYM_SCHEMA_CHECK)) {
+            const err = (schema[SYM_SCHEMA_CHECK] as (v: any) => void)(data);
+            if (err) return err;
+        }
+        if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT)) {
+            // TODO: fix type
+            const err: any = Validator.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
+            if (err) return err;
+        }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
+            // TODO: add missing iterator e rror
             if (!data[Symbol.iterator]) throw {};
-            for (const value of data)
-                Validator.validateSync(schema[SYM_SCHEMA_COLLECTION] as ISchema, value);
+            for (const value of data) {
+                const err = Validator.validateSync(schema[SYM_SCHEMA_COLLECTION] as ISchema, value);
+                if (err) return err;
+            }
         }
     }
 

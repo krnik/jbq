@@ -19,13 +19,13 @@ export default () => describe('Validator', () => {
             it(`it should validate ${type}`, () => {
                 Validator.validateSync(parser(createTypes(), primitiveSchema, {}).Primitive, value);
                 const res = new Validator(createTypes(), primitiveSchema, {}).PrimitiveSync(value);
-                if (res[0]) throw Error('Error should be undefined');
+                if (res) throw Error('It should return undefined when validating valid value');
             });
             for (const failValue of (values.non as any)[type])
-                it(`it should return error if value is not ${type}`, () => {
+                it(`it should return error message if value is not ${type}`, () => {
                     const res = new Validator(createTypes(), primitiveSchema, {}).PrimitiveSync(failValue);
-                    // TODO: change it when it will be clear what check function will return
-                    res[0].should.be.an('object');
+                    if (res === undefined)
+                        throw Error('It should return error message when validating invalid value.');
                 });
         }
     });

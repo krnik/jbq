@@ -11,7 +11,7 @@ import { ITypePrototype, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 
 const INDENT = Symbol('schema_parser_indent');
-type shemaCheck = (v: any) => string | undefined;
+type checkFunction = (v: any) => string | undefined;
 export interface ISchemaConfig {
     [INDENT]?: string;
     [TYPE]?: string;
@@ -22,7 +22,7 @@ export interface ISchema {
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_OBJECT]?: ISchema;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [SYM_SCHEMA_CHECK]?: shemaCheck;
+    [SYM_SCHEMA_CHECK]?: checkFunction;
     [property: string]: ISchema | any;
 }
 export interface ISchemas {
@@ -49,12 +49,14 @@ function createFN (
     type: ITypePrototype,
     entries: Array<[string, any]>,
     config: ISchemaConfig,
-): shemaCheck {
+): checkFunction {
     let fn = '\'use strict\';';
     const paramsNames: string[] = [];
     const paramsValues: any[] = [];
     for (const [key, value] of entries) {
         debug('magenta', key, config[INDENT]);
+        // Handle missing method
+        if (!type[key]) throw {};
         const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
         const paramName = `__${typeName}_${key}`;
         const indent = typeMethodBody.match(/([^\n]+)}$/) || '';
@@ -71,12 +73,14 @@ function createFNExt (
     type: ITypePrototype,
     entries: Array<[string, any]>,
     config: ISchemaConfig,
-): shemaCheck {
+): checkFunction {
     let fn = '\'use strict\';';
     const paramsNames: string[] = [];
     const paramsValues: any[] = [];
     for (const [key, value] of entries) {
         debug('magenta', key, config[INDENT]);
+        // Handle missing method
+        if (!type[key]) throw {};
         const typeMethod = type[key].bind(null, value);
         const paramName = `__${typeName}__${key}`;
         fn = `${fn}\n${paramName}(value);`;
