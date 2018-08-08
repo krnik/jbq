@@ -1,5 +1,12 @@
-import { SYM_SCHEMA_CHECK, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_FLAT, SYM_SCHEMA_OBJECT, TYPE } from '../constants';
-import { TypeWrapper, ITypePrototype } from '../types/Wrapper';
+import {
+    SYM_SCHEMA_CHECK,
+    SYM_SCHEMA_COLLECTION,
+    SYM_SCHEMA_CONFIG,
+    SYM_SCHEMA_FLAT,
+    SYM_SCHEMA_OBJECT,
+    TYPE,
+} from '../constants';
+import { ITypePrototype, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 const INDENT = Symbol('schema_parser_indent');
 
@@ -14,7 +21,7 @@ export interface ISchema {
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_OBJECT]?: ISchema;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
-    [SYM_SCHEMA_CHECK]?: Array<() => void>;
+    [SYM_SCHEMA_CHECK]?: (v: any) => boolean | undefined;
     [property: string]: ISchema | any;
 }
 export interface ISchemas {
@@ -30,18 +37,36 @@ function getSchemaEntries<T> (schema: { [k: string]: T }, config: ISchemaConfig,
     };
 }
 
-function sortTypeFirst (a: [string, any], b: [string, any]) {
-    switch (true) {
-    case a[0] === TYPE: return 1;
-    case b[0] === TYPE: return 1;
-    default: return -1;
+function typePropFirst (entries: Array<[string, any]>) {
+    const type = entries.filter((e) => e[0] === TYPE);
+    const rest = entries.filter((e) => e[0] !== TYPE);
+    return [...type, ...rest];
+}
+
+function createFN (
+    typeName: string,
+    type: ITypePrototype,
+    entries: Array<[string, any]>,
+    config: ISchemaConfig,
+): (v: any) => boolean | undefined {
+    let fn = '\'use strict\';';
+    const paramsNames: string[] = [];
+    const paramsValues: any[] = [];
+    for (const [key, value] of entries) {
+        debug('magenta', key, config[INDENT]);
+        const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
+        const paramName = `__${typeName}_${key}`;
+        const indent = typeMethodBody.match(/([^\n]+)}$/) || '';
+        fn = `${fn}\n${indent && indent[1]}${typeMethodBody.replace(/\bbase\b/g, paramName)}`;
+        paramsNames.push(paramName);
+        paramsValues.push(value);
     }
+    const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
+    return resultFn.bind(null, ...paramsValues);
 }
 
 function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig, name: string) {
-    const pattern: ISchema = {
-        [SYM_SCHEMA_CHECK]: [],
-    };
+    const pattern: ISchema = {};
     const typeName: string = schema[TYPE] || config[TYPE];
     if (!types.has(typeName)) E.missingType(typeName);
     const type = types.get(typeName) as ITypePrototype;
@@ -50,16 +75,22 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
         config: schemaConfig,
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
-    for (const [key, value] of schemaEntries.sort(sortTypeFirst)) {
-        debug('magenta', key, schemaConfig[INDENT]);
-        (pattern[SYM_SCHEMA_CHECK] as any[]).push(type[key].bind(type, value));
-    }
-
-    if (schema.hasOwnProperty(SYM_SCHEMA_FLAT)) pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
+    if (schemaEntries.length)
+        pattern[SYM_SCHEMA_CHECK] = createFN(typeName, type, typePropFirst(schemaEntries), schemaConfig);
+    if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
+        pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
     if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
-        pattern[SYM_SCHEMA_OBJECT] = parser(types, { [name]: schema[SYM_SCHEMA_OBJECT] as ISchema }, schemaConfig)[name];
+        pattern[SYM_SCHEMA_OBJECT] = parser(
+            types,
+            { [name]: schema[SYM_SCHEMA_OBJECT] as ISchema },
+            schemaConfig,
+        )[name];
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION))
-        pattern[SYM_SCHEMA_COLLECTION] = parser(types, { [name]: schema[SYM_SCHEMA_COLLECTION] as ISchema }, schemaConfig)[name];
+        pattern[SYM_SCHEMA_COLLECTION] = parser(
+            types,
+            { [name]: schema[SYM_SCHEMA_COLLECTION] as ISchema },
+            schemaConfig,
+        )[name];
     return pattern;
 }
 

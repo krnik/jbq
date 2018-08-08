@@ -3,10 +3,19 @@ import { TypeWrapper } from '../types/Wrapper';
 import { ISchema, ISchemaConfig, ISchemas, parser } from './Parser';
 
 export class Validator {
+    public static validateSync (schema: ISchema, data: any) {
+        return Validator._validateSync(schema, data);
+    }
+
+    public static validate (schema: ISchema, data: any) {
+        return Validator.
+            _validate(schema, data)
+            .catch((err) => [err, data]);
+    }
+
     private static _validateSync (schema: ISchema, data: any) {
         if (schema.hasOwnProperty(SYM_SCHEMA_CHECK))
-            for (const check of schema[SYM_SCHEMA_CHECK] as any[])
-                check(data);
+            (schema[SYM_SCHEMA_CHECK] as (v: any) => void)(data);
         if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
             Validator.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
@@ -18,7 +27,7 @@ export class Validator {
 
     private static async _validate (schema: ISchema, data: any) {
         if (schema.hasOwnProperty(SYM_SCHEMA_CHECK))
-            await Promise.all((schema[SYM_SCHEMA_CHECK] as any[]).map((fn: any) => fn()));
+            await schema[SYM_SCHEMA_CHECK];
         if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
             await Validator._validate(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION))
@@ -28,27 +37,10 @@ export class Validator {
 
     }
 
-    public static validateSync (schema: ISchema, data: any) {
-        try {
-            Validator._validateSync(schema, data);
-            return [undefined, data];
-        } catch (err) {
-            return [err, data];
-        }
-    }
-
-    public static validate (schema: ISchema, data: any) {
-        return Validator.
-            _validate(schema, data)
-            .then(() => [undefined, data])
-            .catch((err) => [err, data]);
-    }
-
     [k: string]: (d: any) => any[];
 
     constructor (types: TypeWrapper, schemas: ISchemas, config: ISchemaConfig) {
-        const _schemas = parser(types, schemas, config);
-        for (const [schemaName, schema] of Object.entries(_schemas)) {
+        for (const [schemaName, schema] of Object.entries(parser(types, schemas, config))) {
             this[`${schemaName}Sync`] = Validator.validateSync.bind(undefined, schema);
             this[schemaName] = Validator.validate.bind(undefined, schema);
         }

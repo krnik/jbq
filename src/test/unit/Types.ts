@@ -1,4 +1,20 @@
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
+import {
+    CONSTRUCTOR_NAME,
+    EVERY,
+    INCLUDES,
+    INSTANCE_OF,
+    LEN,
+    MAX,
+    MAX_LEN,
+    MIN,
+    MIN_LEN,
+    REGEX,
+    SOME,
+    SYM_TYPE_VALIDATE,
+    TYPE,
+    TYPE_NAME,
+    VALUE,
+} from '../../constants';
 import { TypeArray } from '../../types/Array';
 import { TypeBoolean } from '../../types/Boolean';
 import { TypeNumber } from '../../types/Number';

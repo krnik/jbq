@@ -13,17 +13,18 @@ export default () => describe('Validator', () => {
             ['string', 'A string value'],
             ['number', 1000],
             ['boolean', true],
-        ] as [string, (string | boolean | number)][];
+        ] as Array<[string, (string | boolean | number)]>;
         for (const [type, value] of cases) {
-            const schemas = { Primitive: { [TYPE]: type, ...pattern } };
+            const primitiveSchema = { Primitive: { [TYPE]: type, ...pattern } };
             it(`it should validate ${type}`, () => {
-                Validator.validateSync(parser(createTypes(), schemas, {}).Primitive, value);
-                const res = new Validator(createTypes(), schemas, {}).PrimitiveSync(value);
-                if (res[0]) throw 'Error should be undefined';
+                Validator.validateSync(parser(createTypes(), primitiveSchema, {}).Primitive, value);
+                const res = new Validator(createTypes(), primitiveSchema, {}).PrimitiveSync(value);
+                if (res[0]) throw Error('Error should be undefined');
             });
-            for (const value of (values.non as any)[type])
+            for (const failValue of (values.non as any)[type])
                 it(`it should return error if value is not ${type}`, () => {
-                    const res = new Validator(createTypes(), schemas, {}).PrimitiveSync(value);
+                    const res = new Validator(createTypes(), primitiveSchema, {}).PrimitiveSync(failValue);
+                    // TODO: change it when it will be clear what check function will return
                     res[0].should.be.an('object');
                 });
         }

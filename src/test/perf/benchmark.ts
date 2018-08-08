@@ -1,9 +1,8 @@
+import ajv from 'ajv';
 import Benchmark from 'benchmark';
-import { ValidatorFN } from '../../core/ValidatorFN';
+import { Validator } from '../../core/Validator';
 import { createTypes } from '../../types/index';
 import { createData, schemas } from '../data/index';
-import ajv from 'ajv';
-import util from 'util';
 
 const name = {
     type: 'string',
@@ -66,12 +65,12 @@ const ajvschemas = {
             lastName: name,
             files: {
                 type: 'array',
-                items: id
+                items: id,
             },
             comments: {
                 type: 'array',
                 items: id,
-            }
+            },
         },
     },
     File: {
@@ -110,16 +109,16 @@ const ajvschemas = {
 
 const data = createData(schemas);
 const createTest = {
+    // tslint:disable-next-line:no-shadowed-variable
     vjs (schemaName, data) {
-        const validator = new ValidatorFN(createTypes(), schemas, {});
+        const validator = new Validator(createTypes(), schemas, {});
         return validator[`${schemaName}Sync`].bind(null, data);
     },
+    // tslint:disable-next-line:no-shadowed-variable
     ajv (schema, data) {
-        // console.log(schema);
         const AJV = new ajv().compile(schema);
-        console.log(AJV.toString());
         return AJV.bind(null, data);
-    }
+    },
 };
 
 new Benchmark.Suite()
@@ -143,8 +142,10 @@ new Benchmark.Suite()
     .add('ajv#Comment', createTest.ajv(ajvschemas.Comment, data.Comment))
     .add('vjs#UserResources', createTest.vjs('UserResources', data.UserResources))
     .add('ajv#UserResources', createTest.ajv(ajvschemas.UserResources, data.UserResources))
+    // tslint:disable-next-line:no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
     .on('complete', function () {
+    // tslint:disable-next-line:no-console
         console.log('Fastest is ' + this.filter('fastest').map('name'));
     })
-    .run(/**{ 'async': true }*/);
+    .run();
