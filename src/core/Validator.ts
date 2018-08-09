@@ -19,8 +19,7 @@ export class Validator {
             if (err) return err;
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT)) {
-            // TODO: fix type
-            const err: any = Validator.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
+            const err = Validator.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
             if (err) return err;
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
