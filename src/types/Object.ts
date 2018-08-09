@@ -1,15 +1,21 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, ITypePrototype, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, isType } from '../utils/index';
 
-export const TypeObject: ITypePrototype = {
+export const TypeObject = {
+  [TYPE] (base: string, value: any) {
+    if (typeof value !== 'object') return `Value should be ${base} type. Got ${typeof value}.`;
+  },
   [CONSTRUCTOR_NAME] (base: string, value: any) {
     if (Object.getPrototypeOf(value).constructor.name !== base)
-      throw { args: { base, value }, msg: E.msg.validationError(CONSTRUCTOR_NAME) };
+        return `Value should be direct instance of ${base}.`;
   },
   [INSTANCE_OF] (base: () => void, value: any) {
-    if (!(value instanceof base)) throw { args: { base, value }, msg: E.msg.validationError(INSTANCE_OF) };
+    if (!(value instanceof base)) return `Value should be instance of ${base}.`;
   },
   [SYM_TYPE_VALIDATE]: {
+    [TYPE] (value: any = E.param()) {
+        if (!isType.string(value)) E.typeValidateError(TYPE, 'string primitive', typeof value);
+    },
     [CONSTRUCTOR_NAME] (value: any = E.param()) {
       if (!isType.string(value))
         E.typeValidateError(CONSTRUCTOR_NAME, 'string primitive', typeof(value));
@@ -19,20 +25,4 @@ export const TypeObject: ITypePrototype = {
         E.typeValidateError(INSTANCE_OF, 'Function', typeof(value));
     },
   },
-  [SYM_TYPE_PARSE]: {
-    [CONSTRUCTOR_NAME] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-    [INSTANCE_OF] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-  },
 };
-// INSTANCE_OF
-// CONSTRTUCTOR_NAME

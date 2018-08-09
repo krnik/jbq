@@ -2,7 +2,7 @@ import ParserTest from './Parser';
 import TypesTest from './Types';
 import ValidatorTest from './Validator';
 
-export default [
+export const unitTests = [
     ParserTest,
     TypesTest,
     ValidatorTest,

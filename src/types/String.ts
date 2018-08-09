@@ -1,20 +1,29 @@
-import { ITypePrototype, LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_PARSE, SYM_TYPE_VALIDATE } from '../constants';
+import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, isType } from '../utils/index';
 
-export const TypeString: ITypePrototype = {
+export const TypeString = {
+    [TYPE] (base: string, value: any) {
+        if (!(typeof value === 'string' && value !== Object(value)))
+            return `Value should be ${base} type. Got ${typeof value}.`;
+    },
     [MIN_LEN] (base: number, value: any) {
-        if (value.length < base) throw { args: { base, value }, msg: E.msg.validationError(MIN_LEN) };
+        if (value.length < base)
+            return `Value expected to have length greater or equal than ${base}. Got ${value.length}.`;
     },
     [MAX_LEN] (base: number, value: any) {
-        if (value.length > base) throw { args: { base, value }, msg: E.msg.validationError(MAX_LEN) };
+        if (value.length > base)
+            return `Value expected to have length less or equal than ${base} chars. Got ${value.length}.`;
     },
     [REGEX] (base: RegExp, value: any) {
-        if (!base.test(value)) throw { args: { base, value }, msg: E.msg.validationError(REGEX) };
+        if (!base.test(value)) return `Value expected to pass ${base.toString()} test.`;
     },
     [LEN] (base: number, value: any) {
-        if (value.length !== base) throw { args: { base, value }, msg: E.msg.validationError(LEN) };
+        if (value.length !== base) return `Value expected to have length equal to ${base}. Got ${value.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
+        [TYPE] (value: any = E.param()) {
+            if (!isType.string(value)) E.typeValidateError(TYPE, 'string primitive', typeof value);
+        },
         [MIN_LEN] (value: any) {
             if (!isType.number(value))
                 E.typeValidateError(MIN_LEN, 'number primitive', typeof(value));
@@ -30,32 +39,6 @@ export const TypeString: ITypePrototype = {
         [LEN] (value: any) {
             if (!isType.number(value))
                 E.typeValidateError(LEN, 'number primitive', typeof(value));
-        },
-    },
-    [SYM_TYPE_PARSE]: {
-        [MIN_LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [MAX_LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [REGEX] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
-        },
-        [LEN] (key: string, value: any): { base: any, check: any } {
-            return {
-                base: value,
-                check: this[key],
-            };
         },
     },
 };
