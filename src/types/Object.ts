@@ -3,7 +3,7 @@ import { E, isType } from '../utils/index';
 
 export const TypeObject = {
   [TYPE] (base: string, value: any) {
-    if (typeof value !== 'object' && !value) return `Value should be ${base} type. Got ${typeof value}.`;
+    if (typeof value !== 'object' || !value) return `Value should be ${base} type. Got ${typeof value}.`;
   },
   [CONSTRUCTOR_NAME] (base: string, value: any) {
     if (Object.getPrototypeOf(value).constructor.name !== base)
