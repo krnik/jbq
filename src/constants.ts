@@ -1,6 +1,7 @@
 /**
  * TYPE CONSTANTS, NAMES, INTERFACES
  */
+export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
@@ -23,7 +24,6 @@ export const TYPE_NAME = {
     NUMBER: 'number',
     OBJECT: 'object',
     ARRAY: 'array',
-    ROOT: Symbol('type_root'),
  };
 /**
  * SCHEMA CONSTANTS, INTERFACES
