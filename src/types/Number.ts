@@ -4,10 +4,10 @@ import { E, isType } from '../utils/index';
 export const TypeNumber = {
     [TYPE] (base: string, value: any) {
         if (!(typeof value === 'number' && value !== Object(value) && value === value))
-            return `Value should be ${base} type. Got ${typeof value}.`;
+            return `Value should be ${base} (NaN excluded) type. Got ${typeof value}.`;
     },
     [MIN] (base: number, value: any) {
-        if (base > value) return `Value expected to be equal to  at least ${base}. Got ${value}.`;
+        if (base > value) return `Value expected to be equal to at least ${base}. Got ${value}.`;
     },
     [MAX] (base: number, value: any) {
         if (base < value) return `Value expected to be equal to at most ${base}. Got ${value}.`;
