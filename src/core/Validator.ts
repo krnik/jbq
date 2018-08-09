@@ -23,7 +23,7 @@ export class Validator {
             if (err) return err;
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-            // TODO: add missing iterator e rror
+            // TODO: add missing iterator error
             if (!data[Symbol.iterator]) throw {};
             for (const value of data) {
                 const err = Validator.validateSync(schema[SYM_SCHEMA_COLLECTION] as ISchema, value);
