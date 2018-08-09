@@ -1,5 +1,5 @@
 <!-- ## Table Of Content
-- [Intro](#-intro)
+- [Introduction](#-introduction)
 - [Definitions](#-definitions)
 - [Usage](#-usage)
 - [Available Types](#-available-types)
@@ -7,69 +7,13 @@
 - [Symbols](#-symbols)
 - [Defining a Type](#-defining-a-type)
 - [Roadmap](#-roadmap) -->
-# Valid-JS
+<!-- # Valid-JS -->
 ***
-## Intro
+## Introduction
 ***
-Hi! Welcome to `Valid-JS` multi-purpose ~~JavaScript~~ (*winks at Oracle* :) ECMAScript Language  validation library.
-
-It is being designed to allow flexible and convenient value validation.
-<!-- ***
-## Definitions
+Hi! Welcome to Valid-JS multi-purpose ECMAScript Language library designed to allow flexible validation.
 ***
-### Symbols
-This validator makes use of various `Symbol` values. Their purpose is explained in [Symbols](#-symbol) section.
-### Type
-Type is an object with various set of methods that are used in validation process.
-Methods of a type are supposed to throw an `Error` whether validation is not succesful.
-
-Example
-```javascript
-const MyArrayType = {
-    length (base, value) {
-        if (base !== value.length) {
-            throw Error('Lenght differs');
-        }
-    },
-    // This property is responsible for validating Schema input values
-    // More info in [Defining a Type] section
-    [Symbol.for('type_validate')]: {
-        length (value) {
-            if (typeof(value) !== 'number') {
-                throw Error('Number required');
-            }
-        },
-    },
-};
-```
-### Schemas
-Schemas is an `object` that contains [Schema](#-schema) definitions.
-```javascript
-const schemas = {
-    User: {
-        // Properties and rules
-        // used to validate this Schema
-    },
-};
-```
-### Schema
-Schema is an object that contains properties that will be used during validation.
-
-Each Schema requires `type` property which defines which types' methods should be used during validation.
-```javascript
-const userSchema = {
-    names: {
-        type: 'MyArrayType',    // MyArrayTypes' methods will be used during validation process
-        length: 4,              // 4 will be passed as `base` parameter to MyArrayType.length function.
-        // other properties available in MyArrayType
-    },
-    email: {
-        type: 'string'
-    },
-};
-``` -->
-***
-## Usage
+## Usage Example
 ***
 > Import Valid-JS
 ```javascript
@@ -78,10 +22,12 @@ const VJS = require('valid-js');
 > Define your schemas
 ```javascript
 const schemas = {
-    // User schema expects an object value
-    // with `names` and `email` properties
+    // User schema expects value to be an object
+    // with properties ['names', 'email']
     User: {
         names: {
+            // line below tells Valid-JS which type
+            // should be used to validate this property
             type: 'MyArrayType',
             length: 4,
         },
@@ -93,8 +39,8 @@ const schemas = {
     String: {
         type: 'string',
         len: 2,
+        // More about symbols in schemas in Types#Symbols
         [Symbol.for('schema_flat')]: true,
-        // Above property alters validator behavior. For details see [Symbols] section.
     },
 };
 ```
@@ -110,122 +56,215 @@ const data = {
     email: 'front@kick.com',
 };
 validator.UserSync(data);
-// => [undefined, data];
+// => undefined
 ```
 > Primitives validation
 ```javascript
 const data = 'This is a string value!';
 validator.StringSync(data);
-// => [undefined, data];
+// => undefined
 ```
-## Available Types
-### `root`
-It's a internal/private type that is a prototype of all other built-in types. It contains all common methods for all other types. Currently it's only `type` method.
-
-root type is not available in schema definitions.
-Example below will throw an `Error`.
-```javascript
-const schemas = {
-    User: {
-        name: {
-            type: 'root', // In order to use root type you have to define your own
-        },
-    },
-};
-new VJS(schemas, {});
-// => Error type root is not defined
-```
-[Source Code]()
-#### type
-### `string` type
-`string` type allows [Schema](#-schema) properties such as:
+***
+## Types
+***
+## `string`
+***
+`string` type allows validation properties such as:
+- type
 - minLen
 - maxLen
 - len
 - regex
 
 [Source Code](src/types/String.ts)
-#### minLen
-Check if passed string has length greater or equal than value in schema `minLen` property.
+***
+### type
+> Validates type of passed value.
 ```javascript
-const schemas = { String: { type: 'string', minLen: 10, } };
+const schemas = {
+    String: {
+        type: 'string',
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.StringSync('This is a strig');
+// => undefined
+validator.StringSync(0);
+// => error message
+```
+***
+### minLen
+> Check if passed string has length greater or equal than value in schema `minLen` property.
+```javascript
+const schemas = {
+    String: {
+        type: 'string',
+        minLen: 10,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
 const validator = new VJS(schemas, {});
 validator.StringSync('This is a string');
-// => [undefined, 'This is a string'];
-validator.StringSync('string');
-// => [error, 'string'];
+// => undefined
+validator.StringSync('short');
+// => error message
 ```
-#### maxLen
-Check if passed string has length less or eaqual than value in schema `maxLen` property.
+***
+### maxLen
+> Check if passed string has length less or eaqual than value in schema `maxLen` property.
 ```javascript
-const schemas = { String: { type: 'string', maxLen: 10, } };
+const schemas = {
+    String: {
+        type: 'string',
+        maxLen: 10,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.StringSync('string');
+// => undefined
+validator.StringSync('This is a string');
+// => error message
+```
+***
+### len
+> Check if passed string has length equal to value in schema `len` property.
+```javascript
+const schemas = {
+    String: {
+        type: 'string',
+        len: 6,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.StringSync('string');
+// => undefined
+validator.StringSync('This is a string');
+// => error message
+```
+***
+### regex
+> Check if `RegExp.prototype.test` method from schema `regex` property returns true when string is passed as an argument.
+```javascript
+const schemas = {
+    String: {
+        type: 'string',
+        regex: /a string/,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
 const validator = new VJS(schemas, {});
 validator.StringSync('This is a string');
-// => [error, 'This is a string'];
+// => undefined
 validator.StringSync('string');
-// => [undefined, 'string']
+// => error message
 ```
-#### len
-Check if passed string has length equal to value in schema `len` property.
-```javascript
-const schemas = { String: { type: 'string', len: 6, } };
-const validator = new VJS(schemas, {});
-validator.StringSync('This is a string');
-// => [error, 'This is a string'];
-validator.StringSync('string');
-// => [undefined, 'string']
-```
-#### regex
-Check if `RegExp.test` instance method from schema `regex` property returns true when string is passed as an argument.
-```javascript
-const schemas = { String: { type: 'string', regex: /a string/, } };
-const validator = new VJS(schemas, {});
-validator.StringSync('This is a string');
-// => [undefined, 'This is a string'];
-validator.StringSync('string');
-// => [error, 'string']
-```
-### `Number` Type
-`number` type allows [Schema](#-schema) properties such as:
+***
+## `number`
+***
+`number` type allows schema properties such as:
+- type
 - min
 - max
 
-#### min
-Check if passed number is greater or equal than value in schema `min` property.
+[Source Code](src/types/Number.ts)
+***
+### type
+> Validates type of passed value.
 ```javascript
-const schemas = { Number: { type: 'number', min: 10, } };
+const schemas = {
+    Number: {
+        type: 'number',
+        [Symbol.for('schema_flat')]: true,
+    },
+};
 const validator = new VJS(schemas, {});
-validator.NumberSync(0);
-// => [error, 0];
+validator.NumberSync(1000);
+// => undefined
+validator.NumberSync(NaN);
+// => error message
+```
+***
+### min
+> Check if passed number is greater or equal than value in schema `min` property.
+```javascript
+const schemas = {
+    Number: {
+        type: 'number',
+        min: 10,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
 validator.NumberSync(10);
-// => [undefined, 10]
-```
-#### max
-Check if passd number is less or equal than value in schema `max` property.
-```javascript
-const schemas = { Number: { type: 'number', max: 10, } };
-const validator = new VJS(schemas, {});
-validator.NumberSync(100);
-// => [error, 100];
+// => undefined
 validator.NumberSync(0);
-// => [undefined, 0]
+// => error message
 ```
-### `boolean` type
-`boolean` type allows [Schema](#-schema) properties such as:
+***
+### max
+> Check if passd number is less or equal than value in schema `max` property.
+```javascript
+const schemas = {
+    Number: {
+        type: 'number',
+        max: 10,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.NumberSync(0);
+// => undefined
+validator.NumberSync(11);
+// => error message
+```
+***
+## `boolean`
+***
+`boolean` type allows schema properties such as:
+- type
 - value
 
-#### value
+[Source Code](src/types/Boolean.ts)
+***
+### type
+> Validates type of passed value.
 ```javascript
-const schemas = { Boolean: { type: 'boolean', value: true, } };
+const schemas = {
+    Bool: {
+        type: 'boolean',
+        [Symbol.for('schema_flat')]: true,
+    },
+};
 const validator = new VJS(schemas, {});
-validator.BooleanSync(false);
-// => [error, false];
-validator.BooleanSync(true);
-// => [undefined, true]
+validator.BoolSync(true);
+// => undefined
+validator.BoolSync(0);
+// => error message
 ```
-Check if passed boolean is equal to value in schema `value` property.
-### Array Type
-`array` type allows [Schema](#-schema) properties such as:
+***
+### value
+> Check if value is equal to value in schema `value` property.
+```javascript
+const schemas = {
+    Boolean: {
+        type: 'boolean',
+        value: true,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.BooleanSync(true);
+// => undefined
+validator.BooleanSync(false);
+// => error message
+```
+***
+## `array`
+***
+`array` type allows schema properties such as:
+- type
 - minLen
 - maxLen
 - len
@@ -233,116 +272,181 @@ Check if passed boolean is equal to value in schema `value` property.
 - some
 - includes
 
-#### minLen
-Check if passed array has length greater or equal than value in schema `minLen` property.
-```javascript
-const schemas = { Array: { type: 'array', minLen: 0, } };
-const validator = new VJS(schemas, {});
-validator.ArraySync([]);
-// => [error, []];
-validator.ArraySync([,,]);
-// => [undefined, [,,]]
-```
-#### maxLen
-Check if passed array has length less or equal than value in schema `maxLen` property.
-```javascript
-const schemas = { Array: { type: 'array', maxLen: 0, } };
-const validator = new VJS(schemas, {});
-validator.ArraySync([,,]);
-// => [error, [,,]];
-validator.ArraySync([]);
-// => [undefined, []]
-```
-#### len
-Check if array length is equal to value in schema `len` property.
-```javascript
-const schemas = { Array: { type: 'array', len: 0, } };
-const validator = new VJS(schemas, {});
-validator.ArraySync([true]);
-// => [error, [true]];
-validator.ArraySync([]);
-// => [undefined, []]
-```
-#### every
-Check if `array.every` method returns true when value in schema `every` property is passed as a callback.
+[Source Code](src/types/Array.ts)
+***
+### type
+> Validates type of passed value.
 ```javascript
 const schemas = {
     Array: {
         type: 'array',
-        every (elem, index, array, this) => (elem === 0),
+        [Symbol.for('schema_flat')]: true,
     },
 };
 const validator = new VJS(schemas, {});
-validator.ArraySync([0, 0, 0, 1]);
-// => [error, [0, 0, 0, 1]];
-validator.ArraySync([0, 0, 0, 0]);
-// => [undefined, [0, 0, 0, 0]]
+validator.ArraySync([]);
+// => undefined
+validator.ArraySync(false);
+// => error message
 ```
-#### some
-Check if `array.some` method returns true when value in schema `some` property is passed as a callback.
+***
+### minLen
+> Check if passed array has length greater or equal than value in schema `minLen` property.
+```javascript
+const schemas = {
+    Array: {
+        type: 'array',
+        minLen: 1,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.ArraySync([,]);
+// => undefined
+validator.ArraySync([]);
+// => error message
+```
+***
+### maxLen
+> Check if passed array has length less or equal than value in schema `maxLen` property.
+```javascript
+const schemas = {
+    Array: {
+        type: 'array',
+        maxLen: 0,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.ArraySync([]);
+// => undefined
+validator.ArraySync([,,]);
+// => error message
+```
+***
+### len
+> Check if array length is equal to value in schema `len` property.
+```javascript
+const schemas = {
+    Array: {
+        type: 'array',
+        len: 0,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.ArraySync([]);
+// => undefined
+validator.ArraySync([true]);
+// => error message
+```
+***
+### every
+> Check if `array.every` method returns true when value in schema `every` property is passed as a callback.
+```javascript
+const schemas = {
+    Array: {
+        type: 'array',
+        every (elem, index, array, this) => elem === 0,
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.ArraySync([0, 0, 0, 0]);
+// => undefined
+validator.ArraySync([0, 0, 0, 1]);
+// => error message
+```
+***
+### some
+> Check if `array.some` method returns true when value in schema `some` property is passed as a callback.
 ```javascript
 const schemas = {
     Array: {
         type: 'array',
         some (elem, index, array, this) => (elem === 0),
+        [Symbol.for('schema_flat')]: true,
     },
 };
 const validator = new VJS(schemas, {});
-validator.ArraySync([1, 1, 1, 1]);
-// => [error, [1, 1, 1, 1]];
 validator.ArraySync([1, 1, 1, 0]);
-// => [undefined, [1, 1, 1, 0]]
+// => undefined
+validator.ArraySync([1, 1, 1, 1]);
+// => error message
 ```
-#### includes
-Check if `array.includes` method returns true when value in schema `includes` property is passed as an argument.
+***
+### includes
+> Check if `array.includes` method returns true when value in schema `includes` property is passed as an argument.
 ```javascript
 const schemas = {
     Array: {
         type: 'array',
         includes: 'a string value',
+        [Symbol.for('schema_flat')]: true,
     },
 };
 const validator = new VJS(schemas, {});
-validator.ArraySync([]);
-// => [error, []];
 validator.ArraySync(['a string value', 0]);
-// => [undefined, ['a string value', 0]]
+// => undefined
+validator.ArraySync([]);
+// => error message
 ```
-### `object` type
-`object` type allows [Schema](#-schema) properties such as:
+***
+## `object`
+***
+`object` type allows schema properties such as:
+- type
 - constructorName
 - instanceOf
 
-#### constructorName
-Check if Constructor function of passed object is equal to value in schema `constructorName` property.
+[Source Code](src/types/Object.ts)
+***
+### type
+> Validates type of passed value.
 ```javascript
 const schemas = {
     Object: {
-        type: 'objecyt',
+        type: 'object',
+        [Symbol.for('schema_flat')]: true,
+    },
+};
+const validator = new VJS(schemas, {});
+validator.ObjectSync({});
+// => undefined
+validator.ObjectSync(null);
+// => error message
+```
+***
+### constructorName
+> Check if Constructor function of passed object is equal to value in schema `constructorName` property.
+```javascript
+const schemas = {
+    Object: {
+        type: 'object',
         constructorName: 'RegExp',
+        [Symbol.for('schema_flat')]: true,
     },
 };
 const validator = new VJS(schemas, {});
-validator.ObjectSync(new Array(0));
-// => [error, []];
 validator.ObjectSync(new RegExp('\\d'));
-// => [undefined, /\d/]
+// => undefined
+validator.ObjectSync(new Array(0));
+// => error message
 ```
-#### instanceOf
-Chec if passed object is a instance of Constructor in schema `instanceOf` property.
+***
+### instanceOf
+> Check if passed object is a instance of Constructor in schema `instanceOf` property.
 ```javascript
 const schemas = {
     Object: {
-        type: 'objecyt',
-        instanceOf: Object',
+        type: 'object',
+        instanceOf: Object,
+        [Symbol.for('schema_flat')]: true,
     },
 };
 const validator = new VJS(schemas, {});
-validator.ObjectSync(Number(null));
-// => [error, 0];
 validator.ObjectSync(new Number(0));
-// => [undefined, Number: 0]
+// => undefined
+validator.ObjectSync(Number(null));
+// => error message
 ```
-<!-- ## Defining a Type
-## Symbols
-## Roadmap -->

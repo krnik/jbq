@@ -19,7 +19,7 @@ export const TypeArray = {
         if (value.length < base) return `Value should have length greater or equal than ${base}. Got ${value.length}.`;
     },
     [MAX_LEN] (base: number, value: any[]) {
-        if (value.length > base) return `Value should have length less or equal to ${base}. Got ${value.length}.`;
+        if (value.length > base) return `Value should have length less or equal than ${base}. Got ${value.length}.`;
     },
     [LEN] (base: number, value: any[]) {
         if (value.length !== base) return `Value should have length equal to ${base}. Got ${value.length}.`;

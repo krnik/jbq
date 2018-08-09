@@ -74,34 +74,42 @@ const ajvschemas = {
         },
     },
     File: {
-        date,
-        content,
-        user: id,
-        // title: name,
+        properties: {
+            date,
+            content,
+            user: id,
+            title: name,
+        },
     },
     Comment: {
-        date,
-        content,
-        user: id,
+        properties: {
+            date,
+            content,
+            user: id,
+        },
     },
     UserResources: {
         properties: {
             files: {
                 type: 'array',
-                items: {
-                    date,
-                    content,
-                    user: id,
-                    // title: name,
-                },
+                items: [{
+                    properties: {
+                        date,
+                        content,
+                        user: id,
+                        title: name,
+                    },
+                }],
             },
             comments: {
                 type: 'array',
-                items: {
-                    date,
-                    content,
-                    user: id,
-                },
+                items: [{
+                    properties: {
+                        date,
+                        content,
+                        user: id,
+                    },
+                }],
             },
         },
     },

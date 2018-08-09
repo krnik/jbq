@@ -42,22 +42,21 @@ export default () => describe('Validator', () => {
                 },
             };
             const data = { firstname: 'my fistname', lastname: 'my lastname' };
-            const schemas = { Object: pattern };
-            Validator.validateSync(parser(createTypes(), schemas, {}).Object, data);
+            Validator.validateSync(parser(createTypes(), { Object: pattern }, {}).Object, data);
             const res = new Validator(createTypes(), { Object: pattern }, {}).ObjectSync(data);
-            if (res[0]) throw 'Error should be undefined';
+            if (res) throw Error('It should return undefined when validating valid value');
         });
         it(`it should validate object with ${SYM_SCHEMA_OBJECT.toString()}`, () => {
             const data = createData(schemas);
             Validator.validateSync(parser(createTypes(), schemas, {}).Address, data.Address);
             const res = new Validator(createTypes(), schemas, {}).AddressSync(data.Address);
-            if (res[0]) throw 'Error should be undefined';
+            if (res) throw Error('It should return undefined when validating valid value');
         });
         it(`it should validate object with ${SYM_SCHEMA_COLLECTION.toString()}`, () => {
             const data = createData(schemas);
             Validator.validateSync(parser(createTypes(), schemas, {}).UserResources, data.UserResources);
             const res = new Validator(createTypes(), schemas, {}).UserResourcesSync(data.UserResources);
-            if (res[0]) throw 'Error should be undefined';
+            if (res) throw Error('It should return undefined when validating valid value');
         });
     });
     describe('Iterables', () => {
@@ -65,13 +64,13 @@ export default () => describe('Validator', () => {
             const data = createData(schemas);
             Validator.validateSync(parser(createTypes(), schemas, {}).User.files, data.User.files);
             const res = new Validator(createTypes(), schemas, {}).UserSync(data.UserSync);
-            if (res[0]) throw 'Error should be undefined';
+            if (res) throw Error('It should return undefined when validating valid value');
         });
         it('it should validate array of objects', () => {
             const data = createData(schemas);
             Validator.validateSync(parser(createTypes(), schemas, {}).UserResources.files, data.UserResources.files);
             const res = new Validator(createTypes(), schemas, {}).UserResourcesSync(data.UserResources);
-            if (res[0]) throw 'Error should be undefined';
+            if (res) throw Error('It should return undefined when validating valid value');
         });
     });
 });
