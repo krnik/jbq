@@ -484,7 +484,7 @@ export default () => describe('Types', () => {
             it('valid value', () => {
                 const value = {};
                 if (TypeObject[TYPE](base, value) !== undefined)
-                    throw Error('It should return undefined when validating valid value');
+                throw Error('It should return undefined when validating valid value');
             });
             it('invalid value', () => {
                 const value = true;

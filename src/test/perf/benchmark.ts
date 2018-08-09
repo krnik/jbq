@@ -117,13 +117,11 @@ const ajvschemas = {
 
 const data = createData(schemas);
 const createTest = {
-    // tslint:disable-next-line:no-shadowed-variable
-    vjs (schemaName, data) {
+    vjs (schemaName: string, data: any) {
         const validator = new Validator(createTypes(), schemas, {});
         return validator[`${schemaName}Sync`].bind(null, data);
     },
-    // tslint:disable-next-line:no-shadowed-variable
-    ajv (schema, data) {
+    ajv (schema: any, data: any) {
         const AJV = new ajv().compile(schema);
         return AJV.bind(null, data);
     },
@@ -153,7 +151,8 @@ new Benchmark.Suite()
     // tslint:disable-next-line:no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
     .on('complete', function () {
-    // tslint:disable-next-line:no-console
+        // @ts-ignore
+        // tslint:disable-next-line:no-console
         console.log('Fastest is ' + this.filter('fastest').map('name'));
     })
     .run();
