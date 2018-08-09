@@ -1,5 +1,7 @@
+const DEBUG_ENV = process && process.env && process.env.NODE_ENV === 'debug';
+
 export function debug (col: string, msg: string, indent?: string) {
-  if (process.env.NODE_ENV !== 'debug') return;
+  if (!DEBUG_ENV) return;
   const colors: { [k: string]: string } = {
       reset: '\x1b[0m',
       red: '\x1b[31m',

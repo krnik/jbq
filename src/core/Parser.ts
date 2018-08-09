@@ -4,7 +4,7 @@ import {
     SYM_SCHEMA_CONFIG,
     SYM_SCHEMA_FLAT,
     SYM_SCHEMA_OBJECT,
-    SYM_TYPE_USES_EXTERNALS,
+    SYM_TYPE_EXTERNAL,
     TYPE,
 } from '../constants';
 import { ITypePrototype, TypeWrapper } from '../types/Wrapper';
@@ -57,35 +57,18 @@ function createFN (
         debug('magenta', key, config[INDENT]);
         // Handle missing method
         if (!type[key]) throw {};
-        const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
         const paramName = `__${typeName}_${key}`;
-        const indent = typeMethodBody.match(/([^\n]+)}$/) || '';
-        fn = `${fn}\n${indent && indent[1]}${typeMethodBody.replace(/\bbase\b/g, paramName)}`;
+        if (type[SYM_TYPE_EXTERNAL] && (type[SYM_TYPE_EXTERNAL] as string[]).includes(key)) {
+            const typeMethod = type[key].bind(null, value);
+            fn = `${fn}\n${paramName}(value);`;
+            paramsValues.push(typeMethod);
+        } else {
+            const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
+            const indent = typeMethodBody.match(/([^\n]+)}$/) || '';
+            fn = `${fn}\n${indent && indent[1]}${typeMethodBody.replace(/\bbase\b/g, paramName)}`;
+            paramsValues.push(value);
+        }
         paramsNames.push(paramName);
-        paramsValues.push(value);
-    }
-    const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
-    return resultFn.bind(null, ...paramsValues);
-}
-
-function createFNExt (
-    typeName: string,
-    type: ITypePrototype,
-    entries: Array<[string, any]>,
-    config: ISchemaConfig,
-): checkFunction {
-    let fn = '\'use strict\';';
-    const paramsNames: string[] = [];
-    const paramsValues: any[] = [];
-    for (const [key, value] of entries) {
-        debug('magenta', key, config[INDENT]);
-        // Handle missing method
-        if (!type[key]) throw {};
-        const typeMethod = type[key].bind(null, value);
-        const paramName = `__${typeName}__${key}`;
-        fn = `${fn}\n${paramName}(value);`;
-        paramsNames.push(paramName);
-        paramsValues.push(typeMethod);
     }
     const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
     return resultFn.bind(null, ...paramsValues);
@@ -101,10 +84,8 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
         config: schemaConfig,
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
-    if (schemaEntries.length) {
-        const factoryFn = type[SYM_TYPE_USES_EXTERNALS] ? createFNExt : createFN;
-        pattern[SYM_SCHEMA_CHECK] = factoryFn(typeName, type, typePropFirst(schemaEntries), schemaConfig);
-    }
+    if (schemaEntries.length)
+        pattern[SYM_SCHEMA_CHECK] = createFN(typeName, type, typePropFirst(schemaEntries), schemaConfig);
     if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
         pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
     if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
