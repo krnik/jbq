@@ -168,6 +168,8 @@ validator.StringSync('string');
 - type
 - min
 - max
+
+[Source Code](src/types/Number.ts)
 ***
 ### type
 > Validates type of passed value.
@@ -223,6 +225,8 @@ validator.NumberSync(11);
 `boolean` type allows schema properties such as:
 - type
 - value
+
+[Source Code](src/types/Boolean.ts)
 ***
 ### type
 > Validates type of passed value.
@@ -267,6 +271,8 @@ validator.BooleanSync(false);
 - every
 - some
 - includes
+
+[Source Code](src/types/Array.ts)
 ***
 ### type
 > Validates type of passed value.
@@ -392,6 +398,8 @@ validator.ArraySync([]);
 - type
 - constructorName
 - instanceOf
+
+[Source Code](src/types/Object.ts)
 ***
 ### type
 > Validates type of passed value.
@@ -431,7 +439,7 @@ validator.ObjectSync(new Array(0));
 ```javascript
 const schemas = {
     Object: {
-        type: 'objecyt',
+        type: 'object',
         instanceOf: Object,
         [Symbol.for('schema_flat')]: true,
     },
