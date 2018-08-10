@@ -670,6 +670,16 @@ export default () => describe('Types', () => {
                 types.has(TYPE_NAME.BOOLEAN).should.be.equal(false);
             });
         });
-        describe('.get()', () => {});
+        describe('.get()', () => {
+            it('It should return type if it exists', () => {
+                const types = new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
+                types.get(TYPE_NAME.ARRAY).should.be.equal(TypeArray);
+            });
+            it('It should return undefined if type does not exists', () => {
+                const types = new TypeWrapper();
+                if (types.get(TYPE_NAME.ARRAY) != null)
+                    throw Error('It should return undefined if type does not exists');
+            });
+        });
     });
 });
