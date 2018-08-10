@@ -560,32 +560,116 @@ export default () => describe('Types', () => {
         });
     });
     describe('Wrapper', () => {
-        it('It should accept valid Type as root and on .set()', () => {
-            const types = new TypeWrapper();
-            types.set(TYPE_NAME.ARRAY, TypeArray);
+        describe('.set()', () => {
+            it('It should accept valid type', () => {
+                new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
+            });
+            it('It should throw an error when adding if type is already declared', (done) => {
+                try {
+                    new TypeWrapper()
+                        .set(TYPE_NAME.ARRAY, TypeArray)
+                        .set(TYPE_NAME.ARRAY, TypeBoolean);
+                    done('It should throw an error when adding if type is already declared');
+                } catch (err) {
+                    done();
+                }
+            });
+            it('It should throw an error if type name to be set is not a string', (done) => {
+                try {
+                    new TypeWrapper().set(123 as any, TypeArray);
+                    done('It should throw an error if type name to be set is not a string');
+                } catch (err) {
+                    done();
+                }
+            });
+            it('It should reject type that lacks schema validation method', (done) => {
+                const customType: any = { method () { return; } };
+                try {
+                    new TypeWrapper().set('customType', customType);
+                    done('invalid value');
+                } catch (err) {
+                    done();
+                }
+            });
+            it('It should throw an error when extending with non-existent type', (done) => {
+                const customType = {
+                    method () { return; },
+                    [SYM_TYPE_VALIDATE]: {
+                        method () {},
+                    },
+                };
+                try {
+                    new TypeWrapper()
+                        .set(TYPE_NAME.ARRAY, TypeArray)
+                        .set('customType', customType, TYPE_NAME.OBJECT);
+                    done('It should throw an error when extending with non-existent type');
+                } catch (err) {
+                    done();
+                }
+            });
+            it('It should extend custom type with existing one', () => {
+                const customType = {
+                    method () {},
+                    [SYM_TYPE_VALIDATE]: {
+                        method () {},
+                    },
+                };
+                const types = new TypeWrapper()
+                    .set(TYPE_NAME.ARRAY, TypeArray)
+                    .set('customType', customType, TYPE_NAME.ARRAY);
+                const custom = types.get('customType');
+                custom.should.be.an('object');
+                custom.should.have.property('method');
+                custom[SYM_TYPE_VALIDATE].method.should.be.an('function');
+                for (const key of Object.keys(TypeArray)) {
+                    custom[key].should.be.an('function');
+                    custom[SYM_TYPE_VALIDATE][key].should.be.an('function');
+                }
+            });
+            it('It should extend types multiple times', () => {
+                const customType = {
+                    method () {},
+                    [SYM_TYPE_VALIDATE]: {
+                        method () {},
+                    },
+                };
+                const anotherCustomType = {
+                    anotherMethod () {},
+                    [SYM_TYPE_VALIDATE]: {
+                        anotherMethod () {},
+                    },
+                };
+                const types = new TypeWrapper()
+                    .set(TYPE_NAME.ARRAY, TypeArray)
+                    .set('customType', customType, TYPE_NAME.ARRAY)
+                    .set('anotherCustomType', anotherCustomType, 'customType');
+                const anotherCustom = types.get('anotherCustomType');
+                anotherCustom.should.be.an('object');
+                anotherCustom.should.have.property('anotherMethod');
+                anotherCustom[SYM_TYPE_VALIDATE].anotherMethod.should.be.an('function');
+                for (const key of ['method', ...Object.keys(TypeArray)]) {
+                    anotherCustom[key].should.be.an('function');
+                    anotherCustom[SYM_TYPE_VALIDATE][key].should.be.an('function');
+                }
+            });
+            it('It should throw an error if type does not have any methods', (done) => {
+                try {
+                    new TypeWrapper()
+                        .set(TYPE_NAME.ARRAY, {} as any);
+                    done('It should throw an error if type does not have any methods');
+                } catch (err) {
+                    done();
+                }
+            });
         });
-        it('It should reject type that lacks method validation', (done) => {
-            const type: any = { someMethod () { return; } };
-            try {
-                new TypeWrapper().set('someType', type);
-                done('invalid value');
-            } catch (err) {
-                done();
-            }
+        describe('.has()', () => {
+            it('It should return boolean', () => {
+                const types = new TypeWrapper();
+                types.set(TYPE_NAME.ARRAY, TypeArray);
+                types.has(TYPE_NAME.ARRAY).should.be.equal(true);
+                types.has(TYPE_NAME.BOOLEAN).should.be.equal(false);
+            });
         });
-        it('It should throw an error if type name to be set is not a string', (done) => {
-            try {
-                new TypeWrapper().set(123 as any, TypeArray);
-                done('invalid value');
-            } catch (err) {
-                done();
-            }
-        });
-        it('It should return boolean on .has()', () => {
-            const types = new TypeWrapper();
-            types.set(TYPE_NAME.ARRAY, TypeArray);
-            types.has(TYPE_NAME.ARRAY).should.be.equal(true);
-            types.has(TYPE_NAME.BOOLEAN).should.be.equal(false);
-        });
+        describe('.get()', () => {});
     });
 });
