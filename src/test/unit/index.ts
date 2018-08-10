@@ -1,9 +1,9 @@
 import ParserTest from './Parser';
 import TypesTest from './Types';
-import ValidatorTest from './Validator';
+import VJSTest from './VJS';
 
 export const unitTests = [
     ParserTest,
     TypesTest,
-    ValidatorTest,
+    VJSTest,
 ];

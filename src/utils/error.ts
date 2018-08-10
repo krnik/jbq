@@ -15,6 +15,10 @@ export const E = {
         const errorMessage = `Could not find deifintion of '${typeName}' type.`;
         throw Error(errorMessage);
     },
+    missingTypeMethod (typeName: string, methodName: string) {
+        const errorMessage = `Could not find method ${methodName} in ${typeName} type.`;
+        throw Error(errorMessage);
+    },
     typeProtoInvalidMethod (typeName: string, methodName: string, type: string) {
         const errorMessage = `[${typeName}] type must have [${methodName}] schema validator function defined in ${SYM_TYPE_VALIDATE.toString()} property. Got ${type}.`;
         throw Error(errorMessage);

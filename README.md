@@ -8,6 +8,12 @@
 ## Introduction
 ***
 Hi! Welcome to Valid-JS multi-purpose ECMAScript Language library designed to allow flexible validation.
+
+Features:
+- data validation
+- customisable types
+- based on schemas
+<!-- - access controll -->
 ***
 ## Usage Example
 ***
@@ -75,7 +81,7 @@ validator.StringSync(data);
 - **minLen** - *check if passed string has length greater or equal than value in schema `minLen` property ([example](../../wiki/Types-examples#string-minLen-example))*
 - **maxLen** - *check if passed string has length less or eaqual than value in schema `maxLen` property ([example](../../wiki/Types-examples#string-maxLen-example))*
 - **len** - *check if passed string has length equal to value in schema `len` property ([example](../../wiki/Types-examples#string-len-example))*
-- **regex** - *check if `RegExp.prototype.test` method from schema `regex` property returns true when string is passed as an argument ([example](../../wiki/Types-examples#string-regex-example))*
+- **regex** - *check if `base.test` method from schema `regex` property returns true when string is passed as an argument ([example](../../wiki/Types-examples#string-regex-example))*
 
 [Source Code](src/types/String.ts)
 ***
@@ -100,9 +106,9 @@ validator.StringSync(data);
 - **minLen** - *check if passed array has length greater or equal than value in schema `minLen` property ([example](../../wiki/Types-examples#array-minLen-example))*
 - **maxLen** - *check if passed array has length less or equal than value in schema `maxLen` property ([example](../../wiki/Types-examples#array-maxLen-example))*
 - **len** - *check if array length is equal to value in schema `len` property ([example](../../wiki/Types-examples#array-len-example))*
-- **every** - *check if `array.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/Types-examples#array-every-example))*
-- **some** - *check if `array.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/Types-examples#array-some-example))*
-- **includes** - *check if `array.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/Types-examples#array-includes-example))*
+- **every** - *check if `value.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/Types-examples#array-every-example))*
+- **some** - *check if `value.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/Types-examples#array-some-example))*
+- **includes** - *check if `value.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/Types-examples#array-includes-example))*
 
 [Source Code](src/types/Array.ts)
 ***

@@ -11,10 +11,9 @@ export interface ITypePrototype {
     [SYM_TYPE_VALIDATE]: ITypePrototypeValidate;
     [method: string]: TypePrototypeMethod;
 }
-type mapKey = string | symbol;
 
 export class TypeWrapper {
-    private types: Map<mapKey, ITypePrototype> = new Map();
+    private types: Map<string, ITypePrototype> = new Map();
 
     public has (name: string) {
         return this.types.has(name);
@@ -29,7 +28,7 @@ export class TypeWrapper {
         return this;
     }
 
-    public get (name: mapKey) {
+    public get (name: string) {
         return this.types.get(name);
     }
 }

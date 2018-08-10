@@ -5,13 +5,14 @@ import {
     SYM_SCHEMA_FLAT,
     SYM_SCHEMA_OBJECT,
     SYM_TYPE_EXTERNAL,
+    SYM_TYPE_VALIDATE,
     TYPE,
 } from '../constants';
 import { ITypePrototype, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 
 const INDENT = Symbol('schema_parser_indent');
-type checkFunction = (v: any) => string | undefined;
+export type checkFunction = (v: any) => string | undefined;
 export interface ISchemaConfig {
     [INDENT]?: string;
     [TYPE]?: string;
@@ -55,8 +56,8 @@ function createFN (
     const paramsValues: any[] = [];
     for (const [key, value] of entries) {
         debug('magenta', key, config[INDENT]);
-        // Handle missing method
-        if (!type[key]) throw {};
+        if (!type[key]) throw Error(E.missingTypeMethod(typeName, key));
+        type[SYM_TYPE_VALIDATE][key](value);
         const paramName = `__${typeName}_${key}`;
         if (type[SYM_TYPE_EXTERNAL] && (type[SYM_TYPE_EXTERNAL] as string[]).includes(key)) {
             const typeMethod = type[key].bind(null, value);
