@@ -151,11 +151,9 @@ new Benchmark.Suite()
     .add('ajv#Comment', createTest.ajv('Comment'))
     .add('vjs#UserResources', createTest.vjs('UserResources'))
     .add('ajv#UserResources', createTest.ajv('UserResources'))
-    // tslint:disable-next-line:no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
     .on('complete', function () {
         // @ts-ignore
-        // tslint:disable-next-line:no-console
         console.log('Fastest is ' + this.filter('fastest').map('name'));
     })
     .run();
