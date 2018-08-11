@@ -33,10 +33,7 @@
     "ajv": "6.5.2",
     "benchmark": "2.1.4",
     "chai": "4.1.2",
-    "djv": "2.1.0",
     "faker": "4.1.0",
-    "jsen": "0.6.6",
-    "json-schema-validator-generator": "1.1.11",
     "mocha": "5.2.0",
     "tslint": "5.11.0",
     "typescript": "3.1.0-dev.20180724"
