@@ -20,7 +20,7 @@ import { TypeBoolean } from '../../types/Boolean';
 import { TypeNumber } from '../../types/Number';
 import { TypeObject } from '../../types/Object';
 import { TypeString } from '../../types/String';
-import { TypeWrapper } from '../../types/Wrapper';
+import { ITypePrototype, TypeWrapper } from '../../types/Wrapper';
 import { values } from '../data/index';
 
 export default () => describe('Types', () => {
@@ -41,14 +41,13 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeArray[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -226,14 +225,13 @@ export default () => describe('Types', () => {
                 TypeBoolean[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeBoolean[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -281,14 +279,13 @@ export default () => describe('Types', () => {
                 TypeNumber[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeNumber[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -362,14 +359,13 @@ export default () => describe('Types', () => {
                 TypeString[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeString[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -495,14 +491,13 @@ export default () => describe('Types', () => {
                 TypeObject[SYM_TYPE_VALIDATE][TYPE](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string) {
+                for (const value of values.non.string)
                     try {
                         TypeObject[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');
                     }
-                }
                 done();
             });
         });
@@ -595,7 +590,7 @@ export default () => describe('Types', () => {
                 const customType = {
                     method () { return; },
                     [SYM_TYPE_VALIDATE]: {
-                        method () {},
+                        method () { return; },
                     },
                 };
                 try {
@@ -609,15 +604,15 @@ export default () => describe('Types', () => {
             });
             it('It should extend custom type with existing one', () => {
                 const customType = {
-                    method () {},
+                    method () { return; },
                     [SYM_TYPE_VALIDATE]: {
-                        method () {},
+                        method () { return; },
                     },
                 };
                 const types = new TypeWrapper()
                     .set(TYPE_NAME.ARRAY, TypeArray)
                     .set('customType', customType, TYPE_NAME.ARRAY);
-                const custom = types.get('customType');
+                const custom = types.get('customType') as ITypePrototype;
                 custom.should.be.an('object');
                 custom.should.have.property('method');
                 custom[SYM_TYPE_VALIDATE].method.should.be.an('function');
@@ -628,22 +623,22 @@ export default () => describe('Types', () => {
             });
             it('It should extend types multiple times', () => {
                 const customType = {
-                    method () {},
+                    method () { return; },
                     [SYM_TYPE_VALIDATE]: {
-                        method () {},
+                        method () { return; },
                     },
                 };
                 const anotherCustomType = {
-                    anotherMethod () {},
+                    anotherMethod () { return; },
                     [SYM_TYPE_VALIDATE]: {
-                        anotherMethod () {},
+                        anotherMethod () { return; },
                     },
                 };
                 const types = new TypeWrapper()
                     .set(TYPE_NAME.ARRAY, TypeArray)
                     .set('customType', customType, TYPE_NAME.ARRAY)
                     .set('anotherCustomType', anotherCustomType, 'customType');
-                const anotherCustom = types.get('anotherCustomType');
+                const anotherCustom = types.get('anotherCustomType') as ITypePrototype;
                 anotherCustom.should.be.an('object');
                 anotherCustom.should.have.property('anotherMethod');
                 anotherCustom[SYM_TYPE_VALIDATE].anotherMethod.should.be.an('function');
@@ -673,7 +668,7 @@ export default () => describe('Types', () => {
         describe('.get()', () => {
             it('It should return type if it exists', () => {
                 const types = new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
-                types.get(TYPE_NAME.ARRAY).should.be.equal(TypeArray);
+                (types.get(TYPE_NAME.ARRAY) as ITypePrototype).should.be.equal(TypeArray);
             });
             it('It should return undefined if type does not exists', () => {
                 const types = new TypeWrapper();

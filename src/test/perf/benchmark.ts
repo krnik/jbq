@@ -39,7 +39,7 @@ const content = {
     type: 'string',
     minLength: 1,
 };
-const ajvschemas = {
+const ajvschemas: { [k: string]: any } = {
     Name: name,
     Email: email,
     Password: password,

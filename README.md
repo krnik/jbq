@@ -70,8 +70,8 @@ validator.StringSync(data);
 ## Types
 ### **`boolean`**
 `boolean` type allows schema properties such as:
-- type - *checks type of passed value ([example](../../wiki/Types-examples#boolean-type-example))*
-- value - *check if passed value is equal to value in schema `value` property ([example](../../wiki/Types-examples#boolean-value-example))*
+- **type** - *checks type of passed value ([example](../../wiki/Types-examples#boolean-type-example))*
+- **value** - *check if passed value is equal to value in schema `value` property ([example](../../wiki/Types-examples#boolean-value-example))*
 
 [Source Code](src/types/Boolean.ts)
 ***

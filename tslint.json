@@ -10,7 +10,8 @@
         "typedef-whitespace": [true],
         "object-literal-sort-keys": [false],
         "arrow-parens": [true],
-        "curly": [true, "as-needed"]
+        "curly": [true, "as-needed"],
+        "max-line-length": false
     },
     "rulesDirectory": []
 }
