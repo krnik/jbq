@@ -1,9 +1,12 @@
 import ajv from 'ajv';
 import Benchmark from 'benchmark';
-import { Validator } from '../../core/Validator';
+import { VJS } from '../../core/VJS';
 import { createTypes } from '../../types/index';
 import { createData, schemas } from '../data/index';
 
+/**
+ * AJV SCHEMAS
+ */
 const name = {
     type: 'string',
     minLength: 2,
@@ -36,7 +39,7 @@ const content = {
     type: 'string',
     minLength: 1,
 };
-const ajvschemas = {
+const ajvschemas: { [k: string]: any } = {
     Name: name,
     Email: email,
     Password: password,
@@ -117,37 +120,37 @@ const ajvschemas = {
 
 const data = createData(schemas);
 const createTest = {
-    vjs (schemaName: string, data: any) {
-        const validator = new Validator(createTypes(), schemas, {});
-        return validator[`${schemaName}Sync`].bind(null, data);
+    vjs (schemaName: string) {
+        const validator = new VJS(createTypes(), schemas, {});
+        return validator[schemaName].validSync.bind(null, data[schemaName]);
     },
-    ajv (schema: any, data: any) {
-        const AJV = new ajv().compile(schema);
-        return AJV.bind(null, data);
+    ajv (schemaName: string) {
+        const AJV = new ajv().compile(ajvschemas[schemaName]);
+        return AJV.bind(null, data[schemaName]);
     },
 };
 
 new Benchmark.Suite()
-    .add('vjs#Name', createTest.vjs('Name', data.Name))
-    .add('ajv#Name', createTest.ajv(ajvschemas.Name, data.Name))
-    .add('vjs#Email', createTest.vjs('Email', data.Email))
-    .add('ajv#Email', createTest.ajv(ajvschemas.Email, data.Email))
-    .add('vjs#Password', createTest.vjs('Password', data.Password))
-    .add('ajv#Password', createTest.ajv(ajvschemas.Password, data.Password))
-    .add('vjs#Date', createTest.vjs('Date', data.Date))
-    .add('ajv#Date', createTest.ajv(ajvschemas.Date, data.Date))
-    .add('vjs#Age', createTest.vjs('Age', data.Age))
-    .add('ajv#Age', createTest.ajv(ajvschemas.Age, data.Age))
-    .add('vjs#Address', createTest.vjs('Address', data.Address))
-    .add('ajv#Address', createTest.ajv(ajvschemas.Address, data.Address))
-    .add('vjs#User', createTest.vjs('User', data.User))
-    .add('ajv#User', createTest.ajv(ajvschemas.User, data.User))
-    .add('vjs#File', createTest.vjs('File', data.File))
-    .add('ajv#File', createTest.ajv(ajvschemas.File, data.File))
-    .add('vjs#Comment', createTest.vjs('Comment', data.Comment))
-    .add('ajv#Comment', createTest.ajv(ajvschemas.Comment, data.Comment))
-    .add('vjs#UserResources', createTest.vjs('UserResources', data.UserResources))
-    .add('ajv#UserResources', createTest.ajv(ajvschemas.UserResources, data.UserResources))
+    .add('vjs#Name', createTest.vjs('Name'))
+    .add('ajv#Name', createTest.ajv('Name'))
+    .add('vjs#Email', createTest.vjs('Email'))
+    .add('ajv#Email', createTest.ajv('Email'))
+    .add('vjs#Password', createTest.vjs('Password'))
+    .add('ajv#Password', createTest.ajv('Password'))
+    .add('vjs#Date', createTest.vjs('Date'))
+    .add('ajv#Date', createTest.ajv('Date'))
+    .add('vjs#Age', createTest.vjs('Age'))
+    .add('ajv#Age', createTest.ajv('Age'))
+    .add('vjs#Address', createTest.vjs('Address'))
+    .add('ajv#Address', createTest.ajv('Address'))
+    .add('vjs#User', createTest.vjs('User'))
+    .add('ajv#User', createTest.ajv('User'))
+    .add('vjs#File', createTest.vjs('File'))
+    .add('ajv#File', createTest.ajv('File'))
+    .add('vjs#Comment', createTest.vjs('Comment'))
+    .add('ajv#Comment', createTest.ajv('Comment'))
+    .add('vjs#UserResources', createTest.vjs('UserResources'))
+    .add('ajv#UserResources', createTest.ajv('UserResources'))
     // tslint:disable-next-line:no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
     .on('complete', function () {

@@ -1,5 +1,5 @@
 /**
- * TYPE CONSTANTS, NAMES, INTERFACES
+ * TYPE CONSTANTS
  */
 export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
@@ -26,7 +26,7 @@ export const TYPE_NAME = {
     ARRAY: 'array',
  };
 /**
- * SCHEMA CONSTANTS, INTERFACES
+ * SCHEMA CONSTANTS
  */
 export const SYM_SCHEMA_OBJECT = Symbol.for('schema_object');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
