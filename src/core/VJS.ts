@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_CHECK, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_OBJECT } from '../constants';
+import { SYM_SCHEMA_CHECK, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../constants';
 import { TypeWrapper } from '../types/Wrapper';
 import { checkFunction, ISchema, ISchemaConfig, ISchemas, parser } from './Parser';
 
@@ -24,15 +24,17 @@ export class VJS {
             const err = (schema[SYM_SCHEMA_CHECK] as checkFunction)(data);
             if (err) return err;
         }
-        if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT)) {
-            const err = VJS.validateSync(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
-            if (err) return err;
+        if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
+            for (const key of Object.keys(schema[SYM_SCHEMA_PROPERTIES] as ISchemas)) {
+                const err = VJS._validateSync((schema[SYM_SCHEMA_PROPERTIES] as ISchemas)[key], data[key]);
+                if (err) return err;
+            }
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
             if (!data[Symbol.iterator])
                 return `Schema requires data to have Symbol.iterator property and it was not found. ${data}.`;
             for (const value of data) {
-                const err = VJS.validateSync(schema[SYM_SCHEMA_COLLECTION] as ISchema, value);
+                const err = VJS._validateSync(schema[SYM_SCHEMA_COLLECTION] as ISchema, value);
                 if (err) return err;
             }
         }
@@ -43,9 +45,11 @@ export class VJS {
             const err = await (schema[SYM_SCHEMA_CHECK] as checkFunction)(data);
             if (err) return err;
         }
-        if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT)) {
-            const err = await VJS._validate(schema[SYM_SCHEMA_OBJECT] as ISchema, data);
-            if (err) return err;
+        if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
+            for (const key of Object.keys(schema[SYM_SCHEMA_PROPERTIES] as ISchemas)) {
+                const err = await VJS._validate((schema[SYM_SCHEMA_PROPERTIES] as ISchemas)[key], data[key]);
+                if (err) return err;
+            }
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION))
             if (!data[Symbol.iterator])
