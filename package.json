@@ -10,8 +10,8 @@
     "tsc": "node_modules/.bin/tsc -p ./tsconfig.build.json",
     "tsc:dev": "node_modules/.bin/tsc -p ./tsconfig.json",
     "tsc:dev:watch": "node_modules/.bin/tsc -w -p ./tsconfig.json",
-    "test": "node_modules/.bin/mocha ./lib/test/test.js",
-    "test:perf": "node ./lib/test/perf/benchmark.js"
+    "test": "node_modules/.bin/mocha ./lib.dev/test/test.js",
+    "test:perf": "node ./lib.dev/test/perf/benchmark.js"
   },
   "keywords": [
     "validator",
