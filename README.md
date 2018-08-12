@@ -2,7 +2,7 @@
 # Table Of Content
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
-- [Built-in Types](#types)
+- [Built-in Types](#built-in-types)
 - [Roadmap](#roadmap)
 ***
 ## Introduction
@@ -23,26 +23,29 @@ const VJS = require('valid-js');
 ```
 > Define your schemas
 ```javascript
+// This symbol is used to tell Valid-JS that properties
+// of passed value will be validated as well
+const PROPS = Symbol.for('schema_properties');
 const schemas = {
     // User schema expects value to be an object
     // with properties ['names', 'email']
     User: {
-        names: {
-            // line below tells Valid-JS which type
-            // should be used to validate this property
-            type: 'MyArrayType',
-            length: 4,
-        },
-        email: {
-            type: 'string',
-        },
+        // type tells Valid-JS which type
+        // should be used to validate this property
+        type: 'object',
+        [PROPS]: {
+            names: {
+                type: 'array',
+                length: 4,
+            },
+            email: {
+                type: 'string',
+            },
+        }
     },
-    // String schema expects a string primitive
     String: {
         type: 'string',
         len: 2,
-        // More about symbols in schemas in Types#Symbols
-        [Symbol.for('schema_flat')]: true,
     },
 };
 ```
@@ -51,64 +54,60 @@ const schemas = {
 const config = {};
 const validator = new VJS(schemas, config);
 ```
-> Validate Object
+> Validate
 ```javascript
 const data = {
     names: ['Jean', 'Claude'],
     email: 'front@kick.com',
 };
-validator.UserSync(data);
+validator.User.validSync(data);
 // => undefined
-```
-> Primitives validation
-```javascript
-const data = 'This is a string value!';
-validator.StringSync(data);
-// => undefined
+validator.String.validSync('122');
+// => error message
 ```
 ***
-## Types
+## Built-in Types
 ### **`boolean`**
 `boolean` type allows schema properties such as:
-- **type** - *checks type of passed value ([example](../../wiki/Types-examples#boolean-type-example))*
-- **value** - *check if passed value is equal to value in schema `value` property ([example](../../wiki/Types-examples#boolean-value-example))*
+- **type** - *checks type of passed value ([example](../../wiki/type-example#boolean-type-example))*
+- **value** - *check if passed value is equal to value in schema `value` property ([example](undefined))*
 
 [Source Code](src/types/Boolean.ts)
 ***
 ### **`string`**
 `string` type allows validation properties such as:
-- **type** - *checks type of passed value ([example](../../wiki/Types-examples#string-type-example))*
-- **minLen** - *check if passed string has length greater or equal than value in schema `minLen` property ([example](../../wiki/Types-examples#string-minLen-example))*
-- **maxLen** - *check if passed string has length less or eaqual than value in schema `maxLen` property ([example](../../wiki/Types-examples#string-maxLen-example))*
-- **len** - *check if passed string has length equal to value in schema `len` property ([example](../../wiki/Types-examples#string-len-example))*
-- **regex** - *check if `base.test` method from schema `regex` property returns true when string is passed as an argument ([example](../../wiki/Types-examples#string-regex-example))*
+- **type** - *checks type of passed value ([example](../../wiki/type-example#string-type-example))*
+- **minLen** - *check if passed string has length greater or equal than value in schema `minLen` property ([example](../../wiki/type-example#string-minLen-example))*
+- **maxLen** - *check if passed string has length less or eaqual than value in schema `maxLen` property ([example](../../wiki/type-example#string-maxLen-example))*
+- **len** - *check if passed string has length equal to value in schema `len` property ([example](../../wiki/type-example#string-len-example))*
+- **regex** - *check if `base.test` method from schema `regex` property returns true when string is passed as an argument ([example](../../wiki/type-example#string-regex-example))*
 
-[Source Code](src/types/String.ts)
+[Source Code](src/types/Boolean.ts)
 ***
 ### **`number`**
 `number` type allows schema properties such as:
-- **type** - *checks type of passed value ([example](../../wiki/Types-examples#number-type-example))*
-- **min** - *check if passed number is greater or equal than value in schema `min` property ([example](../../wiki/Types-examples#number-min-example))*
-- **max** - *check if passd number is less or equal than value in schema `max` property ([example](../../wiki/Types-examples#number-max-example))*
+- **type** - *checks type of passed value ([example](../../wiki/type-example#number-type-example))*
+- **min** - *check if passed number is greater or equal than value in schema `min` property ([example](../../wiki/type-example#number-min-example))*
+- **max** - *check if passd number is less or equal than value in schema `max` property ([example](../../wiki/type-example#number-max-example))*
 
 [Source Code](src/types/Number.ts)
 ***
 ### **`object`**
 `object` type allows schema properties such as:
-- **type** - *checks type of passed value ([example](../../wiki/Types-examples#object-type-example))*
-- **constructorName** - *check if Constructor function of passed object is equal to value in schema `constructorName` property ([example](../../wiki/Types-examples#object-constructorName-example))*
-- **instanceOf** - *check if passed object is a instance of Constructor in schema `instanceOf` property ([example](../../wiki/Types-examples#object-instanceOf-example))*
+- **type** - *checks type of passed value ([example](../../wiki/type-example#object-type-example))*
+- **constructorName** - *check if Constructor function of passed object is equal to value in schema `constructorName` property ([example](../../wiki/type-example#object-constructorName-example))*
+- **instanceOf** - *check if passed object is a instance of Constructor in schema `instanceOf` property ([example](../../wiki/type-example#object-instanceOf-example))*
 
 [Source Code](src/types/Object.ts)
 ### **`array`**
 `array` type allows schema properties such as:
-- **type** - *checks type of passed value ([example](../../wiki/Types-examples#array-type-example))*
-- **minLen** - *check if passed array has length greater or equal than value in schema `minLen` property ([example](../../wiki/Types-examples#array-minLen-example))*
-- **maxLen** - *check if passed array has length less or equal than value in schema `maxLen` property ([example](../../wiki/Types-examples#array-maxLen-example))*
-- **len** - *check if array length is equal to value in schema `len` property ([example](../../wiki/Types-examples#array-len-example))*
-- **every** - *check if `value.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/Types-examples#array-every-example))*
-- **some** - *check if `value.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/Types-examples#array-some-example))*
-- **includes** - *check if `value.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/Types-examples#array-includes-example))*
+- **type** - *checks type of passed value ([example](../../wiki/type-example#array-type-example))*
+- **minLen** - *check if passed array has length greater or equal than value in schema `minLen` property ([example](../../wiki/type-example#array-minLen-example))*
+- **maxLen** - *check if passed array has length less or equal than value in schema `maxLen` property ([example](../../wiki/type-example#array-maxLen-example))*
+- **len** - *check if array length is equal to value in schema `len` property ([example](../../wiki/type-example#array-len-example))*
+- **every** - *check if `value.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/type-example#array-every-example))*
+- **some** - *check if `value.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/type-example#array-some-example))*
+- **includes** - *check if `value.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/type-example#array-includes-example))*
 
 [Source Code](src/types/Array.ts)
 ***

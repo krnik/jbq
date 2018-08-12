@@ -70,7 +70,7 @@ function createFN (
         paramsNames.push(paramName);
     }
     const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
-    return resultFn.bind(null, ...paramsValues);
+    return resultFn.bind(undefined, ...paramsValues);
 }
 
 function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig, name: string) {

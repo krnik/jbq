@@ -21,7 +21,7 @@ import { TypeNumber } from '../../types/Number';
 import { TypeObject } from '../../types/Object';
 import { TypeString } from '../../types/String';
 import { ITypePrototype, TypeWrapper } from '../../types/Wrapper';
-import { values } from '../data/index';
+import { values } from '../data/index.js';
 
 export default () => describe('Types', () => {
     describe(TYPE_NAME.ARRAY, () => {
