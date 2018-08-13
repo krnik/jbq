@@ -6,6 +6,7 @@ export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
 export const PERMISSION = 'permission';
+export const PROPERTIES = 'properties';
 export const REQUIRED = 'required';
 export const INCLUDES = 'includes';
 export const MIN_LEN = 'minLen';

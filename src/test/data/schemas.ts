@@ -1,5 +1,5 @@
 import { ISchema, ISchemas } from 'core/Parser';
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE, PROPERTIES } from '../../constants';
 import { callFaker } from '../data/index';
 
 const randomCharacters = (len = 0) => new Array(len)
@@ -85,6 +85,7 @@ const $Object: ISchema = {
 };
 $Object[VALID] = {
     ...$Object,
+    [PROPERTIES]: ['0'],
     [SYM_FAKER]: () => [{
         string: callFakerIfNeeded($String[VALID][SYM_FAKER]),
         number: callFakerIfNeeded($Number[VALID][SYM_FAKER]),
@@ -108,6 +109,14 @@ $Object[INVALID] = {
         ...$Object,
         [INSTANCE_OF]: RegExp,
         [SYM_FAKER]: () => [],
+    },
+    [PROPERTIES]: {
+        ...$Object,
+        [PROPERTIES]: ['0', '1'],
+        [SYM_FAKER]: () => [{
+            string: callFakerIfNeeded($String[VALID][SYM_FAKER]),
+            number: callFakerIfNeeded($Number[VALID][SYM_FAKER]),
+        }],
     },
 };
 
@@ -190,6 +199,7 @@ export const schemas: { [k: string]: ISchemas } = {
         Object_type: $Object[INVALID][TYPE],
         Object_constructor_name: $Object[INVALID][CONSTRUCTOR_NAME],
         Object_instance_of: $Object[INVALID][INSTANCE_OF],
+        Object_properties: $Object[INVALID][PROPERTIES],
         Array_type: $Array[INVALID][TYPE],
         Array_min_len: $Array[INVALID][MIN_LEN],
         Array_max_len: $Array[INVALID][MAX_LEN],

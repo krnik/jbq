@@ -11,25 +11,16 @@ export class VJS {
         return VJS._validate(schema, data);
     }
 
-    // TODO ACL
-    // @ts-ignore
-    public static acl (schema: ISchema, data: any) {}
-
-    // TODO ACL
-    // @ts-ignore
-    public static aclSync (schema: ISchema, data: any) {}
-
     private static _validateSync (schema: ISchema, data: any): string | undefined {
         if (schema.hasOwnProperty(SYM_SCHEMA_CHECK)) {
             const err = (schema[SYM_SCHEMA_CHECK] as checkFunction)(data);
             if (err) return err;
         }
-        if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
+        if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES))
             for (const key of Object.keys(schema[SYM_SCHEMA_PROPERTIES] as ISchemas)) {
                 const err = VJS._validateSync((schema[SYM_SCHEMA_PROPERTIES] as ISchemas)[key], data[key]);
                 if (err) return err;
             }
-        }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
             if (!data[Symbol.iterator])
                 return `Schema requires data to have Symbol.iterator property and it was not found. ${data}.`;
@@ -63,8 +54,6 @@ export class VJS {
     [k: string]: {
         valid: (v: any) => Promise<string | undefined>;
         validSync: (v: any) => string | undefined;
-        acl: (v: any) => Promise<any>;
-        aclSync: (v: any) => any;
     };
 
     constructor (types: TypeWrapper, schemas: ISchemas, config: ISchemaConfig) {
@@ -72,8 +61,6 @@ export class VJS {
             this[schemaName] = {
                 valid: VJS.validate.bind(undefined, schema),
                 validSync: VJS.validateSync.bind(undefined, schema),
-                acl: VJS.acl.bind(undefined, schema),
-                aclSync: VJS.aclSync.bind(undefined, schema),
             };
         }
     }
