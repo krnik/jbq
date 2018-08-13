@@ -1,9 +1,10 @@
 import faker from 'faker';
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_FLAT, SYM_SCHEMA_OBJECT, TYPE } from '../../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../constants';
 
-const FAKER = Symbol.for('faker') as any;
+const SYM_FAKER = Symbol.for('faker') as any;
 
-function callFaker (path: string, args: any[]) {
+export function callFaker (fakerArgs: [string, any[]]) {
+    const [path, args] = fakerArgs;
     const props = path.split('.');
     let fn = faker;
     let i = 0;
@@ -19,28 +20,17 @@ function callFaker (path: string, args: any[]) {
 export function createData (patterns: { [k: string]: any }) {
     const result: { [k: string]: any } = {};
     for (const [field, reqs] of Object.entries(patterns)) {
-        if (!reqs.hasOwnProperty(TYPE))
-            result[field] = createData(reqs);
-        if (reqs[SYM_SCHEMA_FLAT]) {
-            if (reqs[SYM_SCHEMA_OBJECT])
-                result[field] = createData({ x: reqs[SYM_SCHEMA_OBJECT] }).x;
-            if (reqs[SYM_SCHEMA_COLLECTION])
-                result[field] = new Array(3).fill(0).map(() => createData({ x: reqs[SYM_SCHEMA_COLLECTION] }).x);
-        } else {
-            if (reqs[SYM_SCHEMA_OBJECT])
-                result[field] = createData(reqs[SYM_SCHEMA_OBJECT]);
-            if (reqs[SYM_SCHEMA_COLLECTION])
-                result[field] = new Array(3).fill(0).map(() => createData(reqs[SYM_SCHEMA_COLLECTION]));
-        }
-        if (reqs[FAKER])
-            if (typeof reqs[FAKER] === 'function')
-                result[field] = reqs[FAKER]();
-            else {
-                const [path, args] = (reqs[FAKER] as [string, any[]]);
-                result[field] = reqs[SYM_SCHEMA_COLLECTION]
-                ? new Array(3).fill(0).map(() => callFaker(path, args))
-                : callFaker(path, args);
-            }
+        if (reqs[SYM_SCHEMA_PROPERTIES])
+            result[field] = createData(reqs[SYM_SCHEMA_PROPERTIES]);
+        if (reqs[SYM_SCHEMA_COLLECTION])
+            result[field] = new Array(~~(Math.random() * 20))
+                .fill(0).map(() => createData({ [field]: reqs[SYM_SCHEMA_COLLECTION] })[field]);
+        if (reqs[SYM_FAKER])
+            if (typeof reqs[SYM_FAKER] === 'function')
+                result[field] = reqs[SYM_FAKER]();
+            else result[field] = reqs[SYM_SCHEMA_COLLECTION]
+                ? new Array(3).fill(0).map(() => callFaker(reqs[SYM_FAKER]))
+                : callFaker(reqs[SYM_FAKER]);
     }
     return result;
 }

@@ -121,7 +121,7 @@ const ajvschemas: { [k: string]: any } = {
 const data = createData(schemas);
 const createTest = {
     vjs (schemaName: string) {
-        const validator = new VJS(createTypes(), schemas, {});
+        const validator = new VJS(createTypes(), schemas.valid, {});
         return validator[schemaName].validSync.bind(null, data[schemaName]);
     },
     ajv (schemaName: string) {

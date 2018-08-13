@@ -8,6 +8,7 @@ import {
     MAX_LEN,
     MIN,
     MIN_LEN,
+    PROPERTIES,
     REGEX,
     SOME,
     SYM_TYPE_VALIDATE,
@@ -21,7 +22,7 @@ import { TypeNumber } from '../../types/Number';
 import { TypeObject } from '../../types/Object';
 import { TypeString } from '../../types/String';
 import { ITypePrototype, TypeWrapper } from '../../types/Wrapper';
-import { values } from '../data/index';
+import { values } from '../data/index.js';
 
 export default () => describe('Types', () => {
     describe(TYPE_NAME.ARRAY, () => {
@@ -546,6 +547,32 @@ export default () => describe('Types', () => {
                 for (const value of values.non.string)
                     try {
                         TypeObject[SYM_TYPE_VALIDATE][CONSTRUCTOR_NAME](value);
+                        done(`Should throw an error for ${JSON.stringify(value)}`);
+                    } catch (err) {
+                        err.should.have.property('message');
+                    }
+                done();
+            });
+        });
+        describe(PROPERTIES, () => {
+            const base = ['0', '1'];
+            it('valid value', () => {
+                const value = [1, 'nice, second index!'];
+                if (TypeObject[PROPERTIES](base, value) !== undefined)
+                    throw Error('It should return undefined when validating valid value.');
+            });
+            it('invalid value', () => {
+                const value = {};
+                if (TypeObject[PROPERTIES](base, value) === undefined)
+                    throw Error('It should return error message when validating invalid value.');
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+                TypeObject[SYM_TYPE_VALIDATE][PROPERTIES](base);
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
+                for (const value of values.non.string.map((e) => [e]))
+                    try {
+                        TypeObject[SYM_TYPE_VALIDATE][PROPERTIES](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
                     } catch (err) {
                         err.should.have.property('message');

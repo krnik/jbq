@@ -2,8 +2,7 @@ import {
     SYM_SCHEMA_CHECK,
     SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_CONFIG,
-    SYM_SCHEMA_FLAT,
-    SYM_SCHEMA_OBJECT,
+    SYM_SCHEMA_PROPERTIES,
     SYM_TYPE_EXTERNAL,
     SYM_TYPE_VALIDATE,
     TYPE,
@@ -19,12 +18,11 @@ export interface ISchemaConfig {
     [option: string]: unknown;
 }
 export interface ISchema {
-    [SYM_SCHEMA_FLAT]?: boolean;
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
-    [SYM_SCHEMA_OBJECT]?: ISchema;
+    [SYM_SCHEMA_PROPERTIES]?: ISchemas;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
     [SYM_SCHEMA_CHECK]?: checkFunction;
-    [property: string]: ISchema | any;
+    [property: string]: any;
 }
 export interface ISchemas {
     [schemaName: string]: ISchema;
@@ -72,7 +70,7 @@ function createFN (
         paramsNames.push(paramName);
     }
     const resultFn = new Function([...paramsNames, 'value'].toString(), fn);
-    return resultFn.bind(null, ...paramsValues);
+    return resultFn.bind(undefined, ...paramsValues);
 }
 
 function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig, name: string) {
@@ -87,18 +85,16 @@ function parseSchema (types: TypeWrapper, schema: ISchema, config: ISchemaConfig
     } = getSchemaEntries({ ...config, ...schema }, config);
     if (schemaEntries.length)
         pattern[SYM_SCHEMA_CHECK] = createFN(typeName, type, typePropFirst(schemaEntries), schemaConfig);
-    if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
-        pattern[SYM_SCHEMA_FLAT] = schema[SYM_SCHEMA_FLAT];
-    if (schema.hasOwnProperty(SYM_SCHEMA_OBJECT))
-        pattern[SYM_SCHEMA_OBJECT] = parser(
+    if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES))
+        pattern[SYM_SCHEMA_PROPERTIES] = parser(
             types,
-            { [name]: schema[SYM_SCHEMA_OBJECT] as ISchema },
+            schema[SYM_SCHEMA_PROPERTIES] as ISchemas,
             schemaConfig,
-        )[name];
+        );
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION))
         pattern[SYM_SCHEMA_COLLECTION] = parser(
             types,
-            { [name]: schema[SYM_SCHEMA_COLLECTION] as ISchema },
+            { [name]: schema[SYM_SCHEMA_COLLECTION] } as ISchemas,
             schemaConfig,
         )[name];
     return pattern;
@@ -112,19 +108,7 @@ export function parser (types: TypeWrapper, schemas: ISchemas, config: ISchemaCo
     } = getSchemaEntries(schemas, config, '');
     for (const [schemaName, schema] of entries) {
         debug('yellow', schemaName, schemasConfig[INDENT]);
-        if (schema.hasOwnProperty(SYM_SCHEMA_FLAT))
-            patterns[schemaName] = parseSchema(types, schema, schemasConfig, schemaName);
-        else {
-            patterns[schemaName] = {};
-            const {
-                config: schemaConfig,
-                entries: schemaEntries,
-            } = getSchemaEntries(schema, schemasConfig);
-            for (const [propertyName, property] of schemaEntries) {
-                debug('blue', propertyName, schemaConfig[INDENT]);
-                patterns[schemaName][propertyName] = parseSchema(types, property, schemaConfig, propertyName);
-            }
-        }
+        patterns[schemaName] = parseSchema(types, schema, schemasConfig, schemaName);
     }
     return patterns;
 }

@@ -1,157 +1,211 @@
-import { LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_FLAT, SYM_SCHEMA_OBJECT, TYPE, VALUE } from '../../constants';
+import { ISchema, ISchemas } from 'core/Parser';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE, PROPERTIES } from '../../constants';
+import { callFaker } from '../data/index';
 
-const name = {
+const randomCharacters = (len = 0) => new Array(len)
+    .fill(0)
+    .reduce((acc) => `${acc}${String.fromCharCode(~~(Math.random() * 1000))}`, '');
+const callFakerIfNeeded = (arg: any) => typeof arg === 'function' ? arg() : callFaker(arg);
+const SYM_FAKER = Symbol.for('faker');
+const VALID = Symbol('valid') as any;
+const INVALID = Symbol('invalid') as any;
+const $String: ISchema = {
     [TYPE]: 'string',
     [MAX_LEN]: 64,
     [MIN_LEN]: 2,
-    [Symbol.for('faker')]: ['name.firstName'],
-};
-const email = {
-    [TYPE]: 'string',
-    [MIN_LEN]: 4,
     [REGEX]: /@/,
-    [Symbol.for('faker')]: ['internet.email'],
 };
-const password = {
-    [TYPE]: 'string',
-    [MIN_LEN]: 4,
-    [Symbol.for('faker')]: ['internet.password'],
+$String[VALID] = {
+    ...$String,
+    [SYM_FAKER]: ['internet.email'],
 };
-const date = {
-    [TYPE]: 'string',
-    [REGEX]: /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/,
-    [Symbol.for('faker')]: ['helpers.replaceSymbolWithNumber', '####-##-##T##:##:##.###Z'],
+$String[INVALID] = {
+    [TYPE]: {
+        ...$String,
+        [SYM_FAKER]: ['random.number'],
+    },
+    [MAX_LEN]: {
+        ...$String,
+        [SYM_FAKER]: () => randomCharacters(124),
+    },
+    [MIN_LEN]: {
+        ...$String,
+        [SYM_FAKER]: () => randomCharacters(1),
+    },
+    [REGEX]: {
+        ...$String,
+        [SYM_FAKER]: () => randomCharacters(64).replace(new RegExp($String[REGEX], 'g'), ''),
+    },
 };
-const age = {
+const $Number: ISchema = {
     [TYPE]: 'number',
     [MIN]: 18,
     [MAX]: 120,
-    [Symbol.for('faker')]: ['random.number', { max: 120, min: 18 }],
 };
-const isTrue = {
+$Number[VALID] = {
+    ...$Number,
+    [SYM_FAKER]: ['random.number', { max: 120, min: 18 }],
+};
+$Number[INVALID] = {
+    [TYPE]: {
+        ...$Number,
+        [SYM_FAKER]: ['lorem.word'],
+    },
+    [MIN]: {
+        ...$Number,
+        [SYM_FAKER]: ['random.number', { max: 17 }],
+    },
+    [MAX]: {
+        ...$Number,
+        [SYM_FAKER]: ['random.number', { min: 121 }],
+    },
+};
+const $Boolean: ISchema = {
     [TYPE]: 'boolean',
     [VALUE]: true,
-    [Symbol.for('faker')]: () => true,
 };
-const isFalse = {
-    [TYPE]: 'boolean',
-    [VALUE]: false,
-    [Symbol.for('faker')]: () => false,
+$Boolean[VALID] = {
+    ...$Boolean,
+    [SYM_FAKER]: () => true,
 };
-const id = {
-    [TYPE]: 'number',
-    [MIN]: 1,
-    [MAX]: 10000,
-    [Symbol.for('faker')]: ['random.number', { max: 10000, min: 1 }],
+$Boolean[INVALID] = {
+    [TYPE]: {
+        ...$Boolean,
+        [SYM_FAKER]: ['lorem.word'],
+    },
+    [VALUE]: {
+        ...$Boolean,
+        [SYM_FAKER]: () => false,
+    },
 };
-const content = {
-    [TYPE]: 'string',
-    [MIN_LEN]: 1,
-    [Symbol.for('faker')]: ['lorem.paragraph'],
+const $Object: ISchema = {
+    [TYPE]: 'object',
+    [CONSTRUCTOR_NAME]: 'Array',
+    [INSTANCE_OF]: Object,
+};
+$Object[VALID] = {
+    ...$Object,
+    [PROPERTIES]: ['0'],
+    [SYM_FAKER]: () => [{
+        string: callFakerIfNeeded($String[VALID][SYM_FAKER]),
+        number: callFakerIfNeeded($Number[VALID][SYM_FAKER]),
+        boolean: callFakerIfNeeded($Boolean[VALID][SYM_FAKER]),
+        array: callFakerIfNeeded($Array[VALID][SYM_FAKER]),
+    }],
+};
+$Object[INVALID] = {
+    [TYPE]: {
+        ...$Object,
+        [SYM_FAKER]: ['random.number'],
+    },
+    [CONSTRUCTOR_NAME]: {
+        ...$Object,
+        [SYM_FAKER]: () => {
+            class MyArr extends Array {}
+            return new MyArr();
+        },
+    },
+    [INSTANCE_OF]: {
+        ...$Object,
+        [INSTANCE_OF]: RegExp,
+        [SYM_FAKER]: () => [],
+    },
+    [PROPERTIES]: {
+        ...$Object,
+        [PROPERTIES]: ['0', '1'],
+        [SYM_FAKER]: () => [{
+            string: callFakerIfNeeded($String[VALID][SYM_FAKER]),
+            number: callFakerIfNeeded($Number[VALID][SYM_FAKER]),
+        }],
+    },
 };
 
-export const schemas = {
-    Name: {
-        ...name,
-        [SYM_SCHEMA_FLAT]: true,
+const $Array: ISchema = {
+    [TYPE]: 'array',
+    [EVERY]: (e: any) => Boolean(e),
+    [SOME]: (e: any) => Boolean(e),
+    [INCLUDES]: 1,
+    [MIN_LEN]: 4,
+    [MAX_LEN]: 16,
+    [LEN]: 8,
+};
+$Array[VALID] = {
+    ...$Array,
+    [SYM_FAKER]: () => new Array($Array[LEN]).fill(1),
+};
+$Array[INVALID] = {
+    [TYPE]: {
+        ...$Array,
+        [SYM_FAKER]: ['random.number'],
     },
-    Email: {
-        ...email,
-        [SYM_SCHEMA_FLAT]: true,
+    [EVERY]: {
+        ...$Array,
+        [SYM_FAKER]: () => new Array($Array[LEN]).fill(0),
     },
-    Password: {
-        ...password,
-        [SYM_SCHEMA_FLAT]: true,
+    [SOME]: {
+        ...$Array,
+        [SYM_FAKER]: () => new Array($Array[LEN]).fill(0),
     },
-    Date: {
-        ...date,
-        [SYM_SCHEMA_FLAT]: true,
+    [INCLUDES]: {
+        ...$Array,
+        [SYM_FAKER]: () => new Array($Array[LEN]).fill(0),
     },
-    Age: {
-        ...age,
-        [SYM_SCHEMA_FLAT]: true,
+    [MIN_LEN]: {
+        ...$Array,
+        [LEN]: 3,
+        [SYM_FAKER]: () => new Array(3).fill(1),
     },
-    IsTrue: {
-        ...isTrue,
-        [SYM_SCHEMA_FLAT]: true,
+    [MAX_LEN]: {
+        ...$Array,
+        [LEN]: 32,
+        [SYM_FAKER]: () => new Array(32).fill(1),
     },
-    IsFalse: {
-        ...isFalse,
-        [SYM_SCHEMA_FLAT]: true,
+    [LEN]: {
+        ...$Array,
+        [SYM_FAKER]: () => new Array(~~(Math.random() * $Array[MIN_LEN] + 1)).fill(1),
     },
-    Address: {
-        [TYPE]: 'object',
-        [SYM_SCHEMA_FLAT]: true,
-        [SYM_SCHEMA_OBJECT]: {
-            street: {
-                [TYPE]: 'string',
-                [LEN]: 8,
-                [Symbol.for('faker')]: () => 'Main St.',
-            },
-            zipCode: {
-                [TYPE]: 'string',
-                [LEN]: 6,
-                [REGEX]: /\d{2}-\d{3}/,
-                [Symbol.for('faker')]: ['address.zipCode', '##-###'],
-            },
-        },
-    },
-    User: {
-        age,
-        email,
-        password,
-        joined: date,
-        firstName: name,
-        lastName: name,
-        male: isTrue,
-        admin: isFalse,
-        files: {
-            [TYPE]: 'array',
-            [SYM_SCHEMA_FLAT]: true,
+};
+
+export const schemas: { [k: string]: ISchemas } = {
+    valid: {
+        String: $String[VALID],
+        Number: $Number[VALID],
+        Boolean: $Boolean[VALID],
+        Object: $Object[VALID],
+        Array: $Array[VALID],
+        Symbols: {
+            ...$Object[VALID],
             [SYM_SCHEMA_COLLECTION]: {
-                ...id,
-                [SYM_SCHEMA_FLAT]: true,
-            },
-        },
-        comments: {
-            [TYPE]: 'array',
-            [SYM_SCHEMA_FLAT]: true,
-            [SYM_SCHEMA_COLLECTION]: {
-                ...id,
-                [SYM_SCHEMA_FLAT]: true,
+                [TYPE]: 'object',
+                [SYM_SCHEMA_PROPERTIES]: {
+                    string: $String[VALID],
+                    number: $Number[VALID],
+                    boolean: $Boolean[VALID],
+                    array: $Array[VALID],
+                },
             },
         },
     },
-    File: {
-        date,
-        content,
-        user: id,
-        title: name,
-    },
-    Comment: {
-        date,
-        content,
-        user: id,
-    },
-    UserResources: {
-        files: {
-            [TYPE]: 'array',
-            [SYM_SCHEMA_FLAT]: true,
-            [SYM_SCHEMA_COLLECTION]: {
-                date,
-                content,
-                user: id,
-                title: name,
-            },
-        },
-        comments: {
-            [TYPE]: 'array',
-            [SYM_SCHEMA_FLAT]: true,
-            [SYM_SCHEMA_COLLECTION]: {
-                date,
-                content,
-                user: id,
-            },
-        },
+    invalid: {
+        String_type: $String[INVALID][TYPE],
+        String_min_len: $String[INVALID][MIN_LEN],
+        String_max_len: $String[INVALID][MAX_LEN],
+        String_regex: $String[INVALID][REGEX],
+        Number_type: $Number[INVALID][TYPE],
+        Number_min: $Number[INVALID][MIN],
+        Number_max: $Number[INVALID][MAX],
+        Boolean_type: $Boolean[INVALID][TYPE],
+        Boolean_value: $Boolean[INVALID][VALUE],
+        Object_type: $Object[INVALID][TYPE],
+        Object_constructor_name: $Object[INVALID][CONSTRUCTOR_NAME],
+        Object_instance_of: $Object[INVALID][INSTANCE_OF],
+        Object_properties: $Object[INVALID][PROPERTIES],
+        Array_type: $Array[INVALID][TYPE],
+        Array_min_len: $Array[INVALID][MIN_LEN],
+        Array_max_len: $Array[INVALID][MAX_LEN],
+        Array_len: $Array[INVALID][LEN],
+        Array_some: $Array[INVALID][SOME],
+        Array_every: $Array[INVALID][EVERY],
+        Array_includes: $Array[INVALID][INCLUDES],
     },
 };

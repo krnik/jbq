@@ -6,6 +6,7 @@ export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
 export const PERMISSION = 'permission';
+export const PROPERTIES = 'properties';
 export const REQUIRED = 'required';
 export const INCLUDES = 'includes';
 export const MIN_LEN = 'minLen';
@@ -28,8 +29,7 @@ export const TYPE_NAME = {
 /**
  * SCHEMA CONSTANTS
  */
-export const SYM_SCHEMA_OBJECT = Symbol.for('schema_object');
+export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
-export const SYM_SCHEMA_FLAT = Symbol.for('schema_flat');
 export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
 export const SYM_SCHEMA_CHECK = Symbol('schema_check');

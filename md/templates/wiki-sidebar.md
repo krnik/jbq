@@ -1,0 +1,4 @@
+  * [Home](${WIKI.HOME})
+  * [Types](${WIKI.TYPE})
+    * [Custom Type](${WIKI.TYPE_CUSTOM})
+    * [Examples](${WIKI.TYPE_EXAMPLE})

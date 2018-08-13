@@ -11,7 +11,8 @@
         "object-literal-sort-keys": [false],
         "arrow-parens": [true],
         "curly": [true, "as-needed"],
-        "max-line-length": false
+        "max-line-length": false,
+        "no-bitwise": false
     },
     "rulesDirectory": []
 }
