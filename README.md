@@ -23,7 +23,7 @@ const VJS = require('valid-js');
 ```
 > Define your schemas
 ```javascript
-// This symbol is used to tell Valid-JS that properties
+// This symbol is tells Valid-JS that properties
 // of passed value will be validated as well
 const PROPS = Symbol.for('schema_properties');
 const schemas = {
@@ -32,11 +32,12 @@ const schemas = {
     User: {
         // type tells Valid-JS which type
         // should be used to validate this property
+        // it is the only required property for schema
         type: 'object',
         [PROPS]: {
             names: {
                 type: 'array',
-                length: 4,
+                len: 4,
             },
             email: {
                 type: 'string',
@@ -70,7 +71,7 @@ validator.String.validSync('122');
 ### **`boolean`**
 `boolean` type allows schema properties such as:
 - **type** - *checks type of passed value ([example](../../wiki/type-example#boolean-type-example))*
-- **value** - *check if passed value is equal to value in schema `value` property ([example](undefined))*
+- **value** - *check if passed value is equal to schema `value` property ([example](undefined))*
 
 [Source Code](src/types/Boolean.ts)
 ***
@@ -95,7 +96,7 @@ validator.String.validSync('122');
 ### **`object`**
 `object` type allows schema properties such as:
 - **type** - *checks type of passed value ([example](../../wiki/type-example#object-type-example))*
-- **constructorName** - *check if Constructor function of passed object is equal to value in schema `constructorName` property ([example](../../wiki/type-example#object-constructorName-example))*
+- **undefined** - *check if Constructor function of passed object is equal to value in schema `undefined` property ([example](../../wiki/type-example#object-constructorName-example))*
 - **instanceOf** - *check if passed object is a instance of Constructor in schema `instanceOf` property ([example](../../wiki/type-example#object-instanceOf-example))*
 
 [Source Code](src/types/Object.ts)
@@ -104,15 +105,20 @@ validator.String.validSync('122');
 - **type** - *checks type of passed value ([example](../../wiki/type-example#array-type-example))*
 - **minLen** - *check if passed array has length greater or equal than value in schema `minLen` property ([example](../../wiki/type-example#array-minLen-example))*
 - **maxLen** - *check if passed array has length less or equal than value in schema `maxLen` property ([example](../../wiki/type-example#array-maxLen-example))*
-- **len** - *check if array length is equal to value in schema `len` property ([example](../../wiki/type-example#array-len-example))*
-- **every** - *check if `value.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/type-example#array-every-example))*
-- **some** - *check if `value.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/type-example#array-some-example))*
-- **includes** - *check if `value.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/type-example#array-includes-example))*
+- **len** - *check if array length is equal to value in schema `len` property ([example](../../wiki/type-example#array-undefined-example))*
+- **every** - *check if `Array.prototype.every` method returns true when value in schema `every` property is passed as a callback ([example](../../wiki/type-example#array-every-example))*
+- **some** - *check if `Array.prototype.some` method returns true when value in schema `some` property is passed as a callback ([example](../../wiki/type-example#array-some-example))*
+- **includes** - *check if `Array.prototype.includes` method returns true when value in schema `includes` property is passed as an argument ([example](../../wiki/type-example#array-includes-example))*
 
 [Source Code](src/types/Array.ts)
 ***
 ## Roadmap
 This library aims to provide set of useful and performant tools for data validation and access control (mainly for REST API projects).
 Currently only validation part of library is under development. Access controll features will use the same pattern as validation features.
+
+Features that probably will be added:
+- required schema property (it will skip further checks if value will be undefined)
+- access control (it will filter specific properties based on role)
+- deafult schema property (it will assign default value to a data property if needed)
 
 If you would like to contribute - feel free to do so :)
