@@ -20,8 +20,8 @@ So we have to add `${TYPE_METHOD.TYPE}` method to the type object.
 Every validation method in type definition has two parameters.
   - **base** - *it is a value specified in schema used to compare against value*
   - **value** - *it is a value that is currently validated*
-If any check fails return string with error message. Otherwise return `undefined`.
-Return value `undefined` will let validator know that no checks failed and it can continue its' job.
+If any check fails, the function should return error message as string (basically any truthy value will cause validator to return this value). Otherwise return `undefined` (explicitly or implicitly).
+Value `undefined` will let validator know that no checks failed for current stage and it can continue its' job.
 ```javascript
 const tuple = {
   ${TYPE_METHOD.TYPE} (base, value) {
