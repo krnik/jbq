@@ -1,5 +1,5 @@
 import { ISchema, ISchemas } from 'core/Parser';
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE, PROPERTIES } from '../../constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../constants';
 import { callFaker } from '../data/index';
 
 const randomCharacters = (len = 0) => new Array(len)

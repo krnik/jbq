@@ -1,10 +1,10 @@
 # boolean
 <a name="${ANCHOR.BOOL.TYPE_EXAMPLE}"></a>
-### type
+### ${TYPE_METHOD.TYPE}
 ```javascript
 const schemas = {
     Bool: {
-        type: 'boolean',
+        ${TYPE_METHOD.TYPE}: 'boolean',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -15,12 +15,12 @@ validator.Bool.validSync(0);
 ```
 <a name="${ANCHOR.BOOL.VALUE_EXAMPLE}"></a>
 ***
-### value
+### ${TYPE_METHOD.VALUE}
 ```javascript
 const schemas = {
     Bool: {
-        type: 'boolean',
-        value: true,
+        ${TYPE_METHOD.TYPE}: 'boolean',
+        ${TYPE_METHOD.VALUE}: true,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -32,11 +32,11 @@ validator.Bool.validSync(false);
 ***
 # string
 <a name="${ANCHOR.STRING.TYPE_EXAMPLE}"></a>
-### type
+### ${TYPE_METHOD.TYPE}
 ```javascript
 const schemas = {
     String: {
-        type: 'string',
+        ${TYPE_METHOD.TYPE}: 'string',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -47,12 +47,12 @@ validator.String.validSync(0);
 ```
 <a name="${ANCHOR.STRING.MIN_LEN_EXAMPLE}"></a>
 ***
-### minLen
+### ${TYPE_METHOD.MIN_LEN}
 ```javascript
 const schemas = {
     String: {
-        type: 'string',
-        minLen: 10,
+        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE_METHOD.MIN_LEN}: 10,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -63,12 +63,12 @@ validator.String.validSync('short');
 ```
 <a name="${ANCHOR.STRING.MAX_LEN_EXAMPLE}"></a>
 ***
-### maxLen
+### ${TYPE_METHOD.MAX_LEN}
 ```javascript
 const schemas = {
     String: {
-        type: 'string',
-        maxLen: 10,
+        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE_METHOD.MAX_LEN}: 10,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -79,12 +79,12 @@ validator.String.validSync('This is a string');
 ```
 <a name="${ANCHOR.STRING.LEN_EXAMPLE}"></a>
 ***
-### len
+### ${TYPE_METHOD.LEN}
 ```javascript
 const schemas = {
     String: {
-        type: 'string',
-        len: 6,
+        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE_METHOD.LEN}: 6,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -95,12 +95,12 @@ validator.String.validSync('This is a string');
 ```
 <a name="${ANCHOR.STRING.REGEX_EXAMPLE}"></a>
 ***
-### regex
+### ${TYPE_METHOD.REGEX}
 ```javascript
 const schemas = {
     String: {
-        type: 'string',
-        regex: /a string/,
+        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE_METHOD.REGEX}: /a string/,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -112,11 +112,11 @@ validator.String.validSync('string');
 ***
 # number
 <a name="${ANCHOR.NUMBER.TYPE_EXAMPLE}"></a>
-### type
+### ${TYPE_METHOD.TYPE}
 ```javascript
 const schemas = {
     Number: {
-        type: 'number',
+        ${TYPE_METHOD.TYPE}: 'number',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -127,12 +127,12 @@ validator.Number.validSync(NaN);
 ```
 <a name="${ANCHOR.NUMBER.MIN_EXAMPLE}"></a>
 ***
-### min
+### ${TYPE_METHOD.MIN}
 ```javascript
 const schemas = {
     Number: {
-        type: 'number',
-        min: 10,
+        ${TYPE_METHOD.TYPE}: 'number',
+        ${TYPE_METHOD.MIN}: 10,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -143,12 +143,12 @@ validator.Number.validSync(0);
 ```
 <a name="${ANCHOR.NUMBER.MAX_EXAMPLE}"></a>
 ***
-### max
+### ${TYPE_METHOD.MAX}
 ```javascript
 const schemas = {
     Number: {
-        type: 'number',
-        max: 10,
+        ${TYPE_METHOD.TYPE}: 'number',
+        ${TYPE_METHOD.MAX}: 10,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -160,11 +160,11 @@ validator.Number.validSync(11);
 ***
 # object
 <a name="${ANCHOR.OBJECT.TYPE_EXAMPLE}"></a>
-### type
+### ${TYPE_METHOD.TYPE}
 ```javascript
 const schemas = {
     Object: {
-        type: 'object',
+        ${TYPE_METHOD.TYPE}: 'object',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -173,14 +173,14 @@ validator.Object.validSync({});
 validator.Object.validSync(null);
 // => error message
 ```
-<a name="${ANCHOR.OBJECT.CONSTR_NAME_EXAMPLE}"></a>
+<a name="${ANCHOR.OBJECT.CONSTRUCTOR_NAME_EXAMPLE}"></a>
 ***
-### constructorName
+### ${TYPE_METHOD.CONSTRUCTOR_NAME}
 ```javascript
 const schemas = {
     Object: {
-        type: 'object',
-        constructorName: 'RegExp',
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.CONSTRUCTOR_NAME}: 'RegExp',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -191,12 +191,12 @@ validator.Object.validSync(new Array(0));
 ```
 <a name="${ANCHOR.OBJECT.INSTANCE_OF_EXAMPLE}"></a>
 ***
-### instanceOf
+### ${TYPE_METHOD.INSTANCE_OF}
 ```javascript
 const schemas = {
     Object: {
-        type: 'object',
-        instanceOf: Object,
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.INSTANCE_OF}: Object,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -206,13 +206,28 @@ validator.Object.validSync(Number(null));
 // => error message
 ```
 ***
+### ${TYPE_METHOD.PROPERTIES}
+```javascript
+const schemas = {
+    Object: {
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.PROPERTIES}: [],
+    },
+};
+const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
+validator.Object.validSync({});
+// => undefined
+validator.Object.validSync({ prop: 'value' });
+// => error message
+```
+***
 # array
 <a name="${ANCHOR.ARRAY.TYPE_EXAMPLE}"></a>
-### type
+### ${TYPE_METHOD.TYPE}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
+        ${TYPE_METHOD.TYPE}: 'array',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -223,12 +238,12 @@ validator.Array.validSync(false);
 ```
 <a name="${ANCHOR.ARRAY.MIN_LEN_EXAMPLE}"></a>
 ***
-### minLen
+### ${TYPE_METHOD.MIN_LEN}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        minLen: 1,
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.MIN_LEN}: 1,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -239,12 +254,12 @@ validator.Array.validSync([]);
 ```
 <a name="${ANCHOR.ARRAY.MAX_LEN_EXAMPLE}"></a>
 ***
-### maxLen
+### ${TYPE_METHOD.MAX_LEN}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        maxLen: 0,
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.MAX_LEN}: 0,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -255,12 +270,12 @@ validator.Array.validSync([,,]);
 ```
 <a name="${ANCHOR.ARRAY.LEN_EXAMPLE}"></a>
 ***
-### len
+### ${TYPE_METHOD.LEN}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        len: 0,
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.LEN}: 0,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -271,12 +286,12 @@ validator.Array.validSync([true]);
 ```
 <a name="${ANCHOR.ARRAY.EVERY_EXAMPLE}"></a>
 ***
-### every
+### ${TYPE_METHOD.EVERY}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        every (elem, index, array, this) => elem === 0,
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.EVERY} (elem, index, array, this) => elem === 0,
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -287,12 +302,12 @@ validator.Array.validSync([0, 0, 0, 1]);
 ```
 <a name="${ANCHOR.ARRAY.SOME_EXAMPLE}"></a>
 ***
-### some
+### ${TYPE_METHOD.SOME}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        some (elem, index, array, this) => (elem === 0),
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.SOME} (elem, index, array, this) => (elem === 0),
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
@@ -303,12 +318,12 @@ validator.Array.validSync([1, 1, 1, 1]);
 ```
 <a name="${ANCHOR.ARRAY.INCLUDES_EXAMPLE}"></a>
 ***
-### includes
+### ${TYPE_METHOD.INCLUDES}
 ```javascript
 const schemas = {
     Array: {
-        type: 'array',
-        includes: 'a string value',
+        ${TYPE_METHOD.TYPE}: 'array',
+        ${TYPE_METHOD.INCLUDES}: 'a string value',
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
