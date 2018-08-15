@@ -129,13 +129,12 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][INCLUDES](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.null)
-                    try {
-                        TypeArray[SYM_TYPE_VALIDATE][INCLUDES](value);
-                        done(`Should throw an error for ${JSON.stringify(value)}`);
-                    } catch (err) {
-                        err.should.have.property('message');
-                    }
+                try {
+                    TypeArray[SYM_TYPE_VALIDATE][INCLUDES](undefined);
+                    done(`Should throw an error for ${undefined}`);
+                } catch (err) {
+                    err.should.have.property('message');
+                }
                 done();
             });
         });

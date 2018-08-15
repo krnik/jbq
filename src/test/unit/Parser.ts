@@ -7,7 +7,4 @@ export default () => describe('Parser', () => {
     parser(createTypes(), schemas.valid, {});
     parser(createTypes(), schemas.invalid, {});
   });
-  it.only('it should parse', () => {
-      parser(createTypes(), schemas.valid, {});
-  });
 });
