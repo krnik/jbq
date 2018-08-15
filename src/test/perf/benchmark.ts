@@ -98,7 +98,7 @@ function passingTest (fn: any) {
 function failingTest (fn: any) {
     return () => {
         const res = fn();
-        if (res !== false || res == null) {
+        if (res === true || res === undefined) {
             // tslint:disable-next-line: no-console
             console.log(res);
             throw Error('Test should return false result.');
