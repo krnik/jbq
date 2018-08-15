@@ -15,7 +15,7 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/lib/test"
+                "${workspaceFolder}/lib.dev/test"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },

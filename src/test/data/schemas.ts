@@ -1,4 +1,4 @@
-import { ISchema, ISchemas } from 'core/Parser';
+import { ISchemas } from 'core/Parser';
 import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../constants';
 import { callFaker } from '../data/index';
 
@@ -9,7 +9,7 @@ const callFakerIfNeeded = (arg: any) => typeof arg === 'function' ? arg() : call
 const SYM_FAKER = Symbol.for('faker');
 const VALID = Symbol('valid') as any;
 const INVALID = Symbol('invalid') as any;
-const $String: ISchema = {
+const $String: { [k: string]: any } = {
     [TYPE]: 'string',
     [MAX_LEN]: 64,
     [MIN_LEN]: 2,
@@ -37,7 +37,7 @@ $String[INVALID] = {
         [SYM_FAKER]: () => randomCharacters(64).replace(new RegExp($String[REGEX], 'g'), ''),
     },
 };
-const $Number: ISchema = {
+const $Number: { [k: string]: any } = {
     [TYPE]: 'number',
     [MIN]: 18,
     [MAX]: 120,
@@ -60,7 +60,7 @@ $Number[INVALID] = {
         [SYM_FAKER]: ['random.number', { min: 121 }],
     },
 };
-const $Boolean: ISchema = {
+const $Boolean: { [k: string]: any } = {
     [TYPE]: 'boolean',
     [VALUE]: true,
 };
@@ -78,7 +78,7 @@ $Boolean[INVALID] = {
         [SYM_FAKER]: () => false,
     },
 };
-const $Object: ISchema = {
+const $Object: { [k: string]: any } = {
     [TYPE]: 'object',
     [CONSTRUCTOR_NAME]: 'Array',
     [INSTANCE_OF]: Object,
@@ -120,7 +120,7 @@ $Object[INVALID] = {
     },
 };
 
-const $Array: ISchema = {
+const $Array: { [k: string]: any } = {
     [TYPE]: 'array',
     [EVERY]: (e: any) => Boolean(e),
     [SOME]: (e: any) => Boolean(e),

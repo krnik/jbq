@@ -19,17 +19,17 @@ First of all we want to make sure that the value passed to validator is a tuple 
 So we have to add `${TYPE_METHOD.TYPE}` method to the type object.
 Every validation method in type definition has two parameters.
   - **base** - *it is a value specified in schema used to compare against value*
-  - **value** - *it is a value that is currently validated*
+  - **data** - *it is a value that is currently validated*
 If any check fails, the function should return error message as string (basically any truthy value will cause validator to return this value). Otherwise return `undefined` (explicitly or implicitly).
 Value `undefined` will let validator know that no checks failed for current stage and it can continue its' job.
 ```javascript
 const tuple = {
-  ${TYPE_METHOD.TYPE} (base, value) {
-    const keys = Object.keys(value);
+  ${TYPE_METHOD.TYPE} (base, data) {
+    const keys = Object.keys(data);
     const hasOnlyTwoKeys = keys.length === 2 && keys.every((e) => ['0', '1'].includes(e));
-    const elemsTypeMatch = hasOnlyTwoKeys && typeof value['0'] === 'string' && typeof value['1'] === 'number';
+    const elemsTypeMatch = hasOnlyTwoKeys && typeof data['0'] === 'string' && typeof data['1'] === 'number';
     if (!(hasOnlyTwoKeys && elemsTypeMatch))
-      return `Value expected to be a \${base} (string, number). Got \${JSON.stringify(value)}.`
+      return `Data expected to be a \${base} (string, number). Got \${JSON.stringify(data)}.`
     // no check failed, function returns undefined and validator continues its' job
   }
 };
@@ -41,14 +41,14 @@ const tuple = {
 > If your type validation method uses external code - add `Symbol.for('type_external')` property to the type object. It should be an array with list of methods that contain external code. See example below.
 ```javascript
 const tuple = {
-  ${TYPE_METHOD.TYPE} (base, value) {
-    const keys = Object.keys(value);
+  ${TYPE_METHOD.TYPE} (base, data) {
+    const keys = Object.keys(data);
     const hasOnlyTwoKeys = keys.length === 2 && keys.every((e) => ['0', '1'].includes(e));
     // isString and isNumber are exteranal functions thus it is impossible to use tuple.type method code
     // during parsing phase.
-    const elemsTypeMatch = hasOnlyTwoKeys && isString(value['0']) && isNumber(value['1']);
+    const elemsTypeMatch = hasOnlyTwoKeys && isString(data['0']) && isNumber(data['1']);
     if (!(hasOnlyTwoKeys && elemsTypeMatch))
-      return `Value expected to be a \${base} (string, number). Got \${JSON.stringify(value)}.`
+      return `Data expected to be a \${base} (string, number). Got \${JSON.stringify(data)}.`
   },
   // this property will let parser know that it should not extract type method code, instead it will invoke reference to this method in check function
   [Symbol.for('type_external')]: ['type'],
@@ -62,7 +62,7 @@ Every method in type definition must have it's validation function defined in `t
 If the checks are not succesfull this function should throw an error.
 ```javascript
 const tuple = {
-  ${TYPE_METHOD.TYPE} (base, value) {
+  ${TYPE_METHOD.TYPE} (base, data) {
     // checks here
   },
   [Symbol.for('type_validate')]: {

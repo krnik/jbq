@@ -2,43 +2,46 @@ import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../consta
 import { E, isType } from '../utils/index';
 
 export const TypeString = {
-    [TYPE] (base: string, value: any) {
-        if (!(typeof value === 'string' && value !== Object(value)))
-            return `Value should be ${base} type. Got ${typeof value}.`;
+    [TYPE] (base: string, data: any) {
+        if (typeof data !== 'string')
+            return `Data should be ${base} type. Got ${typeof data}.`;
     },
-    [MIN_LEN] (base: number, value: any) {
-        if (value.length < base)
-            return `Value expected to have length greater or equal than ${base}. Got ${value.length}.`;
+    [MIN_LEN] (base: number, data: any) {
+        if (data.length < base)
+            return `Data expected to have length greater or equal than ${base}. Got ${data.length}.`;
     },
-    [MAX_LEN] (base: number, value: any) {
-        if (value.length > base)
-            return `Value expected to have length less or equal than ${base} chars. Got ${value.length}.`;
+    [MAX_LEN] (base: number, data: any) {
+        if (data.length > base)
+            return `Data expected to have length less or equal than ${base} chars. Got ${data.length}.`;
     },
-    [REGEX] (base: RegExp, value: any) {
-        if (!base.test(value)) return `Value expected to pass ${base.toString()} test.`;
+    [REGEX] (base: RegExp, data: any) {
+        if (!base.test(data))
+            return `Data expected to pass ${base.toString()} test.`;
     },
-    [LEN] (base: number, value: any) {
-        if (value.length !== base) return `Value expected to have length equal to ${base}. Got ${value.length}.`;
+    [LEN] (base: number, data: any) {
+        if (data.length !== base)
+            return `Data expected to have length equal to ${base}. Got ${data.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (value: any = E.param()) {
-            if (!isType.string(value)) E.typeValidateError(TYPE, 'string primitive', typeof value);
+        [TYPE] (value: any = E.invalidArgument('value')) {
+            if (!isType.string(value))
+                E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
-        [MIN_LEN] (value: any) {
+        [MIN_LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(MIN_LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(MIN_LEN, 'number', typeof value);
         },
-        [MAX_LEN] (value: any) {
+        [MAX_LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(MAX_LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(MAX_LEN, 'number', typeof value);
         },
-        [REGEX] (value: any) {
+        [REGEX] (value: any = E.invalidArgument('value')) {
             if (!isType.objectInstance(value, 'RegExp'))
-                E.typeValidateError(REGEX, 'RegExp', typeof(value));
+                E.invalidSchemaPropType(REGEX, 'RegExp', typeof value);
         },
-        [LEN] (value: any) {
+        [LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(LEN, 'number', typeof value);
         },
     },
 };

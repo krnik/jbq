@@ -1,12 +1,12 @@
 export const isType = {
     boolean (value: any) {
-        return typeof(value) === 'boolean' && value !== Object(value);
+        return value === true || value === false;
     },
     number (value: any) {
-        return typeof(value) === 'number' && value !== Object(value) && value === value;
+        return typeof value  === 'number' && value === value;
     },
     string (value: any) {
-        return typeof(value) === 'string' && value !== Object(value);
+        return typeof value === 'string';
     },
     objectInstance (value: any, constructorName: string) {
         return value == null ? value : Object.getPrototypeOf(value).constructor.name === constructorName;

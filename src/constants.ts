@@ -3,6 +3,7 @@
  */
 export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
+export const SYM_TYPE_NAME = Symbol('type_name');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
 export const PERMISSION = 'permission';
@@ -32,4 +33,3 @@ export const TYPE_NAME = {
 export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
 export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
-export const SYM_SCHEMA_CHECK = Symbol('schema_check');
