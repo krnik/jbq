@@ -2,7 +2,6 @@
 # Table Of Content
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
-- [Built-in Types](#built-in-types)
 - [Wiki](#wiki)
 - [Roadmap](#roadmap)
 ***
@@ -69,6 +68,7 @@ validator.String('122');
 ***
 ## Wiki
 - [Types](../../wiki/${WIKI.TYPE})
+- [Type Wrapper](../../wiki/${WIKI.TYPE_WRAPPER})
 - [Schema Parser](../../wiki/${WIKI.PARSER})
 ***
 ## Roadmap
