@@ -74,7 +74,7 @@ validator.String('122');
 ## Roadmap
 This library aims to provide set of useful and performant tool for data validation. There is still a lot work left to do :)
 
-Features that probably would be useful:
+Features that would be useful imo and I'm considering adding:
 - required schema property (it would checks if value would be undefined). This would require either some kind of callbacks to break checks for current block, or it would require use of `break` statements and labeled code blocks.
 - access control
 

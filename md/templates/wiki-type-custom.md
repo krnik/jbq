@@ -9,7 +9,7 @@ const tuple = {
   // validation methods
 };
 
-${NAME.CONSTRUCTOR}.types.add('tuple', tuple);
+${NAME.TYPES}.add('tuple', tuple);
 // from now on it is possible to use
 // type: 'tuple' in schema
 ```
