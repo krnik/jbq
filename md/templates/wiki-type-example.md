@@ -8,9 +8,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Bool.validSync(true);
+validator.Bool(true);
 // => undefined
-validator.Bool.validSync(0);
+validator.Bool(0);
 // => error message
 ```
 <a name="${ANCHOR.BOOL.VALUE_EXAMPLE}"></a>
@@ -24,9 +24,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Bool.validSync(true);
+validator.Bool(true);
 // => undefined
-validator.Bool.validSync(false);
+validator.Bool(false);
 // => error message
 ```
 ***
@@ -40,9 +40,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.String.validSync('This is a strig');
+validator.String('This is a strig');
 // => undefined
-validator.String.validSync(0);
+validator.String(0);
 // => error message
 ```
 <a name="${ANCHOR.STRING.MIN_LEN_EXAMPLE}"></a>
@@ -56,9 +56,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.String.validSync('This is a string');
+validator.String('This is a string');
 // => undefined
-validator.String.validSync('short');
+validator.String('short');
 // => error message
 ```
 <a name="${ANCHOR.STRING.MAX_LEN_EXAMPLE}"></a>
@@ -72,9 +72,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.String.validSync('string');
+validator.String('string');
 // => undefined
-validator.String.validSync('This is a string');
+validator.String('This is a string');
 // => error message
 ```
 <a name="${ANCHOR.STRING.LEN_EXAMPLE}"></a>
@@ -88,9 +88,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.String.validSync('string');
+validator.String('string');
 // => undefined
-validator.String.validSync('This is a string');
+validator.String('This is a string');
 // => error message
 ```
 <a name="${ANCHOR.STRING.REGEX_EXAMPLE}"></a>
@@ -104,9 +104,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.String.validSync('This is a string');
+validator.String('This is a string');
 // => undefined
-validator.String.validSync('string');
+validator.String('string');
 // => error message
 ```
 ***
@@ -120,9 +120,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Number.validSync(1000);
+validator.Number(1000);
 // => undefined
-validator.Number.validSync(NaN);
+validator.Number(NaN);
 // => error message
 ```
 <a name="${ANCHOR.NUMBER.MIN_EXAMPLE}"></a>
@@ -136,9 +136,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Number.validSync(10);
+validator.Number(10);
 // => undefined
-validator.Number.validSync(0);
+validator.Number(0);
 // => error message
 ```
 <a name="${ANCHOR.NUMBER.MAX_EXAMPLE}"></a>
@@ -152,9 +152,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Number.validSync(0);
+validator.Number(0);
 // => undefined
-validator.Number.validSync(11);
+validator.Number(11);
 // => error message
 ```
 ***
@@ -168,9 +168,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Object.validSync({});
+validator.Object({});
 // => undefined
-validator.Object.validSync(null);
+validator.Object(null);
 // => error message
 ```
 <a name="${ANCHOR.OBJECT.CONSTRUCTOR_NAME_EXAMPLE}"></a>
@@ -184,9 +184,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Object.validSync(new RegExp('\\d'));
+validator.Object(new RegExp('\\d'));
 // => undefined
-validator.Object.validSync(new Array(0));
+validator.Object(new Array(0));
 // => error message
 ```
 <a name="${ANCHOR.OBJECT.INSTANCE_OF_EXAMPLE}"></a>
@@ -200,9 +200,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Object.validSync(new Number(0));
+validator.Object(new Number(0));
 // => undefined
-validator.Object.validSync(Number(null));
+validator.Object(Number(null));
 // => error message
 ```
 ***
@@ -215,9 +215,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Object.validSync({});
+validator.Object({});
 // => undefined
-validator.Object.validSync({ prop: 'value' });
+validator.Object({ prop: 'value' });
 // => error message
 ```
 ***
@@ -231,9 +231,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([]);
+validator.Array([]);
 // => undefined
-validator.Array.validSync(false);
+validator.Array(false);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.MIN_LEN_EXAMPLE}"></a>
@@ -247,9 +247,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([,]);
+validator.Array([,]);
 // => undefined
-validator.Array.validSync([]);
+validator.Array([]);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.MAX_LEN_EXAMPLE}"></a>
@@ -263,9 +263,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([]);
+validator.Array([]);
 // => undefined
-validator.Array.validSync([,,]);
+validator.Array([,,]);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.LEN_EXAMPLE}"></a>
@@ -279,9 +279,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([]);
+validator.Array([]);
 // => undefined
-validator.Array.validSync([true]);
+validator.Array([true]);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.EVERY_EXAMPLE}"></a>
@@ -295,9 +295,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([0, 0, 0, 0]);
+validator.Array([0, 0, 0, 0]);
 // => undefined
-validator.Array.validSync([0, 0, 0, 1]);
+validator.Array([0, 0, 0, 1]);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.SOME_EXAMPLE}"></a>
@@ -311,9 +311,9 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync([1, 1, 1, 0]);
+validator.Array([1, 1, 1, 0]);
 // => undefined
-validator.Array.validSync([1, 1, 1, 1]);
+validator.Array([1, 1, 1, 1]);
 // => error message
 ```
 <a name="${ANCHOR.ARRAY.INCLUDES_EXAMPLE}"></a>
@@ -327,8 +327,8 @@ const schemas = {
     },
 };
 const validator = new ${NAME.CONSTRUCTOR}(schemas, {});
-validator.Array.validSync(['a string value', 0]);
+validator.Array(['a string value', 0]);
 // => undefined
-validator.Array.validSync([]);
+validator.Array([]);
 // => error message
 ```

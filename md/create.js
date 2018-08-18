@@ -21,10 +21,19 @@ const TYPE_METHOD = {
     MAX: 'max',
 };
 
+const SYM = {
+    TYPE_VALIDATE: 'Symbol.for(\'type_validate\')',
+    TYPE_EXTERNAL: 'Symbol.for(\'type_external\')',
+    SCHEMA_PROPERTIES: 'Symbol.for(\'schema_properties\')',
+    SCHEMA_CONFIG: 'Symbol.for(\'schema_config\')',
+    SCHEMA_COLLECTION: 'Symbol.for(\'schema_collection\')',
+};
+
 const NAME = {
     LIB: 'Valid-JS',
     REPO: 'valid-js',
     CONSTRUCTOR: 'VJS',
+    TYPES: 'VJSTypes',
 };
 const WIKI = {
     HOME: 'Home',
@@ -32,6 +41,7 @@ const WIKI = {
     TYPE: 'type',
     TYPE_CUSTOM: 'type-custom',
     TYPE_EXAMPLE: 'type-example',
+    TYPE_WRAPPER: 'type-wrapper',
     PARSER: 'parser',
 };
 const ANCHOR = {
@@ -113,7 +123,10 @@ const PATH = {
         },
     },
     PARSER: {
-        SRC: '../../blob/master/scr/core/Parser.ts',
+        SRC: '../../blob/master/src/core/Parser.ts',
+    },
+    TYPE_WRAPPER: {
+        SRC: '../../blob/master/src/types/Wrapper.ts',
     },
 };
 
@@ -141,6 +154,10 @@ const files = [
     {
         path: path.resolve(__dirname, './templates/wiki-parser.md'),
         out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.PARSER}.md`),
+    },
+    {
+        path: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
+        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
 ];
 

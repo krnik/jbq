@@ -7,14 +7,10 @@ export class VJS {
         if (err) return err;
     }
 
-    [k: string]: {
-        validSync: (d: any) => string | undefined;
-    };
+    [k: string]: (d: any) => string | undefined;
 
     constructor (types: TypeWrapper, schemas: ISchemas) {
         for (const [schemaName, schema] of Object.entries(parser(types, schemas)))
-            this[schemaName] = {
-                validSync: VJS.validateSync.bind(undefined, schema),
-            };
+            this[schemaName] = VJS.validateSync.bind(undefined, schema);
     }
 }

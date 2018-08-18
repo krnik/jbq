@@ -18,16 +18,12 @@ Features:
 ***
 ## Usage Example
 ***
-> Import ${NAME.LIB}
-```javascript
-const ${NAME.CONSTRUCTOR} = require('${NAME.REPO}');
-```
 > Define your schemas
 ```javascript
 // This symbol is tells ${NAME.LIB} that properties
 // of passed value will be validated as well
 // You can read more about it in ${WIKI.PARSER} wiki page
-const PROPS = Symbol.for('schema_properties');
+const PROPS = ${SYM.SCHEMA_PROPERTIES};
 const schemas = {
     // User schema expects value to be an object
     // with properties ['names', 'email']
@@ -52,20 +48,22 @@ const schemas = {
     },
 };
 ```
-> Create ${NAME.LIB} instance
+> Import and create ${NAME.LIB} instance
 ```javascript
-const config = {};
-const validator = new ${NAME.CONSTRUCTOR}(schemas, config);
+// ${NAME.TYPES} allows you to add your custom types
+const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require('${NAME.REPO}');
+const validator = new ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 ```
+For more info about ${NAME.TYPES} see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
 > Validate
 ```javascript
 const data = {
     names: ['Jean', 'Claude'],
     email: 'front@kick.com',
 };
-validator.User.validSync(data);
+validator.User(data);
 // => undefined
-validator.String.validSync('122');
+validator.String('122');
 // => error message
 ```
 ***
