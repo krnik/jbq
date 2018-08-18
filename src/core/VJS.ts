@@ -1,5 +1,5 @@
 import { TypeWrapper } from '../types/Wrapper';
-import { ISchemaConfig, ISchemas, parser } from './Parser';
+import { ISchemas, parser } from './Parser';
 
 export class VJS {
     private static validateSync (fn: any, data: any) {
@@ -8,11 +8,11 @@ export class VJS {
     }
 
     [k: string]: {
-        validSync: (v: any) => string | undefined;
+        validSync: (d: any) => string | undefined;
     };
 
-    constructor (types: TypeWrapper, schemas: ISchemas, config: ISchemaConfig) {
-        for (const [schemaName, schema] of Object.entries(parser(types, schemas, config)))
+    constructor (types: TypeWrapper, schemas: ISchemas) {
+        for (const [schemaName, schema] of Object.entries(parser(types, schemas)))
             this[schemaName] = {
                 validSync: VJS.validateSync.bind(undefined, schema),
             };

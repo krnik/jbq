@@ -12,7 +12,7 @@ export const E = {
         throw Error(errorMessage);
     },
     missingType (typeName: string, protoName?: string) {
-        const errorMessage = protoName
+        const errorMessage = !protoName
             ? `Could not find defintion of <${typeName}> type.`
             : `Can't extend <${typeName}> type with <${protoName}> type because it is not defined.`;
         throw Error(errorMessage);

@@ -2,14 +2,13 @@ import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TY
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 
-const DATA_VAR = 'data';
+const DATA_VAR = '_d';
 const INDENT = Symbol('parser_indent');
 export interface ISchemaConfig {
     [INDENT]?: string;
     [TYPE]?: string;
-    [option: string]: unknown;
 }
-interface ISchema {
+export interface ISchema {
     [SYM_SCHEMA_CONFIG]?: ISchemaConfig;
     [SYM_SCHEMA_PROPERTIES]?: ISchemas;
     [SYM_SCHEMA_COLLECTION]?: ISchema;
@@ -18,12 +17,20 @@ interface ISchema {
 export interface ISchemas {
     [schemaName: string]: ISchema;
 }
-interface IParsedSchemas {
-    [k: string]: (...data: any[]) => string | undefined;
-}
+type ValidateFunction = (data: any) => string | undefined;
+type ParserResult<T> = {
+    [K in keyof T]: ValidateFunction;
+};
 
-function getSchemaEntries<T> (schema: { [k: string]: T }, config: ISchemaConfig, indent: string = '  ') {
-    const newConfig = { ...config, ...((schema as ISchema)[SYM_SCHEMA_CONFIG] || {}) };
+function getSchemaEntries<T extends ISchema> (
+    schema: T,
+    config: ISchemaConfig,
+    indent: string = '  ',
+) {
+    const newConfig = {
+        ...config,
+        ...(schema[SYM_SCHEMA_CONFIG] || {}),
+    };
     newConfig[INDENT] = (newConfig[INDENT] || '') + indent;
     return {
         config: newConfig,
@@ -59,7 +66,7 @@ function toLiteral (value: any) {
     return value as string;
 }
 
-function getSource (
+function getSourceCode (
     type: IType,
     entries: Array<[string, any]>,
     config: ISchemaConfig,
@@ -75,7 +82,7 @@ function getSource (
         if (!type[key]) E.missingTypeMethod(type[SYM_TYPE_NAME], key);
         type[SYM_TYPE_VALIDATE][key](value);
 
-        const paramName = `${dataVar}_${key}`;
+        const paramName = `${dataVar}_param_${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
             const typeMethod = type[key].bind(null, value);
             source.code += `\n${paramName}(${dataVar});`;
@@ -120,7 +127,7 @@ function parseSchema (
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
     if (schemaEntries.length) {
-        const src = getSource(type, typePropFirst(schemaEntries), schemaConfig, dataVar);
+        const src = getSourceCode(type, typePropFirst(schemaEntries), schemaConfig, dataVar);
         source.code += src.code;
         source.params.push(...src.params);
         source.args.push(...src.args);
@@ -148,20 +155,27 @@ function parseSchema (
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
         const nextDataVar = `${dataVar}_col`;
         const src = parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, schemaConfig, name, nextDataVar);
-        source.code += `\n{\nfor (const ${nextDataVar} of ${dataVar}) {${src.code}\n}\n}\n`;
+        source.code += `{
+            if (!(Symbol.iterator in ${dataVar})) {
+                return 'Data requires to have ${Symbol.iterator.toString()} property in order to use ${SYM_SCHEMA_COLLECTION.toString()} schema property.';
+            }
+            for (const ${nextDataVar} of ${dataVar}) {${src.code}\n}\n}\n`;
         source.params.push(...src.params);
         source.args.push(...src.args);
     }
     return source;
 }
 
-export function parser (types: TypeWrapper, schemas: ISchemas, config: ISchemaConfig) {
-    const patterns: IParsedSchemas = {};
-    const { entries, config: schemasConfig } = getSchemaEntries(schemas, config, '');
+export function parser<T extends ISchemas, K extends keyof T> (
+    types: TypeWrapper,
+    schemas: T,
+) {
+    const patterns = {} as ParserResult<T>;
+    const { entries, config } = getSchemaEntries(schemas, {}, '');
     for (const [schemaName, schema] of entries) {
-        const src = parseSchema(types, schema, schemasConfig, schemaName, DATA_VAR);
-        const fn = new Function([...src.params, DATA_VAR].toString(), src.code);
-        patterns[schemaName] = fn.bind(undefined, ...src.args);
+        const src = parseSchema(types, schema, config, schemaName, DATA_VAR);
+        const valdate = new Function([...src.params, DATA_VAR].toString(), src.code);
+        patterns[schemaName as K] = valdate.bind(undefined, ...src.args);
     }
     return patterns;
 }
