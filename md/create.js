@@ -21,10 +21,19 @@ const TYPE_METHOD = {
     MAX: 'max',
 };
 
+const SYM = {
+    TYPE_VALIDATE: 'Symbol.for(\'type_validate\')',
+    TYPE_EXTERNAL: 'Symbol.for(\'type_external\')',
+    SCHEMA_PROPERTIES: 'Symbol.for(\'schema_properties\')',
+    SCHEMA_CONFIG: 'Symbol.for(\'schema_config\')',
+    SCHEMA_COLLECTION: 'Symbol.for(\'schema_collection\')',
+};
+
 const NAME = {
     LIB: 'Valid-JS',
     REPO: 'valid-js',
     CONSTRUCTOR: 'VJS',
+    TYPES: 'VJSTypes',
 };
 const WIKI = {
     HOME: 'Home',
@@ -33,6 +42,7 @@ const WIKI = {
     TYPE_CUSTOM: 'type-custom',
     TYPE_EXAMPLE: 'type-example',
     TYPE_WRAPPER: 'type-wrapper',
+    PARSER: 'parser',
 };
 const ANCHOR = {
     BOOL: {
@@ -68,49 +78,55 @@ const ANCHOR = {
 };
 const PATH = {
     BOOL: {
-        SRC: 'src/types/Boolean.ts',
+        SRC: '../../blob/master/src/types/Boolean.ts',
         EXAMPLE: {
-            TYPE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.TYPE_EXAMPLE}`,
-            VALE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.VALUE_EXAMPLE}`,
+            TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.TYPE_EXAMPLE}`,
+            VALE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.VALUE_EXAMPLE}`,
         },
     },
     STRING: {
-        SRC: 'src/types/Boolean.ts',
+        SRC: '../../blob/master/src/types/Boolean.ts',
         EXAMPLE: {
-            TYPE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.TYPE_EXAMPLE}`,
-            MIN_LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.MIN_LEN_EXAMPLE}`,
-            MAX_LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.MAX_LEN_EXAMPLE}`,
-            LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.LEN_EXAMPLE}`,
-            REGEX: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.REGEX_EXAMPLE}`,
+            TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.TYPE_EXAMPLE}`,
+            MIN_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.MIN_LEN_EXAMPLE}`,
+            MAX_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.MAX_LEN_EXAMPLE}`,
+            LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.LEN_EXAMPLE}`,
+            REGEX: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.REGEX_EXAMPLE}`,
         },
     },
     NUMBER: {
-        SRC: 'src/types/Number.ts',
+        SRC: '../../blob/master/src/types/Number.ts',
         EXAMPLE: {
-            TYPE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.TYPE_EXAMPLE}`,
-            MIN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MIN_EXAMPLE}`,
-            MAX: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MAX_EXAMPLE}`,
+            TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.TYPE_EXAMPLE}`,
+            MIN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MIN_EXAMPLE}`,
+            MAX: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MAX_EXAMPLE}`,
         },
     },
     OBJECT: {
-        SRC: 'src/types/Object.ts',
+        SRC: '../../blob/master/src/types/Object.ts',
         EXAMPLE: {
-            TYPE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.TYPE_EXAMPLE}`,
-            CONSTRUCTOR_NAME: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.CONSTRUCTOR_NAME_EXAMPLE}`,
-            INSTANCE_OF: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.INSTANCE_OF_EXAMPLE}`,
+            TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.TYPE_EXAMPLE}`,
+            CONSTRUCTOR_NAME: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.CONSTRUCTOR_NAME_EXAMPLE}`,
+            INSTANCE_OF: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.INSTANCE_OF_EXAMPLE}`,
         },
     },
     ARRAY: {
-        SRC: 'src/types/Array.ts',
+        SRC: '../../blob/master/src/types/Array.ts',
         EXAMPLE: {
-            TYPE: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.TYPE_EXAMPLE}`,
-            MIN_LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.MIN_LEN_EXAMPLE}`,
-            MAX_LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.MAX_LEN_EXAMPLE}`,
-            LEN: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.LEN_EXAMPLE}`,
-            EVERY: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.EVERY_EXAMPLE}`,
-            SOME: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.SOME_EXAMPLE}`,
-            INCLUDES: `../../wiki/${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.INCLUDES_EXAMPLE}`,
+            TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.TYPE_EXAMPLE}`,
+            MIN_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.MIN_LEN_EXAMPLE}`,
+            MAX_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.MAX_LEN_EXAMPLE}`,
+            LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.LEN_EXAMPLE}`,
+            EVERY: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.EVERY_EXAMPLE}`,
+            SOME: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.SOME_EXAMPLE}`,
+            INCLUDES: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.INCLUDES_EXAMPLE}`,
         },
+    },
+    PARSER: {
+        SRC: '../../blob/master/src/core/Parser.ts',
+    },
+    TYPE_WRAPPER: {
+        SRC: '../../blob/master/src/types/Wrapper.ts',
     },
 };
 
@@ -132,12 +148,16 @@ const files = [
         out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_CUSTOM}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-type-example.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_EXAMPLE}.md`),
-    },
-    {
         path: path.resolve(__dirname, './templates/wiki-type.md'),
         out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE}.md`),
+    },
+    {
+        path: path.resolve(__dirname, './templates/wiki-parser.md'),
+        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.PARSER}.md`),
+    },
+    {
+        path: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
+        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
 ];
 

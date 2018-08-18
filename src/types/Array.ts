@@ -3,53 +3,62 @@ import { E, isType } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index: number, arr: any[], thisArg?: any) => boolean;
 export const TypeArray = {
-    [TYPE] (base: string, value: any) {
-        if (!Array.isArray(value)) return `Value should be ${base} type.`;
+    [TYPE] (base: string, data: any) {
+        if (!Array.isArray(data))
+            return `Data should be ${base} type.`;
     },
-    [EVERY] (base: arrMethodCallback, value: any[]) {
-        if (!value.every(base)) return `Every element of value should pass test of ${base}.`;
+    [EVERY] (base: arrMethodCallback, data: any[]) {
+        if (!data.every(base))
+            return `Every element of data should pass test function.`;
     },
-    [SOME] (base: arrMethodCallback, value: any[]) {
-        if (!value.some(base)) return `At least one element of value should pass test of ${base}.`;
+    [SOME] (base: arrMethodCallback, data: any[]) {
+        if (!data.some(base))
+            return `At least one element of data should pass test function.`;
     },
-    [INCLUDES] (base: any, value: any[]) {
-        if (!value.includes(base)) return `Value should include ${base}.`;
+    [INCLUDES] (base: any, data: any[]) {
+        if (!data.includes(base))
+            return `Data should include ${base}.`;
     },
-    [MIN_LEN] (base: number, value: any[]) {
-        if (value.length < base) return `Value should have length greater or equal than ${base}. Got ${value.length}.`;
+    [MIN_LEN] (base: number, data: any[]) {
+        if (data.length < base)
+            return `Data should have length greater or equal than ${base}. Got ${data.length}.`;
     },
-    [MAX_LEN] (base: number, value: any[]) {
-        if (value.length > base) return `Value should have length less or equal than ${base}. Got ${value.length}.`;
+    [MAX_LEN] (base: number, data: any[]) {
+        if (data.length > base)
+            return `Data should have length less or equal than ${base}. Got ${data.length}.`;
     },
-    [LEN] (base: number, value: any[]) {
-        if (value.length !== base) return `Value should have length equal to ${base}. Got ${value.length}.`;
+    [LEN] (base: number, data: any[]) {
+        if (data.length !== base)
+            return `Data should have length equal to ${base}. Got ${data.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (value: any = E.param()) {
-            if (!isType.string(value)) E.typeValidateError(TYPE, 'string primitive', typeof value);
+        [TYPE] (value: any = E.invalidArgument('value')) {
+            if (!isType.string(value))
+                E.invalidSchemaPropType(TYPE, 'string primitive', typeof value);
         },
-        [EVERY] (value: any = E.param()) {
+        [EVERY] (value: any = E.invalidArgument('value')) {
             if (!isType.objectInstance(value, 'Function'))
-                E.typeValidateError(EVERY, 'Function', typeof(value));
+                E.invalidSchemaPropType(EVERY, 'function', typeof value);
         },
-        [SOME] (value: any = E.param()) {
+        [SOME] (value: any = E.invalidArgument('value')) {
             if (!isType.objectInstance(value, 'Function'))
-                E.typeValidateError(SOME, 'Function', typeof(value));
+                E.invalidSchemaPropType(SOME, 'function', typeof value);
         },
-        [INCLUDES] (value: any = E.param()) {
-            if (value === null) E.typeValidateError(INCLUDES, 'non-null value', typeof(value));
+        [INCLUDES] (value: any = E.invalidArgument('value')) {
+            // for now this function will accept any value excluding undefined
+            return value;
         },
-        [MIN_LEN] (value: any = E.param()) {
+        [MIN_LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(MIN_LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(MIN_LEN, 'number', typeof value);
         },
-        [MAX_LEN] (value: any = E.param()) {
+        [MAX_LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(MAX_LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(MAX_LEN, 'number', typeof value);
         },
-        [LEN] (value: any = E.param()) {
+        [LEN] (value: any = E.invalidArgument('value')) {
             if (!isType.number(value))
-                E.typeValidateError(LEN, 'number primitive', typeof(value));
+                E.invalidSchemaPropType(LEN, 'number', typeof value);
         },
     },
 };

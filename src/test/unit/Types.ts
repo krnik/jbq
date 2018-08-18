@@ -1,27 +1,10 @@
-import {
-    CONSTRUCTOR_NAME,
-    EVERY,
-    INCLUDES,
-    INSTANCE_OF,
-    LEN,
-    MAX,
-    MAX_LEN,
-    MIN,
-    MIN_LEN,
-    PROPERTIES,
-    REGEX,
-    SOME,
-    SYM_TYPE_VALIDATE,
-    TYPE,
-    TYPE_NAME,
-    VALUE,
-} from '../../constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
 import { TypeArray } from '../../types/Array';
 import { TypeBoolean } from '../../types/Boolean';
 import { TypeNumber } from '../../types/Number';
 import { TypeObject } from '../../types/Object';
 import { TypeString } from '../../types/String';
-import { ITypePrototype, TypeWrapper } from '../../types/Wrapper';
+import { TypeWrapper } from '../../types/Wrapper';
 import { values } from '../data/index.js';
 
 export default () => describe('Types', () => {
@@ -146,13 +129,12 @@ export default () => describe('Types', () => {
                 TypeArray[SYM_TYPE_VALIDATE][INCLUDES](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.null)
-                    try {
-                        TypeArray[SYM_TYPE_VALIDATE][INCLUDES](value);
-                        done(`Should throw an error for ${JSON.stringify(value)}`);
-                    } catch (err) {
-                        err.should.have.property('message');
-                    }
+                try {
+                    TypeArray[SYM_TYPE_VALIDATE][INCLUDES](undefined);
+                    done(`Should throw an error for ${undefined}`);
+                } catch (err) {
+                    err.should.have.property('message');
+                }
                 done();
             });
         });
@@ -570,7 +552,17 @@ export default () => describe('Types', () => {
                 TypeObject[SYM_TYPE_VALIDATE][PROPERTIES](base);
             });
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
-                for (const value of values.non.string.map((e) => [e]))
+                const nonKeyValues = values.non.string.filter((e) => {
+                    switch (typeof e) {
+                    case 'string':
+                    case 'number':
+                    case 'symbol':
+                        return true;
+                    default:
+                        return false;
+                    }
+                });
+                for (const value of nonKeyValues)
                     try {
                         TypeObject[SYM_TYPE_VALIDATE][PROPERTIES](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
@@ -639,7 +631,7 @@ export default () => describe('Types', () => {
                 const types = new TypeWrapper()
                     .set(TYPE_NAME.ARRAY, TypeArray)
                     .set('customType', customType, TYPE_NAME.ARRAY);
-                const custom = types.get('customType') as ITypePrototype;
+                const custom = types.get('customType')!;
                 custom.should.be.an('object');
                 custom.should.have.property('method');
                 custom[SYM_TYPE_VALIDATE].method.should.be.an('function');
@@ -665,7 +657,7 @@ export default () => describe('Types', () => {
                     .set(TYPE_NAME.ARRAY, TypeArray)
                     .set('customType', customType, TYPE_NAME.ARRAY)
                     .set('anotherCustomType', anotherCustomType, 'customType');
-                const anotherCustom = types.get('anotherCustomType') as ITypePrototype;
+                const anotherCustom = types.get('anotherCustomType')!;
                 anotherCustom.should.be.an('object');
                 anotherCustom.should.have.property('anotherMethod');
                 anotherCustom[SYM_TYPE_VALIDATE].anotherMethod.should.be.an('function');
@@ -695,7 +687,7 @@ export default () => describe('Types', () => {
         describe('.get()', () => {
             it('It should return type if it exists', () => {
                 const types = new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
-                (types.get(TYPE_NAME.ARRAY) as ITypePrototype).should.be.equal(TypeArray);
+                types.get(TYPE_NAME.ARRAY)!.should.be.equal(TypeArray);
             });
             it('It should return undefined if type does not exists', () => {
                 const types = new TypeWrapper();
