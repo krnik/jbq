@@ -8,7 +8,7 @@
 ***
 ## Introduction
 ***
-Hi! Welcome to ${NAME.LIB} multi-purpose ECMAScript Language library designed to allow flexible validation.
+Hi! Welcome to ${NAME.LIB} library designed to allow flexible validation.
 
 Features:
 - data validation

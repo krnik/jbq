@@ -8,7 +8,7 @@
 ***
 ## Introduction
 ***
-Hi! Welcome to Valid-JS multi-purpose ECMAScript Language library designed to allow flexible validation.
+Hi! Welcome to Valid-JS library designed to allow flexible validation.
 
 Features:
 - data validation
