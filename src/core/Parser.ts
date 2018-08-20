@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 
@@ -82,22 +82,30 @@ function getSourceCode (
         if (!type[key]) E.missingTypeMethod(type[SYM_TYPE_NAME], key);
         type[SYM_TYPE_VALIDATE][key](value);
 
-        const paramName = `${dataVar}_param_${key}`;
+        const paramName = `${dataVar}_p${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
             const typeMethod = type[key].bind(null, value);
-            source.code += `\n${paramName}(${dataVar});`;
+            source.code += `
+            ${paramName}(${dataVar});
+            `;
             source.args.push(typeMethod);
             source.params.push(paramName);
         } else {
             const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
             let body = replaceWith(typeMethodBody, 'data', dataVar);
-            const indent = typeMethodBody.match(/([^\n\r]+)}$/) || '';
+            // const indent = typeMethodBody.match(/([^\n\r]+)}$/) || '';
             if (isPrimitiveLiteral(value)) {
                 body = replaceWith(body, 'base', toLiteral(value));
-                source.code += `\n${indent && indent[1]}${body}`;
+                // source.code += `\n${indent && indent[1]}${body}`;
+                source.code += `
+                ${body}
+                `;
             } else {
                 body = replaceWith(body, 'base', paramName);
-                source.code += `\n${indent && indent[1]}${body}`;
+                // source.code += `\n${indent && indent[1]}${body}`;
+                source.code += `
+                ${body}
+                `;
                 source.args.push(value);
                 source.params.push(paramName);
             }
@@ -138,28 +146,55 @@ function parseSchema (
             ...Object.getOwnPropertySymbols(schema[SYM_SCHEMA_PROPERTIES]),
         ];
         for (const [i, key] of allKeys.entries()) {
-            const newDataVar = `${dataVar}_prop${i}`;
+            const newDataVar = `${dataVar}_k${i}`;
             const src = parseSchema(types, schema[SYM_SCHEMA_PROPERTIES]![key as any], schemaConfig, key.toString(), newDataVar);
             if (typeof key !== 'string') {
-                const keyParam = `${newDataVar}_name`;
-                source.code += `\n{\nconst ${newDataVar} = ${dataVar}[${keyParam}];\n${src.code}\n}\n`;
+                const keyParam = `${newDataVar}$`;
+                source.code += `
+                {
+                    const ${newDataVar} = ${dataVar}[${keyParam}];
+                    ${src.code}
+                }
+                `;
                 source.params.push(...[...src.params, keyParam]);
                 source.args.push(...[...src.args, key]);
             } else {
-                source.code += `\n{\nconst ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];\n${src.code}\n}\n`;
+                source.code += `
+                {
+                    const ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];
+                    ${src.code}
+                }
+                `;
                 source.params.push(...src.params);
                 source.args.push(...src.args);
             }
         }
     }
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-        const nextDataVar = `${dataVar}_col`;
+        const useForOf = !type[SYM_TYPE_FOR_LOOP];
+        const accessor = `${dataVar}_i$`;
+        const nextDataVar = useForOf
+            ? `${dataVar}_i`
+            : `${dataVar}[${accessor}]`;
         const src = parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, schemaConfig, name, nextDataVar);
-        source.code += `{
-            if (!(Symbol.iterator in ${dataVar})) {
-                return 'Data requires to have ${Symbol.iterator.toString()} property in order to use ${SYM_SCHEMA_COLLECTION.toString()} schema property.';
+        source.code = useForOf
+            ? `
+            {
+                if (!(Symbol.iterator in ${dataVar})) {
+                    return 'Data requires to have ${Symbol.iterator.toString()} property in order to use ${SYM_SCHEMA_COLLECTION.toString()} schema property.';
+                }
+                for (const ${nextDataVar} of ${dataVar}) {
+                    ${src.code}
+                }
             }
-            for (const ${nextDataVar} of ${dataVar}) {${src.code}\n}\n}\n`;
+            `
+            : `
+            {
+                for (let ${accessor} = 0; ${accessor} < ${dataVar}.length; ${accessor}++) {
+                    ${src.code}
+                }
+            }
+            `;
         source.params.push(...src.params);
         source.args.push(...src.args);
     }

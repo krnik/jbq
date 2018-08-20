@@ -1,4 +1,4 @@
-import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_FOR_LOOP } from '../constants';
 import { E, isType } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index: number, arr: any[], thisArg?: any) => boolean;
@@ -61,4 +61,5 @@ export const TypeArray = {
                 E.invalidSchemaPropType(LEN, 'number', typeof value);
         },
     },
+    [SYM_TYPE_FOR_LOOP]: true,
 };

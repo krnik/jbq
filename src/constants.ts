@@ -3,6 +3,7 @@
  */
 export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
+export const SYM_TYPE_FOR_LOOP = Symbol.for('type_for_loop');
 export const SYM_TYPE_NAME = Symbol('type_name');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';

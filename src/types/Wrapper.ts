@@ -1,4 +1,4 @@
-import { SYM_TYPE_EXTERNAL, SYM_TYPE_NAME, SYM_TYPE_VALIDATE } from '../constants';
+import { SYM_TYPE_EXTERNAL, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, SYM_TYPE_FOR_LOOP } from '../constants';
 import { E, isType } from '../utils/index';
 
 type TypeProtoValidationMethod = (...args: any[]) => void;
@@ -8,6 +8,7 @@ interface ITypeProtoValidation {
 }
 export interface ITypeProto {
     [SYM_TYPE_EXTERNAL]?: string[];
+    [SYM_TYPE_FOR_LOOP]?: boolean;
     [SYM_TYPE_VALIDATE]: ITypeProtoValidation;
     [method: string]: TypeProtoMethod;
 }
