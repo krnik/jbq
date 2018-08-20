@@ -128,9 +128,6 @@ const $Array: { [k: string]: any } = {
     [MIN_LEN]: 4,
     [MAX_LEN]: 16,
     [LEN]: 8,
-    [SYM_SCHEMA_COLLECTION]: {
-        [TYPE]: 'number',
-    }
 };
 $Array[VALID] = {
     ...$Array,
