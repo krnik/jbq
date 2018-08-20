@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_FOR_LOOP } from '../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E } from '../utils/index';
 
@@ -82,7 +82,7 @@ function getSourceCode (
         if (!type[key]) E.missingTypeMethod(type[SYM_TYPE_NAME], key);
         type[SYM_TYPE_VALIDATE][key](value);
 
-        const paramName = `${dataVar}_$${key}`;
+        const paramName = `${dataVar}_p${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
             const typeMethod = type[key].bind(null, value);
             source.code += `
@@ -146,10 +146,10 @@ function parseSchema (
             ...Object.getOwnPropertySymbols(schema[SYM_SCHEMA_PROPERTIES]),
         ];
         for (const [i, key] of allKeys.entries()) {
-            const newDataVar = `${dataVar}_key${i}`;
+            const newDataVar = `${dataVar}_k${i}`;
             const src = parseSchema(types, schema[SYM_SCHEMA_PROPERTIES]![key as any], schemaConfig, key.toString(), newDataVar);
             if (typeof key !== 'string') {
-                const keyParam = `${newDataVar}_$`;
+                const keyParam = `${newDataVar}$`;
                 source.code += `
                 {
                     const ${newDataVar} = ${dataVar}[${keyParam}];
@@ -172,9 +172,9 @@ function parseSchema (
     }
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
         const useForOf = !type[SYM_TYPE_FOR_LOOP];
-        const accessor = `${dataVar}_$`;
+        const accessor = `${dataVar}_i$`;
         const nextDataVar = useForOf
-            ? `${dataVar}_iter`
+            ? `${dataVar}_i`
             : `${dataVar}[${accessor}]`;
         const src = parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, schemaConfig, name, nextDataVar);
         source.code = useForOf
@@ -211,7 +211,6 @@ export function parser<T extends ISchemas, K extends keyof T> (
         const src = parseSchema(types, schema, config, schemaName, DATA_VAR);
         const valdate = new Function([...src.params, DATA_VAR].toString(), src.code);
         patterns[schemaName as K] = valdate.bind(undefined, ...src.args);
-        // console.log(src.code.replace(/^\s+/gm, ''));
     }
     return patterns;
 }
