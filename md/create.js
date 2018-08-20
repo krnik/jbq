@@ -24,6 +24,7 @@ const TYPE_METHOD = {
 const SYM = {
     TYPE_VALIDATE: 'Symbol.for(\'type_validate\')',
     TYPE_EXTERNAL: 'Symbol.for(\'type_external\')',
+    TYPE_FOR_LOOP: 'Symbol.for(\'type_for_loop\')',
     SCHEMA_PROPERTIES: 'Symbol.for(\'schema_properties\')',
     SCHEMA_CONFIG: 'Symbol.for(\'schema_config\')',
     SCHEMA_COLLECTION: 'Symbol.for(\'schema_collection\')',

@@ -49,6 +49,31 @@ _d_param_type(_d);
 ***
 ### Symbols
 ***
+#### `${SYM.TYPE_FOR_LOOP}`
+> By default collections are iterated using for..of loop. This Symbol tells parser to use standard for loop for arrays - which is 2-4 times faster.
+```javascript
+const customType = {
+    ${TYPE_METHOD.TYPE} (base, data) {},
+    size (base, data) {},
+    [${SYM.TYPE_VALIDATE}]: {
+        ${TYPE_METHOD.TYPE} (value) {},
+        size (value) {
+            // check if property `size` in schema is an array with two numbers
+            if (!Array.isArray(value) || value.length !== 2 || value.some((e) => isNaN(e)))
+                throw Error();
+        },
+    },
+    [${SYM.TYPE_FOR_LOOP}]: true,
+};
+// parser will generate
+for (let _d_i$ = 0; _d_i$ < _d.length; _d_i$++) {
+    // checks
+}
+// instead of
+for (const _d_i of _d) {
+    // checks
+}
+```
 #### `${SYM.TYPE_EXTERNAL}`
 > This symbol should be always an array with names of type methods that use resources from outside their scope. It tells parser when to pass this method as an argument and when it's ok to extract source of type method.
 ```javascript
