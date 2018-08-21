@@ -93,16 +93,13 @@ function getSourceCode (
         } else {
             const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
             let body = replaceWith(typeMethodBody, 'data', dataVar);
-            // const indent = typeMethodBody.match(/([^\n\r]+)}$/) || '';
             if (isPrimitiveLiteral(value)) {
                 body = replaceWith(body, 'base', toLiteral(value));
-                // source.code += `\n${indent && indent[1]}${body}`;
                 source.code += `
                 ${body}
                 `;
             } else {
                 body = replaceWith(body, 'base', paramName);
-                // source.code += `\n${indent && indent[1]}${body}`;
                 source.code += `
                 ${body}
                 `;
