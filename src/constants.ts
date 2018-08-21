@@ -27,6 +27,7 @@ export const TYPE_NAME = {
     NUMBER: 'number',
     OBJECT: 'object',
     ARRAY: 'array',
+    ANY: 'any',
  };
 /**
  * SCHEMA CONSTANTS

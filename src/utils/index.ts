@@ -1,5 +1,5 @@
 import { debug } from './debug';
 import { E } from './error';
-import { isType } from './isType';
+import { is } from './type';
 
-export { debug, E, isType };
+export { debug, E, is };

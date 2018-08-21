@@ -1,5 +1,5 @@
 import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, isType } from '../utils/index';
+import { E, is } from '../utils/index';
 
 export const TypeObject = {
     [TYPE] (base: string, data: any) {
@@ -23,19 +23,19 @@ export const TypeObject = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!isType.string(value))
+            if (!is.string(value))
                 E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
         [CONSTRUCTOR_NAME] (value: any = E.invalidArgument('value')) {
-            if (!isType.string(value))
+            if (!is.string(value))
                 E.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof value);
         },
         [INSTANCE_OF] (value: any = E.invalidArgument('value')) {
-            if (!isType.objectInstance(value, 'Function'))
+            if (!is.objectInstance(value, 'Function'))
                 E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof value);
         },
         [PROPERTIES] (value: any = E.invalidArgument('value')) {
-            if (!isType.objectInstance(value, 'Array'))
+            if (!is.objectInstance(value, 'Array'))
                 E.invalidSchemaPropType(PROPERTIES, 'array', typeof value);
         },
     },

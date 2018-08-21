@@ -1,5 +1,5 @@
 import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, isType } from '../utils/index';
+import { E, is } from '../utils/index';
 
 export const TypeString = {
     [TYPE] (base: string, data: any) {
@@ -24,23 +24,23 @@ export const TypeString = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!isType.string(value))
+            if (!is.string(value))
                 E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
         [MIN_LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MIN_LEN, 'number', typeof value);
         },
         [MAX_LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MAX_LEN, 'number', typeof value);
         },
         [REGEX] (value: any = E.invalidArgument('value')) {
-            if (!isType.objectInstance(value, 'RegExp'))
+            if (!is.objectInstance(value, 'RegExp'))
                 E.invalidSchemaPropType(REGEX, 'RegExp', typeof value);
         },
         [LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(LEN, 'number', typeof value);
         },
     },
