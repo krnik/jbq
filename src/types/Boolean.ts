@@ -13,11 +13,11 @@ export const TypeBoolean = {
   [SYM_TYPE_VALIDATE]: {
     [TYPE] (value: any = E.invalidArgument('value')) {
         if (!is.string(value))
-            E.invalidSchemaPropType(TYPE, 'string primitive', typeof value);
+            E.invalidSchemaPropType(TYPE, 'string', typeof value);
     },
     [VALUE] (value: any = E.invalidArgument('value')) {
         if (!is.boolean(value))
-            E.invalidSchemaPropType(VALUE, 'boolean primitive', typeof value);
+            E.invalidSchemaPropType(VALUE, 'boolean', typeof value);
     },
   },
 };

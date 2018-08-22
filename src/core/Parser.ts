@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { REQUIRED, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E, is } from '../utils/index';
 
@@ -39,10 +39,15 @@ function getSchemaEntries<T extends ISchema> (
     };
 }
 
-function typePropFirst (entries: Array<[string, any]>) {
-    const type = entries.filter(([key]) => key === TYPE);
-    const rest = entries.filter(([key]) => key !== TYPE);
-    return [...type, ...rest];
+function sortEntriesByKeys (entries: Array<[string, any]>, firstKeys: string[]) {
+    const result = firstKeys.reduce((acc, key) => {
+        const entry = entries.find(([k]) => k === key);
+        return entry
+            ? (acc.push(entry), acc)
+            : acc;
+    }, ([] as Array<[string, any]>));
+    const rest = entries.filter(([key]) => !firstKeys.includes(key));
+    return [...result, ...rest];
 }
 
 function replacePhrase (base: string, phrase: string, to: string) {
@@ -67,12 +72,10 @@ function getSourceCode (
         if (!type[key]) E.missingTypeMethod(type[SYM_TYPE_NAME], key);
         type[SYM_TYPE_VALIDATE][key](value);
 
-        const paramName = `${dataVar}_p${key}`;
+        const paramName = `${dataVar}$${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
-            const typeMethod = type[key].bind(null, value);
-            source.code += `
-            ${paramName}(${dataVar});
-            `;
+            const typeMethod = type[key].bind(undefined, value);
+            source.code += `\n${paramName}(${dataVar});`;
             source.args.push(typeMethod);
             source.params.push(paramName);
         } else {
@@ -83,14 +86,10 @@ function getSourceCode (
             let code = replacePhrase(methodBody, 'data', dataVar);
             if (is.primitiveLiteral(value)) {
                 code = replacePhrase(code, 'base', is.toLiteral(value));
-                source.code += `
-                ${code}
-                `;
+                source.code += `\n${code}`;
             } else {
                 code = replacePhrase(code, 'base', paramName);
-                source.code += `
-                ${code}
-                `;
+                source.code += `\n${code}`;
                 source.args.push(value);
                 source.params.push(paramName);
             }
@@ -123,16 +122,12 @@ function parseSchema (
     if (schemaEntries.length) {
         const src = getSourceCode(
             type,
-            typePropFirst(schemaEntries),
+            sortEntriesByKeys(schemaEntries, [TYPE, REQUIRED]),
             schemaConfig,
             dataVar,
             label,
         );
-        source.code += `
-        ${label}: {
-            ${src.code}
-        }
-        `;
+        source.code += `\n${label}: {${src.code}`;
         source.params.push(...src.params);
         source.args.push(...src.args);
     } else E.noKeysInSchema(name);
@@ -153,21 +148,11 @@ function parseSchema (
             );
             if (typeof key !== 'string') {
                 const keyParam = `${newDataVar}$`;
-                source.code += `
-                {
-                    const ${newDataVar} = ${dataVar}[${keyParam}];
-                    ${src.code}
-                }
-                `;
+                source.code += `\nconst ${newDataVar} = ${dataVar}[${keyParam}];${src.code}`;
                 source.params.push(...[...src.params, keyParam]);
                 source.args.push(...[...src.args, key]);
             } else {
-                source.code += `
-                {
-                    const ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];
-                    ${src.code}
-                }
-                `;
+                source.code += `\nconst ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];${src.code}`;
                 source.params.push(...src.params);
                 source.args.push(...src.args);
             }
@@ -175,7 +160,7 @@ function parseSchema (
     }
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
         const useForOf = !type[SYM_TYPE_FOR_LOOP];
-        const accessor = `${dataVar}_i$`;
+        const accessor = `${dataVar}$i`;
         const nextDataVar = useForOf
             ? `${dataVar}_i`
             : `${dataVar}[${accessor}]`;
@@ -187,7 +172,7 @@ function parseSchema (
             nextDataVar,
             `${dataVar}_i_label`,
         );
-        source.code = useForOf
+        source.code += useForOf
             ? `
             {
                 if (!(Symbol.iterator in ${dataVar})) {
@@ -196,18 +181,17 @@ function parseSchema (
                 for (const ${nextDataVar} of ${dataVar}) {
                     ${src.code}
                 }
-            }
-            `
+            }`
             : `
             {
                 for (let ${accessor} = 0; ${accessor} < ${dataVar}.length; ${accessor}++) {
                     ${src.code}
                 }
-            }
-            `;
+            }`;
         source.params.push(...src.params);
         source.args.push(...src.args);
     }
+    source.code += '\n}\n';
     return source;
 }
 

@@ -1,4 +1,4 @@
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
 import { TypeArray } from '../../types/Array';
 import { TypeBoolean } from '../../types/Boolean';
 import { TypeNumber } from '../../types/Number';
@@ -8,6 +8,18 @@ import { TypeWrapper } from '../../types/Wrapper';
 import { values } from '../data/index.js';
 
 export default () => describe('Types', () => {
+    describe(TYPE_NAME.ANY, () => {
+        describe(TYPE, () => {
+            it('valid value', () => {});
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {});
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {});
+        });
+        describe(REQUIRED, () => {
+            it('valid value', () => {});
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {});
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {});
+        });
+    });
     describe(TYPE_NAME.ARRAY, () => {
         describe(TYPE, () => {
             const base = 'array';

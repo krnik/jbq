@@ -34,7 +34,7 @@ export const TypeArray = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
             if (!is.string(value))
-                E.invalidSchemaPropType(TYPE, 'string primitive', typeof value);
+                E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
         [EVERY] (value: any = E.invalidArgument('value')) {
             if (!is.objectInstance(value, 'Function'))
