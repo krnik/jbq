@@ -1,4 +1,5 @@
 import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../constants';
+import { TypeAny } from '../../types/Any';
 import { TypeArray } from '../../types/Array';
 import { TypeBoolean } from '../../types/Boolean';
 import { TypeNumber } from '../../types/Number';
@@ -10,22 +11,51 @@ import { values } from '../data/index.js';
 export default () => describe('Types', () => {
     describe(TYPE_NAME.ANY, () => {
         describe(TYPE, () => {
-            it('valid value', () => {});
-            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {});
-            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {});
+            const base = 'any';
+            it('valid value', () => {
+                TypeAny[TYPE]();
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+                TypeArray[SYM_TYPE_VALIDATE][TYPE](base);
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
+                for (const value of values.non.string)
+                    try {
+                        TypeArray[SYM_TYPE_VALIDATE][TYPE](value);
+                        done(`Should throw an error for ${JSON.stringify(value)}`);
+                    } catch (err) {
+                        err.should.have.property('message');
+                    }
+                done();
+            });
         });
         describe(REQUIRED, () => {
-            it('valid value', () => {});
-            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {});
-            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {});
+            const base = true;
+            it('valid value', () => {
+                const value = {};
+                TypeAny[REQUIRED](base, value);
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+                TypeBoolean[SYM_TYPE_VALIDATE][VALUE](base);
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, (done) => {
+                for (const value of values.non.boolean)
+                    try {
+                        TypeBoolean[SYM_TYPE_VALIDATE][VALUE](value);
+                        done(`Should throw an error for ${JSON.stringify(value)}`);
+                    } catch (err) {
+                        err.should.have.property('message');
+                    }
+                done();
+            });
         });
     });
     describe(TYPE_NAME.ARRAY, () => {
         describe(TYPE, () => {
             const base = 'array';
             it('valid value', () => {
-                const value = [1, 2];
-                if (TypeArray[TYPE](base, value) !== undefined)
+                const data = [1, 2];
+                if (TypeArray[TYPE](base, data) !== undefined)
                     throw Error('It should return undefined when validating valid value');
             });
             it('invalid value', () => {

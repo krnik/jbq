@@ -6,7 +6,7 @@ export const TypeAny = {
         ///break
     },
     [REQUIRED] (base: boolean, data: any) {
-        if (!base) {
+        if (data === undefined && !base) {
             ///break
         }
     },

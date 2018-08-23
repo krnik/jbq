@@ -1,5 +1,5 @@
 import { ISchemas } from 'core/Parser';
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE, REQUIRED } from '../../constants';
 import { callFaker } from '../data/index';
 
 const randomCharacters = (len = 0) => new Array(len)
@@ -165,6 +165,11 @@ $Array[INVALID] = {
         [SYM_FAKER]: () => new Array(~~(Math.random() * $Array[MIN_LEN] + 1)).fill(1),
     },
 };
+const $Required = {
+    [TYPE]: 'string',
+    [REQUIRED]: false,
+    [SYM_FAKER]: () => undefined,
+};
 
 export const schemas: { [k: string]: ISchemas } = {
     valid: {
@@ -185,6 +190,7 @@ export const schemas: { [k: string]: ISchemas } = {
                 },
             },
         },
+        Required: $Required,
     },
     invalid: {
         String_type: $String[INVALID][TYPE],

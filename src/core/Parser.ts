@@ -122,7 +122,7 @@ function parseSchema (
     if (schemaEntries.length) {
         const src = getSourceCode(
             type,
-            sortEntriesByKeys(schemaEntries, [TYPE, REQUIRED]),
+            sortEntriesByKeys(schemaEntries, [REQUIRED, TYPE]),
             schemaConfig,
             dataVar,
             label,
