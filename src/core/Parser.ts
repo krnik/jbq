@@ -1,9 +1,10 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { REQUIRED, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
-import { debug, E } from '../utils/index';
+import { debug, E, is } from '../utils/index';
 
 const DATA_VAR = '_d';
 const INDENT = Symbol('parser_indent');
+
 export interface ISchemaConfig {
     [INDENT]?: string;
     [TYPE]?: string;
@@ -38,32 +39,20 @@ function getSchemaEntries<T extends ISchema> (
     };
 }
 
-function typePropFirst (entries: Array<[string, any]>) {
-    const type = entries.filter((e) => e[0] === TYPE);
-    const rest = entries.filter((e) => e[0] !== TYPE);
-    return [...type, ...rest];
+function sortEntriesByKeys (entries: Array<[string, any]>, firstKeys: string[]) {
+    const result = firstKeys.reduce((acc, key) => {
+        const entry = entries.find(([k]) => k === key);
+        return entry
+            ? (acc.push(entry), acc)
+            : acc;
+    }, ([] as Array<[string, any]>));
+    const rest = entries.filter(([key]) => !firstKeys.includes(key));
+    return [...result, ...rest];
 }
 
-function replaceWith (base: string, phrase: string, to: string) {
-    const regex = new RegExp(`[^\\w$_]\\b(${phrase})\\b[^\\w$_]`, 'g');
+function replacePhrase (base: string, phrase: string, to: string) {
+    const regex = new RegExp(`[^\\w$_]\\b(${phrase})\\b[^\\w$_]?`, 'g');
     return base.replace(regex, (match, $1) => match.replace($1, to));
-}
-
-function isPrimitiveLiteral (value: any) {
-    if (value == null) return true;
-    switch (typeof value) {
-    case 'string':
-    case 'number':
-    case 'boolean':
-        return true;
-    default:
-        return false;
-    }
-}
-
-function toLiteral (value: any) {
-    if (typeof value === 'string') return `'${value}'`;
-    return value as string;
 }
 
 function getSourceCode (
@@ -71,6 +60,7 @@ function getSourceCode (
     entries: Array<[string, any]>,
     config: ISchemaConfig,
     dataVar: string,
+    label: string,
 ) {
     const source = {
         code: '',
@@ -82,30 +72,24 @@ function getSourceCode (
         if (!type[key]) E.missingTypeMethod(type[SYM_TYPE_NAME], key);
         type[SYM_TYPE_VALIDATE][key](value);
 
-        const paramName = `${dataVar}_p${key}`;
+        const paramName = `${dataVar}$${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
-            const typeMethod = type[key].bind(null, value);
-            source.code += `
-            ${paramName}(${dataVar});
-            `;
+            const typeMethod = type[key].bind(undefined, value);
+            source.code += `\n${paramName}(${dataVar});`;
             source.args.push(typeMethod);
             source.params.push(paramName);
         } else {
-            const typeMethodBody = (type[key].toString().match(/{[\W\w]+}/g) as RegExpMatchArray)[0];
-            let body = replaceWith(typeMethodBody, 'data', dataVar);
-            // const indent = typeMethodBody.match(/([^\n\r]+)}$/) || '';
-            if (isPrimitiveLiteral(value)) {
-                body = replaceWith(body, 'base', toLiteral(value));
-                // source.code += `\n${indent && indent[1]}${body}`;
-                source.code += `
-                ${body}
-                `;
+            const methodBody = (type[key]
+                .toString()
+                .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
+                .replace('///break', `\nbreak ${label};\n`);
+            let code = replacePhrase(methodBody, 'data', dataVar);
+            if (is.primitiveLiteral(value)) {
+                code = replacePhrase(code, 'base', is.toLiteral(value));
+                source.code += `\n${code}`;
             } else {
-                body = replaceWith(body, 'base', paramName);
-                // source.code += `\n${indent && indent[1]}${body}`;
-                source.code += `
-                ${body}
-                `;
+                code = replacePhrase(code, 'base', paramName);
+                source.code += `\n${code}`;
                 source.args.push(value);
                 source.params.push(paramName);
             }
@@ -120,6 +104,7 @@ function parseSchema (
     config: ISchemaConfig,
     name: string,
     dataVar: string,
+    label: string,
 ) {
     debug('yellow', name, config[INDENT]);
     const typeName: string = schema[TYPE] || config[TYPE];
@@ -135,8 +120,14 @@ function parseSchema (
         entries: schemaEntries,
     } = getSchemaEntries({ ...config, ...schema }, config);
     if (schemaEntries.length) {
-        const src = getSourceCode(type, typePropFirst(schemaEntries), schemaConfig, dataVar);
-        source.code += src.code;
+        const src = getSourceCode(
+            type,
+            sortEntriesByKeys(schemaEntries, [REQUIRED, TYPE]),
+            schemaConfig,
+            dataVar,
+            label,
+        );
+        source.code += `\n${label}: {${src.code}`;
         source.params.push(...src.params);
         source.args.push(...src.args);
     } else E.noKeysInSchema(name);
@@ -147,24 +138,21 @@ function parseSchema (
         ];
         for (const [i, key] of allKeys.entries()) {
             const newDataVar = `${dataVar}_k${i}`;
-            const src = parseSchema(types, schema[SYM_SCHEMA_PROPERTIES]![key as any], schemaConfig, key.toString(), newDataVar);
+            const src = parseSchema(
+                types,
+                schema[SYM_SCHEMA_PROPERTIES]![key as any],
+                schemaConfig,
+                key.toString(),
+                newDataVar,
+                `${newDataVar}_label`,
+            );
             if (typeof key !== 'string') {
                 const keyParam = `${newDataVar}$`;
-                source.code += `
-                {
-                    const ${newDataVar} = ${dataVar}[${keyParam}];
-                    ${src.code}
-                }
-                `;
+                source.code += `\nconst ${newDataVar} = ${dataVar}[${keyParam}];${src.code}`;
                 source.params.push(...[...src.params, keyParam]);
                 source.args.push(...[...src.args, key]);
             } else {
-                source.code += `
-                {
-                    const ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];
-                    ${src.code}
-                }
-                `;
+                source.code += `\nconst ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];${src.code}`;
                 source.params.push(...src.params);
                 source.args.push(...src.args);
             }
@@ -172,12 +160,19 @@ function parseSchema (
     }
     if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
         const useForOf = !type[SYM_TYPE_FOR_LOOP];
-        const accessor = `${dataVar}_i$`;
+        const accessor = `${dataVar}$i`;
         const nextDataVar = useForOf
             ? `${dataVar}_i`
             : `${dataVar}[${accessor}]`;
-        const src = parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, schemaConfig, name, nextDataVar);
-        source.code = useForOf
+        const src = parseSchema(
+            types,
+            schema[SYM_SCHEMA_COLLECTION]!,
+            schemaConfig,
+            name,
+            nextDataVar,
+            `${dataVar}_i_label`,
+        );
+        source.code += useForOf
             ? `
             {
                 if (!(Symbol.iterator in ${dataVar})) {
@@ -186,18 +181,17 @@ function parseSchema (
                 for (const ${nextDataVar} of ${dataVar}) {
                     ${src.code}
                 }
-            }
-            `
+            }`
             : `
             {
                 for (let ${accessor} = 0; ${accessor} < ${dataVar}.length; ${accessor}++) {
                     ${src.code}
                 }
-            }
-            `;
+            }`;
         source.params.push(...src.params);
         source.args.push(...src.args);
     }
+    source.code += '\n}\n';
     return source;
 }
 
@@ -208,7 +202,14 @@ export function parser<T extends ISchemas, K extends keyof T> (
     const patterns = {} as ParserResult<T>;
     const { entries, config } = getSchemaEntries(schemas, {}, '');
     for (const [schemaName, schema] of entries) {
-        const src = parseSchema(types, schema, config, schemaName, DATA_VAR);
+        const src = parseSchema(
+            types,
+            schema,
+            config,
+            schemaName,
+            DATA_VAR,
+            `${DATA_VAR}_label`,
+        );
         const valdate = new Function([...src.params, DATA_VAR].toString(), src.code);
         patterns[schemaName as K] = valdate.bind(undefined, ...src.args);
     }

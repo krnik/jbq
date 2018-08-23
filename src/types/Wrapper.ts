@@ -1,5 +1,5 @@
-import { SYM_TYPE_EXTERNAL, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, SYM_TYPE_FOR_LOOP } from '../constants';
-import { E, isType } from '../utils/index';
+import { SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE } from '../constants';
+import { E, is } from '../utils/index';
 
 type TypeProtoValidationMethod = (...args: any[]) => void;
 type TypeProtoMethod = (...args: any[]) => void;
@@ -24,7 +24,7 @@ export class TypeWrapper {
     }
 
     public set (name: string, type: ITypeProto, protoName?: string) {
-        if (!isType.string(name)) E.invalidArgument('name', 'string', typeof name);
+        if (!is.string(name)) E.invalidArgument('name', 'string', typeof name);
         if (this.types.has(name)) E.typeAlreadyDefined(name);
         if (!Object.keys(type).length) E.invalidTypeProto(name);
         if (type[SYM_TYPE_EXTERNAL] && !Array.isArray(type[SYM_TYPE_EXTERNAL]))
@@ -36,7 +36,7 @@ export class TypeWrapper {
             Object.setPrototypeOf(type[SYM_TYPE_VALIDATE], proto[SYM_TYPE_VALIDATE]);
         }
         for (const key of Object.keys(type))
-            if (!isType.objectInstance(type[SYM_TYPE_VALIDATE][key], 'Function'))
+            if (!is.objectInstance(type[SYM_TYPE_VALIDATE][key], 'Function'))
                 E.missingTypeValidationMethod(name, key);
         (type as IType)[SYM_TYPE_NAME] = name;
         this.types.set(name, type as IType);

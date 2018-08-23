@@ -7,7 +7,6 @@ export const SYM_TYPE_FOR_LOOP = Symbol.for('type_for_loop');
 export const SYM_TYPE_NAME = Symbol('type_name');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
-export const PERMISSION = 'permission';
 export const PROPERTIES = 'properties';
 export const REQUIRED = 'required';
 export const INCLUDES = 'includes';
@@ -27,6 +26,7 @@ export const TYPE_NAME = {
     NUMBER: 'number',
     OBJECT: 'object',
     ARRAY: 'array',
+    ANY: 'any',
  };
 /**
  * SCHEMA CONSTANTS

@@ -1,5 +1,5 @@
 import { MAX, MIN, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, isType } from '../utils/index';
+import { E, is } from '../utils/index';
 
 export const TypeNumber = {
     [TYPE] (base: string, data: any) {
@@ -16,15 +16,15 @@ export const TypeNumber = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!isType.string(value))
+            if (!is.string(value))
                 E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
         [MIN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MIN, 'number', typeof value);
         },
         [MAX] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MAX, 'number', typeof value);
         },
     },

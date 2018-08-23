@@ -1,5 +1,5 @@
 import { SYM_TYPE_VALIDATE, TYPE, VALUE } from '../constants';
-import { E, isType } from '../utils/index';
+import { E, is } from '../utils/index';
 
 export const TypeBoolean = {
   [TYPE] (base: string, data: any) {
@@ -12,12 +12,12 @@ export const TypeBoolean = {
   },
   [SYM_TYPE_VALIDATE]: {
     [TYPE] (value: any = E.invalidArgument('value')) {
-        if (!isType.string(value))
-            E.invalidSchemaPropType(TYPE, 'string primitive', typeof value);
+        if (!is.string(value))
+            E.invalidSchemaPropType(TYPE, 'string', typeof value);
     },
     [VALUE] (value: any = E.invalidArgument('value')) {
-        if (!isType.boolean(value))
-            E.invalidSchemaPropType(VALUE, 'boolean primitive', typeof value);
+        if (!is.boolean(value))
+            E.invalidSchemaPropType(VALUE, 'boolean', typeof value);
     },
   },
 };

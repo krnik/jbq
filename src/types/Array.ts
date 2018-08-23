@@ -1,5 +1,5 @@
 import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_FOR_LOOP } from '../constants';
-import { E, isType } from '../utils/index';
+import { E, is } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index: number, arr: any[], thisArg?: any) => boolean;
 export const TypeArray = {
@@ -33,31 +33,31 @@ export const TypeArray = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!isType.string(value))
-                E.invalidSchemaPropType(TYPE, 'string primitive', typeof value);
+            if (!is.string(value))
+                E.invalidSchemaPropType(TYPE, 'string', typeof value);
         },
         [EVERY] (value: any = E.invalidArgument('value')) {
-            if (!isType.objectInstance(value, 'Function'))
+            if (!is.objectInstance(value, 'Function'))
                 E.invalidSchemaPropType(EVERY, 'function', typeof value);
         },
         [SOME] (value: any = E.invalidArgument('value')) {
-            if (!isType.objectInstance(value, 'Function'))
+            if (!is.objectInstance(value, 'Function'))
                 E.invalidSchemaPropType(SOME, 'function', typeof value);
         },
+        // @ts-ignore
         [INCLUDES] (value: any = E.invalidArgument('value')) {
             // for now this function will accept any value excluding undefined
-            return value;
         },
         [MIN_LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MIN_LEN, 'number', typeof value);
         },
         [MAX_LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(MAX_LEN, 'number', typeof value);
         },
         [LEN] (value: any = E.invalidArgument('value')) {
-            if (!isType.number(value))
+            if (!is.number(value))
                 E.invalidSchemaPropType(LEN, 'number', typeof value);
         },
     },

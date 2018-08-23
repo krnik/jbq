@@ -5,7 +5,6 @@ const path = require('path');
 const TYPE_METHOD = {
     CONSTRUCTOR_NAME: 'constructorName',
     INSTANCE_OF: 'instanceOf',
-    PERMISSION: 'permission',
     PROPERTIES: 'properties',
     REQUIRED: 'required',
     INCLUDES: 'includes',
@@ -76,6 +75,10 @@ const ANCHOR = {
         SOME_EXAMPLE: `array-${TYPE_METHOD.SOME}-example`,
         INCLUDES_EXAMPLE: `array-${TYPE_METHOD.INCLUDES}-example`,
     },
+    ANY: {
+        TYPE_EXAMPLE: `any-${TYPE_METHOD.TYPE}-example`,
+        REQUIRED_EXAMPLE: `any-${TYPE_METHOD.TYPE}-example`,
+    },
 };
 const PATH = {
     BOOL: {
@@ -121,6 +124,13 @@ const PATH = {
             EVERY: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.EVERY_EXAMPLE}`,
             SOME: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.SOME_EXAMPLE}`,
             INCLUDES: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.INCLUDES_EXAMPLE}`,
+        },
+    },
+    ANY: {
+        SRC: '../../blob/master/src/types/Any.ts',
+        EXAMPLE: {
+            TYPE: `${WIKI.TYPE_EXAMPLE}`,
+            REQUIRED: `${WIKI.TYPE_EXAMPLE}`,
         },
     },
     PARSER: {

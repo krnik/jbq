@@ -2,6 +2,7 @@
 - [How it works?](#how-it-works?)
 - [Symbols](#symbols)
 - [Schema config](#schema-config)
+- [Break](#break)
 
 [Source Code](${PATH.PARSER.SRC})
 ***
@@ -176,3 +177,40 @@ const schema = {
     },
 };
 ```
+### Break
+In ${NAME.LIB} all schema-scoped checks are grouped in one labeled code block.
+Let's visualize it.
+```javascript
+// parsed function structure
+function (data) {
+    _d_label: {
+        {
+            // type check
+        }
+        // other checks
+    }
+}
+```
+If you want to break currently executed code block you have to add `///break` comment to the type method.
+Here is how `${TYPE_METHOD.REQUIRED}` function looks like.
+```typescript
+    if (data === undefined && !base) {
+        ///break
+    }
+```
+If passed value will be undefined then code execution in labeled block will be stopped.
+```javascript
+// parsed function structure with break statement
+function (data) {
+    _d_label: {
+        { // required check
+            if (data === undefined && !base) {
+                break _d_label;
+            }
+        }
+        // other checks
+    }
+}
+```
+
+> If type method is included in [`${SYM.TYPE_EXTERNAL}`] type property then it will not be able to break code block.

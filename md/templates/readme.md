@@ -72,10 +72,9 @@ validator.String('122');
 - [Schema Parser](../../wiki/${WIKI.PARSER})
 ***
 ## Roadmap
-This library aims to provide set of useful and performant tool for data validation. There is still a lot work left to do :)
+This library aims to provide set of useful and performant tool for data validation.
 
-Features that would be useful imo and I'm considering adding:
-- required schema property (it would checks if value would be undefined). This would require either some kind of callbacks to break checks for current block, or it would require use of `break` statements and labeled code blocks.
+Features that most likely will be added in near future:
 - access control
 
 If you would like to contribute - feel free to do so :)
