@@ -14,6 +14,7 @@ Every built-in type other than `any` extends `any`.
 `any` type allows schema properties such as:
 - **${TYPE_METHOD.TYPE}** - *checks type of passed value ([example](${PATH.ANY.EXAMPLE.TYPE}))*
 - **${TYPE_METHOD.REQUIRED}** - *checks if value exists, if not then it breaks current block of code ([example](${PATH.ANY.EXAMPLE.REQUIRED}))*
+
 [Source Code](${PATH.ANY.SRC})
 ***
 ### **`boolean`**

@@ -83,14 +83,14 @@ const ANCHOR = {
 };
 const PATH = {
     BOOL: {
-        SRC: '../../blob/master/src/types/Boolean.ts',
+        SRC: '../blob/master/src/types/Boolean.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.TYPE_EXAMPLE}`,
             VALE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.BOOL.VALUE_EXAMPLE}`,
         },
     },
     STRING: {
-        SRC: '../../blob/master/src/types/Boolean.ts',
+        SRC: '../blob/master/src/types/Boolean.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.TYPE_EXAMPLE}`,
             MIN_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.STRING.MIN_LEN_EXAMPLE}`,
@@ -100,7 +100,7 @@ const PATH = {
         },
     },
     NUMBER: {
-        SRC: '../../blob/master/src/types/Number.ts',
+        SRC: '../blob/master/src/types/Number.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.TYPE_EXAMPLE}`,
             MIN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MIN_EXAMPLE}`,
@@ -108,7 +108,7 @@ const PATH = {
         },
     },
     OBJECT: {
-        SRC: '../../blob/master/src/types/Object.ts',
+        SRC: '../blob/master/src/types/Object.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.TYPE_EXAMPLE}`,
             CONSTRUCTOR_NAME: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.OBJECT.CONSTRUCTOR_NAME_EXAMPLE}`,
@@ -116,7 +116,7 @@ const PATH = {
         },
     },
     ARRAY: {
-        SRC: '../../blob/master/src/types/Array.ts',
+        SRC: '../blob/master/src/types/Array.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.TYPE_EXAMPLE}`,
             MIN_LEN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.ARRAY.MIN_LEN_EXAMPLE}`,
@@ -128,17 +128,17 @@ const PATH = {
         },
     },
     ANY: {
-        SRC: '../../blob/master/src/types/Any.ts',
+        SRC: '../blob/master/src/types/Any.ts',
         EXAMPLE: {
             TYPE: `${WIKI.TYPE_EXAMPLE}`,
             REQUIRED: `${WIKI.TYPE_EXAMPLE}`,
         },
     },
     PARSER: {
-        SRC: '../../blob/master/src/core/Parser.ts',
+        SRC: '../blob/master/src/core/Parser.ts',
     },
     TYPE_WRAPPER: {
-        SRC: '../../blob/master/src/types/Wrapper.ts',
+        SRC: '../blob/master/src/types/Wrapper.ts',
     },
 };
 
