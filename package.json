@@ -1,7 +1,7 @@
 {
-  "name": "valid-js",
+  "name": "vjs-validator",
   "version": "0.0.1",
-  "description": "Yet another JS schema validator.",
+  "description": "Yet another customizable JS schema validator.",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib"
@@ -15,15 +15,14 @@
     "test:perf": "node ./lib.dev/test/perf/benchmark.js"
   },
   "keywords": [
-    "validator",
-    "json"
+    "validator"
   ],
   "author": "krnik",
   "license": "ISC",
-  "homepage": "https://github.com/krnik/valid-js",
+  "homepage": "https://github.com/krnik/vjs-validator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/krnik/valid-js"
+    "url": "https://github.com/krnik/vjs-validator"
   },
   "devDependencies": {
     "@types/benchmark": "1.0.31",

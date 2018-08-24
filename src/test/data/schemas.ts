@@ -97,7 +97,7 @@ const $Object: ITestSchema = {
 };
 $Object[VALID] = {
     ...$Object,
-    [PROPERTIES]: ['0'],
+    [PROPERTIES]: ['0', 'length'],
     [SYM_FAKER]: () => [{
         string: callFakerIfNeeded($String[VALID]![SYM_FAKER]),
         number: callFakerIfNeeded($Number[VALID]![SYM_FAKER]),

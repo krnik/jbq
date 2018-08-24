@@ -581,7 +581,10 @@ export default () => describe('Types', () => {
         describe(PROPERTIES, () => {
             const base = ['0', '1'];
             it('valid value', () => {
-                const value = [1, 'nice, second index!'];
+                const value = {
+                    0: 1,
+                    1 : 'nice, second index!',
+                };
                 if (TypeObject[PROPERTIES](base, value) !== undefined)
                     throw Error('It should return undefined when validating valid value.');
             });

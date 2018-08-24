@@ -31,8 +31,8 @@ const SYM = {
 };
 
 const NAME = {
-    LIB: 'Valid-JS',
-    REPO: 'valid-js',
+    LIB: 'VJS-Validator',
+    REPO: 'vjs-validator',
     CONSTRUCTOR: 'VJS',
     TYPES: 'VJSTypes',
 };

@@ -40,7 +40,7 @@ export const TypeObject = {
         },
         [PROPERTIES] (value: any = E.invalidArgument('value')) {
             if (!is.objectInstance(value, 'Array') ||
-                value.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
+                !value.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
                 E.invalidSchemaPropType(PROPERTIES, 'array', typeof value);
         },
     },

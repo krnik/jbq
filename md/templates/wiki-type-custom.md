@@ -25,7 +25,7 @@ Value `undefined` will let validator know that no checks failed for current stag
 ```javascript
 const tuple = {
   ${TYPE_METHOD.TYPE} (base, data) {
-    const keys = Object.keys(data);
+    const keys = Object.getOwnPropertyKeys(data);
     const hasOnlyTwoKeys = keys.length === 2 && keys.every((e) => ['0', '1'].includes(e));
     const elemsTypeMatch = hasOnlyTwoKeys && typeof data['0'] === 'string' && typeof data['1'] === 'number';
     if (!(hasOnlyTwoKeys && elemsTypeMatch))
@@ -72,4 +72,25 @@ const tuple = {
     },
   },
 };
+```
+
+Example:
+```javascript
+const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require(${NAME.REPO});
+const tuple = require('path/to/tuple');
+// tuple type will extend any type and will gain required method in its prototype
+${NAME.TYPES}.set('tuple', tuple, 'any');
+
+const schemas = {
+    Tuple: {
+        type: 'tuple',
+    },
+};
+
+const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+validator.Tuple({ 0: 'value', 1: 'value' });
+// => undefined
+validator.Tuple(['value', 'value']);
+// => error message
+// array has additional `length` property
 ```
