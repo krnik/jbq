@@ -1,6 +1,7 @@
 /**
  * TYPE CONSTANTS
  */
+export const SYM_TYPE_KEY_ORDER = Symbol.for('type_key_order');
 export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const SYM_TYPE_FOR_LOOP = Symbol.for('type_for_loop');

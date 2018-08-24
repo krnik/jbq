@@ -1,4 +1,4 @@
-import { REQUIRED, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { REQUIRED, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_KEY_ORDER } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E, is } from '../utils/index';
 
@@ -122,7 +122,7 @@ function parseSchema (
     if (schemaEntries.length) {
         const src = getSourceCode(
             type,
-            sortEntriesByKeys(schemaEntries, [REQUIRED, TYPE]),
+            sortEntriesByKeys(schemaEntries, type[SYM_TYPE_KEY_ORDER]),
             schemaConfig,
             dataVar,
             label,

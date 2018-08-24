@@ -1,4 +1,4 @@
-import { REQUIRED, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { REQUIRED, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/index';
 
 export const TypeAny = {
@@ -20,4 +20,5 @@ export const TypeAny = {
                 E.invalidSchemaPropType(REQUIRED, 'boolean', typeof value);
         },
     },
+    [SYM_TYPE_KEY_ORDER]: [REQUIRED, TYPE],
 };

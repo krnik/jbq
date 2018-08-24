@@ -50,6 +50,14 @@ _d_param_type(_d);
 ***
 ### Symbols
 ***
+#### `${SYM.TYPE_KEY_ORDER}`
+> Sets the order in which schema properties checks appear in parsed function for given type. It must be an array of strings. Default value - `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
+
+Let's assume that our `${SYM.TYPE_KEY_ORDER}` is default value `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
+Then parsed function checks will be sorted in order:
+1. `${TYPE_METHOD.REQUIRED}`
+2. `${TYPE_METHOD.TYPE}`
+3. Other type methods
 #### `${SYM.TYPE_FOR_LOOP}`
 > By default collections are iterated using for..of loop. This Symbol tells parser to use standard for loop for arrays - which is 2-4 times faster.
 ```javascript
@@ -184,14 +192,15 @@ Let's visualize it.
 // parsed function structure
 function (data) {
     _d_label: {
-        {
-            // type check
+        { // required check
         }
-        // other checks
+        { // type check
+        }
+        // other checks ...
     }
 }
 ```
-If you want to break currently executed code block you have to add `///break` comment to the type method.
+If you want to break currently executed code block you have to add `///break` comment to the types' method.
 Here is how `${TYPE_METHOD.REQUIRED}` function looks like.
 ```typescript
     if (data === undefined && !base) {

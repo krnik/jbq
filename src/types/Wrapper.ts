@@ -1,4 +1,4 @@
-import { SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE } from '../constants';
+import { SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE } from '../constants';
 import { E, is } from '../utils/index';
 
 type TypeProtoValidationMethod = (...args: any[]) => void;
@@ -10,10 +10,12 @@ export interface ITypeProto {
     [SYM_TYPE_EXTERNAL]?: string[];
     [SYM_TYPE_FOR_LOOP]?: boolean;
     [SYM_TYPE_VALIDATE]: ITypeProtoValidation;
+    [SYM_TYPE_KEY_ORDER]?: string[];
     [method: string]: TypeProtoMethod;
 }
 export interface IType extends ITypeProto {
     [SYM_TYPE_NAME]: string;
+    [SYM_TYPE_KEY_ORDER]: string[];
 }
 
 export class TypeWrapper {
@@ -29,6 +31,8 @@ export class TypeWrapper {
         if (!Object.keys(type).length) E.invalidTypeProto(name);
         if (type[SYM_TYPE_EXTERNAL] && !Array.isArray(type[SYM_TYPE_EXTERNAL]))
             E.invalidTypeProp(name, SYM_TYPE_EXTERNAL.toString(), 'array');
+        if (!Array.isArray(type[SYM_TYPE_KEY_ORDER]) && !protoName)
+            E.invalidTypeProto(name, SYM_TYPE_KEY_ORDER.toString());
         if (protoName) {
             if (!this.types.has(protoName)) E.missingType(name, protoName);
             const proto = this.types.get(protoName)!;

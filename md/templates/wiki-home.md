@@ -3,3 +3,4 @@
     * [Custom Type](${WIKI.TYPE_CUSTOM})
     * [Examples](${WIKI.TYPE_EXAMPLE})
     * [Type Wrapper](${WIKI.TYPE_WRAPPER})
+  * [Parser](${WIKI.PARSER})

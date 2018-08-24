@@ -25,8 +25,10 @@ export const E = {
         const errorMessage = `<${typeName}> type must have [${methodName}] schema validator function defined in [${SYM_TYPE_VALIDATE.toString()}] property.`;
         throw Error(errorMessage);
     },
-    invalidTypeProto (typeName: string) {
-        const errorMessage = `Can't add type <${typeName}> that does not contain any methods`;
+    invalidTypeProto (typeName: string, propertyName?: string) {
+        const errorMessage = propertyName
+            ? `Can't add type <${typeName}> that does not contain ${propertyName} property.`
+            : `Can't add type <${typeName}> that does not contain any methods`;
         throw Error(errorMessage);
     },
     invalidTypeProp (typeName: string, propName: string, desired: string) {
