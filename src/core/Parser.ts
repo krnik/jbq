@@ -18,10 +18,6 @@ export interface ISchema {
 export interface ISchemas {
     [schemaName: string]: ISchema;
 }
-type ValidateFunction = (data: any) => string | undefined;
-type ParserResult<T> = {
-    [K in keyof T]: ValidateFunction;
-};
 
 function getSchemaEntries<T extends ISchema> (
     schema: T,
@@ -195,7 +191,15 @@ function parseSchema (
     return source;
 }
 
-export function parser<T extends ISchemas, K extends keyof T> (
+type ValidateFn = (data: any) => string | undefined;
+type OmitSymbols<T> = Pick<T, {
+    [K in keyof T]: K extends  typeof SYM_SCHEMA_CONFIG ? never : K;
+}[keyof T]>;
+type ParserResult<T> = {
+    [P in keyof OmitSymbols<T>]: ValidateFn;
+};
+
+export function parser<T, K extends keyof OmitSymbols<T>> (
     types: TypeWrapper,
     schemas: T,
 ) {
