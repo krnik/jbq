@@ -149,31 +149,31 @@ const files = [
     },
     {
         path: path.resolve(__dirname, './templates/wiki-home.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.HOME}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.HOME}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-sidebar.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.SIDEBAR}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.SIDEBAR}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-type-custom.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_CUSTOM}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_CUSTOM}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-type.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-parser.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.PARSER}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.PARSER}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_WRAPPER}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
     {
         path: path.resolve(__dirname, './templates/wiki-type-example.md'),
-        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_EXAMPLE}.md`),
+        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_EXAMPLE}.md`),
     },
 ];
 
