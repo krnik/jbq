@@ -14,12 +14,16 @@ export const TypeObject = {
         if (!(data instanceof base))
             return `Data should be instance of ${base}.`;
     },
-    [PROPERTIES] (base: string[], data: any) {
-        if (base.length !== Object.keys(data).length)
+    [PROPERTIES] (base: Array<(string | number | symbol)>, data: any) {
+        const keys = [
+            ...Object.getOwnPropertyNames(data),
+            ...Object.getOwnPropertySymbols(data),
+        ];
+        if (base.length !== keys.length)
             return `Data should have exactly ${base} keys.`;
         for (const key of base)
             if (!data.hasOwnProperty(key))
-                return `Data should have ${key} property.`;
+                return `Data should have ${key.toString()} property.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {
@@ -35,7 +39,8 @@ export const TypeObject = {
                 E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof value);
         },
         [PROPERTIES] (value: any = E.invalidArgument('value')) {
-            if (!is.objectInstance(value, 'Array'))
+            if (!is.objectInstance(value, 'Array') ||
+                value.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
                 E.invalidSchemaPropType(PROPERTIES, 'array', typeof value);
         },
     },

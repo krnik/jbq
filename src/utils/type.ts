@@ -8,6 +8,9 @@ export const is = {
     string (value: any) {
         return typeof value === 'string';
     },
+    symbol (value: any) {
+        return typeof value === 'symbol';
+    },
     objectInstance (value: any, constructorName: string) {
         return value == null ? value : Object.getPrototypeOf(value).constructor.name === constructorName;
     },

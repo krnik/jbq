@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
 - [Wiki](#wiki)
-- [Roadmap](#roadmap)
 ***
 ## Introduction
 ***
@@ -13,7 +12,6 @@ Features:
 - data validation
 - customisable types
 - based on schemas
-<!-- - access controll -->
 ***
 ## Usage Example
 ***
@@ -23,6 +21,7 @@ Features:
 // of passed value will be validated as well
 // You can read more about it in ${WIKI.PARSER} wiki page
 const PROPS = ${SYM.SCHEMA_PROPERTIES};
+const ITEMS = ${SYM.SCHEMA_COLLECTION};
 const schemas = {
     // User schema expects value to be an object
     // with properties ['names', 'email']
@@ -34,7 +33,10 @@ const schemas = {
         [PROPS]: {
             names: {
                 ${TYPE_METHOD.TYPE}: 'array',
-                ${TYPE_METHOD.LEN}: 4,
+                ${TYPE_METHOD.LEN}: 2,
+                [ITEMS]: {
+                    ${TYPE_METHOD.TYPE}: 'string',
+                },
             },
             email: {
                 ${TYPE_METHOD.TYPE}: 'string',
@@ -71,10 +73,3 @@ validator.String('122');
 - [Type Wrapper](../../wiki/${WIKI.TYPE_WRAPPER})
 - [Schema Parser](../../wiki/${WIKI.PARSER})
 ***
-## Roadmap
-This library aims to provide set of useful and performant tool for data validation.
-
-Features that most likely will be added in near future:
-- access control
-
-If you would like to contribute - feel free to do so :)
