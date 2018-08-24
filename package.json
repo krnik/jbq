@@ -15,8 +15,7 @@
     "test:perf": "node ./lib.dev/test/perf/benchmark.js"
   },
   "keywords": [
-    "validator",
-    "json"
+    "validator"
   ],
   "author": "krnik",
   "license": "ISC",
