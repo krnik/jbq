@@ -9,13 +9,15 @@ export default () => describe('Validator', () => {
     };
     for (const key of Object.keys(data.valid))
         it(`valid value ${key}`, () => {
-            const validator = new VJS(createTypes(), schemas.valid);
+            const validator = VJS(createTypes(), schemas.valid);
+            // @ts-ignore
             const res = validator[key](data.valid[key]);
             if (res) throw Error('it should not return error message');
         });
     for (const key of Object.keys(data.invalid))
         it(`invalid value ${key}`, () => {
-            const validator = new VJS(createTypes(), schemas.invalid);
+            const validator = VJS(createTypes(), schemas.invalid);
+            // @ts-ignore
             const res = validator[key](data.invalid[key]);
             if (!res) throw Error('it should return error message');
         });

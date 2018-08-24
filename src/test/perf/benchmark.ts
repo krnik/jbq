@@ -86,12 +86,14 @@ const data = createData(schemas.valid);
 console.log(data);
 const createTest = {
     vjs (schemaName: string) {
-        const validator = new VJS(createTypes(), schemas.valid);
+        const validator = VJS(createTypes(), schemas.valid);
+        // @ts-ignore
         return validator[schemaName].bind(undefined, data[schemaName]);
     },
     invalidvjs (schemaName: string) {
-        const validator = new VJS(createTypes(), schemas.valid);
+        const validator = VJS(createTypes(), schemas.valid);
         const invalidKey = Object.keys(data).find((e) => e !== schemaName) as string;
+        // @ts-ignore
         return validator[schemaName].bind(undefined, data[invalidKey]);
     },
     ajv (schemaName: string) {

@@ -171,6 +171,10 @@ const files = [
         path: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
         out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
+    {
+        path: path.resolve(__dirname, './templates/wiki-type-example.md'),
+        out: path.resolve(__dirname, `../valid-js.wiki/${WIKI.TYPE_EXAMPLE}.md`),
+    },
 ];
 
 for (const file of files) {

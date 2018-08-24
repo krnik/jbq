@@ -51,7 +51,7 @@ const schemas = {
 ```javascript
 // ${NAME.TYPES} allows you to add your custom types
 const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require('${NAME.REPO}');
-const validator = new ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 ```
 For more info about ${NAME.TYPES} see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
 > Validate

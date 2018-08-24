@@ -7,7 +7,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'any',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Any(undefined);
 // => undefined
 // never returns error message
@@ -23,7 +23,7 @@ const schemas = {
         ${TYPE_METHOD.REQUIRED}: false,
     },
 };
-const validator = new ${NAME.CONTSRUCTOR}(schemas);
+const validator = ${NAME.CONTSRUCTOR}(schemas);
 validator.BoolOpt(undefined);
 // => undefined
 validator.BoolOpt(null);
@@ -39,7 +39,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'boolean',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Bool(true);
 // => undefined
 validator.Bool(0);
@@ -55,7 +55,7 @@ const schemas = {
         ${TYPE_METHOD.VALUE}: true,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Bool(true);
 // => undefined
 validator.Bool(false);
@@ -71,7 +71,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'string',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.String('This is a strig');
 // => undefined
 validator.String(0);
@@ -87,7 +87,7 @@ const schemas = {
         ${TYPE_METHOD.MIN_LEN}: 10,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.String('This is a string');
 // => undefined
 validator.String('short');
@@ -103,7 +103,7 @@ const schemas = {
         ${TYPE_METHOD.MAX_LEN}: 10,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.String('string');
 // => undefined
 validator.String('This is a string');
@@ -119,7 +119,7 @@ const schemas = {
         ${TYPE_METHOD.LEN}: 6,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.String('string');
 // => undefined
 validator.String('This is a string');
@@ -135,7 +135,7 @@ const schemas = {
         ${TYPE_METHOD.REGEX}: /a string/,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.String('This is a string');
 // => undefined
 validator.String('string');
@@ -151,7 +151,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'number',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Number(1000);
 // => undefined
 validator.Number(NaN);
@@ -167,7 +167,7 @@ const schemas = {
         ${TYPE_METHOD.MIN}: 10,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Number(10);
 // => undefined
 validator.Number(0);
@@ -183,7 +183,7 @@ const schemas = {
         ${TYPE_METHOD.MAX}: 10,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Number(0);
 // => undefined
 validator.Number(11);
@@ -199,7 +199,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'object',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Object({});
 // => undefined
 validator.Object(null);
@@ -215,7 +215,7 @@ const schemas = {
         ${TYPE_METHOD.CONSTRUCTOR_NAME}: 'RegExp',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Object(new RegExp('\\d'));
 // => undefined
 validator.Object(new Array(0));
@@ -231,7 +231,7 @@ const schemas = {
         ${TYPE_METHOD.INSTANCE_OF}: Object,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Object(new Number(0));
 // => undefined
 validator.Object(Number(null));
@@ -246,7 +246,7 @@ const schemas = {
         ${TYPE_METHOD.PROPERTIES}: [],
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Object({});
 // => undefined
 validator.Object({ prop: 'value' });
@@ -262,7 +262,7 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'array',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([]);
 // => undefined
 validator.Array(false);
@@ -278,7 +278,7 @@ const schemas = {
         ${TYPE_METHOD.MIN_LEN}: 1,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([,]);
 // => undefined
 validator.Array([]);
@@ -294,7 +294,7 @@ const schemas = {
         ${TYPE_METHOD.MAX_LEN}: 0,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([]);
 // => undefined
 validator.Array([,,]);
@@ -310,7 +310,7 @@ const schemas = {
         ${TYPE_METHOD.LEN}: 0,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([]);
 // => undefined
 validator.Array([true]);
@@ -326,7 +326,7 @@ const schemas = {
         ${TYPE_METHOD.EVERY} (elem, index, array, this) => elem === 0,
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([0, 0, 0, 0]);
 // => undefined
 validator.Array([0, 0, 0, 1]);
@@ -342,7 +342,7 @@ const schemas = {
         ${TYPE_METHOD.SOME} (elem, index, array, this) => (elem === 0),
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array([1, 1, 1, 0]);
 // => undefined
 validator.Array([1, 1, 1, 1]);
@@ -358,7 +358,7 @@ const schemas = {
         ${TYPE_METHOD.INCLUDES}: 'a string value',
     },
 };
-const validator = new ${NAME.CONSTRUCTOR}(schemas);
+const validator = ${NAME.CONSTRUCTOR}(schemas);
 validator.Array(['a string value', 0]);
 // => undefined
 validator.Array([]);

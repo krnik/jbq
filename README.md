@@ -51,7 +51,7 @@ const schemas = {
 ```javascript
 // VJSTypes allows you to add your custom types
 const { VJS, VJSTypes } = require('valid-js');
-const validator = new VJS(VJSTypes, schemas);
+const validator = VJS(VJSTypes, schemas);
 ```
 For more info about VJSTypes see [WIKI](../../wiki/type-wrapper).
 > Validate
