@@ -148,7 +148,9 @@ function parseSchema (
                 source.params.push(...[...src.params, keyParam]);
                 source.args.push(...[...src.args, key]);
             } else {
-                source.code += `\nconst ${newDataVar} = ${dataVar}['${key.replace('\'', '\\\'')}'];${src.code}`;
+                source.code += `
+                    const ${newDataVar} = ${dataVar}[${is.toLiteral(key)}];
+                    ${src.code}`;
                 source.params.push(...src.params);
                 source.args.push(...src.args);
             }

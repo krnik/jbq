@@ -27,7 +27,7 @@ export const is = {
     },
     toLiteral (value: any) {
         if (typeof value === 'string')
-            return `'${value.replace('\'', '\\\'')}'`;
+            return `\`${value.replace('\`', '\\\`')}\``;
         return value;
     },
 };
