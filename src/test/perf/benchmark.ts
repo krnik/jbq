@@ -1,159 +1,69 @@
-import ajv from 'ajv';
+import AJV from 'ajv';
 import Benchmark from 'benchmark';
+import Joi from 'joi';
 import { VJS } from '../../core/VJS';
 import { createTypes } from '../../types/index';
-import { createData, schemas } from '../data/index';
+import { booleanTests } from './tests/boolean';
+import { numberTests } from './tests/number';
+import { stringTests } from './tests/string';
+import { arrayTests } from './tests/array';
 
-// AJV schemas
-const ajvschemas: { [k: string]: any } = {
-    String: {
-        type: 'string',
-        minLength: 2,
-        maxLength: 64,
-        pattern: '@',
-    },
-    Boolean: {
-        type: 'boolean',
-    },
-    Number: {
-        type: 'number',
-        minimum: 18,
-        maximum: 120,
-    },
-    Object: {
-        type: 'array',
-        items: {
-            properties: {
-                string: {
-                    type: 'string',
-                    minLength: 2,
-                    maxLength: 64,
-                    pattern: '@',
-                },
-                number: {
-                    type: 'number',
-                    minimum: 18,
-                    maximum: 120,
-                },
-                boolean: {
-                    type: 'boolean',
-                },
-                array: {
-                    type: 'array',
-                    minItems: 4,
-                    maxItems: 16,
-                    contains: { type: 'number' },
-                },
-            },
+interface ITest {
+    name: string;
+    data: any;
+    schemas: Array<{
+        type: string;
+        ajv?: any;
+        vjs?: any;
+        joi?: any;
+    }>;
+}
+function createTests (bench: Benchmark.Suite, test: ITest) {
+    const passing = {
+        vjs (fn: (...x: any[]) => any) {
+            return () => {
+                if (fn() !== undefined) throw Error('It should not return any errors');
+            };
         },
-    },
-    Array: {
-        type: 'array',
-        minItems: 4,
-        maxItems: 16,
-        contains: { type: 'number' },
-    },
-    Symbols: {
-        type: 'array',
-        items: {
-            type: 'object',
-            properties: {
-                string: {
-                    type: 'string',
-                    minLength: 2,
-                    maxLength: 64,
-                    pattern: '@',
-                },
-                number: {
-                    type: 'number',
-                    minimum: 18,
-                    maximum: 120,
-                },
-                boolean: { type: 'boolean' },
-                array: {
-                    type: 'array',
-                    minItems: 4,
-                    maxItems: 16,
-                    contains: { type: 'number' },
-                },
-            },
+        ajv (fn: () => any) {
+            return () => {
+                if (!fn()) throw Error('It should not return any errors');
+            };
         },
-    },
-};
-
-const data = createData(schemas.valid);
-// tslint:disable-next-line: no-console
-console.log(data);
-const createTest = {
-    vjs (schemaName: string) {
-        const validator = VJS(createTypes(), schemas.valid);
-        // @ts-ignore
-        return validator[schemaName].bind(undefined, data[schemaName]);
-    },
-    invalidvjs (schemaName: string) {
-        const validator = VJS(createTypes(), schemas.valid);
-        const invalidKey = Object.keys(data).find((e) => e !== schemaName) as string;
-        // @ts-ignore
-        return validator[schemaName].bind(undefined, data[invalidKey]);
-    },
-    ajv (schemaName: string) {
-        const AJV = new ajv().compile(ajvschemas[schemaName]);
-        return AJV.bind(undefined, data[schemaName]);
-    },
-    invalidajv (schemaName: string) {
-        const AJV = new ajv().compile(ajvschemas[schemaName]);
-        const invalidKey = Object.keys(data).find((e) => e !== schemaName) as string;
-        return AJV.bind(undefined, data[invalidKey]);
-    },
-};
-
-function passingTest (fn: any) {
-    return () => {
-        const res = fn();
-        if (res === false || typeof res === 'string') {
-            // tslint:disable-next-line: no-console
-            console.log(res);
-            throw Error('returned error');
-        }
+        joi (fn: () => any) {
+            return () => {
+                if (fn().error) throw Error('It should not return any errors');
+            };
+        },
     };
+    function createName (type: string, prop: string, lib: string) {
+        const t = `\x1b[33m${type}\x1b[0m`;
+        const p = `\x1b[36m${prop}\x1b[0m`;
+        const l = `\x1b[33m${lib}\x1b[0m`;
+        return `${t}#${p}#${l}`;
+    }
+    for (const schema of test.schemas) {
+        const name = createName.bind(undefined, test.name, schema.type);
+        if (schema.vjs) {
+            const vjs = VJS(createTypes(), { string: schema.vjs });
+            bench.add(name('vjs'), passing.vjs(vjs.string.bind(undefined, test.data)));
+        }
+        if (schema.ajv) {
+            const ajv = new AJV().compile(schema.ajv);
+            bench.add(name('ajv'), passing.ajv(ajv.bind(undefined, test.data)));
+        }
+        if (schema.joi)
+            bench.add(name('joi'), passing.joi(Joi.validate.bind(Joi, test.data, schema.joi)));
+    }
 }
 
-function failingTest (fn: any) {
-    return () => {
-        const res = fn();
-        if (res === true || res === undefined) {
-            // tslint:disable-next-line: no-console
-            console.log(res);
-            throw Error('Test should return false result.');
-        }
-    };
-}
+const Bench = new Benchmark.Suite();
+createTests(Bench, stringTests);
+createTests(Bench, numberTests);
+createTests(Bench, booleanTests);
+for (const test of arrayTests) createTests(Bench, test);
 
-new Benchmark.Suite()
-    .add('vjs#String', passingTest(createTest.vjs('String')))
-    .add('ajv#String', passingTest(createTest.ajv('String')))
-    .add('vjs#invalid#String', failingTest(createTest.invalidvjs('String')))
-    .add('ajv#invalid#String', failingTest(createTest.invalidajv('String')))
-    .add('vjs#Number', passingTest(createTest.vjs('Number')))
-    .add('ajv#Number', passingTest(createTest.ajv('Number')))
-    .add('vjs#invalid#Number', failingTest(createTest.invalidvjs('Number')))
-    .add('ajv#invalid#Number', failingTest(createTest.invalidajv('Number')))
-    .add('vjs#Boolean', passingTest(createTest.vjs('Boolean')))
-    .add('ajv#Boolean', passingTest(createTest.ajv('Boolean')))
-    .add('vjs#invalid#Boolean', failingTest(createTest.invalidvjs('Boolean')))
-    .add('ajv#invalid#Boolean', failingTest(createTest.invalidajv('Boolean')))
-    .add('vjs#Object', passingTest(createTest.vjs('Object')))
-    .add('ajv#Object', passingTest(createTest.ajv('Object')))
-    .add('vjs#invalid#Object', failingTest(createTest.invalidvjs('Object')))
-    .add('ajv#invalid#Object', failingTest(createTest.invalidajv('Object')))
-    .add('vjs#Array', passingTest(createTest.vjs('Array')))
-    .add('ajv#Array', passingTest(createTest.ajv('Array')))
-    .add('vjs#invalid#Array', failingTest(createTest.invalidvjs('Array')))
-    .add('ajv#invalid#Array', failingTest(createTest.invalidajv('Array')))
-    .add('vjs#Symbols', passingTest(createTest.vjs('Symbols')))
-    .add('ajv#Symbols', passingTest(createTest.ajv('Symbols')))
-    .add('vjs#invalid#Symbols', failingTest(createTest.invalidvjs('Symbols')))
-    .add('ajv#invalid#Symbols', failingTest(createTest.invalidajv('Symbols')))
+Bench
     // tslint:disable-next-line: no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
     .on('complete', function () {

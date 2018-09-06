@@ -78,7 +78,7 @@ function getSourceCode (
             const methodBody = (type[key]
                 .toString()
                 .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
-                .replace('///break', `\nbreak ${label};\n`);
+                .replace('//[break]', `\nbreak ${label};\n`);
             let code = replacePhrase(methodBody, 'data', dataVar);
             if (is.primitiveLiteral(value)) {
                 code = replacePhrase(code, 'base', is.toLiteral(value));
@@ -195,7 +195,7 @@ function parseSchema (
 
 type ValidateFn = (data: any) => string | undefined;
 type OmitSymbols<T> = Pick<T, {
-    [K in keyof T]: K extends  typeof SYM_SCHEMA_CONFIG ? never : K;
+    [K in keyof T]: K extends symbol ? never : K;
 }[keyof T]>;
 type ParserResult<T> = {
     [P in keyof OmitSymbols<T>]: ValidateFn;

@@ -1,4 +1,4 @@
-import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_FOR_LOOP } from '../constants';
+import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index: number, arr: any[]) => boolean;
