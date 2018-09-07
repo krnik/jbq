@@ -71,7 +71,10 @@ function getSourceCode (
         const paramName = `${dataVar}$${key}`;
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(key)) {
             const typeMethod = type[key].bind(undefined, value);
-            source.code += `\n${paramName}(${dataVar});`;
+            source.code += `
+                const ${paramName}_result = ${paramName}(${dataVar});
+                if (${paramName}_result) return ${paramName}_result;
+            `;
             source.args.push(typeMethod);
             source.params.push(paramName);
         } else {
@@ -161,13 +164,13 @@ function parseSchema (
         const accessor = `${dataVar}$i`;
         const nextDataVar = useForOf
             ? `${dataVar}_i`
-            : `${dataVar}[${accessor}]`;
+            : `${dataVar}_${accessor}`;
         const src = parseSchema(
             types,
             schema[SYM_SCHEMA_COLLECTION]!,
             schemaConfig,
             name,
-            nextDataVar,
+            nextDataVar.replace(/\[\]/g, '_'),
             `${dataVar}_i_label`,
         );
         source.code += useForOf
@@ -183,6 +186,7 @@ function parseSchema (
             : `
             {
                 for (let ${accessor} = 0; ${accessor} < ${dataVar}.length; ${accessor}++) {
+                    const ${nextDataVar} = ${dataVar}[${accessor}];
                     ${src.code}
                 }
             }`;

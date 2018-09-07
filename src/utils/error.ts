@@ -1,4 +1,4 @@
-import { SYM_TYPE_VALIDATE } from '../constants';
+import { SYM_TYPE_VALIDATE, TYPE } from '../constants';
 
 export const E = {
     invalidArgument (paramName: string, desired?: string, actual?: string) {
@@ -40,7 +40,7 @@ export const E = {
         throw Error(errorMessage);
     },
     noKeysInSchema (schemaName: string) {
-        const errorMessage = `Every schema must have at least [type] property. [${schemaName}] got none.`;
+        const errorMessage = `Every schema must have at least [${TYPE}] property. [${schemaName}] got none.`;
         throw Error(errorMessage);
     },
 };

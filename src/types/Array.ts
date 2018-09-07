@@ -1,22 +1,34 @@
 import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/index';
 
-type arrMethodCallback = (elem: any, index: number, arr: any[]) => boolean;
+type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
     [TYPE] (base: string, data: any) {
         if (!Array.isArray(data))
             return `Data should be ${base} type.`;
     },
     [EVERY] (base: arrMethodCallback, data: any[]) {
-        if (!data.every(base))
-            return `Every element of data should pass test function.`;
+        const len = data.length;
+        for (let i = 0; i < len; i++)
+            if (!base(data[i])) return `Every element of data should pass test function.`;
     },
     [SOME] (base: arrMethodCallback, data: any[]) {
-        if (!data.some(base))
-            return `At least one element of data should pass test function.`;
+        const len = data.length;
+        for (let i = 0; i < len; i++) {
+            if (i === len - 1) return `At least one element of data should pass test function.`;
+            if (base(data[i])) break;
+        }
     },
     [INCLUDES] (base: any, data: any[]) {
-        if (!data.includes(base))
+        let found = false;
+        const len = data.length;
+        for (let i = 0; i < len; i++) {
+            if (data[i] === base) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
             return `Data should include ${base}.`;
     },
     [MIN_LEN] (base: number, data: any[]) {

@@ -3,14 +3,16 @@ import Benchmark from 'benchmark';
 import Joi from 'joi';
 import { VJS } from '../../core/VJS';
 import { createTypes } from '../../types/index';
+import { arrayTests } from './tests/array';
 import { booleanTests } from './tests/boolean';
 import { numberTests } from './tests/number';
+import { objectTests } from './tests/object';
 import { stringTests } from './tests/string';
-import { arrayTests } from './tests/array';
 
 interface ITest {
     name: string;
     data: any;
+    fail?: boolean;
     schemas: Array<{
         type: string;
         ajv?: any;
@@ -19,21 +21,42 @@ interface ITest {
     }>;
 }
 function createTests (bench: Benchmark.Suite, test: ITest) {
-    const passing = {
-        vjs (fn: (...x: any[]) => any) {
-            return () => {
-                if (fn() !== undefined) throw Error('It should not return any errors');
-            };
+    const check = {
+        vjs: {
+            pass (fn: (...x: any[]) => any) {
+                return () => {
+                    if (fn() !== undefined) throw Error('It should not return any errors.');
+                };
+            },
+            fail (fn: (...x: any[]) => any) {
+                return () => {
+                    if (fn() === undefined) throw Error('It should return an error.');
+                };
+            },
         },
-        ajv (fn: () => any) {
-            return () => {
-                if (!fn()) throw Error('It should not return any errors');
-            };
+        ajv: {
+            pass (fn: () => any) {
+                return () => {
+                    if (!fn()) throw Error('It should not return any errors.');
+                };
+            },
+            fail (fn: () => any) {
+                return () => {
+                    if (fn()) throw Error('It should return false.');
+                };
+            },
         },
-        joi (fn: () => any) {
-            return () => {
-                if (fn().error) throw Error('It should not return any errors');
-            };
+        joi: {
+            pass (fn: () => any) {
+                return () => {
+                    if (fn().error) throw Error('It should not return any errors.');
+                };
+            },
+            fail (fn: () => any) {
+                return () => {
+                    if (!fn().error) throw Error('It should return an error.');
+                };
+            },
         },
     };
     function createName (type: string, prop: string, lib: string) {
@@ -45,23 +68,25 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
     for (const schema of test.schemas) {
         const name = createName.bind(undefined, test.name, schema.type);
         if (schema.vjs) {
-            const vjs = VJS(createTypes(), { string: schema.vjs });
-            bench.add(name('vjs'), passing.vjs(vjs.string.bind(undefined, test.data)));
+            const vjs = VJS(createTypes(), { test: schema.vjs });
+            const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
+            bench.add(name('vjs'), wrapper(vjs.test.bind(undefined, test.data)));
         }
         if (schema.ajv) {
             const ajv = new AJV().compile(schema.ajv);
-            bench.add(name('ajv'), passing.ajv(ajv.bind(undefined, test.data)));
+            const wrapper = test.fail ? check.ajv.fail : check.ajv.pass;
+            bench.add(name('ajv'), wrapper(ajv.bind(undefined, test.data)));
         }
-        if (schema.joi)
-            bench.add(name('joi'), passing.joi(Joi.validate.bind(Joi, test.data, schema.joi)));
+        if (schema.joi) {
+            const wrapper = test.fail ? check.joi.fail : check.joi.pass;
+            bench.add(name('joi'), wrapper(Joi.validate.bind(Joi, test.data, schema.joi)));
+        }
     }
 }
 
 const Bench = new Benchmark.Suite();
-createTests(Bench, stringTests);
-createTests(Bench, numberTests);
-createTests(Bench, booleanTests);
-for (const test of arrayTests) createTests(Bench, test);
+for (const test of [...arrayTests, ...objectTests, stringTests, numberTests, booleanTests])
+    createTests(Bench, test);
 
 Bench
     // tslint:disable-next-line: no-console
