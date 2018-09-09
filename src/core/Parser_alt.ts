@@ -23,7 +23,12 @@ export interface ISchemas {
 interface INames {
   var: string;
   prop: string;
-  label: string;
+}
+
+interface ISource {
+    code: string;
+    args: any[];
+    params: string[];
 }
 
 type ValidateFn = (data: any) => string | undefined;
@@ -52,7 +57,6 @@ export const Parser = {
       const names = {
         prop: name,
         var: '$v',
-        label: '$v_l',
       };
       const src = this.parseSchema(types, schema, config, names);
       const validate = () => ({});
@@ -61,7 +65,7 @@ export const Parser = {
     return patterns;
   },
 
-  parseSchema (types: TypeWrapper, schema: ISchema, conf: IConfig, names: INames) {
+  parseSchema (types: TypeWrapper, schema: ISchema, conf: IConfig, names: INames): ISource {
     const typeName: string = schema[TYPE] || conf[TYPE];
     if (!types.has(typeName)) E.missingType(typeName);
     const type = types.get(typeName)!;
@@ -71,13 +75,35 @@ export const Parser = {
       params: [] as string[],
     };
     const { entries, config } = this.schemaEntries(schema, conf);
-    for (const [prop, value] of entries) {
-      this.parseProperty(type, prop, value, names);
+    for (const [prop, value] of entries)
+        this.parseProperty(type, value, this.updateNames(prop, names), config, source);
+    if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
+        const keys = this.getAllKeys(schema[SYM_SCHEMA_PROPERTIES]!);
+        for (const [i, key] of keys.entries()) {
+            // unimplemented
+        }
     }
+    if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
+        // unimplemented
+    }
+    return source;
   },
 
-  parseProperty (type: IType, value: any, names: INames) {
+  parseProperty (type: IType, value: any, names: INames, config: IConfig, src: ISource) {
     // unimplemented;
   },
-};
 
+  updateNames (prop: string, names: INames) {
+      return {
+          prop,
+          var: `${names.var}_${prop}`,
+      };
+  },
+
+  getAllKeys (schema: object) {
+    return [
+        ...Object.getOwnPropertyNames(schema),
+        ...Object.getOwnPropertySymbols(schema),
+    ];
+  },
+};
