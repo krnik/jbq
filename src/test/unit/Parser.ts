@@ -1,12 +1,14 @@
 import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TYPE } from '../../constants';
 import { parser } from '../../core/Parser';
+import { Parser } from '../../core/Parser_alt';
 import { createTypes } from '../../types/index';
 import { schemas } from '../data/index';
 
 export default () => describe('Parser', () => {
-    it('it should parse schemas', () => {
-        parser(createTypes(), schemas.valid);
-        parser(createTypes(), schemas.invalid);
+    it.only('it should parse schemas', () => {
+        // parser(createTypes(), schemas.valid);
+        // parser(createTypes(), schemas.invalid);
+        Parser.compile(createTypes(), schemas.valid);
     });
     describe('passing default schema config', () => {
         it(`${SYM_SCHEMA_CONFIG.toString()} - schemas root`, () => {
