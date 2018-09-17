@@ -200,11 +200,11 @@ function (data) {
     }
 }
 ```
-If you want to break currently executed code block you have to add `//[break]` comment to the types' method.
+If you want to break currently executed code block you have to add `//[[break]]` comment to the types' method.
 Here is how `${TYPE_METHOD.REQUIRED}` function looks like.
 ```typescript
     if (data === undefined && !base) {
-        //[break]
+        //[[break]]
     }
 ```
 If passed value will be undefined then code execution in labeled block will be stopped.

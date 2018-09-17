@@ -1,14 +1,12 @@
 import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TYPE } from '../../constants';
-import { parser } from '../../core/Parser';
-import { Parser } from '../../core/Parser_alt';
+import { Parser } from '../../core/Parser';
 import { createTypes } from '../../types/index';
 import { schemas } from '../data/index';
 
 export default () => describe('Parser', () => {
-    it.only('it should parse schemas', () => {
-        // parser(createTypes(), schemas.valid);
-        // parser(createTypes(), schemas.invalid);
+    it('it should parse schemas', () => {
         Parser.compile(createTypes(), schemas.valid);
+        Parser.compile(createTypes(), schemas.invalid);
     });
     describe('passing default schema config', () => {
         it(`${SYM_SCHEMA_CONFIG.toString()} - schemas root`, () => {
@@ -23,7 +21,7 @@ export default () => describe('Parser', () => {
                     [MAX_LEN]: 2,
                 },
             };
-            const parsed = parser(createTypes(), testSchemas);
+            const parsed = Parser.compile(createTypes(), testSchemas);
             parsed.Test0('1')!.should.be.a('string');
             parsed.Test1('123')!.should.be.a('string');
         });
@@ -40,7 +38,7 @@ export default () => describe('Parser', () => {
                     },
                 },
             };
-            const parsed = parser(createTypes(), testSchemas);
+            const parsed = Parser.compile(createTypes(), testSchemas);
             parsed.Test({ prop1: '1' })!.should.be.a('string');
             parsed.Test({ prop2: '12345' })!.should.be.a('string');
         });
@@ -57,7 +55,7 @@ export default () => describe('Parser', () => {
                 },
             };
             try {
-                parser(createTypes(), testSchemas);
+                Parser.compile(createTypes(), testSchemas);
                 done('Should throw an missing typ error');
             } catch (err) {
                 done();

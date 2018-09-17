@@ -1,6 +1,6 @@
 import { TypeWrapper } from '../types/Wrapper';
-import { parser } from './Parser';
+import { Parser } from './Parser';
 
 export function VJS<T> (types: TypeWrapper, schemas: T) {
-    return parser(types, schemas);
+    return Parser.compile(types, schemas);
 }

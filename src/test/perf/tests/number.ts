@@ -8,57 +8,114 @@ const DATA = {
   VALUE: 100,
 };
 
-export const numberTests = {
-  name: 'number',
-  data: DATA.VALUE,
-  schemas: [
-    {
-      type: 'type_only',
-      ajv: {
-        type: DATA.TYPE,
+export const numberTests = [
+  {
+    name: 'number',
+    data: DATA.VALUE,
+    schemas: [
+      {
+        type: 'type_only',
+        ajv: {
+          type: DATA.TYPE,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+        },
+        joi: Joi.number(),
       },
-      vjs: {
-        [TYPE]: DATA.TYPE,
+      {
+        type: 'min',
+        ajv: {
+          type: DATA.TYPE,
+          minimum: DATA.MIN,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+          [MIN]: DATA.MIN,
+        },
+        joi: Joi.number().min(DATA.MIN),
       },
-      joi: Joi.number(),
-    },
-    {
-      type: 'min',
-      ajv: {
-        type: DATA.TYPE,
-        minimum: DATA.MIN,
+      {
+        type: 'max',
+        ajv: {
+          type: DATA.TYPE,
+          maximum: DATA.MAX,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+          [MAX]: DATA.MAX,
+        },
+        joi: Joi.number().max(DATA.MAX),
       },
-      vjs: {
-        [TYPE]: DATA.TYPE,
-        [MIN]: DATA.MIN,
+      {
+        type: 'all',
+        ajv: {
+          type: DATA.TYPE,
+          minimum: DATA.MIN,
+          maximum: DATA.MAX,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+          [MIN]: DATA.MIN,
+          [MAX]: DATA.MAX,
+        },
+        joi: Joi.number().min(DATA.MIN).max(DATA.MAX),
       },
-      joi: Joi.number().min(DATA.MIN),
-    },
-    {
-      type: 'max',
-      ajv: {
-        type: DATA.TYPE,
-        maximum: DATA.MAX,
+    ],
+  },
+  {
+    name: 'number_fail',
+    data: NaN,
+    fail: true,
+    schemas: [
+      {
+        type: 'type_only',
+        ajv: {
+          type: DATA.TYPE,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+        },
+        joi: Joi.number(),
       },
-      vjs: {
-        [TYPE]: DATA.TYPE,
-        [MAX]: DATA.MAX,
+    ],
+  },
+  {
+    name: 'number_fail',
+    data: DATA.VALUE / 20,
+    fail: true,
+    schemas: [
+      {
+        type: 'min',
+        ajv: {
+          type: DATA.TYPE,
+          minimum: DATA.MIN,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+          [MIN]: DATA.MIN,
+        },
+        joi: Joi.number().min(DATA.MIN),
       },
-      joi: Joi.number().max(DATA.MAX),
-    },
-    {
-      type: 'all',
-      ajv: {
-        type: DATA.TYPE,
-        minimum: DATA.MIN,
-        maximum: DATA.MAX,
+    ],
+  },
+  {
+    name: 'number_fail',
+    data: DATA.VALUE * 10,
+    fail: true,
+    schemas: [
+      {
+        type: 'max',
+        ajv: {
+          type: DATA.TYPE,
+          maximum: DATA.MAX,
+        },
+        vjs: {
+          [TYPE]: DATA.TYPE,
+          [MAX]: DATA.MAX,
+        },
+        joi: Joi.number().max(DATA.MAX),
       },
-      vjs: {
-        [TYPE]: DATA.TYPE,
-        [MIN]: DATA.MIN,
-        [MAX]: DATA.MAX,
-      },
-      joi: Joi.number().min(DATA.MIN).max(DATA.MAX),
-    },
-  ],
-};
+    ],
+  },
+];

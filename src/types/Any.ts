@@ -3,11 +3,11 @@ import { E, is } from '../utils/index';
 
 export const TypeAny = {
     [TYPE] (/** base: string, data: any */) {
-        //[break]
+        //[[break]]
     },
     [REQUIRED] (base: boolean, data: any) {
         if (data === undefined && !base) {
-            //[break]
+            //[[break]]
         }
     },
     [SYM_TYPE_VALIDATE]: {

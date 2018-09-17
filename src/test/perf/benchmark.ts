@@ -85,8 +85,13 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
 }
 
 const Bench = new Benchmark.Suite();
-for (const test of [...arrayTests, ...objectTests, stringTests, numberTests, booleanTests])
-    createTests(Bench, test);
+for (const test of [
+    ...arrayTests,
+    ...objectTests,
+    ...stringTests,
+    ...numberTests,
+    ...booleanTests,
+]) createTests(Bench, test);
 
 Bench
     // tslint:disable-next-line: no-console
