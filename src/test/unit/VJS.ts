@@ -35,4 +35,13 @@ export default () => describe('Validator', () => {
             throw Error('Unimplemented');
         });
     });
+
+    describe('[[path]]', () => {
+        it('path interpolation', () => {
+            throw Error('Unimplemented');
+        });
+        it('pass path as a parameter to method', () => {
+            throw Error('Unimplemented');
+        });
+    });
 });
