@@ -296,7 +296,7 @@ export default () => describe('Types', () => {
                     throw Error('It should return undefined when validating valid value');
             });
             it('invalid value', () => {
-                const value = {};
+                const value = NaN;
                 if (TypeNumber[TYPE](base, value) === undefined)
                     throw Error('It should return error message when validating invalid value.');
             });
@@ -308,6 +308,7 @@ export default () => describe('Types', () => {
                     try {
                         TypeNumber[SYM_TYPE_VALIDATE][TYPE](value);
                         done(`Should throw an error for ${JSON.stringify(value)}`);
+                        throw {};
                     } catch (err) {
                         err.should.have.property('message');
                     }

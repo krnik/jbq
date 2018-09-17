@@ -23,4 +23,16 @@ export default () => describe('Validator', () => {
             const res = (validator as IValidator)[key](data.invalid[key]);
             if (!res) throw Error('it should return error message');
         });
+
+    describe('//[[break]]', () => {
+        it('simple', () => {
+            throw Error('Unimplemented');
+        });
+        it('collection', () => {
+            throw Error('Unimplemented');
+        });
+        it('collection of objects', () => {
+            throw Error('Unimplemented');
+        });
+    });
 });

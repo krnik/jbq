@@ -4,7 +4,7 @@ import { E, is } from '../utils/index';
 export const TypeNumber = {
     // @ts-ignore
     [TYPE] (base: string, data: any) {
-        if (typeof data !== 'number' && isNaN(data))
+        if (typeof data !== 'number' || isNaN(data))
             return `Data should be a number (NaN excluded) type. Got ${typeof data}.`;
     },
     [MIN] (base: number, data: any) {
