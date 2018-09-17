@@ -36,7 +36,7 @@ export default () => describe('Validator', () => {
         });
     });
 
-    describe('[[path]]', () => {
+    describe('//[[path]]', () => {
         it('path interpolation', () => {
             throw Error('Unimplemented');
         });

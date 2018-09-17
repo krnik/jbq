@@ -35,7 +35,12 @@ const NAME = {
     REPO: 'vjs-validator',
     CONSTRUCTOR: 'VJS',
     TYPES: 'VJSTypes',
+}
+const TOKEN = {
+    BREAK: '//[[break]]',
+    PATH: '//[[path]]',
 };
+
 const WIKI = {
     HOME: 'Home',
     SIDEBAR: '_Sidebar',

@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE, SYM_TYPE_KEY_ORDER } from '../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E, is } from '../utils/index';
 
@@ -23,6 +23,7 @@ export interface ISchemas {
 interface INames {
     var: string;
     prop: string;
+    path: string;
     param: string;
     count: number;
 }
@@ -40,18 +41,6 @@ type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[k
 type ParserResult<T> = { [P in keyof OmitSymbols<T>]: ValidateFn };
 
 export const Parser = {
-    schemaEntries<T extends ISchema> (schema: T, config: IConfig, indent: string = ' ') {
-        const newConfig = {
-            ...config,
-            ...(schema[SYM_SCHEMA_CONFIG] || {}),
-        };
-        newConfig[INDENT] = (newConfig[INDENT] || '') + indent;
-        return {
-            config: newConfig,
-            entries: Object.entries(schema),
-        };
-    },
-
     compile<T, K extends keyof OmitSymbols<T>> (types: TypeWrapper, schemas: T) {
         const patterns = {} as ParserResult<T>;
         const { config, entries } = this.schemaEntries(schemas, {}, '');
@@ -75,20 +64,20 @@ export const Parser = {
         const type = types.get(typeName)!;
         const { entries, config } = this.schemaEntries({...conf, ...schema }, conf);
         source.code += `label_${names.var}: {\n`;
+        const save = Object.assign({}, names);
         for (const [prop, value] of this.sortByKey(entries, type[SYM_TYPE_KEY_ORDER]))
             this.parseProperty(type, value, this.updateNames(names, prop), config, source);
-        const varName = names.var;
         if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
             const keys = this.getAllKeys(schema[SYM_SCHEMA_PROPERTIES]!);
             for (const [i, key] of keys.entries()) {
                 if (typeof key !== 'string') {
-                    this.updateNames(names, key.toString(), `_k${i}`);
+                    this.updateNames(names, key.toString(), `_${i}`);
                     source.params.push(names.param);
                     source.args.push(key);
-                    source.code += `\nconst ${names.var} = ${varName}[${names.param}];\n`;
+                    source.code += `\nconst ${names.var} = ${save.var}[${names.param}];\n`;
                 } else {
-                    this.updateNames(names, key, `_k${i}`);
-                    source.code += `\nconst ${names.var} = ${varName}[${is.toLiteral(key)}];\n`;
+                    this.updateNames(names, key, `_${i}`);
+                    source.code += `\nconst ${names.var} = ${save.var}[${is.toLiteral(key)}];\n`;
                 }
                 this.parseSchema(
                     types,
@@ -97,28 +86,31 @@ export const Parser = {
                     names,
                     source,
                 );
-                names.var = varName;
+                names.var = save.var;
+                names.path = save.path;
             }
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-            this.updateNames(names, names.prop, '_$i');
+            this.updateNames(names, '[n]', '_i');
             if (!type[SYM_TYPE_FOR_LOOP]) {
                 source.code += `
-if (!(Symbol.iterator in ${varName}))
+if (!(Symbol.iterator in ${save.var}))
     return 'Data requires to have ${Symbol.iterator.toString()} method implemented in order to use for..of loop';
-for (const ${names.var} of ${varName})
+for (const ${names.var} of ${save.var})
                 `;
                 this.parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
             } else {
-                const accessor = `${varName}$i`;
+                const accessor = `${save.var}$i`;
                 source.code += `
-const ${varName}_len = ${varName}.length;
-for (let ${accessor} = 0; ${accessor} < ${varName}_len; ${accessor}++) {
-    const ${names.var} = ${varName}[${accessor}];
+const ${save.var}_len = ${save.var}.length;
+for (let ${accessor} = 0; ${accessor} < ${save.var}_len; ${accessor}++) {
+    const ${names.var} = ${save.var}[${accessor}];
                 `;
                 this.parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
                 source.code += '\n}\n';
             }
+            names.var = save.var;
+            names.path = save.path;
         }
         source.code += '\n}\n';
     },
@@ -127,19 +119,15 @@ for (let ${accessor} = 0; ${accessor} < ${varName}_len; ${accessor}++) {
         debug('cyan', names.prop, conf[INDENT]);
         if (!type[names.prop]) E.missingTypeMethod(type[SYM_TYPE_NAME], names.prop);
         type[SYM_TYPE_VALIDATE][names.prop](value);
-
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(names.prop)) {
             src.params.push(names.param);
-            src.args.push(type[names.prop].bind(undefined, value));
+            src.args.push(type[names.prop].bind(undefined, value, `${names.path}#${names.prop}`));
             src.code += `
 const ${names.param}_result = ${names.param}(${names.var});
 if (${names.param}_result) return ${names.param}_result;
             `;
         } else {
-            const body = (type[names.prop]
-                .toString()
-                .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
-                .replace('//[[break]]', `break label_${names.var};`);
+            const body = this.getMethodBody(type, names);
             const code = this.replacePhrase(body, 'data', names.var);
             if (is.primitiveLiteral(value))
                 src.code += `${this.replacePhrase(code, 'base', is.toLiteral(value))}\n`;
@@ -151,12 +139,25 @@ if (${names.param}_result) return ${names.param}_result;
         }
     },
 
+    schemaEntries<T extends ISchema> (schema: T, config: IConfig, indent: string = ' ') {
+        const newConfig = {
+            ...config,
+            ...(schema[SYM_SCHEMA_CONFIG] || {}),
+        };
+        newConfig[INDENT] = (newConfig[INDENT] || '') + indent;
+        return {
+            config: newConfig,
+            entries: Object.entries(schema),
+        };
+    },
+
     updateNames (names: INames, prop: string, varSuffix: string = '') {
         const count = names.count + 1;
         names.prop = prop;
         names.count = count;
         names.var = `${names.var}${varSuffix}`;
         names.param = `$${count}`;
+        if (varSuffix) names.path += `/${prop}`;
         return names;
     },
 
@@ -184,6 +185,7 @@ if (${names.param}_result) return ${names.param}_result;
                 var: '$v',
                 count: -1,
                 param: `$$`,
+                path: 'ROOT',
             },
         ];
     },
@@ -197,5 +199,13 @@ if (${names.param}_result) return ${names.param}_result;
         }, ([] as Array<[string, any]>));
         const rest = entries.filter(([k]) => !firstKeys.includes(k));
         return [...result, ...rest];
+    },
+
+    getMethodBody (type: IType, names: INames) {
+        return (type[names.prop]
+            .toString()
+            .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
+            .replace('//[[break]]', `break label_${names.var};`)
+            .replace('//[[path]]', `${names.path}#${names.prop}`);
     },
 };
