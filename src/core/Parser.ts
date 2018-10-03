@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { ATTR_BREAK, ATTR_PATH, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E, is } from '../utils/index';
 
@@ -91,7 +91,7 @@ export const Parser = {
             }
         }
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-            this.updateNames(names, '[n]', '_i');
+            this.updateNames(names, '[]', '_i');
             if (!type[SYM_TYPE_FOR_LOOP]) {
                 source.code += `
 if (!(Symbol.iterator in ${save.var}))
@@ -185,7 +185,7 @@ if (${names.param}_result) return ${names.param}_result;
                 var: '$v',
                 count: -1,
                 param: `$$`,
-                path: 'ROOT',
+                path: prop.toUpperCase(),
             },
         ];
     },
@@ -205,7 +205,7 @@ if (${names.param}_result) return ${names.param}_result;
         return (type[names.prop]
             .toString()
             .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
-            .replace('//[[break]]', `break label_${names.var};`)
-            .replace('//[[path]]', `${names.path}#${names.prop}`);
+            .replace(ATTR_BREAK, `break label_${names.var};`)
+            .replace(ATTR_PATH, `${names.path}#${names.prop}`);
     },
 };

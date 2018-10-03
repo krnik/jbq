@@ -180,7 +180,7 @@ $Array[INVALID] = {
 const $Required: ITestSchema = {
     [TYPE]: 'string',
     [REQUIRED]: false,
-    [SYM_FAKER]: () => undefined,
+    [SYM_FAKER]: () => 'undefined',
 };
 
 export const schemas = {
