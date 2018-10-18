@@ -40,8 +40,8 @@ type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[k
 
 type ParserResult<T> = { [P in keyof OmitSymbols<T>]: ValidateFn };
 
-export const Parser = {
-    compile<T, K extends keyof OmitSymbols<T>> (types: TypeWrapper, schemas: T) {
+export class Parser {
+    public compile<T, K extends keyof OmitSymbols<T>> (types: TypeWrapper, schemas: T) {
         const patterns = {} as ParserResult<T>;
         const { config, entries } = this.schemaEntries(schemas, {}, '');
         for (const [name, schema] of entries) {
@@ -55,9 +55,9 @@ export const Parser = {
             patterns[name as K] = validate.bind(undefined, ...src.args);
         }
         return patterns;
-    },
+    }
 
-    parseSchema (types: TypeWrapper, schema: ISchema, conf: IConfig, names: INames, source: ISource) {
+    private parseSchema (types: TypeWrapper, schema: ISchema, conf: IConfig, names: INames, source: ISource) {
         debug('green', names.prop, conf[INDENT]);
         const typeName: string = schema[TYPE] || conf[TYPE];
         if (!types.has(typeName)) E.missingType(typeName);
@@ -113,9 +113,9 @@ for (let ${accessor} = 0; ${accessor} < ${save.var}_len; ${accessor}++) {
             names.path = save.path;
         }
         source.code += '\n}\n';
-    },
+    }
 
-    parseProperty (type: IType, value: any, names: INames, conf: IConfig, src: ISource) {
+    private parseProperty (type: IType, value: any, names: INames, conf: IConfig, src: ISource) {
         debug('cyan', names.prop, conf[INDENT]);
         if (!type[names.prop]) E.missingTypeMethod(type[SYM_TYPE_NAME], names.prop);
         type[SYM_TYPE_VALIDATE][names.prop](value);
@@ -137,9 +137,9 @@ if (${names.param}_result) return ${names.param}_result;
                 src.code += `${this.replacePhrase(code, 'base', names.param)}\n`;
             }
         }
-    },
+    }
 
-    schemaEntries<T extends ISchema> (schema: T, config: IConfig, indent: string = ' ') {
+    private schemaEntries<T extends ISchema> (schema: T, config: IConfig, indent: string = ' ') {
         const newConfig = {
             ...config,
             ...(schema[SYM_SCHEMA_CONFIG] || {}),
@@ -149,9 +149,9 @@ if (${names.param}_result) return ${names.param}_result;
             config: newConfig,
             entries: Object.entries(schema),
         };
-    },
+    }
 
-    updateNames (names: INames, prop: string, varSuffix: string = '') {
+    private updateNames (names: INames, prop: string, varSuffix: string = '') {
         const count = names.count + 1;
         names.prop = prop;
         names.count = count;
@@ -159,21 +159,21 @@ if (${names.param}_result) return ${names.param}_result;
         names.param = `$${count}`;
         if (varSuffix) names.path += `/${prop}`;
         return names;
-    },
+    }
 
-    getAllKeys (schema: object) {
+    private getAllKeys (schema: object) {
         return [
             ...Object.getOwnPropertyNames(schema),
             ...Object.getOwnPropertySymbols(schema),
         ];
-    },
+    }
 
-    replacePhrase (source: string, phrase: string, to: string) {
+    private replacePhrase (source: string, phrase: string, to: string) {
         const regex = new RegExp(`[^\\w$_]\\b(${phrase})\\b[^\\w$_]?`, 'g');
         return source.replace(regex, (match, $1) => match.replace($1, to));
-    },
+    }
 
-    initVars (prop: string): [ISource, INames] {
+    private initVars (prop: string): [ISource, INames] {
         return [
             {
                 code: '',
@@ -188,9 +188,9 @@ if (${names.param}_result) return ${names.param}_result;
                 path: prop.toUpperCase(),
             },
         ];
-    },
+    }
 
-    sortByKey (entries: Array<[string, any]>, firstKeys: string[]) {
+    private sortByKey (entries: Array<[string, any]>, firstKeys: string[]) {
         const result = firstKeys.reduce((acc, key) => {
             const entry = entries.find(([k]) => k === key);
             return entry
@@ -199,13 +199,13 @@ if (${names.param}_result) return ${names.param}_result;
         }, ([] as Array<[string, any]>));
         const rest = entries.filter(([k]) => !firstKeys.includes(k));
         return [...result, ...rest];
-    },
+    }
 
-    getMethodBody (type: IType, names: INames) {
+    private getMethodBody (type: IType, names: INames) {
         return (type[names.prop]
             .toString()
             .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
             .replace(ATTR_BREAK, `break label_${names.var};`)
             .replace(ATTR_PATH, `${names.path}#${names.prop}`);
-    },
-};
+    }
+}

@@ -6,8 +6,8 @@ import { schemas } from '../data/main';
 
 export default () => describe('Parser', () => {
     it('it should parse schemas', () => {
-        Parser.compile(createTypes(), schemas.valid);
-        Parser.compile(createTypes(), schemas.invalid);
+        new Parser().compile(createTypes(), schemas.valid);
+        new Parser().compile(createTypes(), schemas.invalid);
     });
     describe('passing default schema config', () => {
         it(`${SYM_SCHEMA_CONFIG.toString()} - schemas root`, () => {
@@ -22,7 +22,7 @@ export default () => describe('Parser', () => {
                     [MAX_LEN]: 2,
                 },
             };
-            const parsed = Parser.compile(createTypes(), testSchemas);
+            const parsed = new Parser().compile(createTypes(), testSchemas);
             expect(parsed.Test0('1')).to.be.a('string');
             expect(parsed.Test1('123')).to.be.a('string');
         });
@@ -39,7 +39,7 @@ export default () => describe('Parser', () => {
                     },
                 },
             };
-            const parsed = Parser.compile(createTypes(), testSchemas);
+            const parsed = new Parser().compile(createTypes(), testSchemas);
             expect(parsed.Test({ prop1: '1' })).to.be.a('string');
             expect(parsed.Test({ prop2: '12345' })).to.be.a('string');
         });
@@ -55,7 +55,7 @@ export default () => describe('Parser', () => {
                     },
                 },
             };
-            expect(() => Parser.compile(createTypes(), testSchemas)).to.throw();
+            expect(() => new Parser().compile(createTypes(), testSchemas)).to.throw();
         });
     });
 });
