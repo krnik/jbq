@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { TYPE, VALUE } from '../../../constants';
+import { TYPE, VALUE } from '../../../src/constants';
 
 const DATA = {
   TYPE: 'boolean',

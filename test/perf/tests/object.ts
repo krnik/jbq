@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../src/constants';
 
 const DATA = {
   TYPE: 'object',

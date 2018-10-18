@@ -1,7 +1,8 @@
-import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TYPE } from '../../constants';
-import { Parser } from '../../core/Parser';
-import { createTypes } from '../../types/index';
-import { schemas } from '../data/index';
+import { expect } from 'chai';
+import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TYPE } from '../../src/constants';
+import { Parser } from '../../src/core/Parser';
+import { createTypes } from '../../src/types/index';
+import { schemas } from '../data/main';
 
 export default () => describe('Parser', () => {
     it('it should parse schemas', () => {
@@ -22,8 +23,8 @@ export default () => describe('Parser', () => {
                 },
             };
             const parsed = Parser.compile(createTypes(), testSchemas);
-            parsed.Test0('1')!.should.be.a('string');
-            parsed.Test1('123')!.should.be.a('string');
+            expect(parsed.Test0('1')).to.be.a('string');
+            expect(parsed.Test1('123')).to.be.a('string');
         });
         it(`${SYM_SCHEMA_CONFIG.toString()} - schema`, () => {
             const testSchemas = {
@@ -39,10 +40,10 @@ export default () => describe('Parser', () => {
                 },
             };
             const parsed = Parser.compile(createTypes(), testSchemas);
-            parsed.Test({ prop1: '1' })!.should.be.a('string');
-            parsed.Test({ prop2: '12345' })!.should.be.a('string');
+            expect(parsed.Test({ prop1: '1' })).to.be.a('string');
+            expect(parsed.Test({ prop2: '12345' })).to.be.a('string');
         });
-        it(`${SYM_SCHEMA_CONFIG.toString()} - should omit in ${SYM_SCHEMA_PROPERTIES.toString()}`, (done) => {
+        it(`${SYM_SCHEMA_CONFIG.toString()} - should be omited in ${SYM_SCHEMA_PROPERTIES.toString()}`, () => {
             const testSchemas = {
                 Test: {
                     [TYPE]: 'object',
@@ -54,12 +55,7 @@ export default () => describe('Parser', () => {
                     },
                 },
             };
-            try {
-                Parser.compile(createTypes(), testSchemas);
-                done('Should throw an missing typ error');
-            } catch (err) {
-                done();
-            }
+            expect(() => Parser.compile(createTypes(), testSchemas)).to.throw();
         });
     });
 });

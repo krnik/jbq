@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { MAX, MIN, TYPE } from '../../../constants';
+import { MAX, MIN, TYPE } from '../../../src/constants';
 
 const DATA = {
   MIN: 10,
@@ -65,7 +65,7 @@ export const numberTests = [
   },
   {
     name: 'number_fail',
-    data: NaN,
+    data: new Date(),
     fail: true,
     schemas: [
       {

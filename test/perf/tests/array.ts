@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../constants';
+import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../src/constants';
 
 const DATA = {
   MIN: 1,

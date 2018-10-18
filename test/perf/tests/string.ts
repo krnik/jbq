@@ -1,13 +1,13 @@
 import Joi from 'joi';
-import { LEN, MAX_LEN, MIN_LEN, REGEX, TYPE } from '../../../constants';
+import { LEN, MAX_LEN, MIN_LEN, REGEX, TYPE } from '../../../src/constants';
 
 const DATA = {
   MIN: 10,
   MAX: 40,
-  REG: /test/,
   TYPE: 'string',
   VALUE: 'test string'.repeat(2),
   PATTERN: 'test',
+  FAIL_PATTERN: '\\d',
 };
 
 export const stringTests = [
@@ -57,9 +57,9 @@ export const stringTests = [
         },
         vjs: {
           [TYPE]: DATA.TYPE,
-          [REGEX]: DATA.REG,
+          [REGEX]: new RegExp(DATA.PATTERN),
         },
-        joi: Joi.string().regex(DATA.REG),
+        joi: Joi.string().regex(new RegExp(DATA.PATTERN)),
       },
       {
         type: 'all',
@@ -73,9 +73,9 @@ export const stringTests = [
           [TYPE]: DATA.TYPE,
           [MIN_LEN]: DATA.MIN,
           [MAX_LEN]: DATA.MAX,
-          [REGEX]: DATA.REG,
+          [REGEX]: new RegExp(DATA.PATTERN),
         },
-        joi: Joi.string().min(DATA.MIN).max(DATA.MAX).regex(DATA.REG),
+        joi: Joi.string().min(DATA.MIN).max(DATA.MAX).regex(new RegExp(DATA.PATTERN)),
       },
       {
         type: 'len',
@@ -112,13 +112,13 @@ export const stringTests = [
         type: 'min_length',
         ajv: {
           type: DATA.TYPE,
-          minLength: DATA.MIN,
+          minLength: DATA.MAX,
         },
         vjs: {
           [TYPE]: DATA.TYPE,
-          [MIN_LEN]: DATA.MIN,
+          [MIN_LEN]: DATA.MAX,
         },
-        joi: Joi.string().min(DATA.MIN),
+        joi: Joi.string().min(DATA.MAX),
       },
       {
         type: 'max_length',
@@ -136,13 +136,13 @@ export const stringTests = [
         type: 'regex/pattern',
         ajv: {
           type: DATA.TYPE,
-          pattern: DATA.PATTERN,
+          pattern: DATA.FAIL_PATTERN,
         },
         vjs: {
           [TYPE]: DATA.TYPE,
-          [REGEX]: DATA.REG,
+          [REGEX]: new RegExp(DATA.FAIL_PATTERN),
         },
-        joi: Joi.string().regex(DATA.REG),
+        joi: Joi.string().regex(new RegExp(DATA.FAIL_PATTERN)),
       },
       {
         type: 'len',

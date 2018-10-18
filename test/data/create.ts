@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../src/constants';
 
 const SYM_FAKER = Symbol.for('faker') as any;
 

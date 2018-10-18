@@ -1,8 +1,8 @@
 import AJV from 'ajv';
 import Benchmark from 'benchmark';
 import Joi from 'joi';
-import { VJS } from '../../core/VJS';
-import { createTypes } from '../../types/index';
+import { VJS } from '../../src/core/VJS';
+import { createTypes } from '../../src/types/index';
 import { arrayTests } from './tests/array';
 import { booleanTests } from './tests/boolean';
 import { numberTests } from './tests/number';
@@ -30,7 +30,9 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
             },
             fail (fn: (...x: any[]) => any) {
                 return () => {
-                    if (fn() === undefined) throw Error('It should return an error.');
+                    if (fn() === undefined) {
+                        throw Error('It should return an error.');
+                    }
                 };
             },
         },
@@ -66,6 +68,7 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
         return `${t}#${p}#${l}`;
     }
     for (const schema of test.schemas) {
+        if (!test.fail) continue;
         const name = createName.bind(undefined, test.name, schema.type);
         if (schema.vjs) {
             const vjs = VJS(createTypes(), { test: schema.vjs });

@@ -1,7 +1,7 @@
-import { ATTR_BREAK, ATTR_PATH, SYM_SCHEMA_COLLECTION, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE, TYPE } from '../../constants';
-import { VJS } from '../../core/VJS';
-import { createTypes } from '../../types';
-import { createData, schemas } from '../data';
+import { ATTR_BREAK, ATTR_PATH, SYM_SCHEMA_COLLECTION, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE, TYPE } from '../../src/constants';
+import { VJS } from '../../src/core/VJS';
+import { createTypes } from '../../src/types';
+import { createData, schemas } from '../data/main';
 
 interface IValidator {
     [k: string]: (x: any) => string | undefined;
