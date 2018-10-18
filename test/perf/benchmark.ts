@@ -30,9 +30,8 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
             },
             fail (fn: (...x: any[]) => any) {
                 return () => {
-                    if (fn() === undefined) {
+                    if (fn() === undefined)
                         throw Error('It should return an error.');
-                    }
                 };
             },
         },
