@@ -1,4 +1,4 @@
-import { ATTR_BREAK, ATTR_PATH, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { debug, E, is } from '../utils/index';
 
@@ -41,13 +41,20 @@ type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[k
 type ParserResult<T> = { [P in keyof OmitSymbols<T>]: ValidateFn };
 
 export class Parser {
-    public compile<T, K extends keyof OmitSymbols<T>> (types: TypeWrapper, schemas: T) {
+    private expressionRegex = /#{{(?<expr>(base|path).+?)}}/;
+    private types: TypeWrapper;
+
+    constructor (types: TypeWrapper) {
+        this.types = types;
+    }
+
+    public compile<T, K extends keyof OmitSymbols<T>> (schemas: T) {
         const patterns = {} as ParserResult<T>;
         const { config, entries } = this.schemaEntries(schemas, {}, '');
         for (const [name, schema] of entries) {
             const [src, names] = this.initVars(name);
             const varName = names.var;
-            this.parseSchema(types, schema, config, names, src);
+            this.parseSchema(schema, config, names, src);
             // console.log(src.code);
             // console.log(src.params);
             // console.log(src.args);
@@ -57,11 +64,11 @@ export class Parser {
         return patterns;
     }
 
-    private parseSchema (types: TypeWrapper, schema: ISchema, conf: IConfig, names: INames, source: ISource) {
+    private parseSchema (schema: ISchema, conf: IConfig, names: INames, source: ISource) {
         debug('green', names.prop, conf[INDENT]);
         const typeName: string = schema[TYPE] || conf[TYPE];
-        if (!types.has(typeName)) E.missingType(typeName);
-        const type = types.get(typeName)!;
+        if (!this.types.has(typeName)) E.missingType(typeName);
+        const type = this.types.get(typeName)!;
         const { entries, config } = this.schemaEntries({...conf, ...schema }, conf);
         source.code += `label_${names.var}: {\n`;
         const save = Object.assign({}, names);
@@ -80,7 +87,6 @@ export class Parser {
                     source.code += `\nconst ${names.var} = ${save.var}[${is.toLiteral(key)}];\n`;
                 }
                 this.parseSchema(
-                    types,
                     schema[SYM_SCHEMA_PROPERTIES]![key as any],
                     config,
                     names,
@@ -98,7 +104,7 @@ if (!(Symbol.iterator in ${save.var}))
     return 'Data requires to have ${Symbol.iterator.toString()} method implemented in order to use for..of loop';
 for (const ${names.var} of ${save.var})
                 `;
-                this.parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
+                this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
             } else {
                 const accessor = `${save.var}$i`;
                 source.code += `
@@ -106,7 +112,7 @@ const ${save.var}_len = ${save.var}.length;
 for (let ${accessor} = 0; ${accessor} < ${save.var}_len; ${accessor}++) {
     const ${names.var} = ${save.var}[${accessor}];
                 `;
-                this.parseSchema(types, schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
+                this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
                 source.code += '\n}\n';
             }
             names.var = save.var;
@@ -127,7 +133,8 @@ const ${names.param}_result = ${names.param}(${names.var});
 if (${names.param}_result) return ${names.param}_result;
             `;
         } else {
-            const body = this.getMethodBody(type, names);
+            const rawBody = this.getMethodBody(type, names);
+            const body = this.evalExpressions(rawBody, value, names.path);
             const code = this.replacePhrase(body, 'data', names.var);
             if (is.primitiveLiteral(value))
                 src.code += `${this.replacePhrase(code, 'base', is.toLiteral(value))}\n`;
@@ -190,6 +197,13 @@ if (${names.param}_result) return ${names.param}_result;
         ];
     }
 
+    private evalExpressions (body: string, base: any, path: string) {
+        return body.replace(this.expressionRegex, (match, expr) => {
+            const fn = new Function('base', 'path', `return ${expr}`);
+            return fn(base, path);
+        });
+    }
+
     private sortByKey (entries: Array<[string, any]>, firstKeys: string[]) {
         const result = firstKeys.reduce((acc, key) => {
             const entry = entries.find(([k]) => k === key);
@@ -205,7 +219,6 @@ if (${names.param}_result) return ${names.param}_result;
         return (type[names.prop]
             .toString()
             .match(/{[\W\w]+}/g) as RegExpMatchArray)[0]
-            .replace(ATTR_BREAK, `break label_${names.var};`)
-            .replace(ATTR_PATH, `${names.path}#${names.prop}`);
+            .replace(TOKEN_BREAK, `break label_${names.var};`);
     }
 }

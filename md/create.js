@@ -38,7 +38,6 @@ const NAME = {
 }
 const TOKEN = {
     BREAK: '//[[break]]',
-    PATH: '//[[path]]',
 };
 
 const WIKI = {

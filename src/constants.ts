@@ -36,7 +36,6 @@ export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
 export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
 /**
- * ATTRIBUTES
+ * TOKENS
  */
-export const ATTR_BREAK = '//[break]';
-export const ATTR_PATH = '//[path]';
+export const TOKEN_BREAK = '//[break]';
