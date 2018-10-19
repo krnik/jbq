@@ -67,7 +67,6 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
         return `${t}#${p}#${l}`;
     }
     for (const schema of test.schemas) {
-        if (!test.fail) continue;
         const name = createName.bind(undefined, test.name, schema.type);
         if (schema.vjs) {
             const vjs = VJS(createTypes(), { test: schema.vjs });

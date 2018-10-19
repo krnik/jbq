@@ -16,7 +16,7 @@ export const TypeString = {
     },
     [REGEX] (base: RegExp, data: any) {
         if (!base.test(data))
-            return `Data expected to pass ${base.toString()} test.`;
+            return `Data expected to pass #{base.toString()} test.`;
     },
     [LEN] (base: number, data: any) {
         if (data.length !== base)

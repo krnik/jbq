@@ -3,19 +3,20 @@ import { E, is } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
+    // @ts-ignore
     [TYPE] (base: string, data: any) {
         if (!Array.isArray(data))
-            return `Data should be ${base} type.`;
+            return 'Data should be #{base} type.';
     },
     [EVERY] (base: arrMethodCallback, data: any[]) {
         const len = data.length;
         for (let i = 0; i < len; i++)
-            if (!base(data[i])) return `Every element of data should pass test function.`;
+            if (!base(data[i])) return 'Every element of data should pass test function.';
     },
     [SOME] (base: arrMethodCallback, data: any[]) {
         const len = data.length;
         for (let i = 0; i < len; i++) {
-            if (i === len - 1) return `At least one element of data should pass test function.`;
+            if (i === len - 1) return 'At least one element of data should pass test function.';
             if (base(data[i])) break;
         }
     },
@@ -29,19 +30,19 @@ export const TypeArray = {
             }
         }
         if (!found)
-            return `Data should include ${base}.`;
+            return 'Data should include #{base}.';
     },
     [MIN_LEN] (base: number, data: any[]) {
         if (data.length < base)
-            return `Data should have length greater or equal than ${base}. Got ${data.length}.`;
+            return `Data should have length greater or equal than #{base}. Got ${data.length}.`;
     },
     [MAX_LEN] (base: number, data: any[]) {
         if (data.length > base)
-            return `Data should have length less or equal than ${base}. Got ${data.length}.`;
+            return `Data should have length less or equal than #{base}. Got ${data.length}.`;
     },
     [LEN] (base: number, data: any[]) {
         if (data.length !== base)
-            return `Data should have length equal to ${base}. Got ${data.length}.`;
+            return `Data should have length equal to #{base}. Got ${data.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {

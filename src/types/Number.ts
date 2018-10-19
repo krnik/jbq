@@ -9,11 +9,11 @@ export const TypeNumber = {
     },
     [MIN] (base: number, data: any) {
         if (base > data)
-            return `Data expected to be equal to at least ${base}. Got ${data}.`;
+            return `Data expected to be equal to at least #{base}. Got ${data}.`;
     },
     [MAX] (base: number, data: any) {
         if (base < data)
-            return `Data expected to be equal to at most ${base}. Got ${data}.`;
+            return `Data expected to be equal to at most #{base}. Got ${data}.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (value: any = E.invalidArgument('value')) {

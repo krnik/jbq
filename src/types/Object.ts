@@ -8,11 +8,11 @@ export const TypeObject = {
     },
     [CONSTRUCTOR_NAME] (base: string, data: any) {
         if (Object.getPrototypeOf(data).constructor.name !== base)
-            return `Data should be direct instance of ${base}.`;
+            return `Data should be direct instance of #{base}.`;
     },
     [INSTANCE_OF] (base: () => void, data: any) {
         if (!(data instanceof base))
-            return `Data should be instance of ${base}.`;
+            return `Data should be instance of #{base.name}.`;
     },
     [PROPERTIES] (base: Array<(string | number | symbol)>, data: any) {
         const keys = [
@@ -20,7 +20,7 @@ export const TypeObject = {
             ...Object.getOwnPropertySymbols(data),
         ];
         if (base.length !== keys.length)
-            return `Data should have exactly ${base} keys.`;
+            return `Data should have exactly all #{base.toString()} keys.`;
         for (const key of base)
             if (!data.hasOwnProperty(key))
                 return `Data should have ${key.toString()} property.`;

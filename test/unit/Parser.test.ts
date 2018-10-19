@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TYPE } from '../../src/constants';
+import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TOKEN_EXPR, TOKEN_EXPR_REGEX, TYPE } from '../../src/constants';
 import { Parser } from '../../src/core/Parser';
 import { createTypes } from '../../src/types/index';
 import { schemas } from '../data/main';
@@ -56,6 +56,20 @@ export default () => describe('Parser', () => {
                 },
             };
             expect(() => new Parser(createTypes()).compile(testSchemas)).to.throw();
+        });
+    });
+    describe(`eval ${TOKEN_EXPR} expressions`, () => {
+        it('it should interpolate base or path expressions', () => {
+            const str = '#{base} @ #{path}';
+            // @ts-ignore
+            const res = Parser.prototype.evalExpressions(str, 1999, '#/minLen');
+            expect(res).to.be.equal(`1999 @ #/minLen`);
+        });
+        it(`it should omit any expression that does not match ${TOKEN_EXPR_REGEX.toString()} pattern`, () => {
+            const str = `#{maze}`;
+            // @ts-ignore
+            const res = Parser.prototype.evalExpressions(str, true, '');
+            expect(res).to.be.equal(str);
         });
     });
 });
