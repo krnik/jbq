@@ -3,30 +3,30 @@ import { E, is } from '../utils/index';
 
 export const TypeNumber = {
     // @ts-ignore
-    [TYPE] (base: string, data: any) {
+    [TYPE] (schemaValue: string, data: any) {
         if (typeof data !== 'number' || isNaN(data))
             return `Data should be a number (NaN excluded) type. Got ${typeof data}.`;
     },
-    [MIN] (base: number, data: any) {
-        if (base > data)
-            return `Data expected to be equal to at least #{base}. Got ${data}.`;
+    [MIN] (schemaValue: number, data: any) {
+        if (schemaValue > data)
+            return `Data expected to be equal to at least #{schemaValue}. Got ${data}.`;
     },
-    [MAX] (base: number, data: any) {
-        if (base < data)
-            return `Data expected to be equal to at most #{base}. Got ${data}.`;
+    [MAX] (schemaValue: number, data: any) {
+        if (schemaValue < data)
+            return `Data expected to be equal to at most #{schemaValue}. Got ${data}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!is.string(value))
-                E.invalidSchemaPropType(TYPE, 'string', typeof value);
+        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.string(schemaValue))
+                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [MIN] (value: any = E.invalidArgument('value')) {
-            if (!is.number(value))
-                E.invalidSchemaPropType(MIN, 'number', typeof value);
+        [MIN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                E.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
         },
-        [MAX] (value: any = E.invalidArgument('value')) {
-            if (!is.number(value))
-                E.invalidSchemaPropType(MAX, 'number', typeof value);
+        [MAX] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                E.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
         },
     },
 };

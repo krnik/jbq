@@ -15,7 +15,9 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/lib.dev/test"
+                "--require",
+                "ts-node/register",
+                "${workspaceFolder}/test/main.test.ts"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -24,6 +26,8 @@
             "request": "launch",
             "name": "Perf Tests",
             "args": [
+                "--require",
+                "ts-node/register",
                 "${workspaceFolder}/lib.dev/test/perf/benchmark.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"

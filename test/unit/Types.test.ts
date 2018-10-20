@@ -516,12 +516,6 @@ export default () => describe('Types', () => {
                     expect(anotherCustom[SYM_TYPE_VALIDATE][key]).to.be.an('function');
                 }
             });
-            it('It should throw an error if type does not have any methods', () => {
-                expect(() => {
-                    new TypeWrapper()
-                        .set(TYPE_NAME.ARRAY, {} as any);
-                }).to.throw();
-            });
         });
         describe('.has()', () => {
             it('It should return boolean', () => {

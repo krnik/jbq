@@ -2,22 +2,22 @@ import { REQUIRED, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE } from '../consta
 import { E, is } from '../utils/index';
 
 export const TypeAny = {
-    [TYPE] (/** base: string, data: any */) {
-        //[[break]]
+    [TYPE] (/** schemaValue: string, data: any */) {
+        //{break}
     },
-    [REQUIRED] (base: boolean, data: any) {
-        if (data === undefined && !base) {
-            //[[break]]
+    [REQUIRED] (schemaValue: boolean, data: any) {
+        if (data === undefined && !schemaValue) {
+            //{break}
         }
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (value: any) {
-            if (!is.string(value))
-                E.invalidSchemaPropType(TYPE, 'string', typeof value);
+        [TYPE] (schemaValue: any) {
+            if (!is.string(schemaValue))
+                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [REQUIRED] (value: any) {
-            if (!is.boolean(value))
-                E.invalidSchemaPropType(REQUIRED, 'boolean', typeof value);
+        [REQUIRED] (schemaValue: any) {
+            if (!is.boolean(schemaValue))
+                E.invalidSchemaPropType(REQUIRED, 'boolean', typeof schemaValue);
         },
     },
     [SYM_TYPE_KEY_ORDER]: [REQUIRED, TYPE],

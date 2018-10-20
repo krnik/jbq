@@ -5,7 +5,6 @@ export const SYM_TYPE_KEY_ORDER = Symbol.for('type_key_order');
 export const SYM_TYPE_EXTERNAL = Symbol.for('type_external');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const SYM_TYPE_FOR_LOOP = Symbol.for('type_for_loop');
-export const SYM_TYPE_NAME = Symbol('type_name');
 export const CONSTRUCTOR_NAME = 'constructorName';
 export const INSTANCE_OF = 'instanceOf';
 export const PROPERTIES = 'properties';
@@ -40,4 +39,4 @@ export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
  */
 export const TOKEN_BREAK = '//{break}';
 export const TOKEN_EXPR = '#{}';
-export const TOKEN_EXPR_REGEX = /#{((base|path).*?)}/g;
+export const TOKEN_EXPR_REGEX = /#{((schemaValue|path).*?)}/g;

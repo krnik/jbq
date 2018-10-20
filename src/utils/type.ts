@@ -11,6 +11,9 @@ export const is = {
     symbol (value: any) {
         return typeof value === 'symbol';
     },
+    object (value: any) {
+        return value instanceof Object;
+    },
     objectInstance (value: any, constructorName: string) {
         return value == null ? value : Object.getPrototypeOf(value).constructor.name === constructorName;
     },

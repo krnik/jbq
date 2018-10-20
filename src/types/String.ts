@@ -2,46 +2,46 @@ import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../consta
 import { E, is } from '../utils/index';
 
 export const TypeString = {
-    [TYPE] (base: string, data: any) {
+    [TYPE] (schemaValue: string, data: any) {
         if (typeof data !== 'string')
-            return `Data should be ${base} type. Got ${typeof data}.`;
+            return `Data should be ${schemaValue} type. Got ${typeof data}.`;
     },
-    [MIN_LEN] (base: number, data: any) {
-        if (data.length < base)
-            return `Data expected to have length greater or equal than ${base}. Got ${data.length}.`;
+    [MIN_LEN] (schemaValue: number, data: any) {
+        if (data.length < schemaValue)
+            return `Data expected to have length greater or equal than ${schemaValue}. Got ${data.length}.`;
     },
-    [MAX_LEN] (base: number, data: any) {
-        if (data.length > base)
-            return `Data expected to have length less or equal than ${base} chars. Got ${data.length}.`;
+    [MAX_LEN] (schemaValue: number, data: any) {
+        if (data.length > schemaValue)
+            return `Data expected to have length less or equal than ${schemaValue} chars. Got ${data.length}.`;
     },
-    [REGEX] (base: RegExp, data: any) {
-        if (!base.test(data))
-            return `Data expected to pass #{base.toString()} test.`;
+    [REGEX] (schemaValue: RegExp, data: any) {
+        if (!schemaValue.test(data))
+            return `Data expected to pass #{schemaValue.toString()} test.`;
     },
-    [LEN] (base: number, data: any) {
-        if (data.length !== base)
-            return `Data expected to have length equal to ${base}. Got ${data.length}.`;
+    [LEN] (schemaValue: number, data: any) {
+        if (data.length !== schemaValue)
+            return `Data expected to have length equal to ${schemaValue}. Got ${data.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (value: any = E.invalidArgument('value')) {
-            if (!is.string(value))
-                E.invalidSchemaPropType(TYPE, 'string', typeof value);
+        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.string(schemaValue))
+                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [MIN_LEN] (value: any = E.invalidArgument('value')) {
-            if (!is.number(value))
-                E.invalidSchemaPropType(MIN_LEN, 'number', typeof value);
+        [MIN_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
         },
-        [MAX_LEN] (value: any = E.invalidArgument('value')) {
-            if (!is.number(value))
-                E.invalidSchemaPropType(MAX_LEN, 'number', typeof value);
+        [MAX_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
         },
-        [REGEX] (value: any = E.invalidArgument('value')) {
-            if (!is.objectInstance(value, 'RegExp'))
-                E.invalidSchemaPropType(REGEX, 'RegExp', typeof value);
+        [REGEX] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.objectInstance(schemaValue, 'RegExp'))
+                E.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
         },
-        [LEN] (value: any = E.invalidArgument('value')) {
-            if (!is.number(value))
-                E.invalidSchemaPropType(LEN, 'number', typeof value);
+        [LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
     },
 };
