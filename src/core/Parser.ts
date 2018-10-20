@@ -1,6 +1,7 @@
 import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_NAME, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { E, is } from '../utils/index';
+import { codeChunk } from './CodeChunks';
 
 const INDENT = Symbol('parser_indent');
 
@@ -90,10 +91,10 @@ export class Parser {
                     this.updateNames(names, key.toString(), `_${i}`);
                     source.params.push(names.param);
                     source.args.push(key);
-                    source.code += `\nconst ${names.var} = ${save.var}[${names.param}];\n`;
+                    source.code += codeChunk.defineVar(names.var, save.var, names.param);
                 } else {
                     this.updateNames(names, key, `_${i}`);
-                    source.code += `\nconst ${names.var} = ${save.var}[${is.toLiteral(key)}];\n`;
+                    source.code += codeChunk.defineVar(names.var, save.var, is.toLiteral(key));
                 }
                 this.parseSchema(
                     schema[SYM_SCHEMA_PROPERTIES]![key as any],
@@ -109,19 +110,11 @@ export class Parser {
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
             this.updateNames(names, '[]', '_i');
             if (!type[SYM_TYPE_FOR_LOOP]) {
-                source.code += `
-                    if (!(Symbol.iterator in ${save.var}))
-                        return 'Data requires to have ${Symbol.iterator.toString()} method implemented in order to use for..of loop';
-                    for (const ${names.var} of ${save.var})
-                `;
+                source.code += codeChunk.forOf(names.var, save.var);
                 this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
             } else {
                 const accessor = `${save.var}$i`;
-                source.code += `
-                    const ${save.var}_len = ${save.var}.length;
-                    for (let ${accessor} = 0; ${accessor} < ${save.var}_len; ${accessor}++) {
-                        const ${names.var} = ${save.var}[${accessor}];
-                `;
+                source.code += codeChunk.forIn(names.var, save.var, accessor);
                 this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, config, names, source);
                 source.code += '\n}\n';
             }
@@ -139,10 +132,7 @@ export class Parser {
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(names.prop)) {
             src.params.push(names.param);
             src.args.push(type[names.prop].bind(undefined, base, `${names.path}#${names.prop}`));
-            src.code += `
-                const ${names.param}_result = ${names.param}(${names.var});
-                if (${names.param}_result) return ${names.param}_result;
-            `;
+            src.code += codeChunk.externCall(names.param, names.var);
         } else {
             const body = this.getMethodBody(type, names, base);
             if (is.primitiveLiteral(base))
