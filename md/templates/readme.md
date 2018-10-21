@@ -6,7 +6,7 @@
 ***
 ## Introduction
 ***
-Hi! Welcome to ${NAME.LIB} library designed to allow flexible validation.
+Hi! Welcome to ${NAME.LIB} flexible validation library.
 
 Features:
 - data validation
@@ -30,10 +30,11 @@ const schemas = {
         // should be used to validate this property
         // it is the only required property for schema
         ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.PROPERTIES}: ['name', 'email'],
         [PROPS]: {
             names: {
                 ${TYPE_METHOD.TYPE}: 'array',
-                ${TYPE_METHOD.LEN}: 2,
+                ${TYPE_METHOD.MAX_LEN}: 2,
                 [ITEMS]: {
                     ${TYPE_METHOD.TYPE}: 'string',
                 },
@@ -43,7 +44,7 @@ const schemas = {
             },
         }
     },
-    String: {
+    TwoChars: {
         ${TYPE_METHOD.TYPE}: 'string',
         ${TYPE_METHOD.LEN}: 2,
     },
@@ -64,7 +65,7 @@ const data = {
 };
 validator.User(data);
 // => undefined
-validator.String('122');
+validator.TwoChars('122');
 // => error message
 ```
 ***

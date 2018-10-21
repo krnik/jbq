@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, TOKEN_EXPR, TOKEN_EXPR_REGEX, TYPE, SYM_SCHEMA_PROPERTIES } from '../../src/constants';
+import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TOKEN_EXPR, TOKEN_EXPR_REGEX, TYPE, MIN, MAX, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/index';
 import { schemas } from '../data/main';
@@ -94,11 +94,53 @@ export default () => describe('Compilation', () => {
             }
         });
     });
+    describe('resolve dataPath', () => {
+        it('it should succesfully resolve data path including external methods', () => {
+            const type = {
+                [TYPE] (schemaValue: string, data: any) {
+                    if (typeof data !== 'string' && typeof data !== 'number')
+                        return `It should be a numeric ${schemaValue}. Got ${typeof data}.`;
+                },
+                [MIN] (schemaValue: number, data: any) {
+                    if (schemaValue > data)
+                        return `Data expected to be at least #{schemaValue}. Got ${data}.`;
+                },
+                [SYM_TYPE_EXTERNAL]: [MIN],
+                [SYM_TYPE_VALIDATE]: {
+                    [TYPE] (schemaValue: any) {
+                        if (typeof schemaValue !== 'string') throw new Error();
+                    },
+                },
+            };
+            const schema = {
+                [TYPE]: 'object',
+                [SYM_SCHEMA_PROPERTIES]: {
+                    min: {
+                        [TYPE]: 'numeric',
+                        [MIN]: { $dataPath: 'age' },
+                    },
+                    age: {
+                        [TYPE]: 'number',
+                        [MAX]: { $dataPath: ['eq'] },
+                    },
+                    eq: {
+                        [TYPE]: 'number',
+                        [MAX]: { $dataPath: 'min' },
+                    },
+                },
+            };
+            const types = createTypes().set('numeric', type, 'number');
+            const source = new Compilation(types, 'Test', schema, false).exec();
+            const validator = new Function([...source.parameters, source.dataParameter].join(), source.code);
+            const bound = validator.bind(undefined, ...source.arguments);
+            expect(bound({ min: 11, age: 11, eq: 11 })).to.be.equal(undefined);
+        });
+    });
     describe(`eval ${TOKEN_EXPR} expressions`, () => {
         it('it should interpolate schemaValue or path expressions', () => {
             const str = '#{schemaValue} @ #{path}';
             // @ts-ignore
-            const res = Compilation.prototype.evalExpressions(str, '#/minLen', 1999);
+            const res = Compilation.prototype.evalExpressions(str, { schemaPath: '#/minLen' }, 1999);
             expect(res).to.be.equal(`1999 @ #/minLen`);
         });
         it(`it should omit any expression that does not match ${TOKEN_EXPR_REGEX.toString()} pattern`, () => {

@@ -21,6 +21,7 @@ interface ISource {
     arguments: any[];
     parameters: string[];
     dataParameter: string;
+    // pathResolution
 }
 
 interface IContext {
@@ -28,6 +29,10 @@ interface IContext {
     dataVariable: string;
     parameterCount: number;
     schemaPath: string;
+}
+
+interface IDataPath {
+    $dataPath: string | string[];
 }
 
 export interface IConfig {
@@ -71,10 +76,14 @@ export class Compilation {
 
         const sortedEntries = this.sortByKey({ ...updatedConfig, ...schema }, type[SYM_TYPE_KEY_ORDER]!);
         for (const [property, schemaValue] of sortedEntries) {
-            if (!type[property]) throw E.compilation.missingTypeMethod(typeName, property);
-            type[SYM_TYPE_VALIDATE][property](schemaValue);
+            if (!type[property])
+                throw E.compilation.missingTypeMethod(typeName, property);
             this.updateContextKey(context, property);
-            this.parseProperty(type, schemaValue, updatedConfig, context, source);
+            this.debug('property', `${context.key} @ ${context.schemaPath}`, updatedConfig[INDENT]);
+            if (!this.isDataPath(schemaValue))
+                this.parseProperty(type, schemaValue, context, source);
+            else
+                this.parsePropertyDataPath(type, schemaValue, context, source);
             context.schemaPath = contextSnapshot.schemaPath;
         }
 
@@ -121,8 +130,8 @@ export class Compilation {
         source.code += CodeChunk.closeBlock();
     }
 
-    private parseProperty (type: IType, schemaValue: any, config: IConfig, context: IContext, source: ISource) {
-        this.debug('property', context.key, config[INDENT]);
+    private parseProperty (type: IType, schemaValue: any, context: IContext, source: ISource) {
+        type[SYM_TYPE_VALIDATE][context.key](schemaValue);
         const method = type[context.key];
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(context.key)) {
             context.parameterCount++;
@@ -143,6 +152,21 @@ export class Compilation {
         }
     }
 
+    private parsePropertyDataPath (type: IType, schemaValue: IDataPath, context: IContext, source: ISource) {
+        const method = type[context.key];
+        const resolvedPath = context.dataVariable + '_data';
+        source.code += CodeChunk
+            .resolveDataCall(schemaValue.$dataPath, resolvedPath, context.dataVariable);
+        if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(context.key)) {
+            context.parameterCount++;
+            const parameter = `$${context.parameterCount}`;
+            source.parameters.push(parameter);
+            source.arguments.push(method);
+            source.code += CodeChunk.externCallResolve(parameter, resolvedPath, this.toLiteral(context.schemaPath), context.dataVariable);
+        } else
+            source.code += this.getMethodBody(method, context, `\${${resolvedPath}}`, resolvedPath);
+    }
+
     private getMethodBody (method: () => void, context: IContext, schemaValue: any, paramOrLiteral: string) {
         let body = method.toString();
         const start = body.indexOf('{');
@@ -150,21 +174,25 @@ export class Compilation {
         body = body
             .slice(start, end + 1)
             .replace(TOKEN_BREAK, `break label_${context.dataVariable};`);
-        body = this.evalExpressions(body, context.schemaPath, schemaValue);
+        body = this.evalExpressions(body, context, schemaValue);
         body = this.replaceToken(body, 'data', context.dataVariable);
-        return this.replaceToken(body, 'schemaValue', paramOrLiteral);
+        return this.replaceToken(body, 'schemaValue', paramOrLiteral) + '\n';
     }
 
-    private evalExpressions (str: string, path: string, schemaValue: string) {
+    private evalExpressions (str: string, context: IContext, schemaValue: string) {
         // @ts-ignore
         return str.replace(TOKEN_EXPR_REGEX, (match, expr) => {
-            return new Function('path', 'schemaValue', `return ${expr}`)(path, schemaValue);
+            return new Function('path', 'schemaValue', `return ${expr}`)(context.schemaPath, schemaValue);
         });
+    }
+
+    private isDataPath (schemaValue: any) {
+        return typeof schemaValue === 'object' && schemaValue.hasOwnProperty('$dataPath');
     }
 
     private toLiteral (schemaValue: any) {
         if (typeof schemaValue === 'string')
-            return `\`${schemaValue.replace('\`', '\\\`')}\``;
+            return `\`${schemaValue.replace(/`/g, '\\`')}\``;
         return schemaValue;
     }
 

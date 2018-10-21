@@ -22,4 +22,24 @@ for (let ${accessor} = 0; ${accessor} < ${oldDataVar}_len; ${accessor}++) {
 const ${fnParam}_result = ${fnParam}(${data});
 if (${fnParam}_result) return ${fnParam}_result;
     `,
+
+    externCallResolve: (fnParam: string, schemaValue: string, schemaPath: string, dataVariable: string) => `{
+const ${fnParam}_result = ${fnParam}(${schemaValue}, ${schemaPath}, ${dataVariable});
+if (${fnParam}_result) return ${fnParam}_result;
+    }`,
+
+    resolveDataCall (dataPath: string | string[], dataVariable: string, oldDataVar: string) {
+        const asStr = (str: string) => `\`${str.replace(/`/g, '\\`')}\``;
+        const paths = Array.isArray(dataPath) ? dataPath : dataPath.split('/');
+        const pathResolution = paths
+            .filter((e) => e.length)
+            .map((e, i, arr) => {
+                const base = oldDataVar;
+                if (!i) return `${base}[${asStr(e)}]`;
+                const mid = arr.slice(0, i).map((s) => `[${asStr(s)}]`).join('');
+                return `${base}${mid}[${asStr(e)}]`;
+            })
+            .join(' && ');
+        return `let ${dataVariable} = ${pathResolution};\n if (${dataVariable} !== undefined) `;
+    },
 };

@@ -15,10 +15,6 @@ export function VJS<T, K extends keyof OmitSymbols<T>> (
     const patterns = {} as Validators<T>;
     for (const [name, schema] of Object.entries(schemas)) {
         const src = new Compilation(types, name, schema, debug).exec();
-        // console.log(name);
-        // console.log(src.code);
-        // console.log(src.parameters);
-        // console.log(src.arguments);
         const validate = new Function([...src.parameters, src.dataParameter].toString(), src.code);
         patterns[name as K] = validate.bind(undefined, ...src.arguments);
     }
