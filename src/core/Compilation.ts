@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
+import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
 import { E, is } from '../utils';
 import { CodeChunk } from './CodeChunks';
@@ -21,13 +21,13 @@ interface ISource {
     arguments: any[];
     parameters: string[];
     dataParameter: string;
-    // pathResolution
 }
 
 interface IContext {
     key: string;
     dataVariable: string;
     parameterCount: number;
+    resolvedCount: number;
     schemaPath: string;
 }
 
@@ -154,9 +154,10 @@ export class Compilation {
 
     private parsePropertyDataPath (type: IType, schemaValue: IDataPath, context: IContext, source: ISource) {
         const method = type[context.key];
-        const resolvedPath = context.dataVariable + '_data';
+        context.resolvedCount++;
+        const resolvedPath = `${context.dataVariable}_data_${context.resolvedCount}`;
         source.code += CodeChunk
-            .resolveDataCall(schemaValue.$dataPath, resolvedPath, context.dataVariable);
+            .resolveDataCall(schemaValue.$dataPath, resolvedPath);
         if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(context.key)) {
             context.parameterCount++;
             const parameter = `$${context.parameterCount}`;
@@ -222,8 +223,9 @@ export class Compilation {
     private createContext () {
         return {
             key: '',
-            dataVariable: '$v',
+            dataVariable: BASE_DATA_PARAMETER,
             parameterCount: -1,
+            resolvedCount: -1,
             schemaPath: this.name.toUpperCase(),
         };
     }

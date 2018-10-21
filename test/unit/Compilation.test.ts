@@ -134,6 +134,7 @@ export default () => describe('Compilation', () => {
             const validator = new Function([...source.parameters, source.dataParameter].join(), source.code);
             const bound = validator.bind(undefined, ...source.arguments);
             expect(bound({ min: 11, age: 11, eq: 11 })).to.be.equal(undefined);
+            expect(bound({ min: 10, age: 20, eq: 12 })).to.be.a('string');
         });
     });
     describe(`eval ${TOKEN_EXPR} expressions`, () => {

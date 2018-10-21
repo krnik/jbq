@@ -1,3 +1,5 @@
+import { BASE_DATA_PARAMETER } from '../constants';
+
 export const CodeChunk = {
     label: (dataVariable: string) => `label_${dataVariable}: {\n`,
 
@@ -28,18 +30,18 @@ const ${fnParam}_result = ${fnParam}(${schemaValue}, ${schemaPath}, ${dataVariab
 if (${fnParam}_result) return ${fnParam}_result;
     }`,
 
-    resolveDataCall (dataPath: string | string[], dataVariable: string, oldDataVar: string) {
+    resolveDataCall (dataPath: string | string[], dataVariable: string) {
         const asStr = (str: string) => `\`${str.replace(/`/g, '\\`')}\``;
         const paths = Array.isArray(dataPath) ? dataPath : dataPath.split('/');
         const pathResolution = paths
             .filter((e) => e.length)
             .map((e, i, arr) => {
-                const base = oldDataVar;
+                const base = BASE_DATA_PARAMETER;
                 if (!i) return `${base}[${asStr(e)}]`;
                 const mid = arr.slice(0, i).map((s) => `[${asStr(s)}]`).join('');
                 return `${base}${mid}[${asStr(e)}]`;
             })
             .join(' && ');
-        return `let ${dataVariable} = ${pathResolution};\n if (${dataVariable} !== undefined) `;
+        return `const ${dataVariable} = ${pathResolution};\n if (${dataVariable} !== undefined) `;
     },
 };
