@@ -1,6 +1,6 @@
 {
   "name": "vjs-validator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Yet another customizable JS schema validator.",
   "main": "lib/index.js",
   "directories": {
