@@ -20,7 +20,11 @@ So we have to add `${TYPE_METHOD.TYPE}` method to the type object.
 Every validation method in type definition should have two parameters.
   - **schemaValue** - *it is a value specified in schema used to compare against value*
   - **data** - *it is a value that is currently validated*
+
+
 If validation method is marked with `${SYM.TYPE_EXTERNAL}` symbol then the function should have following parameters:
+
+
   - **schemaValue** - *it is a value specified in schema used to compare against value*
   - **path** - *it is a schema path, useful when returning more specific error messages*
   - **data** - *it is a value that is currently validated*
