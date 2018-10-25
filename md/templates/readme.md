@@ -48,6 +48,22 @@ const schemas = {
         ${TYPE_METHOD.TYPE}: 'string',
         ${TYPE_METHOD.LEN}: 2,
     },
+    Numbers: {
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${SYM.SCHEMA_CONFIG}: {
+            ${TYPE_METHOD.TYPE}: 'number',
+        },
+        [PROPS]: {
+            smallest: {
+                ${TYPE_METHOD.MIN}: 0,
+                ${TYPE_METHOD.MAX}: 100,
+            },
+            medium: {
+                ${TYPE_METHOD.MIN}: { $dataPath: 'smallest' },
+                ${TYPE_METHOD.MAX}: { $dataPath: 'biggest' },
+            },
+        },
+    },
 };
 ```
 > Import and create ${NAME.LIB} instance
@@ -57,7 +73,7 @@ const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require('${NAME.REPO}');
 const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 ```
 For more info about ${NAME.TYPES} see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
-> Validate
+> Pass data to validator
 ```javascript
 const data = {
     names: ['Jean', 'Claude'],
@@ -67,10 +83,46 @@ validator.User(data);
 // => undefined
 validator.TwoChars('122');
 // => error message
+validator.Numbers({ smallest: 5, medium: 10, biggest: 20 });
+// => undefined
+validator.Numbers({ smallest: 1, medium: 2, biggest: 0 });
+// => error message
 ```
+
+### `$dataPath`
+Data path accepts a string or array of strings which will be used to resolve value from data root.
+It can be used when you don't know exact schema values.
+Lets consider following object:
+```javascript
+const object = {
+    menu: {
+        pages: 10,
+        breakfast: {
+            egg: 10.25,
+        },
+        'fruit/vegetables': {
+            apple: 'green',
+            carrot: 'red',
+        },
+    },
+};
+```
+
+```javascript
+// this path will match object.menu.breakfast.egg ==> 10.25
+{ $dataPath: 'menu/breakfast/egg' }
+// this path uses array syntax since one of properties includes '/'
+// it will match object.menu['fruit/vegetable'].carrot ==> 'red'
+{ $dataPath: ['menu', 'fruit/vegetable', 'carrot'] }
+```
+In case the path resolves to `undefined` the property using `$dataPath` resolution will be skipped.
 ***
+
+### Types
+Besides 6 built-in types this library offers you a possiblity to create your own type with own keywords and extend them with existing types.
+
 ## Wiki
 - [Types](../../wiki/${WIKI.TYPE})
 - [Type Wrapper](../../wiki/${WIKI.TYPE_WRAPPER})
-- [Schema Parser](../../wiki/${WIKI.PARSER})
+- [Schema](../../wiki/${WIKI.PARSER})
 ***

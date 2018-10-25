@@ -95,6 +95,28 @@ export default () => describe('Compilation', () => {
         });
     });
     describe('resolve dataPath', () => {
+        it('it should resolve simple object paths', () => {
+            const schema = {
+                [TYPE]: 'object',
+                [SYM_SCHEMA_CONFIG]: { [TYPE]: 'number' },
+                [SYM_SCHEMA_PROPERTIES]: {
+                    smallest: {
+                        [MIN]: 0,
+                        [MAX]: 10,
+                    },
+                    middle: {
+                        [MIN]: { $dataPath: 'smallest' },
+                        [MAX]: { $dataPath: 'biggest' },
+                    },
+                },
+            };
+            const types = createTypes();
+            const source = new Compilation(types, 'Test', schema, false).exec();
+            const validator = new Function([...source.parameters, source.dataParameter].join(), source.code);
+            const bound = validator.bind(undefined, ...source.arguments);
+            expect(bound({ smallest: 5, middle: 10, biggest: 15 })).to.be.equal(undefined);
+            expect(bound({ smallest: 10, middle: 10, biggest: 9 })).to.be.a('string');
+        });
         it('it should succesfully resolve data path including external methods', () => {
             const type = {
                 [TYPE] (schemaValue: string, data: any) {

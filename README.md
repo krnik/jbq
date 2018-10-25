@@ -6,7 +6,7 @@
 ***
 ## Introduction
 ***
-Hi! Welcome to VJS-Validator library designed to allow flexible validation.
+Hi! Welcome to VJS-Validator flexible validation library.
 
 Features:
 - data validation
@@ -30,10 +30,11 @@ const schemas = {
         // should be used to validate this property
         // it is the only required property for schema
         type: 'object',
+        properties: ['name', 'email'],
         [PROPS]: {
             names: {
                 type: 'array',
-                len: 2,
+                maxLen: 2,
                 [ITEMS]: {
                     type: 'string',
                 },
@@ -43,9 +44,25 @@ const schemas = {
             },
         }
     },
-    String: {
+    TwoChars: {
         type: 'string',
         len: 2,
+    },
+    Numbers: {
+        type: 'object',
+        Symbol.for('schema_config'): {
+            type: 'number',
+        },
+        [PROPS]: {
+            smallest: {
+                min: 0,
+                max: 100,
+            },
+            medium: {
+                min: { $dataPath: 'smallest' },
+                max: { $dataPath: 'biggest' },
+            },
+        },
     },
 };
 ```
@@ -56,7 +73,7 @@ const { VJS, VJSTypes } = require('vjs-validator');
 const validator = VJS(VJSTypes, schemas);
 ```
 For more info about VJSTypes see [WIKI](../../wiki/type-wrapper).
-> Validate
+> Pass data to validator
 ```javascript
 const data = {
     names: ['Jean', 'Claude'],
@@ -64,12 +81,48 @@ const data = {
 };
 validator.User(data);
 // => undefined
-validator.String('122');
+validator.TwoChars('122');
+// => error message
+validator.Numbers({ smallest: 5, medium: 10, biggest: 20 });
+// => undefined
+validator.Numbers({ smallest: 1, medium: 2, biggest: 0 });
 // => error message
 ```
+
+### `$dataPath`
+Data path accepts a string or array of strings which will be used to resolve value from data root.
+It can be used when you don't know exact schema values.
+Lets consider following object:
+```javascript
+const object = {
+    menu: {
+        pages: 10,
+        breakfast: {
+            egg: 10.25,
+        },
+        'fruit/vegetables': {
+            apple: 'green',
+            carrot: 'red',
+        },
+    },
+};
+```
+
+```javascript
+// this path will match object.menu.breakfast.egg ==> 10.25
+{ $dataPath: 'menu/breakfast/egg' }
+// this path uses array syntax since one of properties includes '/'
+// it will match object.menu['fruit/vegetable'].carrot ==> 'red'
+{ $dataPath: ['menu', 'fruit/vegetable', 'carrot'] }
+```
+In case the path resolves to `undefined` the property using `$dataPath` resolution will be skipped.
 ***
+
+### Types
+Besides 6 built-in types this library offers you a possiblity to create your own type with own keywords and extend them with existing types.
+
 ## Wiki
 - [Types](../../wiki/type)
 - [Type Wrapper](../../wiki/type-wrapper)
-- [Schema Parser](../../wiki/parser)
+- [Schema](../../wiki/parser)
 ***

@@ -2,7 +2,6 @@
 - [How it works?](#how-it-works?)
 - [Symbols](#symbols)
 - [Schema config](#schema-config)
-- [Break](#break)
 
 [Source Code](${PATH.PARSER.SRC})
 ***
@@ -17,51 +16,38 @@ const NameSchema = {
     ${TYPE_METHOD.MIN_LEN}: 1,
     ${TYPE_METHOD.MAX_LEN}: 64,
 };
-parser(types, { Name: NameSchema });
 ```
 The steps that parser takes are:
- - get value of `${TYPE_METHOD.TYPE}` property from `Name` schema and get type object with that name (`string`)
+ - get value of `${TYPE_METHOD.TYPE}` property from `NameSchema` schema and get type object with that name (`string`)
 - if type method `${TYPE_METHOD.TYPE}` does not use external variables then take it's string content and create a block with this function. If method uses external variables (it has to be marked with `${SYM.TYPE_EXTERNAL}` symbol) then pass type method as an argument and invoke it.
 ```javascript
 // This is how string.type method looks like after parsing.
 // _d is a data variable
 {
     if (typeof _d !== 'string')
-        return `Data should be \${'string'} type. Got \${typeof _d}.`;
+        return `Data should be string type. Got \${typeof _d}.`;
 }
 // This is how function would look like if string.type method would use resources from outside it's scope.
-_d_param_type(_d);
+function (check_data_type) {
+    check_data_type(_d);
+}
 ```
 - take rest of schema properties validate their values and parse coresponding type methods
-- replace type method argument names with current scope variable names
-```javascript
-// minLen
-{
-    if (_d.length < 1)
-        return `Data expected to have length greater or equal than \${1}. Got \${_d.length}.`;
-}
-// maxLen
-{
-    if (_d.length > 64)
-        return `Data expected to have length less or equal than \${64} chars. Got \${_d.length}.`;
-}
-```
-- in the end combine all blocks into one function
 ***
 ### Symbols
 ***
 #### `${SYM.TYPE_KEY_ORDER}`
 > Sets the order in which schema properties checks appear in parsed function for given type. It must be an array of strings. Default value - `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
 
-Let's assume that our `${SYM.TYPE_KEY_ORDER}` is default value `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
+Let's assume that our `${SYM.TYPE_KEY_ORDER}` has default value of `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
 Then parsed function checks will be sorted in order:
 1. `${TYPE_METHOD.REQUIRED}`
 2. `${TYPE_METHOD.TYPE}`
 3. Other type methods
 #### `${SYM.TYPE_FOR_LOOP}`
-> By default collections are iterated using for..of loop. This Symbol tells parser to use standard for loop for arrays - which is 2-4 times faster.
+> By default collections are iterated using for..of loop. This Symbol tells parser to use standard `for loop` for numeric indexed collections (Arrays) - which is 2-4 times faster than `for of loop` that uses iterators.
 ```javascript
-const customType = {
+const customTypeThatUsesForLoop = {
     ${TYPE_METHOD.TYPE} (base, data) {},
     size (base, data) {},
     [${SYM.TYPE_VALIDATE}]: {
@@ -75,11 +61,13 @@ const customType = {
     [${SYM.TYPE_FOR_LOOP}]: true,
 };
 // parser will generate
-for (let _d_i$ = 0; _d_i$ < _d.length; _d_i$++) {
+const len = data.length;
+for (let accessor = 0; accessor < len; accessor++) {
+    const scopedData = data[accessor];
     // checks
 }
 // instead of
-for (const _d_i of _d) {
+for (const scopedData of data) {
     // checks
 }
 ```
@@ -88,8 +76,9 @@ for (const _d_i of _d) {
 ```javascript
 const customType = {
     ${TYPE_METHOD.TYPE} (base, data) {},
-    area (base, data) {
-        externalFunction(data);
+    area (base, path, data) {
+        if (!externalFunction(data))
+            return `There was an error in validation \${data} at \${path}.`;
     },
     // Now area method will be passed as an argument
     // otherwise `externalFunction` call would throw an error
@@ -185,41 +174,3 @@ const schema = {
     },
 };
 ```
-### Break
-In ${NAME.LIB} all schema-scoped checks are grouped in one labeled code block.
-Let's visualize it.
-```javascript
-// parsed function structure
-function (data) {
-    _d_label: {
-        { // required check
-        }
-        { // type check
-        }
-        // other checks ...
-    }
-}
-```
-If you want to break currently executed code block you have to add `//{break}` comment to the types' method.
-Here is how `${TYPE_METHOD.REQUIRED}` function looks like.
-```typescript
-    if (data === undefined && !base) {
-        //{break}
-    }
-```
-If passed value will be undefined then code execution in labeled block will be stopped.
-```javascript
-// parsed function structure with break statement
-function (data) {
-    _d_label: {
-        { // required check
-            if (data === undefined && !base) {
-                break _d_label;
-            }
-        }
-        // other checks
-    }
-}
-```
-
-> If type method is included in [`${SYM.TYPE_EXTERNAL}`] type property then it will not be able to break code block.

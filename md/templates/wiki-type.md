@@ -59,4 +59,4 @@ Every built-in type other than `any` extends `any`.
 - **${TYPE_METHOD.SOME}** - *check if `Array.prototype.some` method returns true when value in schema `${TYPE_METHOD.SOME}` property is passed as a callback ([example](${PATH.ARRAY.EXAMPLE.SOME}))*
 - **${TYPE_METHOD.INCLUDES}** - *check if `Array.prototype.includes` method returns true when value in schema `${TYPE_METHOD.INCLUDES}` property is passed as an argument ([example](${PATH.ARRAY.EXAMPLE.INCLUDES}))*
 
-[Source Code](src/types/Array.ts)
+[Source Code](${PATH.ARRAY.SRC})
