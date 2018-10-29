@@ -1,6 +1,12 @@
 import { SYM_TYPE_VALIDATE, TYPE } from '../constants';
 
 export const E = {
+    codeChunk: {
+        invalidDataPath (dataPath: string | string[]) {
+            const errorMessage = `Data path in schema is invalid because it resolves to empty array. Please revisit this value ${dataPath}`;
+            return new Error(errorMessage);
+        },
+    },
     wrapper: {
         invalidTypeName (type: string) {
             const errorMessage = `Can not add new type because it's name is not a "string" type. Got "${type}".`;

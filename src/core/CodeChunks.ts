@@ -1,4 +1,5 @@
 import { BASE_DATA_PARAMETER } from '../constants';
+import { E } from '../utils';
 
 export const CodeChunk = {
     label: (dataVariable: string) => `label_${dataVariable}: {\n`,
@@ -32,9 +33,13 @@ if (${fnParam}_result) return ${fnParam}_result;
 
     resolveDataCall (dataPath: string | string[], dataVariable: string) {
         const asStr = (str: string) => `\`${str.replace(/`/g, '\\`')}\``;
-        const paths = Array.isArray(dataPath) ? dataPath : dataPath.split('/');
+        const paths = (Array.isArray(dataPath)
+            ? dataPath
+            : dataPath.split('/'))
+            .filter((e) => e.length);
+        if (!paths.length)
+            throw E.codeChunk.invalidDataPath(dataPath);
         const pathResolution = paths
-            .filter((e) => e.length)
             .map((e, i, arr) => {
                 const base = BASE_DATA_PARAMETER;
                 if (!i) return `${base}[${asStr(e)}]`;
