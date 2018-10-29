@@ -13,7 +13,8 @@
         "curly": [true, "as-needed"],
         "max-line-length": false,
         "no-bitwise": false,
-        "comment-format": false
+        "comment-format": false,
+        "variable-name": [true, "check-format", "allow-leading-underscore", "allow-pascal-case"]
     },
     "rulesDirectory": []
 }

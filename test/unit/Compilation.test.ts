@@ -161,7 +161,7 @@ export default () => describe('Compilation', () => {
     });
     describe(`eval ${TOKEN_EXPR} expressions`, () => {
         it('it should interpolate schemaValue or path expressions', () => {
-            const str = '#{schemaValue} @ #{path}';
+            const str = '#{schemaValue} @ #{schemaPath}';
             // @ts-ignore
             const res = Compilation.prototype.evalExpressions(str, { schemaPath: '#/minLen' }, 1999);
             expect(res).to.be.equal(`1999 @ #/minLen`);

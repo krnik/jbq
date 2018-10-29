@@ -208,7 +208,7 @@ export const arrayTests = [
     fail: true,
     schemas: [
       {
-        type: 'types',
+        type: 'types_only',
         ajv: {
           type: DATA.TYPE,
           items: {

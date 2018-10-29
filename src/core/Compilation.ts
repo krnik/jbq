@@ -183,7 +183,7 @@ export class Compilation {
     private evalExpressions (str: string, context: IContext, schemaValue: string) {
         // @ts-ignore
         return str.replace(TOKEN_EXPR_REGEX, (match, expr) => {
-            return new Function('path', 'schemaValue', `return ${expr}`)(context.schemaPath, schemaValue);
+            return new Function('schemaPath', 'schemaValue', `return ${expr}`)(context.schemaPath, schemaValue);
         });
     }
 

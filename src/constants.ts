@@ -39,7 +39,7 @@ export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
  */
 export const TOKEN_BREAK = '//{break}';
 export const TOKEN_EXPR = '#{}';
-export const TOKEN_EXPR_REGEX = /#{((schemaValue|path).*?)}/g;
+export const TOKEN_EXPR_REGEX = /#{((schemaValue|schemaPath).*?)}/g;
 /**
  * COMPILATION CONSTANTS
  */
