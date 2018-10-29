@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE, MULTIPLY_OF } from '../../src/constants';
 import { TypeAny } from '../../src/types/Any';
 import { TypeArray } from '../../src/types/Array';
 import { TypeBoolean } from '../../src/types/Boolean';
@@ -257,6 +257,24 @@ export default () => describe('Types', () => {
             it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
                 for (const value of values.non.number)
                     expect(() => TypeNumber[SYM_TYPE_VALIDATE][MAX](value)).to.throw();
+            });
+        });
+        describe(MULTIPLY_OF, () => {
+            const base = 10;
+            it('valid value', () => {
+                const value = 20;
+                expect(TypeNumber[MULTIPLY_OF](base, value)).to.be.equal(undefined);
+            });
+            it('invalid value', () => {
+                const value = 12;
+                expect(TypeNumber[MULTIPLY_OF](base, value)).to.be.a('string');
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+                expect(TypeNumber[SYM_TYPE_VALIDATE][MULTIPLY_OF](base)).to.be.equal(undefined);
+            });
+            it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+                for (const value of values.non.number)
+                    expect(() => TypeNumber[SYM_TYPE_VALIDATE][MULTIPLY_OF](value)).to.throw();
             });
         });
     });

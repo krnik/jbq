@@ -28,20 +28,20 @@ export const TypeObject = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
         [CONSTRUCTOR_NAME] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof schemaValue);
         },
         [INSTANCE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
+                throw E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
         },
         [PROPERTIES] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Array') ||
                 !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
-                E.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
+                throw E.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
         },
     },
 };

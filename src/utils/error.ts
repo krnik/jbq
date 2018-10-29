@@ -63,14 +63,12 @@ export const E = {
             return new Error(errorMessage);
         },
     },
-    invalidArgument (paramName: string, desired?: string, actual?: string) {
-        const errorMessage = !desired
-        ? `Parameter "${paramName}" is required.`
-        : `Parameter "${paramName}" expects argument to be a "${desired}". Got "${actual}" type instead.`;
+    invalidArgument (paramName: string) {
+        const errorMessage = `Parameter "${paramName}" is required.`;
         throw new Error(errorMessage);
     },
     invalidSchemaPropType (propName: string, desired: string, valueType: string) {
         const errorMessage = `[${propName}] property requires schema value to be a "${desired}". Got "${valueType}" type instead.`;
-        throw new Error(errorMessage);
+        return new Error(errorMessage);
     },
 };

@@ -11,13 +11,13 @@ export const TypeAny = {
         }
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any) {
+        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [REQUIRED] (schemaValue: any) {
+        [REQUIRED] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.boolean(schemaValue))
-                E.invalidSchemaPropType(REQUIRED, 'boolean', typeof schemaValue);
+                throw E.invalidSchemaPropType(REQUIRED, 'boolean', typeof schemaValue);
         },
     },
     [SYM_TYPE_KEY_ORDER]: [REQUIRED, TYPE],

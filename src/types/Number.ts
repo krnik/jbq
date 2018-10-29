@@ -1,4 +1,4 @@
-import { MAX, MIN, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { MAX, MIN, MULTIPLY_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/index';
 
 export const TypeNumber = {
@@ -14,18 +14,26 @@ export const TypeNumber = {
         if (schemaValue < data)
             return `Data expected to be equal to at most #{schemaValue}. Got ${data}.`;
     },
+    [MULTIPLY_OF] (schemaValue: number, data: any) {
+        if (data % schemaValue)
+            return `Data expected to be multiply of #{schemaValue}.`;
+    },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
         [MIN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
         },
         [MAX] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
+        },
+        [MULTIPLY_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                throw E.invalidSchemaPropType(MULTIPLY_OF, 'number', typeof schemaValue);
         },
     },
 };

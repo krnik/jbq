@@ -13,11 +13,11 @@ export const TypeBoolean = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
         [VALUE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.boolean(schemaValue))
-                E.invalidSchemaPropType(schemaValue, 'boolean', typeof schemaValue);
+                throw E.invalidSchemaPropType(schemaValue, 'boolean', typeof schemaValue);
         },
     },
 };

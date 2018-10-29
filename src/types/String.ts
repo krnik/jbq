@@ -25,23 +25,23 @@ export const TypeString = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
         [MIN_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
         },
         [MAX_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
         },
         [REGEX] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'RegExp'))
-                E.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
+                throw E.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
         },
         [LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
     },
 };

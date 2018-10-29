@@ -45,31 +45,30 @@ export const TypeArray = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
         [EVERY] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                E.invalidSchemaPropType(EVERY, 'function', typeof schemaValue);
+                throw E.invalidSchemaPropType(EVERY, 'function', typeof schemaValue);
         },
         [SOME] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                E.invalidSchemaPropType(SOME, 'function', typeof schemaValue);
+                throw E.invalidSchemaPropType(SOME, 'function', typeof schemaValue);
         },
-        // @ts-ignore
-        [INCLUDES] (schemaValue: any = E.invalidArgument('schemaValue')) {
-            // for now this function will accept any schemaValue excluding undefined
+        [INCLUDES] (_schemaValue: any = E.invalidArgument('schemaValue')) {
+            // this function will accept any schemaValue excluding undefined
         },
         [MIN_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
         },
         [MAX_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
         },
         [LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
     },
     [SYM_TYPE_FOR_LOOP]: true,
