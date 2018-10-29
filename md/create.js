@@ -5,6 +5,7 @@ const path = require('path');
 const TYPE_METHOD = {
     CONSTRUCTOR_NAME: 'constructorName',
     INSTANCE_OF: 'instanceOf',
+    MULTIPLY_OF: 'multiplyOf',
     PROPERTIES: 'properties',
     REQUIRED: 'required',
     INCLUDES: 'includes',
@@ -65,6 +66,7 @@ const ANCHOR = {
         TYPE_EXAMPLE: `number-${TYPE_METHOD.TYPE}-example`,
         MIN_EXAMPLE: `number-${TYPE_METHOD.MIN}-example`,
         MAX_EXAMPLE: `number-${TYPE_METHOD.MAX}-example`,
+        MULTIPLY_OF_EXAMPLE: `number-${TYPE_METHOD.MULTIPLY_OF}-example`,
     },
     OBJECT: {
         TYPE_EXAMPLE: `object-${TYPE_METHOD.TYPE}-example`,
@@ -109,6 +111,7 @@ const PATH = {
             TYPE: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.TYPE_EXAMPLE}`,
             MIN: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MIN_EXAMPLE}`,
             MAX: `${WIKI.TYPE_EXAMPLE}#${ANCHOR.NUMBER.MAX_EXAMPLE}`,
+            MULTIPLY_OF: `${WIKI.TYPE_EXAMPLE}${ANCHOR.NUMBER.MULTIPLY_OF_EXAMPLE}`,
         },
     },
     OBJECT: {

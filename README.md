@@ -27,7 +27,7 @@ const schemas = {
     // with properties ['names', 'email']
     User: {
         // type tells VJS-Validator which type
-        // should be used to validate this property
+        // should be used to validate data
         // it is the only required property for schema
         type: 'object',
         properties: ['name', 'email'],
@@ -95,12 +95,10 @@ It can be used when you don't know exact schema values.
 Lets consider following object:
 ```javascript
 const object = {
-    menu: {
-        pages: 10,
         breakfast: {
             egg: 10.25,
         },
-        'fruit/vegetables': {
+        'fruit/vegetable': {
             apple: 'green',
             carrot: 'red',
         },
@@ -109,11 +107,34 @@ const object = {
 ```
 
 ```javascript
-// this path will match object.menu.breakfast.egg ==> 10.25
-{ $dataPath: 'menu/breakfast/egg' }
+// this path will match object.breakfast.egg ==> 10.25
+{ $dataPath: 'breakfast/egg' }
 // this path uses array syntax since one of properties includes '/'
-// it will match object.menu['fruit/vegetable'].carrot ==> 'red'
-{ $dataPath: ['menu', 'fruit/vegetable', 'carrot'] }
+// it will match object['fruit/vegetable'].carrot ==> 'red'
+{ $dataPath: ['fruit/vegetable', 'carrot'] }
+
+const schemas = {
+    Menu: {
+        type: 'object',
+        [Symbol.for('schema_properties')]: {
+            colors: {
+                type: 'array',
+                includes: {
+                    $dataPath: ['fruit/vegetable', 'apple'],
+                },
+            },
+        },
+    },
+};
+const validator = VJS(VJSTypes, schemas);
+const data = {
+    colors: ['red', 'green', 'blue'],
+    'fruit/vegetable': {
+        apple: 'red',
+    },
+};
+validator.Menu(data);
+// => undefined
 ```
 In case the path resolves to `undefined` the property using `$dataPath` resolution will be skipped.
 ***

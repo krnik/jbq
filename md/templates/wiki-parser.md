@@ -78,7 +78,7 @@ const customType = {
     ${TYPE_METHOD.TYPE} (base, data) {},
     area (base, path, data) {
         if (!externalFunction(data))
-            return `There was an error in validation \${data} at \${path}.`;
+            return `There was an error in validation \${data} at \${schemaPath}.`;
     },
     // Now area method will be passed as an argument
     // otherwise `externalFunction` call would throw an error
@@ -91,6 +91,7 @@ const customType = {
 ```
 #### `${SYM.TYPE_VALIDATE}`
 > This symbol contains validator methods to check if value in schema property is valid.
+> Every type method must have a corresponding `${SYM.TYPE_VALIDATE}` schema value validation method.
 ```javascript
 const customType = {
     ${TYPE_METHOD.TYPE} (base, data) {},
@@ -149,9 +150,8 @@ const schema = {
         ${TYPE_METHOD.TYPE}: 'string',
     },
     [${SYM.SCHEMA_PROPERTIES}]: {
-        // Here ${SYM.SCHEMA_CONFIG} would be interpreted as prpoerty of passed data
+        // Here ${SYM.SCHEMA_CONFIG} would be interpreted as property of passed data
         firstName: {
-            // you can use string properties here
             // implicit ${TYPE_METHOD.TYPE}: 'string',
             ${TYPE_METHOD.MIN_LEN}: 1,
             ${TYPE_METHOD.MAX_LEN}: 32,

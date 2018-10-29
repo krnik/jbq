@@ -110,9 +110,9 @@ validator.Tuple(['value', 'value']);
 #### `#{<<expression>>}`
 There is also special syntax available to squeeze out performance to the limit while returning an error.
 
-> Syntax: `#{<<expression>>}`. For example `#{schemaValue.toString()}` or `#{path}`.
+> Syntax: `#{<<expression>>}`. For example `#{schemaValue.toString()}` or `#{schemaPath}`.
 
-The expression is evaluaded in newly created funcion (via `new Function`) by returning the evaluated code from between curly braces. Only expressions that pass following RegExp will be replaced `/#{((schemaValue|path).*?)}/`.
+The expression is evaluaded in newly created funcion (via `new Function`) by returning the evaluated code from between curly braces. Only expressions that pass following RegExp will be replaced `/#{((schemaValue|schemaPath).*?)}/`.
 
 Let's see an example based on 'string' type.
 ```javascript
