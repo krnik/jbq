@@ -2,8 +2,7 @@ import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../consta
 import { E, is } from '../utils/index';
 
 export const TypeString = {
-    // @ts-ignore
-    [TYPE] (schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any) {
         if (typeof data !== 'string')
             return `Data should be #{schemaValue} type. Got ${typeof data}.`;
     },

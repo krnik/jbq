@@ -2,8 +2,7 @@ import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } fr
 import { E, is } from '../utils/index';
 
 export const TypeObject = {
-    // @ts-ignore
-    [TYPE] (schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any) {
         if (!(data && typeof data === 'object'))
             return `Data should be #{schemaValue} type. Got ${typeof data}.`;
     },

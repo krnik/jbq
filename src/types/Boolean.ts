@@ -2,8 +2,7 @@ import { SYM_TYPE_VALIDATE, TYPE, VALUE } from '../constants';
 import { E, is } from '../utils/index';
 
 export const TypeBoolean = {
-    // @ts-ignore
-    [TYPE] (schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any) {
         if (data !== true && data !== false)
             return `Data should be #{schemaValue} type. Got ${typeof data}.`;
     },

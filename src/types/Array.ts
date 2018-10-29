@@ -3,8 +3,7 @@ import { E, is } from '../utils/index';
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
-    // @ts-ignore
-    [TYPE] (schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any) {
         if (!Array.isArray(data))
             return 'Data should be #{schemaValue} type.';
     },

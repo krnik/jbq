@@ -2,9 +2,8 @@ import { MAX, MIN, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/index';
 
 export const TypeNumber = {
-    // @ts-ignore
-    [TYPE] (schemaValue: string, data: any) {
-        if (typeof data !== 'number' || isNaN(data))
+    [TYPE] (_schemaValue: string, data: any) {
+        if (typeof data !== 'number' || data !== data)
             return `Data should be a number (NaN excluded) type. Got ${typeof data}.`;
     },
     [MIN] (schemaValue: number, data: any) {
