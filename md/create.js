@@ -38,7 +38,7 @@ const NAME = {
     TYPES: 'VJSTypes',
 }
 const TOKEN = {
-    BREAK: '//[break]',
+    BREAK: '//{break}',
 };
 
 const WIKI = {

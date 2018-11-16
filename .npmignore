@@ -1,4 +1,12 @@
+.vscode
+.editorconfig
+.gitmodules
+.travis.yml
+tslint.json
+tsconfig*
+
 vjs-validator.wiki
 md
-.vscode
+
 lib.dev
+coverage

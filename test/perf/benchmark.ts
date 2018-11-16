@@ -15,6 +15,7 @@ interface ITest {
     fail?: boolean;
     schemas: Array<{
         type: string;
+        data?: any;
         ajv?: any;
         vjs?: any;
         joi?: any;
@@ -67,20 +68,21 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
         return `${t}#${p}#${l}`;
     }
     for (const schema of test.schemas) {
+        const data = schema.data || test.data;
         const name = createName.bind(undefined, test.name, schema.type);
         if (schema.vjs) {
             const vjs = VJS(createTypes(), { test: schema.vjs });
             const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
-            bench.add(name('vjs'), wrapper(vjs.test.bind(undefined, test.data)));
+            bench.add(name('vjs'), wrapper(vjs.test.bind(undefined, data)));
         }
         if (schema.ajv) {
             const ajv = new AJV().compile(schema.ajv);
             const wrapper = test.fail ? check.ajv.fail : check.ajv.pass;
-            bench.add(name('ajv'), wrapper(ajv.bind(undefined, test.data)));
+            bench.add(name('ajv'), wrapper(ajv.bind(undefined, data)));
         }
         if (schema.joi) {
             const wrapper = test.fail ? check.joi.fail : check.joi.pass;
-            bench.add(name('joi'), wrapper(Joi.validate.bind(Joi, test.data, schema.joi)));
+            bench.add(name('joi'), wrapper(Joi.validate.bind(Joi, data, schema.joi)));
         }
     }
 }

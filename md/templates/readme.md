@@ -50,7 +50,7 @@ const schemas = {
     },
     Numbers: {
         ${TYPE_METHOD.TYPE}: 'object',
-        ${SYM.SCHEMA_CONFIG}: {
+        [${SYM.SCHEMA_CONFIG}]: {
             ${TYPE_METHOD.TYPE}: 'number',
         },
         [PROPS]: {
