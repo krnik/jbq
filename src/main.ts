@@ -1,5 +1,5 @@
 import { VJS } from './core/VJS';
-import { createTypes } from './types/index';
+import { createTypes } from './types/main';
 
 const VJSTypes = createTypes();
 

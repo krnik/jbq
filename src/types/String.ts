@@ -1,5 +1,5 @@
-import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/index';
+import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE, ONE_OF } from '../constants';
+import { E, is } from '../utils/main';
 
 export const TypeString = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -22,6 +22,10 @@ export const TypeString = {
         if (data.length !== schemaValue)
             return `Data expected to have length equal to #{schemaValue}. Got ${data.length}.`;
     },
+    [ONE_OF] (schemaValue: string[], data: any) {
+        if (!schemaValue.includes(data))
+            return `Data expected to be one of #{schemaValue.toString()}.`;
+    },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
@@ -43,5 +47,19 @@ export const TypeString = {
             if (!is.number(schemaValue))
                 throw E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
+        [ONE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            switch (true) {
+            case !is.objectInstance(schemaValue, 'Array'):
+                throw E.invalidSchemaPropType(ONE_OF, 'string[]', typeof schemaValue);
+            case !schemaValue.length:
+                throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
+            case !schemaValue.every((e: any) => is.string(e)):
+                throw E.invalidSchemaPropType(
+                    ONE_OF,
+                    'string[]',
+                    typeof schemaValue.find((e: any) => !is.string(e)),
+                );
+            }
+        }
     },
 };

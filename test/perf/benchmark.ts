@@ -2,7 +2,7 @@ import AJV from 'ajv';
 import Benchmark from 'benchmark';
 import Joi from 'joi';
 import { VJS } from '../../src/core/VJS';
-import { createTypes } from '../../src/types/index';
+import { createTypes } from '../../src/types/main';
 import { arrayTests } from './tests/array';
 import { booleanTests } from './tests/boolean';
 import { numberTests } from './tests/number';

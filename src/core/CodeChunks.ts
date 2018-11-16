@@ -1,5 +1,5 @@
 import { BASE_DATA_PARAMETER } from '../constants';
-import { E } from '../utils';
+import { E } from '../utils/main';
 
 export const CodeChunk = {
     label: (dataVariable: string) => `label_${dataVariable}: {\n`,

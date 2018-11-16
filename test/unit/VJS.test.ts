@@ -1,6 +1,6 @@
 // import { TOKEN_BREAK, SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TYPE } from '../../src/constants';
 import { VJS } from '../../src/core/VJS';
-import { createTypes } from '../../src/types';
+import { createTypes } from '../../src/types/main';
 import { createData, schemas } from '../data/main';
 
 interface IValidator {

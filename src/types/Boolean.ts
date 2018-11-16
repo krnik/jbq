@@ -1,5 +1,5 @@
 import { SYM_TYPE_VALIDATE, TYPE, VALUE } from '../constants';
-import { E, is } from '../utils/index';
+import { E, is } from '../utils/main';
 
 export const TypeBoolean = {
     [TYPE] (_schemaValue: string, data: any) {

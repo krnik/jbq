@@ -1,6 +1,6 @@
 import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
-import { E, is } from '../utils';
+import { E, is } from '../utils/main';
 import { CodeChunk } from './CodeChunks';
 
 const INDENT = Symbol('compilation_indent');

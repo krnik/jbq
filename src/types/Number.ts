@@ -1,5 +1,5 @@
-import { MAX, MIN, MULTIPLY_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/index';
+import { MAX, MIN, MULTIPLE_OF, SYM_TYPE_VALIDATE, TYPE, ONE_OF } from '../constants';
+import { E, is } from '../utils/main';
 
 export const TypeNumber = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -14,9 +14,13 @@ export const TypeNumber = {
         if (schemaValue < data)
             return `Data expected to be equal to at most #{schemaValue}. Got ${data}.`;
     },
-    [MULTIPLY_OF] (schemaValue: number, data: any) {
+    [MULTIPLE_OF] (schemaValue: number, data: any) {
         if (data % schemaValue)
             return `Data expected to be multiply of #{schemaValue}.`;
+    },
+    [ONE_OF] (schemaValue: number[], data: any) {
+        if (!schemaValue.includes(data))
+            return `Data should be one of #{schemaValue.toString()}.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
@@ -31,9 +35,23 @@ export const TypeNumber = {
             if (!is.number(schemaValue))
                 throw E.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
         },
-        [MULTIPLY_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MULTIPLE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MULTIPLY_OF, 'number', typeof schemaValue);
+                throw E.invalidSchemaPropType(MULTIPLE_OF, 'number', typeof schemaValue);
+        },
+        [ONE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            switch (true) {
+            case !is.objectInstance(schemaValue, 'Array'):
+                throw E.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
+            case !schemaValue.length:
+                throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
+            case !schemaValue.every((e: any) => is.number(e)):
+                throw E.invalidSchemaPropType(
+                    ONE_OF,
+                    'number[]',
+                    typeof schemaValue.find((e: any) => !is.number(e)),
+                );
+            }
         },
     },
 };

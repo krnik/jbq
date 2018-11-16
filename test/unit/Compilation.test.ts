@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { MAX, MAX_LEN, MIN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE, TOKEN_EXPR_REGEX, TYPE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
-import { createTypes } from '../../src/types/index';
+import { createTypes } from '../../src/types/main';
 import { schemas } from '../data/main';
 
 export default () => describe('Compilation', () => {
@@ -52,7 +52,7 @@ export default () => describe('Compilation', () => {
                 expect(bound('123')).to.be.a('string');
             }
         });
-        it(`${SYM_SCHEMA_CONFIG.toString()} - schema`, () => {
+        it(`${SYM_SCHEMA_CONFIG.toString()} - schema properties`, () => {
             const testSchemas = {
                 Test: {
                     [SYM_SCHEMA_CONFIG]: {

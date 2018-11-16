@@ -71,4 +71,8 @@ export const E = {
         const errorMessage = `[${propName}] property requires schema value to be a "${desired}". Got "${valueType}" type instead.`;
         return new Error(errorMessage);
     },
+    unexpectedValue (propName: string, requirements: string) {
+        const errorMessage = `[${propName}] property requires schema value to be ${requirements}.`;
+        return new Error(errorMessage);
+    },
 };

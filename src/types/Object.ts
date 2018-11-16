@@ -1,5 +1,5 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/index';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, MIN_PROP_COUNT, MAX_PROP_COUNT } from '../constants';
+import { E, is } from '../utils/main';
 
 export const TypeObject = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -15,15 +15,25 @@ export const TypeObject = {
             return `Data should be instance of #{schemaValue.name}.`;
     },
     [PROPERTIES] (schemaValue: Array<(string | number | symbol)>, data: any) {
+        for (const key of schemaValue)
+            if (!data.hasOwnProperty(key))
+                return `Data should have ${key.toString()} property.`;
+    },
+    [MIN_PROP_COUNT] (schemaValue: number, data: any) {
         const keys = [
             ...Object.getOwnPropertyNames(data),
             ...Object.getOwnPropertySymbols(data),
         ];
-        if (schemaValue.length !== keys.length)
-            return `Data should have exactly all #{schemaValue.toString()} keys.`;
-        for (const key of schemaValue)
-            if (!data.hasOwnProperty(key))
-                return `Data should have ${key.toString()} property.`;
+        if (keys.length < schemaValue)
+            return `Data should have at least #{schemaValue} properties. It has ${keys.length}.`;
+    },
+    [MAX_PROP_COUNT] (schemaValue: number, data: any) {
+        const keys = [
+            ...Object.getOwnPropertyNames(data),
+            ...Object.getOwnPropertySymbols(data),
+        ];
+        if (keys.length > schemaValue)
+            return `Data should have at most #{schemaValue} properties. It has ${keys.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
@@ -43,5 +53,13 @@ export const TypeObject = {
                 || !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
                 throw E.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
         },
+        [MIN_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                throw E.invalidSchemaPropType(MIN_PROP_COUNT, 'number', typeof schemaValue);
+        },
+        [MAX_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                throw E.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
+        }
     },
 };

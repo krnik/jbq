@@ -1,9 +1,9 @@
-import CompilationTest from './Compilation.test';
-import TypesTest from './Types.test';
-import VJSTest from './VJS.test';
+import unitTestCompilation from './Compilation.test';
+import unitTestTypes from './Types/main';
+import unitTestVJS from './VJS.test';
 
 export const unitTests = [
-    CompilationTest,
-    TypesTest,
-    VJSTest,
+    unitTestCompilation,
+    unitTestTypes,
+    unitTestVJS,
 ];
