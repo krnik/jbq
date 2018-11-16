@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MAX_LEN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, TOKEN_EXPR, TOKEN_EXPR_REGEX, TYPE, MIN, MAX, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE } from '../../src/constants';
+import { MAX, MAX_LEN, MIN, MIN_LEN, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_VALIDATE, TOKEN_EXPR_REGEX, TYPE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/index';
 import { schemas } from '../data/main';
@@ -159,7 +159,7 @@ export default () => describe('Compilation', () => {
             expect(bound({ min: 10, age: 20, eq: 12 })).to.be.a('string');
         });
     });
-    describe(`eval ${TOKEN_EXPR} expressions`, () => {
+    describe(`eval '#{}' expressions`, () => {
         it('it should interpolate schemaValue or path expressions', () => {
             const str = '#{schemaValue} @ #{schemaPath}';
             // @ts-ignore

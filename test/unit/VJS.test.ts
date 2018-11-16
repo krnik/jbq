@@ -31,7 +31,7 @@ export default () => describe('Validator', () => {
     //             // @ts-ignore
     //             [TYPE] (base: string, data: any) {
     //                 if (data === null) {
-    //                     //[break]
+    //                     //{break}
     //                 }
     //                 if (typeof data !== 'string')
     //                     return 'Expected string type!';
@@ -63,7 +63,7 @@ export default () => describe('Validator', () => {
     //                 if (typeof data !== 'number') {
     //                     if (typeof data !== 'string')
     //                         return 'Expected numeric at: //[path].';
-    //                     //[break]
+    //                     //{break}
     //                 }
     //             },
     //             [SYM_TYPE_VALIDATE]: {

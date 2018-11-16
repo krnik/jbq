@@ -11,7 +11,7 @@ export function VJS<T, K extends keyof OmitSymbols<T>> (
     types: TypeWrapper,
     schemas: T,
     debug: boolean = false,
-    ) {
+) {
     const patterns = {} as Validators<T>;
     for (const [name, schema] of Object.entries(schemas)) {
         const src = new Compilation(types, name, schema, debug).exec();

@@ -39,8 +39,8 @@ export const TypeObject = {
                 throw E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
         },
         [PROPERTIES] (schemaValue: any = E.invalidArgument('schemaValue')) {
-            if (!is.objectInstance(schemaValue, 'Array') ||
-                !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
+            if (!is.objectInstance(schemaValue, 'Array')
+                || !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
                 throw E.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
         },
     },
