@@ -141,6 +141,22 @@ validator.String('This is a string');
 validator.String('string');
 // => error message
 ```
+<a name="${ANCHOR.STRING.ONE_OF}"></a>
+***
+### ${TYPE_METHOD.ONE_OF}
+```javascript
+const schemas = {
+    String: {
+        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE_METHOD.ONE_OF}: ['Admin', 'Manager'],
+    },
+};
+const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+validator.String('Admin');
+// => undefined
+validator.String('User');
+// => error message
+```
 ***
 # number
 <a name="${ANCHOR.NUMBER.TYPE_EXAMPLE}"></a>
@@ -189,20 +205,36 @@ validator.Number(0);
 validator.Number(11);
 // => error message
 ```
-<a name="${ANCHOR.NUMBER.MULTIPLY_OF_EXAMPLE}"></a>
+<a name="${ANCHOR.NUMBER.MULTIPLE_OF_EXAMPLE}"></a>
 ***
-### ${TYPE_METHOD.MULTIPLY_OF}
+### ${TYPE_METHOD.MULTIPLE_OF}
 ```javascript
 const schemas = {
     Number: {
         ${TYPE_METHOD.TYPE}: 'number',
-        ${TYPE_METHOD.MULTIPLY_OF}: 1,
+        ${TYPE_METHOD.MULTIPLE_OF}: 1,
     },
 };
 const validator ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 validator.Number(10);
 // => undefined
 validator.Number(1.2);
+// => error message
+```
+<a name="${ANCHOR.NUMBER.ONE_OF_EXAMPLE}"></a>
+***
+### ${TYPE_METHOD.ONE_OF}
+```javascript
+const schemas = {
+    Number: {
+        ${TYPE_METHOD.TYPE}: 'number',
+        ${TYPE_METHOD.ONE_OF}: [2, 4, 8],
+    },
+};
+const validator ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+validator.Number(8);
+// => undefined
+validator.Number(1);
 // => error message
 ```
 ***
@@ -266,6 +298,38 @@ const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 validator.Object({});
 // => undefined
 validator.Object({ prop: 'value' });
+// => error message
+```
+<a name="${ANCHOR.OBJECT.MIN_PROP_COUNT_EXAMPLE}"></a>
+***
+### ${TYPE_METHOD.MIN_PROP_COUNT}
+```javascript
+const schemas = {
+    Object: {
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.MIN_PROP_COUNT}: 1,
+    },
+};
+const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+validator.Object({ path: '' });
+// => undefined
+validator.Object({});
+// => error message
+```
+<a name="${ANCHOR.OBJECT.MAX_PROP_COUNT_EXAMPLE}"></a>
+***
+### ${TYPE_METHOD.MAX_PROP_COUNT}
+```javascript
+const schemas = {
+    Object: {
+        ${TYPE_METHOD.TYPE}: 'object',
+        ${TYPE_METHOD.MAX_PROP_COUNT}: 1,
+    },
+};
+const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
+validator.Object({ path: '' });
+// => undefined
+validator.Object({ path: '', route: '' });
 // => error message
 ```
 ***

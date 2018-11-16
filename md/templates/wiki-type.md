@@ -39,7 +39,7 @@ Every built-in type other than `any` extends `any`.
 - **${TYPE_METHOD.TYPE}** - *checks type of passed value ([example](${PATH.NUMBER.EXAMPLE.TYPE}))*
 - **${TYPE_METHOD.MIN}** - *check if passed number is greater or equal than value in schema `${TYPE_METHOD.MIN}` property ([example](${PATH.NUMBER.EXAMPLE.MIN}))*
 - **${TYPE_METHOD.MAX}** - *check if passed number is less or equal than value in schema `${TYPE_METHOD.MAX}` property ([example](${PATH.NUMBER.EXAMPLE.MAX}))*
-- **${TYPE_METHOD.MULTIPLY_OF}** - *check if passed number is a multiply of schemaValue at schema `${TYPE_METHOD.MULTIPLY_OF}` proeprty ([example](${PATH.NUMBER.EXAMPLE.MULTIPLY_OF}))*
+- **${TYPE_METHOD.MULTIPLE_OF}** - *check if passed number is a multiply of schemaValue at schema `${TYPE_METHOD.MULTIPLE_OF}` proeprty ([example](${PATH.NUMBER.EXAMPLE.MULTIPLE_OF}))*
 
 [Source Code](${PATH.NUMBER.SRC})
 ***
