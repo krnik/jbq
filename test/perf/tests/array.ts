@@ -149,7 +149,7 @@ export const arrayTests = [
         vjs: {
           [TYPE]: DATA.TYPE,
           [EVERY]: (e: any) => typeof e === 'number',
-        }
+        },
       },
       {
         type: 'some',

@@ -50,7 +50,7 @@ const schemas = {
     },
     Numbers: {
         type: 'object',
-        Symbol.for('schema_config'): {
+        [Symbol.for('schema_config')]: {
             type: 'number',
         },
         [PROPS]: {
