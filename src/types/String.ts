@@ -1,4 +1,4 @@
-import { LEN, MAX_LEN, MIN_LEN, REGEX, SYM_TYPE_VALIDATE, TYPE, ONE_OF } from '../constants';
+import { LEN, MAX_LEN, MIN_LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/main';
 
 export const TypeString = {

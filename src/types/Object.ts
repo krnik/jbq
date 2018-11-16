@@ -1,9 +1,9 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, MIN_PROP_COUNT, MAX_PROP_COUNT } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_PROP_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/main';
 
 export const TypeObject = {
     [TYPE] (_schemaValue: string, data: any) {
-        if (!(data && typeof data === 'object'))
+        if (!(data && typeof data === 'object' && !Array.isArray(data)))
             return `Data should be #{schemaValue} type. Got ${typeof data}.`;
     },
     [CONSTRUCTOR_NAME] (schemaValue: string, data: any) {

@@ -1,4 +1,4 @@
-import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../src/constants';
+import { CONSTRUCTOR_NAME, EVERY, INCLUDES, INSTANCE_OF, LEN, MAX, MAX_LEN, MIN, MIN_LEN, PROPERTIES, REGEX, REQUIRED, SOME, SYM_SCHEMA_PROPERTIES, TYPE, VALUE } from '../../src/constants';
 import { callFaker } from './main';
 
 const randomCharacters = (len = 0) => new Array(len)
@@ -92,18 +92,18 @@ $Boolean[INVALID] = {
 };
 const $Object: ITestSchema = {
     [TYPE]: 'object',
-    [CONSTRUCTOR_NAME]: 'Array',
+    [CONSTRUCTOR_NAME]: 'Object',
     [INSTANCE_OF]: Object,
 };
 $Object[VALID] = {
     ...$Object,
-    [PROPERTIES]: ['0', 'length'],
-    [SYM_FAKER]: () => [{
+    [PROPERTIES]: ['string', 'number', 'boolean', 'array'],
+    [SYM_FAKER]: () => ({
         string: callFakerIfNeeded($String[VALID]![SYM_FAKER]),
         number: callFakerIfNeeded($Number[VALID]![SYM_FAKER]),
         boolean: callFakerIfNeeded($Boolean[VALID]![SYM_FAKER]),
         array: callFakerIfNeeded($Array[VALID]![SYM_FAKER]),
-    }],
+    }),
 };
 $Object[INVALID] = {
     [TYPE]: {
@@ -113,22 +113,22 @@ $Object[INVALID] = {
     [CONSTRUCTOR_NAME]: {
         ...$Object,
         [SYM_FAKER]: () => {
-            class MyArr extends Array {}
-            return new MyArr();
+            class MyObj extends Object { }
+            return new MyObj();
         },
     },
     [INSTANCE_OF]: {
         ...$Object,
         [INSTANCE_OF]: RegExp,
-        [SYM_FAKER]: () => [],
+        [SYM_FAKER]: () => ({}),
     },
     [PROPERTIES]: {
         ...$Object,
         [PROPERTIES]: ['0', '1'],
-        [SYM_FAKER]: () => [{
+        [SYM_FAKER]: () => ({
             string: callFakerIfNeeded($String[VALID]![SYM_FAKER]),
             number: callFakerIfNeeded($Number[VALID]![SYM_FAKER]),
-        }],
+        }),
     },
 };
 
@@ -192,14 +192,11 @@ export const schemas = {
         Array: $Array[VALID]!,
         Symbols: {
             ...$Object[VALID]!,
-            [SYM_SCHEMA_COLLECTION]: {
-                [TYPE]: 'object',
-                [SYM_SCHEMA_PROPERTIES]: {
-                    string: $String[VALID]!,
-                    number: $Number[VALID]!,
-                    boolean: $Boolean[VALID]!,
-                    array: $Array[VALID]!,
-                },
+            [SYM_SCHEMA_PROPERTIES]: {
+                string: $String[VALID]!,
+                number: $Number[VALID]!,
+                boolean: $Boolean[VALID]!,
+                array: $Array[VALID]!,
             },
         },
         Required: $Required,

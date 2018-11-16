@@ -1,4 +1,4 @@
-import { MAX, MIN, MULTIPLE_OF, SYM_TYPE_VALIDATE, TYPE, ONE_OF } from '../constants';
+import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/main';
 
 export const TypeNumber = {
