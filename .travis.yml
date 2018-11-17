@@ -1,10 +1,10 @@
 language: node_js
 node_js:
   - "10"
-before_script:
-  - npm run tsc:dev
 script:
-  - npm run test
+  - npm run test:cov
 branches:
   only:
   - master
+git:
+  submodules: false
