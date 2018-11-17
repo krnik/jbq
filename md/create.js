@@ -6,6 +6,8 @@ const TYPE_METHOD = {
     CONSTRUCTOR_NAME: 'constructorName',
     MIN_PROP_COUNT: 'minPropCount',
     MAX_PROP_COUNT: 'maxPropCount',
+    MIN_KEY_COUNT: 'minKeyCount',
+    MAX_KEY_COUNT: 'maxKeyCount',
     INSTANCE_OF: 'instanceOf',
     MULTIPLE_OF: 'multipleOf',
     PROPERTIES: 'properties',
@@ -78,7 +80,9 @@ const ANCHOR = {
         CONSTRUCTOR_NAME_EXAMPLE: `object-${TYPE_METHOD.CONSTRUCTOR_NAME}-example`,
         INSTANCE_OF_EXAMPLE: `object-${TYPE_METHOD.INSTANCE_OF}-example`,
         MIN_PROP_COUNT_EXAMPLE: `object-${TYPE_METHOD.MIN_PROP_COUNT}-example`,
+        MIN_KEY_COUNT_EXAMPLE: `object-${TYPE_METHOD.MIN_KEY_COUNT}-example`,
         MAX_PROP_COUNT_EXAMPLE: `object-${TYPE_METHOD.MAX_PROP_COUNT}-example`,
+        MAX_KEY_COUNT_EXAMPLE: `object-${TYPE_METHOD.MAX_KEY_COUNT}-example`,
     },
     ARRAY: {
         TYPE_EXAMPLE: `array-${TYPE_METHOD.TYPE}-example`,

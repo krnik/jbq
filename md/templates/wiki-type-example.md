@@ -301,33 +301,43 @@ validator.Object({ prop: 'value' });
 // => error message
 ```
 <a name="${ANCHOR.OBJECT.MIN_PROP_COUNT_EXAMPLE}"></a>
+<a name="${ANCHOR.OBJECT.MIN_KEY_COUNT_EXAMPLE}"></a>
 ***
-### ${TYPE_METHOD.MIN_PROP_COUNT}
+### ${TYPE_METHOD.MIN_PROP_COUNT} / ${TYPE_METHOD.MIN_KEY_COUNT}
+> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols`.
+
+> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`
 ```javascript
 const schemas = {
     Object: {
         ${TYPE_METHOD.TYPE}: 'object',
-        ${TYPE_METHOD.MIN_PROP_COUNT}: 1,
+        ${TYPE_METHOD.MIN_PROP_COUNT}: 2,
+        ${TYPE_METHOD.MIN_KEY_COUNT}: 1,
     },
 };
 const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
-validator.Object({ path: '' });
+validator.Object({ path: '', [Symbol.toPrimitive]: () => false });
 // => undefined
-validator.Object({});
+validator.Object({ [Symbol.toPrimitive]: () => false });
 // => error message
 ```
 <a name="${ANCHOR.OBJECT.MAX_PROP_COUNT_EXAMPLE}"></a>
+<a name="${ANCHOR.OBJECT.MAX_KEY_COUNT_EXAMPLE}"></a>
 ***
-### ${TYPE_METHOD.MAX_PROP_COUNT}
+### ${TYPE_METHOD.MAX_PROP_COUNT} / ${TYPE_METHOD.MAX_KEY_COUNT}
+> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols`.
+
+> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`
 ```javascript
 const schemas = {
     Object: {
         ${TYPE_METHOD.TYPE}: 'object',
         ${TYPE_METHOD.MAX_PROP_COUNT}: 1,
+        ${TYPE_METHOD.MAX_KEY_COUNT}: 1,
     },
 };
 const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
-validator.Object({ path: '' });
+validator.Object({ [Symbol('prop')]: 1 });
 // => undefined
 validator.Object({ path: '', route: '' });
 // => error message
