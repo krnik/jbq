@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import * as Yup from 'yup';
-import { MAX_PROP_COUNT, MIN_PROP_COUNT, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../src/constants';
+import { MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE } from '../../../src/constants';
 
 const DATA = {
     TYPE: 'object',
@@ -92,22 +92,36 @@ export const objectTests = [
                 }),
             },
             {
-                name: 'minProperties',
+                name: 'minKeyCount',
                 ajv: {
                     type: DATA.TYPE,
                     minProperties: DATA.MIN_PROP,
                 },
                 vjs: {
                     [TYPE]: DATA.TYPE,
-                    [MIN_PROP_COUNT]: DATA.MIN_PROP,
+                    [MIN_KEY_COUNT]: DATA.MIN_PROP,
                 },
             },
             {
-                name: 'maxProperties',
+                name: 'maxKeyCount',
                 ajv: {
                     type: DATA.TYPE,
                     maxProperties: DATA.MAX_PROP,
                 },
+                vjs: {
+                    [TYPE]: DATA.TYPE,
+                    [MAX_KEY_COUNT]: DATA.MAX_PROP,
+                },
+            },
+            {
+                name: 'minPropCount',
+                vjs: {
+                    [TYPE]: DATA.TYPE,
+                    [MIN_PROP_COUNT]: DATA.MIN_PROP,
+                },
+            },
+            {
+                name: 'maxPropCount',
                 vjs: {
                     [TYPE]: DATA.TYPE,
                     [MAX_PROP_COUNT]: DATA.MAX_PROP,
@@ -178,25 +192,46 @@ export const objectTests = [
                 }),
             },
             {
-                name: 'minProperties',
+                name: 'minKeyCount',
                 ajv: {
                     type: DATA.TYPE,
                     minProperties: DATA.MAX_PROP << 2,
                 },
                 vjs: {
                     [TYPE]: DATA.TYPE,
-                    [MIN_PROP_COUNT]: DATA.MAX_PROP << 2,
+                    [MIN_KEY_COUNT]: DATA.MAX_PROP << 2,
                 },
             },
             {
-                name: 'maxProperties',
+                name: 'maxKeyCount',
                 ajv: {
                     type: DATA.TYPE,
                     maxProperties: DATA.MIN_PROP,
                 },
                 vjs: {
                     type: DATA.TYPE,
-                    [MAX_PROP_COUNT]: DATA.MIN_PROP,
+                    [MAX_KEY_COUNT]: DATA.MIN_PROP,
+                },
+            },
+            {
+                data: {
+                    [Symbol('0')]: 0,
+                },
+                name: 'minPropCount',
+                vjs: {
+                    [TYPE]: DATA.TYPE,
+                    [MIN_PROP_COUNT]: 2,
+                },
+            },
+            {
+                data: {
+                    [Symbol('0')]: 0,
+                    [Symbol('1')]: 1,
+                },
+                name: 'maxPropCount',
+                vjs: {
+                    [TYPE]: DATA.TYPE,
+                    [MAX_KEY_COUNT]: 1,
                 },
             },
         ],

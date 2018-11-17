@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_PROP_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeObject } from '../../../src/types/Object';
 import { values } from '../../data/main';
 
@@ -125,6 +125,42 @@ export default () => describe(TYPE_NAME.OBJECT, () => {
         it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
             for (const value of values.non.number)
                 expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_PROP_COUNT](value)).to.throw();
+        });
+    });
+    describe(MIN_KEY_COUNT, () => {
+        const base = 2;
+        it('valid value', () => {
+            const value = { a: 1, b: 2 };
+            expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.equal(undefined);
+        });
+        it('invalid value', () => {
+            const value = { a: 1 };
+            expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.a('string');
+        });
+        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+            expect(TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](base)).to.be.equal(undefined);
+        });
+        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+            for (const value of values.non.number)
+                expect(() => TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](value)).to.throw();
+        });
+    });
+    describe(MAX_KEY_COUNT, () => {
+        const base = 2;
+        it('valid value', () => {
+            const value = { a: 1 };
+            expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.equal(undefined);
+        });
+        it('invalid value', () => {
+            const value = { a: 1, b: 2, c: 3 };
+            expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.a('string');
+        });
+        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+            expect(TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](base)).to.be.equal(undefined);
+        });
+        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+            for (const value of values.non.number)
+                expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](value)).to.throw();
         });
     });
 });

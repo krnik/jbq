@@ -1,4 +1,4 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_PROP_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
 import { E, is } from '../utils/main';
 
 export const TypeObject = {
@@ -29,6 +29,14 @@ export const TypeObject = {
             Object.getOwnPropertySymbols(data).length > schemaValue)
             return `Data should have at most #{schemaValue} properties.`;
     },
+    [MIN_KEY_COUNT] (schemaValue: number, data: any) {
+        if (Object.keys(data).length < schemaValue)
+            return `Data should have at least #{schemaValue} properties.`;
+    },
+    [MAX_KEY_COUNT] (schemaValue: number, data: any) {
+        if (Object.keys(data).length > schemaValue)
+            return `Data should have at most #{schemaValue} properties.`;
+    },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
@@ -54,6 +62,14 @@ export const TypeObject = {
         [MAX_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
                 throw E.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
+        },
+        [MIN_KEY_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                throw E.invalidSchemaPropType(MIN_KEY_COUNT, 'number', typeof schemaValue);
+        },
+        [MAX_KEY_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+            if (!is.number(schemaValue))
+                throw E.invalidSchemaPropType(MAX_KEY_COUNT, 'number', typeof schemaValue);
         },
     },
 };
