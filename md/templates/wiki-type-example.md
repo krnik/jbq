@@ -291,22 +291,22 @@ validator.Object(Number(null));
 const schemas = {
     Object: {
         ${TYPE_METHOD.TYPE}: 'object',
-        ${TYPE_METHOD.PROPERTIES}: [],
+        ${TYPE_METHOD.PROPERTIES}: ['prop'],
     },
 };
 const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
-validator.Object({});
-// => undefined
 validator.Object({ prop: 'value' });
+// => undefined
+validator.Object({});
 // => error message
 ```
 <a name="${ANCHOR.OBJECT.MIN_PROP_COUNT_EXAMPLE}"></a>
 <a name="${ANCHOR.OBJECT.MIN_KEY_COUNT_EXAMPLE}"></a>
 ***
 ### ${TYPE_METHOD.MIN_PROP_COUNT} / ${TYPE_METHOD.MIN_KEY_COUNT}
-> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols`.
+> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols` (**slow**).
 
-> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`
+> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`.
 ```javascript
 const schemas = {
     Object: {
@@ -325,9 +325,9 @@ validator.Object({ [Symbol.toPrimitive]: () => false });
 <a name="${ANCHOR.OBJECT.MAX_KEY_COUNT_EXAMPLE}"></a>
 ***
 ### ${TYPE_METHOD.MAX_PROP_COUNT} / ${TYPE_METHOD.MAX_KEY_COUNT}
-> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols`.
+> ${TYPE_METHOD.MAX_PROP_COUNT} uses `Object.getOwnPropertyNames` and `Object.getOwnPropertySymbols` (**slow**).
 
-> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`
+> ${TYPE_METHOD.MAX_KEY_COUNT} uses `Object.keys`.
 ```javascript
 const schemas = {
     Object: {
