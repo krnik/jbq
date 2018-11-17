@@ -3,11 +3,11 @@ import Benchmark from 'benchmark';
 import Joi from 'joi';
 import { VJS } from '../../src/core/VJS';
 import { createTypes } from '../../src/types/main';
-import { arrayTests } from './tests/array';
-import { booleanTests } from './tests/boolean';
-import { numberTests } from './tests/number';
-import { objectTests } from './tests/object';
-import { stringTests } from './tests/string';
+import { arrayTests } from './suites/array';
+import { booleanTests } from './suites/boolean';
+import { numberTests } from './suites/number';
+import { objectTests } from './suites/object';
+import { stringTests } from './suites/string';
 
 interface ITest {
     name: string;
@@ -82,7 +82,7 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
         }
         if (schema.joi) {
             const wrapper = test.fail ? check.joi.fail : check.joi.pass;
-            bench.add(name('joi'), wrapper(Joi.validate.bind(Joi, data, schema.joi)));
+            bench.add(name('joi'), wrapper(() => Joi.validate(data, schema.joi)));
         }
     }
 }
@@ -99,9 +99,4 @@ for (const test of [
 Bench
     // tslint:disable-next-line: no-console
     .on('cycle', (event: any) => console.log(String(event.target)))
-    .on('complete', function () {
-        // @ts-ignore
-        // tslint:disable-next-line: no-console
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-    })
     .run({ async: true });

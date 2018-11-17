@@ -158,42 +158,42 @@ const PATH = {
 
 const files = [
     {
-        path: path.resolve(__dirname, './templates/readme.md'),
+        in: path.resolve(__dirname, './templates/readme.md'),
         out: path.resolve(__dirname, '../README.md'),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-home.md'),
+        in: path.resolve(__dirname, './templates/wiki-home.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.HOME}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-sidebar.md'),
+        in: path.resolve(__dirname, './templates/wiki-sidebar.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.SIDEBAR}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-type-custom.md'),
+        in: path.resolve(__dirname, './templates/wiki-type-custom.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_CUSTOM}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-type.md'),
+        in: path.resolve(__dirname, './templates/wiki-type.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-parser.md'),
+        in: path.resolve(__dirname, './templates/wiki-parser.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.PARSER}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
+        in: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
     {
-        path: path.resolve(__dirname, './templates/wiki-type-example.md'),
+        in: path.resolve(__dirname, './templates/wiki-type-example.md'),
         out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_EXAMPLE}.md`),
     },
 ];
 
 for (const file of files) {
     const content = fs
-        .readFileSync(file.path)
+        .readFileSync(file.in)
         .toString()
         .replace(/`/g, '\\`');
     fs.writeFileSync(file.out, eval(`\`${content}\``));
