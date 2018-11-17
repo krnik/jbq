@@ -142,7 +142,7 @@ export class Compilation {
         } else {
             const paramOrLiteral = is.primitiveLiteral(schemaValue)
                 ? this.toLiteral(schemaValue)
-                : (context.parameterCount++, `$${context.parameterCount}`);
+                : (context.parameterCount++ , `$${context.parameterCount}`);
             const body = this.getMethodBody(method, context, schemaValue, paramOrLiteral);
             source.code += body;
             if (!is.primitiveLiteral(schemaValue)) {

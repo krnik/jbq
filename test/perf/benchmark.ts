@@ -9,19 +9,30 @@ import { numberTests } from './suites/number';
 import { objectTests } from './suites/object';
 import { stringTests } from './suites/string';
 
+const desiredTest = process.argv[2];
+const desiredLib = process.argv[3];
+const selectLibrary = (name: string) => desiredLib ? name === desiredLib : true;
+const allow = {
+    vjs: selectLibrary('vjs'),
+    ajv: selectLibrary('ajv'),
+    joi: selectLibrary('joi'),
+    yup: selectLibrary('yup'),
+};
+
 interface ITest {
     name: string;
     data: any;
     fail?: boolean;
     schemas: Array<{
-        type: string;
+        name: string;
         data?: any;
         ajv?: any;
         vjs?: any;
         joi?: any;
+        yup?: any;
     }>;
 }
-function createTests (bench: Benchmark.Suite, test: ITest) {
+export function createTests (bench: Benchmark.Suite, test: ITest) {
     const check = {
         vjs: {
             pass (fn: (...x: any[]) => any) {
@@ -60,29 +71,50 @@ function createTests (bench: Benchmark.Suite, test: ITest) {
                 };
             },
         },
+        yup: {
+            pass (fn: () => any) {
+                return () => fn();
+            },
+            fail (fn: () => any) {
+                return () => {
+                    try {
+                        fn();
+                        throw Error('It should throw an error');
+                        // tslint:disable-next-line: no-empty
+                    } catch (err) { }
+                };
+            },
+        },
     };
     function createName (type: string, prop: string, lib: string) {
-        const t = `\x1b[33m${type}\x1b[0m`;
-        const p = `\x1b[36m${prop}\x1b[0m`;
-        const l = `\x1b[33m${lib}\x1b[0m`;
-        return `${t}#${p}#${l}`;
+        const t = `\x1b[36m${type}\x1b[0m`;
+        const p = `\x1b[33m${prop}\x1b[0m`;
+        const l = `\x1b[36m${lib}\x1b[0m`;
+        return `${t} # ${p} # ${l}`;
     }
     for (const schema of test.schemas) {
-        const data = schema.data || test.data;
-        const name = createName.bind(undefined, test.name, schema.type);
-        if (schema.vjs) {
+        if (desiredTest)
+            if (desiredTest !== test.name && desiredTest !== schema.name)
+                continue;
+        const data = schema.data !== undefined ? schema.data : test.data;
+        const name = createName.bind(undefined, test.name, schema.name);
+        if (schema.vjs && allow.vjs) {
             const vjs = VJS(createTypes(), { test: schema.vjs });
             const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
             bench.add(name('vjs'), wrapper(vjs.test.bind(undefined, data)));
         }
-        if (schema.ajv) {
+        if (schema.ajv && allow.ajv) {
             const ajv = new AJV().compile(schema.ajv);
             const wrapper = test.fail ? check.ajv.fail : check.ajv.pass;
             bench.add(name('ajv'), wrapper(ajv.bind(undefined, data)));
         }
-        if (schema.joi) {
+        if (schema.joi && allow.joi) {
             const wrapper = test.fail ? check.joi.fail : check.joi.pass;
             bench.add(name('joi'), wrapper(() => Joi.validate(data, schema.joi)));
+        }
+        if (schema.yup && allow.yup) {
+            const wrapper = test.fail ? check.yup.fail : check.yup.pass;
+            bench.add(name('yup'), wrapper(() => schema.yup.validateSync(data)));
         }
     }
 }

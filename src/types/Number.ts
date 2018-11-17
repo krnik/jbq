@@ -41,16 +41,16 @@ export const TypeNumber = {
         },
         [ONE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
             switch (true) {
-            case !is.objectInstance(schemaValue, 'Array'):
-                throw E.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
-            case !schemaValue.length:
-                throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
-            case !schemaValue.every((e: any) => is.number(e)):
-                throw E.invalidSchemaPropType(
-                    ONE_OF,
-                    'number[]',
-                    typeof schemaValue.find((e: any) => !is.number(e)),
-                );
+                case !is.objectInstance(schemaValue, 'Array'):
+                    throw E.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
+                case !schemaValue.length:
+                    throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
+                case !schemaValue.every((e: any) => is.number(e)):
+                    throw E.invalidSchemaPropType(
+                        ONE_OF,
+                        'number[]',
+                        typeof schemaValue.find((e: any) => !is.number(e)),
+                    );
             }
         },
     },

@@ -3,7 +3,4 @@ import { createTypes } from './types/main';
 
 const VJSTypes = createTypes();
 
-export {
-    VJS,
-    VJSTypes,
-};
+export { VJS, VJSTypes };

@@ -20,20 +20,14 @@ export const TypeObject = {
                 return `Data should have ${key.toString()} property.`;
     },
     [MIN_PROP_COUNT] (schemaValue: number, data: any) {
-        const keys = [
-            ...Object.getOwnPropertyNames(data),
-            ...Object.getOwnPropertySymbols(data),
-        ];
-        if (keys.length < schemaValue)
-            return `Data should have at least #{schemaValue} properties. It has ${keys.length}.`;
+        if (Object.getOwnPropertyNames(data).length +
+            Object.getOwnPropertySymbols(data).length < schemaValue)
+            return `Data should have at least #{schemaValue} properties.`;
     },
     [MAX_PROP_COUNT] (schemaValue: number, data: any) {
-        const keys = [
-            ...Object.getOwnPropertyNames(data),
-            ...Object.getOwnPropertySymbols(data),
-        ];
-        if (keys.length > schemaValue)
-            return `Data should have at most #{schemaValue} properties. It has ${keys.length}.`;
+        if (Object.getOwnPropertyNames(data).length +
+            Object.getOwnPropertySymbols(data).length > schemaValue)
+            return `Data should have at most #{schemaValue} properties.`;
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
@@ -60,6 +54,6 @@ export const TypeObject = {
         [MAX_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
                 throw E.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
-        }
+        },
     },
 };

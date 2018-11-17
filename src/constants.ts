@@ -31,7 +31,7 @@ export const TYPE_NAME = {
     OBJECT: 'object',
     ARRAY: 'array',
     ANY: 'any',
- };
+};
 /**
  * SCHEMA CONSTANTS
  */

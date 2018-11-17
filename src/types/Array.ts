@@ -21,8 +21,7 @@ export const TypeArray = {
     },
     [INCLUDES] (schemaValue: any, data: any[]) {
         let found = false;
-        const len = data.length;
-        for (let i = 0; i < len; i++)
+        for (let i = 0; i < data.length; i++)
             if (data[i] === schemaValue) {
                 found = true;
                 break;

@@ -44,7 +44,7 @@ export const E = {
         },
 
         missingTypeMethod (type: string, method: string) {
-            const errorMessage  = `Could not find method [${method}] in <${type}> type.`;
+            const errorMessage = `Could not find method [${method}] in <${type}> type.`;
             return new Error(errorMessage);
         },
         missingSchemaTypeProperty (schema: { [k: string]: any }) {

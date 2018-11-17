@@ -3,7 +3,7 @@ export const is = {
         return value === true || value === false;
     },
     number (value: any) {
-        return typeof value  === 'number' && value === value;
+        return typeof value === 'number' && value === value;
     },
     string (value: any) {
         return typeof value === 'string';

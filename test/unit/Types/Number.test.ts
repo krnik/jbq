@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MAX, MIN, MULTIPLE_OF, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, ONE_OF } from '../../../src/constants';
+import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeNumber } from '../../../src/types/Number';
 import { values } from '../../data/main';
 
