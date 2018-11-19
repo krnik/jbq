@@ -231,7 +231,7 @@ export const objectTests = [
                 name: 'maxPropCount',
                 vjs: {
                     [TYPE]: DATA.TYPE,
-                    [MAX_KEY_COUNT]: 1,
+                    [MAX_PROP_COUNT]: 1,
                 },
             },
         ],

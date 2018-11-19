@@ -124,7 +124,7 @@ export const arrayTests = [
                     },
                 },
                 joi: Joi.array().min(DATA.MIN).max(DATA.MAX).items(Joi.number()),
-                yup: Yup.array().min(DATA.MIN).max(DATA.MAX).isType(Yup.number()),
+                yup: Yup.array().min(DATA.MIN).max(DATA.MAX).of(Yup.number()),
             },
             {
                 name: 'contains',
@@ -169,7 +169,7 @@ export const arrayTests = [
     {
         name: 'array_fail',
         fail: true,
-        data: new Array(DATA.MAX).fill('0'),
+        data: new Array(DATA.MAX).fill('x'),
         schemas: [
             {
                 data: NaN,
