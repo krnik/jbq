@@ -101,7 +101,7 @@ export function createTests (bench: Benchmark.Suite, test: ITest) {
         if (schema.jbq && allow.jbq) {
             const jbqValidators = jbq(createTypes(), { test: schema.jbq });
             const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
-            bench.add(name('vjs'), wrapper(jbqValidators.test.bind(undefined, data)));
+            bench.add(name('jbq'), wrapper(jbqValidators.test.bind(undefined, data)));
         }
         if (schema.ajv && allow.ajv) {
             const ajv = new AJV().compile(schema.ajv);
