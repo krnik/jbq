@@ -1,5 +1,5 @@
 import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
@@ -15,8 +15,8 @@ export const TypeArray = {
     [SOME] (schemaValue: arrMethodCallback, data: any[]) {
         const len = data.length;
         for (let i = 0; i < len; i++) {
-            if (i === len - 1) return 'At least one element of data should pass test function.';
             if (schemaValue(data[i])) break;
+            if (i === len - 1) return 'At least one element of data should pass test function.';
         }
     },
     [INCLUDES] (schemaValue: any, data: any[]) {
@@ -42,32 +42,32 @@ export const TypeArray = {
             return `Data should have length equal to #{schemaValue}. Got ${data.length}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [EVERY] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [EVERY] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                throw E.invalidSchemaPropType(EVERY, 'function', typeof schemaValue);
+                throw Err.invalidSchemaPropType(EVERY, 'function', typeof schemaValue);
         },
-        [SOME] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [SOME] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                throw E.invalidSchemaPropType(SOME, 'function', typeof schemaValue);
+                throw Err.invalidSchemaPropType(SOME, 'function', typeof schemaValue);
         },
-        [INCLUDES] (_schemaValue: any = E.invalidArgument('schemaValue')) {
+        [INCLUDES] (_schemaValue: any = Err.invalidArgument('schemaValue')) {
             // this function will accept any schemaValue excluding undefined
         },
-        [MIN_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MIN_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
         },
-        [MAX_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MAX_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
         },
-        [LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
     },
     [SYM_TYPE_FOR_LOOP]: true,

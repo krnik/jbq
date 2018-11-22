@@ -17,7 +17,7 @@ export const booleanTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.boolean(),
@@ -25,7 +25,7 @@ export const booleanTests = [
             },
             {
                 name: 'value',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [VALUE]: DATA.VALUE,
                 },
@@ -42,7 +42,7 @@ export const booleanTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.boolean(),
@@ -51,7 +51,7 @@ export const booleanTests = [
             {
                 data: !DATA.VALUE,
                 name: 'value',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [VALUE]: DATA.VALUE,
                 },

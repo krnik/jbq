@@ -1,7 +1,7 @@
 {
-  "name": "vjs-validator",
-  "version": "0.0.4",
-  "description": "Yet another customizable JS schema validator.",
+  "name": "jbq",
+  "version": "0.0.5",
+  "description": "JBQ - Yet another customizable JS schema validator.",
   "main": "lib/main.js",
   "directories": {
     "lib": "lib"
@@ -20,10 +20,10 @@
   ],
   "author": "krnik",
   "license": "ISC",
-  "homepage": "https://github.com/krnik/vjs-validator",
+  "homepage": "https://github.com/krnik/jbq",
   "repository": {
     "type": "git",
-    "url": "https://github.com/krnik/vjs-validator"
+    "url": "https://github.com/krnik/jbq"
   },
   "devDependencies": {
     "@types/benchmark": "1.0.31",

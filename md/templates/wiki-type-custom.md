@@ -46,7 +46,7 @@ const tuple = {
 #### NOTES
 > Schema Parser uses `new Function` constructor to create one function to validate schema, so please make sure you name parameters `schemaValue` and `data` (currently it is hardcoded to use those names).
 
-> If your type validation method uses external code - add `Symbol.for('type_external')` property to the type object. It should be an array with list of methods that contain external code. See example below.
+> If your type validation method uses external code - add `${SYM.TYPE_EXTERNAL}` property to the method object. It should be an array with list of methods that contain external code. See example below.
 ```javascript
 const tuple = {
   ${TYPE_METHOD.TYPE} (schemaValue, data) {
@@ -56,26 +56,25 @@ const tuple = {
     // thus it is impossible to use tuple.type method code during parsing phase
     const elemsTypeMatch = hasOnlyTwoKeys && isString(data['0']) && isNumber(data['1']);
     if (!(hasOnlyTwoKeys && elemsTypeMatch))
-      // #{schemaValue} in below string is not an error, see TOKENS section below
       return `Data expected to be a #{schemaValue} (string, number). Got \${JSON.stringify(data)}.`
   },
-  // this property will let parser know that it should not extract type method code,
-  // instead it will invoke reference to this method in check function
-  [Symbol.for('type_external')]: ['type'],
 };
+// this property will let parser know that it should not extract type method code,
+// instead it will keep the reference to this method and invoke it in validation function
+tuple.${TYPE_METHOD.TYPE}[${SYM.TYPE_EXTERNAL}] = true;
 ```
 ***
-After we defined method we have to add `Symbol.for('type_validate')` property. It is required to check if values in schema are correct. In our case we will accept only a `string` values.
+After we defined method we have to add `${SYM.TYPE_VALIDATE}` property. It is required to check if values in schema are correct. In our case we will accept only a `string` values.
 > `${TYPE_METHOD.TYPE}` property is the only required property and it requires it's value to be a `string` - this property is used to extract type object (see [Type Wrapper](${WIKI.TYPE_WRAPPER})).
 
-Every method in type definition must have its validation function defined in `type[Symbol.for('type_validate')]`.
+Every method in type definition must have its validation function defined in `type[${SYM.TYPE_VALIDATE}]`.
 If the checks are not succesfull this ${NAME.CONSTRUCTOR} will throw an error during compilation.
 ```javascript
 const tuple = {
   ${TYPE_METHOD.TYPE} (schemaValue, data) {
     // checks here
   },
-  [Symbol.for('type_validate')]: {
+  [${SYM.TYPE_VALIDATE}]: {
     ${TYPE_METHOD.TYPE} (schemaValue) {
       if (typeof value !== 'string')
         throw Error('tuple ["type"] property requires schema value to be a string');
@@ -161,9 +160,15 @@ Let's visualize it.
 // parsed function structure
 function (data) {
     _d_label: {
-        { // required check
+        {
+            if (data === undefined) {
+                return '<Error Message>';
+            }
         }
-        { // type check
+        {
+            if (typeof data !== 'string') {
+                return '<Error Message>';
+            }
         }
         // other checks ...
     }
@@ -195,4 +200,4 @@ function (data) {
 }
 ```
 
-> If type method is included in [`${SYM.TYPE_EXTERNAL}`] type property then it will not be able to break code block.
+> If type method has [`${SYM.TYPE_EXTERNAL}`] property it will not be able to break the labeled code block.

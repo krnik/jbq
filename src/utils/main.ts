@@ -1,4 +1,4 @@
-import { E } from './error';
+import { Err } from './error';
 import { is } from './type';
 
-export { E, is };
+export { Err, is };

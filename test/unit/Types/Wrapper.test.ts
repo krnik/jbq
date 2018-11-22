@@ -10,11 +10,9 @@ export default () => describe('Wrapper', () => {
             new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
         });
         it('It should throw an error when adding if type is already declared', () => {
-            expect(() => {
-                new TypeWrapper()
-                    .set(TYPE_NAME.ARRAY, TypeArray)
-                    .set(TYPE_NAME.ARRAY, TypeBoolean);
-            }).to.throw();
+            expect(() => new TypeWrapper()
+                .set(TYPE_NAME.ARRAY, TypeArray)
+                .set(TYPE_NAME.ARRAY, TypeBoolean)).to.throw();
         });
         it('It should throw an error if type name to be set is not a string', () => {
             expect(() => new TypeWrapper().set(123 as any, TypeArray)).to.throw();
@@ -30,11 +28,9 @@ export default () => describe('Wrapper', () => {
                     method () { return; },
                 },
             };
-            expect(() => {
-                new TypeWrapper()
-                    .set(TYPE_NAME.ARRAY, TypeArray)
-                    .set('customType', customType, TYPE_NAME.OBJECT);
-            }).to.throw();
+            expect(() => new TypeWrapper()
+                .set(TYPE_NAME.ARRAY, TypeArray)
+                .set('customType', customType, { type: TYPE_NAME.OBJECT })).to.throw();
         });
         it('It should extend custom type with existing one', () => {
             const customType = {
@@ -45,7 +41,7 @@ export default () => describe('Wrapper', () => {
             };
             const types = new TypeWrapper()
                 .set(TYPE_NAME.ARRAY, TypeArray)
-                .set('customType', customType, TYPE_NAME.ARRAY);
+                .set('customType', customType, { type: TYPE_NAME.ARRAY });
             const custom = types.get('customType')!;
             expect(custom).to.be.an('object');
             expect(custom).to.have.property('method');
@@ -70,8 +66,8 @@ export default () => describe('Wrapper', () => {
             };
             const types = new TypeWrapper()
                 .set(TYPE_NAME.ARRAY, TypeArray)
-                .set('customType', customType, TYPE_NAME.ARRAY)
-                .set('anotherCustomType', anotherCustomType, 'customType');
+                .set('customType', customType, { type: TYPE_NAME.ARRAY })
+                .set('anotherCustomType', anotherCustomType, { type: 'customType' });
             const anotherCustom = types.get('anotherCustomType')!;
             expect(anotherCustom).to.be.an('object');
             expect(anotherCustom).to.have.property('anotherMethod');

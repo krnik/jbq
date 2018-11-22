@@ -1,7 +1,7 @@
 import AJV from 'ajv';
 import Benchmark from 'benchmark';
 import Joi from 'joi';
-import { VJS } from '../../src/core/VJS';
+import { jbq } from '../../src/core/jbq';
 import { createTypes } from '../../src/types/main';
 import { arrayTests } from './suites/array';
 import { booleanTests } from './suites/boolean';
@@ -13,7 +13,7 @@ const desiredTest = process.argv[2];
 const desiredLib = process.argv[3];
 const selectLibrary = (name: string) => desiredLib ? name === desiredLib : true;
 const allow = {
-    vjs: selectLibrary('vjs'),
+    jbq: selectLibrary('jbq'),
     ajv: selectLibrary('ajv'),
     joi: selectLibrary('joi'),
     yup: selectLibrary('yup'),
@@ -27,7 +27,7 @@ interface ITest {
         name: string;
         data?: any;
         ajv?: any;
-        vjs?: any;
+        jbq?: any;
         joi?: any;
         yup?: any;
     }>;
@@ -98,10 +98,10 @@ export function createTests (bench: Benchmark.Suite, test: ITest) {
                 continue;
         const data = schema.data !== undefined ? schema.data : test.data;
         const name = createName.bind(undefined, test.name, schema.name);
-        if (schema.vjs && allow.vjs) {
-            const vjs = VJS(createTypes(), { test: schema.vjs });
+        if (schema.jbq && allow.jbq) {
+            const jbqValidators = jbq(createTypes(), { test: schema.jbq });
             const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
-            bench.add(name('vjs'), wrapper(vjs.test.bind(undefined, data)));
+            bench.add(name('vjs'), wrapper(jbqValidators.test.bind(undefined, data)));
         }
         if (schema.ajv && allow.ajv) {
             const ajv = new AJV().compile(schema.ajv);

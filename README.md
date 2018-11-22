@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/krnik/vjs-validator.svg?branch=master)](https://travis-ci.org/krnik/vjs-validator)
+[![Build Status](https://travis-ci.org/krnik/jbq.svg?branch=master)](https://travis-ci.org/krnik/jbq)
 # Table Of Content
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
@@ -6,7 +6,7 @@
 ***
 ## Introduction
 ***
-Hi! Welcome to VJS-Validator flexible validation library.
+Hi! Welcome to JBQ flexible validation library.
 
 Features:
 - data validation
@@ -17,7 +17,7 @@ Features:
 ***
 > Define your schemas
 ```javascript
-// This symbol is tells VJS-Validator that properties
+// This symbol is tells JBQ that properties
 // of passed value will be validated as well
 // You can read more about it in parser wiki page
 const PROPS = Symbol.for('schema_properties');
@@ -26,7 +26,7 @@ const schemas = {
     // User schema expects value to be an object
     // with properties ['names', 'email']
     User: {
-        // type tells VJS-Validator which type
+        // type tells JBQ which type
         // should be used to validate data
         // it is the only required property for schema
         type: 'object',
@@ -66,13 +66,13 @@ const schemas = {
     },
 };
 ```
-> Import and create VJS-Validator instance
+> Import and create JBQ instance
 ```javascript
-// VJSTypes allows you to add your custom types
-const { VJS, VJSTypes } = require('vjs-validator');
-const validator = VJS(VJSTypes, schemas);
+// jbqTypes allows you to add your custom types
+const { jbq, jbqTypes } = require('jbq');
+const validator = jbq(jbqTypes, schemas);
 ```
-For more info about VJSTypes see [WIKI](../../wiki/type-wrapper).
+For more info about jbqTypes see [WIKI](../../wiki/type-wrapper).
 > Pass data to validator
 ```javascript
 const data = {
@@ -126,7 +126,7 @@ const schemas = {
         },
     },
 };
-const validator = VJS(VJSTypes, schemas);
+const validator = jbq(jbqTypes, schemas);
 const data = {
     colors: ['red', 'green', 'blue'],
     'fruit/vegetable': {

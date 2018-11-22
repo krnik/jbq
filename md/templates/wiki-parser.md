@@ -1,7 +1,7 @@
 ## Parser
 - [How it works?](#how-it-works?)
 - [Symbols](#symbols)
-- [Schema config](#schema-config)
+- [Schema Config](#schema-config)
 
 [Source Code](${PATH.PARSER.SRC})
 ***
@@ -139,6 +139,7 @@ const schema = {
 // After parsing this schema, validation function will accept
 // objects with `Symbol.iterator` property
 ```
+### Schema Config
 #### `${SYM.SCHEMA_CONFIG}`
 > This symbol enables passing down ${TYPE_METHOD.TYPE} property down the schema tree. Let's look at example.
 ```javascript

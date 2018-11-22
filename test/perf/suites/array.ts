@@ -56,7 +56,7 @@ export const arrayTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.array(),
@@ -68,7 +68,7 @@ export const arrayTests = [
                     type: DATA.TYPE,
                     minItems: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MIN,
                 },
@@ -81,7 +81,7 @@ export const arrayTests = [
                     type: DATA.TYPE,
                     maxItems: DATA.MAX,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_LEN]: DATA.MAX,
                 },
@@ -96,7 +96,7 @@ export const arrayTests = [
                         type: 'number',
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_COLLECTION]: {
                         [TYPE]: 'number',
@@ -115,7 +115,7 @@ export const arrayTests = [
                         type: 'number',
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MIN,
                     [MAX_LEN]: DATA.MAX,
@@ -137,14 +137,14 @@ export const arrayTests = [
             },
             {
                 name: 'includes',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [INCLUDES]: 1,
                 },
             },
             {
                 name: 'length',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [LEN]: DATA.VALUE.length,
                 },
@@ -152,14 +152,14 @@ export const arrayTests = [
             },
             {
                 name: 'every',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [EVERY]: (e: any) => typeof e === 'number',
                 },
             },
             {
                 name: 'some',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SOME]: (e: any) => typeof e === 'number',
                 },
@@ -177,7 +177,7 @@ export const arrayTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.array(),
@@ -189,7 +189,7 @@ export const arrayTests = [
                     type: DATA.TYPE,
                     minItems: DATA.MAX << 2,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MAX << 2,
                 },
@@ -202,7 +202,7 @@ export const arrayTests = [
                     type: DATA.TYPE,
                     maxItems: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_LEN]: DATA.MIN,
                 },
@@ -217,7 +217,7 @@ export const arrayTests = [
                         type: 'number',
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_COLLECTION]: {
                         [TYPE]: 'number',
@@ -237,14 +237,14 @@ export const arrayTests = [
             },
             {
                 name: 'includes',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [INCLUDES]: 1,
                 },
             },
             {
                 name: 'length',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [LEN]: DATA.MIN,
                 },
@@ -252,14 +252,14 @@ export const arrayTests = [
             },
             {
                 name: 'every',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [EVERY]: (e: any) => typeof e === 'number',
                 },
             },
             {
                 name: 'some',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SOME]: (e: any) => typeof e === 'number',
                 },
@@ -285,7 +285,7 @@ export const arrayTests = [
                         },
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_COLLECTION]: {
                         [TYPE]: 'object',
@@ -335,7 +335,7 @@ export const arrayTests = [
                         },
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_COLLECTION]: {
                         [TYPE]: 'object',

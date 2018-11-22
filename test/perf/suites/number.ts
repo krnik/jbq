@@ -21,7 +21,7 @@ export const numberTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.number(),
@@ -33,7 +33,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     minimum: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN]: DATA.MIN,
                 },
@@ -46,7 +46,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     maximum: DATA.MAX,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX]: DATA.MAX,
                 },
@@ -59,7 +59,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     multipleOf: DATA.MULTIPLE_OF,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MULTIPLE_OF]: DATA.MULTIPLE_OF,
                 },
@@ -68,7 +68,7 @@ export const numberTests = [
             },
             {
                 name: 'oneOf',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [ONE_OF]: DATA.ONE_OF,
                 },
@@ -81,7 +81,7 @@ export const numberTests = [
                     maximum: DATA.MAX,
                     multipleOf: DATA.MULTIPLE_OF,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN]: DATA.MIN,
                     [MAX]: DATA.MAX,
@@ -102,7 +102,7 @@ export const numberTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.number(),
@@ -115,7 +115,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     minimum: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN]: DATA.MIN,
                 },
@@ -129,7 +129,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     maximum: DATA.MAX,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX]: DATA.MAX,
                 },
@@ -143,7 +143,7 @@ export const numberTests = [
                     type: DATA.TYPE,
                     multipleOf: DATA.MULTIPLE_OF,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MULTIPLE_OF]: DATA.MULTIPLE_OF,
                 },
@@ -153,7 +153,7 @@ export const numberTests = [
             {
                 data: 0.5,
                 name: 'oneOf',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [ONE_OF]: DATA.ONE_OF,
                 },

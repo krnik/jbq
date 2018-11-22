@@ -1,5 +1,5 @@
 import { SYM_TYPE_VALIDATE, TYPE, VALUE } from '../constants';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 
 export const TypeBoolean = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -11,13 +11,13 @@ export const TypeBoolean = {
             return `Data should be equal to #{schemaValue}. Got ${data}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [VALUE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [VALUE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.boolean(schemaValue))
-                throw E.invalidSchemaPropType(schemaValue, 'boolean', typeof schemaValue);
+                throw Err.invalidSchemaPropType(schemaValue, 'boolean', typeof schemaValue);
         },
     },
 };

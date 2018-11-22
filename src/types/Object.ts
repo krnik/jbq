@@ -1,5 +1,5 @@
 import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 
 export const TypeObject = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -38,38 +38,38 @@ export const TypeObject = {
             return `Data should have at most #{schemaValue} properties.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [CONSTRUCTOR_NAME] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [CONSTRUCTOR_NAME] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof schemaValue);
         },
-        [INSTANCE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [INSTANCE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Function'))
-                throw E.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
+                throw Err.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
         },
-        [PROPERTIES] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [PROPERTIES] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'Array')
                 || !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
-                throw E.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
+                throw Err.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
         },
-        [MIN_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MIN_PROP_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MIN_PROP_COUNT, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MIN_PROP_COUNT, 'number', typeof schemaValue);
         },
-        [MAX_PROP_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MAX_PROP_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
         },
-        [MIN_KEY_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MIN_KEY_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MIN_KEY_COUNT, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MIN_KEY_COUNT, 'number', typeof schemaValue);
         },
-        [MAX_KEY_COUNT] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MAX_KEY_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MAX_KEY_COUNT, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MAX_KEY_COUNT, 'number', typeof schemaValue);
         },
     },
 };

@@ -21,7 +21,7 @@ export const stringTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.string(),
@@ -33,7 +33,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     minLength: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MIN,
                 },
@@ -46,7 +46,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     maxLength: DATA.MAX,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_LEN]: DATA.MAX,
                 },
@@ -59,7 +59,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     pattern: DATA.PATTERN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [REGEX]: new RegExp(DATA.PATTERN),
                 },
@@ -74,7 +74,7 @@ export const stringTests = [
                     maxLength: DATA.MAX,
                     pattern: DATA.PATTERN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MIN,
                     [MAX_LEN]: DATA.MAX,
@@ -85,14 +85,14 @@ export const stringTests = [
             },
             {
                 name: 'len',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [LEN]: DATA.VALUE.length,
                 },
             },
             {
                 name: 'oneOf',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [ONE_OF]: ['', 'string', DATA.VALUE],
                 },
@@ -110,7 +110,7 @@ export const stringTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.string(),
@@ -122,7 +122,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     minLength: DATA.MAX,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_LEN]: DATA.MAX,
                 },
@@ -135,7 +135,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     maxLength: DATA.MIN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_LEN]: DATA.MIN,
                 },
@@ -148,7 +148,7 @@ export const stringTests = [
                     type: DATA.TYPE,
                     pattern: DATA.FAIL_PATTERN,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [REGEX]: new RegExp(DATA.FAIL_PATTERN),
                 },
@@ -157,14 +157,14 @@ export const stringTests = [
             },
             {
                 name: 'len',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [LEN]: DATA.VALUE.length + 1,
                 },
             },
             {
                 name: 'oneOf',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [ONE_OF]: ['', 'string'],
                 },

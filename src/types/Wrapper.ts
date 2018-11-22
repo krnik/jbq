@@ -1,18 +1,37 @@
 import { SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../constants';
-import { E, is } from '../utils/main';
+import { OmitSymbols } from '../typings';
+import { Err, is } from '../utils/main';
 
 type TypeProtoValidationMethod = (...args: any[]) => void;
-type TypeProtoMethod = (...args: any[]) => void;
-interface ITypeProtoValidation {
-    [method: string]: TypeProtoValidationMethod;
+
+interface ITypeProtoMethod {
+    (...args: any[]): void | string;
+    [SYM_TYPE_EXTERNAL]?: boolean;
 }
+
 export interface IType {
-    [SYM_TYPE_EXTERNAL]?: string[];
+    [method: string]: ITypeProtoMethod;
+    [SYM_TYPE_VALIDATE]: {
+        [method: string]: TypeProtoValidationMethod;
+    };
+    [SYM_TYPE_KEY_ORDER]: string[];
     [SYM_TYPE_FOR_LOOP]?: boolean;
-    [SYM_TYPE_VALIDATE]: ITypeProtoValidation;
-    [SYM_TYPE_KEY_ORDER]?: string[];
-    [method: string]: TypeProtoMethod;
 }
+
+interface ITypeInputSymbols<T> {
+    [SYM_TYPE_VALIDATE]: {
+        [K in keyof T]: TypeProtoValidationMethod;
+    };
+    [SYM_TYPE_FOR_LOOP]?: boolean;
+    [SYM_TYPE_KEY_ORDER]?: string[];
+}
+
+interface IExtendTypePrototype {
+    type?: string;
+    overwriteKeyOrder?: boolean;
+}
+
+type TypeInput<T> = OmitSymbols<T> & ITypeInputSymbols<OmitSymbols<T>>;
 
 export class TypeWrapper {
     private types: Map<string, IType> = new Map();
@@ -21,21 +40,30 @@ export class TypeWrapper {
         return this.types.has(name);
     }
 
-    public set (name: string, type: IType, protoName?: string) {
-        this.validateName(name, protoName);
+    public set<T extends TypeInput<T>, M extends keyof OmitSymbols<T>> (
+        name: string,
+        type: T,
+        extendWith: IExtendTypePrototype = {},
+    ) {
+        this.validateName(name, extendWith.type);
         this.validateType(name, type);
 
-        if (protoName) {
-            const proto = this.types.get(protoName)!;
+        if (extendWith.type) {
+            const proto = this.types.get(extendWith.type)!;
             Object.setPrototypeOf(type, proto);
             Object.setPrototypeOf(type[SYM_TYPE_VALIDATE], proto[SYM_TYPE_VALIDATE]);
+            if (type.hasOwnProperty(SYM_TYPE_KEY_ORDER) && !extendWith.overwriteKeyOrder)
+                type[SYM_TYPE_KEY_ORDER] = this.mergeKeyOrders(
+                    proto[SYM_TYPE_KEY_ORDER],
+                    type[SYM_TYPE_KEY_ORDER]!,
+                );
         }
 
         for (const key of Object.getOwnPropertyNames(type))
-            if (!is.objectInstance(type[SYM_TYPE_VALIDATE][key], 'Function'))
-                throw E.wrapper.missingSchemaValueValidaor(name, key);
+            if (!is.objectInstance(type[SYM_TYPE_VALIDATE][key as M], 'Function'))
+                throw Err.wrapper.missingSchemaValueValidaor(name, key);
 
-        this.types.set(name, type as IType);
+        this.types.set(name, type as unknown as IType);
         return this;
     }
 
@@ -45,25 +73,30 @@ export class TypeWrapper {
 
     private validateName (name: string, protoName?: string) {
         if (!is.string(name))
-            throw E.wrapper.invalidTypeName(typeof name);
+            throw Err.wrapper.invalidTypeName(typeof name);
         if (this.types.has(name))
-            throw E.wrapper.typeAlreadyDefined(name);
+            throw Err.wrapper.typeAlreadyDefined(name);
         if (protoName)
             if (!this.types.has(protoName))
-                throw E.wrapper.missingTypeExtend(name, protoName);
+                throw Err.wrapper.missingTypeExtend(name, protoName);
     }
 
-    private validateType (name: string, type: IType) {
+    private validateType<T extends TypeInput<T>> (name: string, type: T) {
         if (!is.object(type))
-            throw E.wrapper.typeNotAnObject(name, typeof type);
-        type Sym = typeof SYM_TYPE_EXTERNAL | typeof SYM_TYPE_KEY_ORDER;
-        for (const key of [SYM_TYPE_EXTERNAL, SYM_TYPE_KEY_ORDER])
-            if (type.hasOwnProperty(key)) {
-                const value = type[key as Sym];
-                if (!Array.isArray(value))
-                    throw E.wrapper.invalidProperty(name, key.toString(), 'array');
-                if (value!.some((e) => !is.string(e)))
-                    throw E.wrapper.invalidProperty(name, key.toString(), 'string');
-            }
+            throw Err.wrapper.typeNotAnObject(name, typeof type);
+        if (type.hasOwnProperty(SYM_TYPE_KEY_ORDER)) {
+            const value = type[SYM_TYPE_KEY_ORDER];
+            if (!Array.isArray(value))
+                throw Err.wrapper.invalidProperty(name, SYM_TYPE_KEY_ORDER.toString(), 'array');
+            if (value!.some((e) => !is.string(e)))
+                throw Err.wrapper.invalidProperty(name, SYM_TYPE_KEY_ORDER.toString(), 'string');
+        }
+    }
+
+    private mergeKeyOrders (protoKeyOrder: string[], typeKeyOrder: string[]): string[] {
+        return [...protoKeyOrder, ...typeKeyOrder].reduce(
+            (acc, prop) => (acc.includes(prop) ? acc : (acc.push(prop), acc)),
+            [] as string[],
+        );
     }
 }

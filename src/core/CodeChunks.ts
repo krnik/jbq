@@ -1,5 +1,5 @@
 import { BASE_DATA_PARAMETER } from '../constants';
-import { E } from '../utils/main';
+import { Err } from '../utils/main';
 
 export const CodeChunk = {
     label: (dataVariable: string) => `label_${dataVariable}: {\n`,
@@ -21,12 +21,17 @@ for (let ${accessor} = 0; ${accessor} < ${oldDataVar}_len; ${accessor}++) {
     const ${dataVariable} = ${oldDataVar}[${accessor}];
     `,
 
-    externCall: (fnParam: string, data: string) => `
-const ${fnParam}_result = ${fnParam}(${data});
+    externCall: (fnParam: string, dataVariable: string) => `
+const ${fnParam}_result = ${fnParam}(${dataVariable});
 if (${fnParam}_result) return ${fnParam}_result;
     `,
 
-    externCallResolve: (fnParam: string, schemaValue: string, schemaPath: string, dataVariable: string) => `{
+    externCallResolve: (
+        fnParam: string,
+        schemaValue: string,
+        schemaPath: string,
+        dataVariable: string,
+    ) => `{
 const ${fnParam}_result = ${fnParam}(${schemaValue}, ${schemaPath}, ${dataVariable});
 if (${fnParam}_result) return ${fnParam}_result;
     }`,
@@ -38,7 +43,7 @@ if (${fnParam}_result) return ${fnParam}_result;
             : dataPath.split('/'))
             .filter((e) => e.length);
         if (!paths.length)
-            throw E.codeChunk.invalidDataPath(dataPath);
+            throw Err.codeChunk.invalidDataPath(dataPath);
         const pathResolution = paths
             .map((e, i, arr) => {
                 const base = BASE_DATA_PARAMETER;

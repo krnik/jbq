@@ -1,5 +1,5 @@
 import { LEN, MAX_LEN, MIN_LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 
 export const TypeString = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -27,34 +27,34 @@ export const TypeString = {
             return `Data expected to be one of #{schemaValue.toString()}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [MIN_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MIN_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
         },
-        [MAX_LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MAX_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
         },
-        [REGEX] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [REGEX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.objectInstance(schemaValue, 'RegExp'))
-                throw E.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
+                throw Err.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
         },
-        [LEN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
         },
-        [ONE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             switch (true) {
                 case !is.objectInstance(schemaValue, 'Array'):
-                    throw E.invalidSchemaPropType(ONE_OF, 'string[]', typeof schemaValue);
+                    throw Err.invalidSchemaPropType(ONE_OF, 'string[]', typeof schemaValue);
                 case !schemaValue.length:
-                    throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
+                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
                 case !schemaValue.every((e: any) => is.string(e)):
-                    throw E.invalidSchemaPropType(
+                    throw Err.invalidSchemaPropType(
                         ONE_OF,
                         'string[]',
                         typeof schemaValue.find((e: any) => !is.string(e)),

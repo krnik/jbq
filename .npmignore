@@ -5,7 +5,7 @@
 tslint.json
 tsconfig*
 
-vjs-validator.wiki
+jbq.wiki
 md
 
 lib.dev

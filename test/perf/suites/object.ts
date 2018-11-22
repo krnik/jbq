@@ -28,7 +28,7 @@ export const objectTests = [
                 ajv: {
                     type: DATA.TYPE,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                 },
                 joi: Joi.object(),
@@ -54,7 +54,7 @@ export const objectTests = [
                         },
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_PROPERTIES]: {
                         id: { [TYPE]: 'number' },
@@ -97,7 +97,7 @@ export const objectTests = [
                     type: DATA.TYPE,
                     minProperties: DATA.MIN_PROP,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_KEY_COUNT]: DATA.MIN_PROP,
                 },
@@ -108,21 +108,21 @@ export const objectTests = [
                     type: DATA.TYPE,
                     maxProperties: DATA.MAX_PROP,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_KEY_COUNT]: DATA.MAX_PROP,
                 },
             },
             {
                 name: 'minPropCount',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_PROP_COUNT]: DATA.MIN_PROP,
                 },
             },
             {
                 name: 'maxPropCount',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_PROP_COUNT]: DATA.MAX_PROP,
                 },
@@ -154,7 +154,7 @@ export const objectTests = [
                         },
                     },
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [SYM_SCHEMA_PROPERTIES]: {
                         id: { [TYPE]: 'number' },
@@ -197,7 +197,7 @@ export const objectTests = [
                     type: DATA.TYPE,
                     minProperties: DATA.MAX_PROP << 2,
                 },
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_KEY_COUNT]: DATA.MAX_PROP << 2,
                 },
@@ -208,7 +208,7 @@ export const objectTests = [
                     type: DATA.TYPE,
                     maxProperties: DATA.MIN_PROP,
                 },
-                vjs: {
+                jbq: {
                     type: DATA.TYPE,
                     [MAX_KEY_COUNT]: DATA.MIN_PROP,
                 },
@@ -218,7 +218,7 @@ export const objectTests = [
                     [Symbol('0')]: 0,
                 },
                 name: 'minPropCount',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MIN_PROP_COUNT]: 2,
                 },
@@ -229,7 +229,7 @@ export const objectTests = [
                     [Symbol('1')]: 1,
                 },
                 name: 'maxPropCount',
-                vjs: {
+                jbq: {
                     [TYPE]: DATA.TYPE,
                     [MAX_PROP_COUNT]: 1,
                 },

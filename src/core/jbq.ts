@@ -1,13 +1,12 @@
 import { TypeWrapper } from '../types/Wrapper';
+import { OmitSymbols } from '../typings';
 import { Compilation } from './Compilation';
 
 type ValidateFn = (data: any) => string | undefined;
 
-type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[keyof T]>;
-
 type Validators<T> = { [P in keyof OmitSymbols<T>]: ValidateFn };
 
-export function VJS<T, K extends keyof OmitSymbols<T>> (
+export function jbq<T, K extends keyof OmitSymbols<T>> (
     types: TypeWrapper,
     schemas: T,
     debug: boolean = false,

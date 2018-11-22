@@ -6,22 +6,20 @@ import { schemas } from '../data/main';
 
 export default () => describe('Compilation', () => {
     it('it should parse schemas', () => {
-        for (const key of Object.getOwnPropertyNames(schemas.valid)) {
+        for (const key of Object.getOwnPropertyNames(schemas.valid))
             new Compilation(
                 createTypes(),
                 key,
                 schemas.valid[key as keyof typeof schemas.valid]!,
                 false,
             ).exec();
-        }
-        for (const key of Object.getOwnPropertyNames(schemas.invalid)) {
+        for (const key of Object.getOwnPropertyNames(schemas.invalid))
             new Compilation(
                 createTypes(),
                 key,
                 schemas.invalid[key as keyof typeof schemas.invalid]!,
                 false,
             ).exec();
-        }
     });
     describe('passing default schema config', () => {
         it(`${SYM_SCHEMA_CONFIG.toString()} - schemas root`, () => {
@@ -132,6 +130,9 @@ export default () => describe('Compilation', () => {
                     [TYPE] (schemaValue: any) {
                         if (typeof schemaValue !== 'string') throw new Error();
                     },
+                    [MIN] (schemaValue: any) {
+                        if (typeof schemaValue !== 'number') throw new Error();
+                    },
                 },
             };
             const schema = {
@@ -151,7 +152,7 @@ export default () => describe('Compilation', () => {
                     },
                 },
             };
-            const types = createTypes().set('numeric', type, 'number');
+            const types = createTypes().set('numeric', type, { type: 'number' });
             const source = new Compilation(types, 'Test', schema, false).exec();
             const validator = new Function([...source.parameters, source.dataParameter].join(), source.code);
             const bound = validator.bind(undefined, ...source.arguments);

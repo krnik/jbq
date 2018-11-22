@@ -1,5 +1,5 @@
 import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 
 export const TypeNumber = {
     [TYPE] (_schemaValue: string, data: any) {
@@ -23,30 +23,30 @@ export const TypeNumber = {
             return `Data should be one of #{schemaValue.toString()}.`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.string(schemaValue))
-                throw E.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
+                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
         },
-        [MIN] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MIN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
         },
-        [MAX] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MAX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
         },
-        [MULTIPLE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [MULTIPLE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             if (!is.number(schemaValue))
-                throw E.invalidSchemaPropType(MULTIPLE_OF, 'number', typeof schemaValue);
+                throw Err.invalidSchemaPropType(MULTIPLE_OF, 'number', typeof schemaValue);
         },
-        [ONE_OF] (schemaValue: any = E.invalidArgument('schemaValue')) {
+        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
             switch (true) {
                 case !is.objectInstance(schemaValue, 'Array'):
-                    throw E.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
+                    throw Err.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
                 case !schemaValue.length:
-                    throw E.unexpectedValue(ONE_OF, 'an array with length at least 1');
+                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
                 case !schemaValue.every((e: any) => is.number(e)):
-                    throw E.invalidSchemaPropType(
+                    throw Err.invalidSchemaPropType(
                         ONE_OF,
                         'number[]',
                         typeof schemaValue.find((e: any) => !is.number(e)),

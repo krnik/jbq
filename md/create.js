@@ -37,10 +37,10 @@ const SYM = {
 };
 
 const NAME = {
-    LIB: 'VJS-Validator',
-    REPO: 'vjs-validator',
-    CONSTRUCTOR: 'VJS',
-    TYPES: 'VJSTypes',
+    LIB: 'JBQ',
+    REPO: 'jbq',
+    CONSTRUCTOR: 'jbq',
+    TYPES: 'jbqTypes',
 }
 const TOKEN = {
     BREAK: '//{break}',
@@ -170,31 +170,31 @@ const files = [
     },
     {
         in: path.resolve(__dirname, './templates/wiki-home.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.HOME}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.HOME}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-sidebar.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.SIDEBAR}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.SIDEBAR}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-type-custom.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_CUSTOM}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.TYPE_CUSTOM}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-type.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.TYPE}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-parser.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.PARSER}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.PARSER}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-type-wrapper.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_WRAPPER}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.TYPE_WRAPPER}.md`),
     },
     {
         in: path.resolve(__dirname, './templates/wiki-type-example.md'),
-        out: path.resolve(__dirname, `../vjs-validator.wiki/${WIKI.TYPE_EXAMPLE}.md`),
+        out: path.resolve(__dirname, `../jbq.wiki/${WIKI.TYPE_EXAMPLE}.md`),
     },
 ];
 

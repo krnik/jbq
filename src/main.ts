@@ -1,6 +1,6 @@
-import { VJS } from './core/VJS';
+import { jbq } from './core/jbq';
 import { createTypes } from './types/main';
 
-const VJSTypes = createTypes();
+const jbqTypes = createTypes();
 
-export { VJS, VJSTypes };
+export { jbq, jbqTypes };

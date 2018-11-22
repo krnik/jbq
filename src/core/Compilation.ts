@@ -1,6 +1,6 @@
 import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { IType, TypeWrapper } from '../types/Wrapper';
-import { E, is } from '../utils/main';
+import { Err, is } from '../utils/main';
 import { CodeChunk } from './CodeChunks';
 
 const INDENT = Symbol('compilation_indent');
@@ -53,21 +53,24 @@ export class Compilation {
         this.debugLog = debug;
     }
 
-    public exec (): ISource {
-        const source = this.createSource();
-        const context = this.createContext();
+    public exec (source = this.createSource(), context = this.createContext()): ISource {
         const config = this.schema[SYM_SCHEMA_CONFIG] || {};
         this.parseSchema(this.schema, config, context, source);
         return source;
     }
 
-    private parseSchema (schema: ISchema, config: IConfig, context: IContext, source: ISource) {
+    private parseSchema (
+        schema: ISchema,
+        config: IConfig,
+        context: IContext,
+        source: ISource,
+    ) {
         this.debug('schema', context.key, config[INDENT]);
         const typeName: string = schema[TYPE] || config[TYPE];
         if (typeName == null)
-            throw E.compilation.missingSchemaTypeProperty(schema);
+            throw Err.compilation.missingSchemaTypeProperty(schema);
         if (!this.types.has(typeName))
-            throw E.compilation.missingType(typeName);
+            throw Err.compilation.missingType(typeName);
         const type = this.types.get(typeName)!;
         const updatedConfig = this.updateConfig(config, schema);
         const contextSnapshot = this.getContextSnapshot(context);
@@ -77,9 +80,13 @@ export class Compilation {
         const sortedEntries = this.sortByKey({ ...updatedConfig, ...schema }, type[SYM_TYPE_KEY_ORDER]!);
         for (const [property, schemaValue] of sortedEntries) {
             if (!type[property])
-                throw E.compilation.missingTypeMethod(typeName, property);
+                throw Err.compilation.missingTypeMethod(typeName, property);
             this.updateContextKey(context, property);
-            this.debug('property', `${context.key} @ ${context.schemaPath}`, updatedConfig[INDENT]);
+            this.debug(
+                'property',
+                `${context.key} @ ${context.schemaPath}`,
+                updatedConfig[INDENT],
+            );
             if (!this.isDataPath(schemaValue))
                 this.parseProperty(type, schemaValue, context, source);
             else
@@ -99,14 +106,25 @@ export class Compilation {
                     this.updateContextKey(context, key.toString(), `_${i}`);
                     source.arguments.push(key);
                     source.parameters.push(parameter);
-                    source.code += CodeChunk
-                        .defineVariable(context.dataVariable, contextSnapshot.dataVariable, parameter);
+                    source.code += CodeChunk.defineVariable(
+                        context.dataVariable,
+                        contextSnapshot.dataVariable,
+                        parameter,
+                    );
                 } else {
                     this.updateContextKey(context, key, `_${i}`);
-                    source.code += CodeChunk
-                        .defineVariable(context.dataVariable, contextSnapshot.dataVariable, this.toLiteral(key));
+                    source.code += CodeChunk.defineVariable(
+                        context.dataVariable,
+                        contextSnapshot.dataVariable,
+                        this.toLiteral(key),
+                    );
                 }
-                this.parseSchema(schema[SYM_SCHEMA_PROPERTIES]![key as any], updatedConfig, context, source);
+                this.parseSchema(
+                    schema[SYM_SCHEMA_PROPERTIES]![key as any],
+                    updatedConfig,
+                    context,
+                    source,
+                );
                 context.dataVariable = contextSnapshot.dataVariable;
                 context.schemaPath = contextSnapshot.schemaPath;
             }
@@ -116,12 +134,29 @@ export class Compilation {
             this.updateContextKey(context, '[]', '_i');
             if (type[SYM_TYPE_FOR_LOOP]) {
                 const accessor = `${contextSnapshot.dataVariable}$i`;
-                source.code += CodeChunk.forLoop(context.dataVariable, contextSnapshot.dataVariable, accessor);
-                this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, updatedConfig, context, source);
+                source.code += CodeChunk.forLoop(
+                    context.dataVariable,
+                    contextSnapshot.dataVariable,
+                    accessor,
+                );
+                this.parseSchema(
+                    schema[SYM_SCHEMA_COLLECTION]!,
+                    updatedConfig,
+                    context,
+                    source,
+                );
                 source.code += CodeChunk.closeBlock();
             } else {
-                source.code += CodeChunk.forOfLoop(context.dataVariable, contextSnapshot.dataVariable);
-                this.parseSchema(schema[SYM_SCHEMA_COLLECTION]!, updatedConfig, context, source);
+                source.code += CodeChunk.forOfLoop(
+                    context.dataVariable,
+                    contextSnapshot.dataVariable,
+                );
+                this.parseSchema(
+                    schema[SYM_SCHEMA_COLLECTION]!,
+                    updatedConfig,
+                    context,
+                    source,
+                );
             }
             context.dataVariable = contextSnapshot.dataVariable;
             context.schemaPath = contextSnapshot.schemaPath;
@@ -133,7 +168,7 @@ export class Compilation {
     private parseProperty (type: IType, schemaValue: any, context: IContext, source: ISource) {
         type[SYM_TYPE_VALIDATE][context.key](schemaValue);
         const method = type[context.key];
-        if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(context.key)) {
+        if (method[SYM_TYPE_EXTERNAL]) {
             context.parameterCount++;
             const parameter = `$${context.parameterCount}`;
             source.parameters.push(parameter);
@@ -152,23 +187,42 @@ export class Compilation {
         }
     }
 
-    private parsePropertyDataPath (type: IType, schemaValue: IDataPath, context: IContext, source: ISource) {
+    private parsePropertyDataPath (
+        type: IType,
+        schemaValue: IDataPath,
+        context: IContext,
+        source: ISource,
+    ) {
         const method = type[context.key];
         context.resolvedCount++;
         const resolvedPath = `${context.dataVariable}_data_${context.resolvedCount}`;
-        source.code += CodeChunk
-            .resolveDataCall(schemaValue.$dataPath, resolvedPath);
-        if (type[SYM_TYPE_EXTERNAL] && type[SYM_TYPE_EXTERNAL]!.includes(context.key)) {
+        source.code += CodeChunk.resolveDataCall(schemaValue.$dataPath, resolvedPath);
+        if (method[SYM_TYPE_EXTERNAL]) {
             context.parameterCount++;
             const parameter = `$${context.parameterCount}`;
             source.parameters.push(parameter);
             source.arguments.push(method);
-            source.code += CodeChunk.externCallResolve(parameter, resolvedPath, this.toLiteral(context.schemaPath), context.dataVariable);
+            source.code += CodeChunk.externCallResolve(
+                parameter,
+                resolvedPath,
+                this.toLiteral(context.schemaPath),
+                context.dataVariable,
+            );
         } else
-            source.code += this.getMethodBody(method, context, `\${${resolvedPath}}`, resolvedPath);
+            source.code += this.getMethodBody(
+                method,
+                context,
+                `\${${resolvedPath}}`,
+                resolvedPath,
+            );
     }
 
-    private getMethodBody (method: () => void, context: IContext, schemaValue: any, paramOrLiteral: string) {
+    private getMethodBody (
+        method: () => void,
+        context: IContext,
+        schemaValue: any,
+        paramOrLiteral: string,
+    ) {
         let body = method.toString();
         const start = body.indexOf('{');
         const end = body.lastIndexOf('}');
@@ -181,8 +235,7 @@ export class Compilation {
     }
 
     private evalExpressions (str: string, context: IContext, schemaValue: string) {
-        // @ts-ignore
-        return str.replace(TOKEN_EXPR_REGEX, (match, expr) => {
+        return str.replace(TOKEN_EXPR_REGEX, (_match, expr) => {
             return new Function('schemaPath', 'schemaValue', `return ${expr}`)(context.schemaPath, schemaValue);
         });
     }
@@ -220,7 +273,7 @@ export class Compilation {
         return [...first, ...rest];
     }
 
-    private createContext () {
+    private createContext (): IContext {
         return {
             key: '',
             dataVariable: BASE_DATA_PARAMETER,
@@ -246,7 +299,7 @@ export class Compilation {
             code: '',
             arguments: [],
             parameters: [],
-            dataParameter: '$v',
+            dataParameter: BASE_DATA_PARAMETER,
         };
     }
 
