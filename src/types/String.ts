@@ -1,65 +1,45 @@
-import { LEN, MAX_LEN, MIN_LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { schemaValidate } from './schemaValidate';
+
+interface IKeyCountMin { min: number; }
+interface IKeyCountMax { max: number; }
+type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
 
 export const TypeString = {
     [TYPE] (_schemaValue: string, data: any) {
         if (typeof data !== 'string')
-            return `Data should be #{schemaValue} type. Got ${typeof data}.`;
-    },
-    [MIN_LEN] (schemaValue: number, data: any) {
-        if (data.length < schemaValue)
-            return `Data expected to have length greater or equal than #{schemaValue}. Got ${data.length}.`;
-    },
-    [MAX_LEN] (schemaValue: number, data: any) {
-        if (data.length > schemaValue)
-            return `Data expected to have length less or equal than #{schemaValue} chars. Got ${data.length}.`;
+            return `{"message": "Data should be #{schemaValue} type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
     [REGEX] (schemaValue: RegExp, data: any) {
         if (!schemaValue.test(data))
-            return `Data expected to pass #{schemaValue.toString()} test.`;
+            return `{"message": "Data expected to pass #{schemaValue.toString()} test.", "path": "#{schemaPath}"}`;
     },
-    [LEN] (schemaValue: number, data: any) {
-        if (data.length !== schemaValue)
-            return `Data expected to have length equal to #{schemaValue}. Got ${data.length}.`;
+    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string) {
+        const body = (conditions: Array<[string, number]>, errChunk: string) => {
+            const ifConditions = conditions
+                .map((val) => `data.length ${val[0]} ${val[1]}`)
+                .join(' || ');
+            const expected = conditions.map((v) => v.toString()).join('..');
+            return `if (${ifConditions})
+                return '{"message": "Data should have length ${errChunk} ${expected}.", "path": "${schemaPath}"}'`;
+        };
+        if (typeof schemaValue === 'number')
+            return body([['!==', schemaValue]], 'equal to');
+        if ('min' in schemaValue && 'max' in schemaValue)
+            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
+        if ('min' in schemaValue)
+            return body([['<', schemaValue.min]], 'smaller than');
+        else
+            return body([['>', schemaValue.max]], 'grater than');
     },
     [ONE_OF] (schemaValue: string[], data: any) {
         if (!schemaValue.includes(data))
-            return `Data expected to be one of #{schemaValue.toString()}.`;
+            return `{"message": "Data expected to be one of [#{schemaValue.toString()}].", "path": "#{schemaPath}"}`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [MIN_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
-        },
-        [MAX_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
-        },
-        [REGEX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.objectInstance(schemaValue, 'RegExp'))
-                throw Err.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
-        },
-        [LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
-        },
-        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            switch (true) {
-                case !is.objectInstance(schemaValue, 'Array'):
-                    throw Err.invalidSchemaPropType(ONE_OF, 'string[]', typeof schemaValue);
-                case !schemaValue.length:
-                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
-                case !schemaValue.every((e: any) => is.string(e)):
-                    throw Err.invalidSchemaPropType(
-                        ONE_OF,
-                        'string[]',
-                        typeof schemaValue.find((e: any) => !is.string(e)),
-                    );
-            }
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.STRING, TYPE, 'string'),
+        [REGEX]: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, 'RegExp'),
+        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN),
+        [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string'),
     },
 };

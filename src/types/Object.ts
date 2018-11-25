@@ -1,75 +1,77 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, SYM_TYPE_RETURNS_BODY, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { schemaValidate } from './schemaValidate';
+
+interface IKeyCountMin { min: number; }
+interface IKeyCountMax { max: number; }
+type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
 
 export const TypeObject = {
     [TYPE] (_schemaValue: string, data: any) {
         if (!(data && typeof data === 'object' && !Array.isArray(data)))
-            return `Data should be #{schemaValue} type. Got ${typeof data}.`;
+            return `{"message": "Data should be #{schemaValue} type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
     [CONSTRUCTOR_NAME] (schemaValue: string, data: any) {
         if (Object.getPrototypeOf(data).constructor.name !== schemaValue)
-            return `Data should be direct instance of #{schemaValue}.`;
+            return `{"message": "Data should be direct instance of #{schemaValue}.", "path": "#{schemaPath"}`;
     },
     [INSTANCE_OF] (schemaValue: () => void, data: any) {
         if (!(data instanceof schemaValue))
-            return `Data should be instance of #{schemaValue.name}.`;
+            return `{"message": "Data should be instance of #{schemaValue.name}.", "path": "#{schemaPath}"}`;
     },
     [PROPERTIES] (schemaValue: Array<(string | number | symbol)>, data: any) {
         for (const key of schemaValue)
             if (!data.hasOwnProperty(key))
-                return `Data should have ${key.toString()} property.`;
+                return `{"message": "Data should have ${key.toString()} property.", "path": "#{schemaPath}"}`;
     },
-    [MIN_PROP_COUNT] (schemaValue: number, data: any) {
-        if (Object.getOwnPropertyNames(data).length +
-            Object.getOwnPropertySymbols(data).length < schemaValue)
-            return `Data should have at least #{schemaValue} properties.`;
+    [KEY_COUNT] (schemaValue: number | KeyCountSchema, schemaPath: string) {
+        const body = (conditions: Array<[string, number]>, errChunk: string): string => {
+            const ifConds = conditions
+                .map((val) => `Object.keys(data).length ${val[0]} ${val[1]}`)
+                .join(' || ');
+            const expected = conditions
+                .map((val) => val.toString())
+                .join('..');
+            return `if (${ifConds}) {
+                return '{"message": "Data should have number of keys ${errChunk} ${expected}", "path": "${schemaPath}"}';
+            }`;
+        };
+        if (typeof schemaValue === 'number')
+            return body([['!==', schemaValue]], 'equal to');
+        if ('min' in schemaValue && 'max' in schemaValue)
+            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
+        if ('min' in schemaValue)
+            return body([['<', schemaValue.min]], 'greater than');
+        else
+            return body([['>', schemaValue.max]], 'smaller than');
     },
-    [MAX_PROP_COUNT] (schemaValue: number, data: any) {
-        if (Object.getOwnPropertyNames(data).length +
-            Object.getOwnPropertySymbols(data).length > schemaValue)
-            return `Data should have at most #{schemaValue} properties.`;
-    },
-    [MIN_KEY_COUNT] (schemaValue: number, data: any) {
-        if (Object.keys(data).length < schemaValue)
-            return `Data should have at least #{schemaValue} properties.`;
-    },
-    [MAX_KEY_COUNT] (schemaValue: number, data: any) {
-        if (Object.keys(data).length > schemaValue)
-            return `Data should have at most #{schemaValue} properties.`;
+    [PROP_COUNT] (schemaValue: number | KeyCountSchema, schemaPath: string) {
+        const body = (conditions: Array<[string, number]>, errChunk: string): string => {
+            const ifConditions = conditions
+                .map((val) => `(Object.getOwnPropertyNames(data).length + Object.getOwnPropertySymbols(data)) ${val[0]} ${val[1]}`)
+                .join(' || ');
+            const expected = conditions
+                .map((val) => val.toString())
+                .join('..');
+            return `if (${ifConditions})
+                return '{"message": "Data should have number of properties ${errChunk} ${expected}", "path": "${schemaPath}"}';`;
+        };
+        if (typeof schemaValue === 'number')
+            return body([['!==', schemaValue]], 'equal to');
+        if ('min' in schemaValue && 'max' in schemaValue)
+            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
+        if ('min' in schemaValue)
+            return body([['<', schemaValue.min]], 'greater than');
+        return body([['>', schemaValue.max]], 'smaller than');
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [CONSTRUCTOR_NAME] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(CONSTRUCTOR_NAME, 'string', typeof schemaValue);
-        },
-        [INSTANCE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.objectInstance(schemaValue, 'Function'))
-                throw Err.invalidSchemaPropType(INSTANCE_OF, 'function', typeof schemaValue);
-        },
-        [PROPERTIES] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.objectInstance(schemaValue, 'Array')
-                || !schemaValue.every((e: any) => is.number(e) || is.string(e) || is.symbol(e)))
-                throw Err.invalidSchemaPropType(PROPERTIES, 'array', typeof schemaValue);
-        },
-        [MIN_PROP_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN_PROP_COUNT, 'number', typeof schemaValue);
-        },
-        [MAX_PROP_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX_PROP_COUNT, 'number', typeof schemaValue);
-        },
-        [MIN_KEY_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN_KEY_COUNT, 'number', typeof schemaValue);
-        },
-        [MAX_KEY_COUNT] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX_KEY_COUNT, 'number', typeof schemaValue);
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
+        [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
+        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, 'Function'),
+        [PROPERTIES]: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
+        [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT),
+        [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT),
     },
 };
+
+Object.defineProperty(TypeObject[KEY_COUNT], SYM_TYPE_RETURNS_BODY, { value: true });
+Object.defineProperty(TypeObject[PROP_COUNT], SYM_TYPE_RETURNS_BODY, { value: true });

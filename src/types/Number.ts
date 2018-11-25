@@ -1,57 +1,32 @@
-import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { schemaValidate } from './schemaValidate';
 
 export const TypeNumber = {
     [TYPE] (_schemaValue: string, data: any) {
         if (typeof data !== 'number' || data !== data)
-            return `Data should be a number (NaN excluded) type. Got ${typeof data}.`;
+            return `{"message": "Data should be a number (NaN excluded) type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
     [MIN] (schemaValue: number, data: any) {
         if (schemaValue > data)
-            return `Data expected to be equal to at least #{schemaValue}. Got ${data}.`;
+            return `{"message": "Data expected to be equal to at least #{schemaValue}. Got ${data}.", "path": "#{schemaPath}"}`;
     },
     [MAX] (schemaValue: number, data: any) {
         if (schemaValue < data)
-            return `Data expected to be equal to at most #{schemaValue}. Got ${data}.`;
+            return `{"message": "Data expected to be equal to at most #{schemaValue}. Got ${data}.", "path": "#{schemaPath}"}`;
     },
     [MULTIPLE_OF] (schemaValue: number, data: any) {
         if (data % schemaValue)
-            return `Data expected to be multiply of #{schemaValue}.`;
+            return `{"message": "Data expected to be multiply of #{schemaValue}.", "path": "#{schemaPath}"}`;
     },
     [ONE_OF] (schemaValue: number[], data: any) {
         if (!schemaValue.includes(data))
-            return `Data should be one of #{schemaValue.toString()}.`;
+            return `{"message": "Data should be one of #{schemaValue.toString()}.", "path": "#{schemaPath}"}`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [MIN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
-        },
-        [MAX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
-        },
-        [MULTIPLE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MULTIPLE_OF, 'number', typeof schemaValue);
-        },
-        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            switch (true) {
-                case !is.objectInstance(schemaValue, 'Array'):
-                    throw Err.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
-                case !schemaValue.length:
-                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
-                case !schemaValue.every((e: any) => is.number(e)):
-                    throw Err.invalidSchemaPropType(
-                        ONE_OF,
-                        'number[]',
-                        typeof schemaValue.find((e: any) => !is.number(e)),
-                    );
-            }
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.NUMBER, TYPE, 'string'),
+        [MIN]: schemaValidate.primitive(TYPE_NAME.NUMBER, MIN, 'number'),
+        [MAX]: schemaValidate.primitive(TYPE_NAME.NUMBER, MAX, 'number'),
+        [MULTIPLE_OF]: schemaValidate.primitive(TYPE_NAME.NUMBER, MULTIPLE_OF, 'number'),
+        [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.NUMBER, ONE_OF, 'number'),
     },
 };

@@ -1,5 +1,5 @@
-import { REQUIRED, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { REQUIRED, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { schemaValidate } from './schemaValidate';
 
 export const TypeAny = {
     [TYPE] (/** schemaValue: string, data: any */) {
@@ -10,17 +10,11 @@ export const TypeAny = {
             if (!schemaValue) {
                 //{break}
             } else
-                return 'Value is required, got undefined';
+                return '{"message": "Value is required, got undefined.", "path": "#{schemaPath}"}';
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [REQUIRED] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.boolean(schemaValue))
-                throw Err.invalidSchemaPropType(REQUIRED, 'boolean', typeof schemaValue);
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.ANY, TYPE, 'string'),
+        [REQUIRED]: schemaValidate.primitive(TYPE_NAME.ANY, REQUIRED, 'boolean'),
     },
     [SYM_TYPE_KEY_ORDER]: [REQUIRED, TYPE],
 };
