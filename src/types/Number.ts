@@ -2,23 +2,23 @@ import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } fro
 import { schemaValidate } from './schemaValidate';
 
 export const TypeNumber = {
-    [TYPE] (_schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any): string | void {
         if (typeof data !== 'number' || data !== data)
             return `{"message": "Data should be a number (NaN excluded) type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
-    [MIN] (schemaValue: number, data: any) {
+    [MIN] (schemaValue: number, data: any): string | void {
         if (schemaValue > data)
             return `{"message": "Data expected to be equal to at least #{schemaValue}. Got ${data}.", "path": "#{schemaPath}"}`;
     },
-    [MAX] (schemaValue: number, data: any) {
+    [MAX] (schemaValue: number, data: any): string | void {
         if (schemaValue < data)
             return `{"message": "Data expected to be equal to at most #{schemaValue}. Got ${data}.", "path": "#{schemaPath}"}`;
     },
-    [MULTIPLE_OF] (schemaValue: number, data: any) {
+    [MULTIPLE_OF] (schemaValue: number, data: any): string | void {
         if (data % schemaValue)
             return `{"message": "Data expected to be multiply of #{schemaValue}.", "path": "#{schemaPath}"}`;
     },
-    [ONE_OF] (schemaValue: number[], data: any) {
+    [ONE_OF] (schemaValue: number[], data: any): string | void {
         if (!schemaValue.includes(data))
             return `{"message": "Data should be one of #{schemaValue.toString()}.", "path": "#{schemaPath}"}`;
     },

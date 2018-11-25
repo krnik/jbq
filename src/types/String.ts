@@ -6,15 +6,15 @@ interface IKeyCountMax { max: number; }
 type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
 
 export const TypeString = {
-    [TYPE] (_schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any): string | void {
         if (typeof data !== 'string')
             return `{"message": "Data should be #{schemaValue} type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
-    [REGEX] (schemaValue: RegExp, data: any) {
+    [REGEX] (schemaValue: RegExp, data: any): string | void {
         if (!schemaValue.test(data))
             return `{"message": "Data expected to pass #{schemaValue.toString()} test.", "path": "#{schemaPath}"}`;
     },
-    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string) {
+    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
         const body = (conditions: Array<[string, number]>, errChunk: string) => {
             const ifConditions = conditions
                 .map((val) => `data.length ${val[0]} ${val[1]}`)
@@ -32,7 +32,7 @@ export const TypeString = {
         else
             return body([['>', schemaValue.max]], 'grater than');
     },
-    [ONE_OF] (schemaValue: string[], data: any) {
+    [ONE_OF] (schemaValue: string[], data: any): string | void {
         if (!schemaValue.includes(data))
             return `{"message": "Data expected to be one of [#{schemaValue.toString()}].", "path": "#{schemaPath}"}`;
     },

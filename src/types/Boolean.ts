@@ -2,11 +2,11 @@ import { SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../constants';
 import { schemaValidate } from './schemaValidate';
 
 export const TypeBoolean = {
-    [TYPE] (_schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any): string | void {
         if (data !== true && data !== false)
             return `{"message": "Data should be #{schemaValue} type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
     },
-    [VALUE] (schemaValue: boolean, data: any) {
+    [VALUE] (schemaValue: boolean, data: any): string | void {
         if (schemaValue !== data)
             return `{"message": "Data should be equal to #{schemaValue}. Got ${data}.", "path": "#{schemaPath}"}`;
     },

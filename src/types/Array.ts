@@ -7,23 +7,23 @@ type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
-    [TYPE] (_schemaValue: string, data: any) {
+    [TYPE] (_schemaValue: string, data: any): string | void {
         if (!Array.isArray(data))
             return '{"message": "Data should be a #{schemaValue} type.", "path": "#{schemaPath}"}';
     },
-    [EVERY] (schemaValue: arrMethodCallback, data: any[]) {
+    [EVERY] (schemaValue: arrMethodCallback, data: any[]): string | void {
         const len = data.length;
         for (let i = 0; i < len; i++)
             if (!schemaValue(data[i])) return '{"message": "Every element of data should satisfy test function.", "path": "#{schemaPath}"}';
     },
-    [SOME] (schemaValue: arrMethodCallback, data: any[]) {
+    [SOME] (schemaValue: arrMethodCallback, data: any[]): string | void {
         const len = data.length;
         for (let i = 0; i < len; i++) {
             if (schemaValue(data[i])) break;
             if (i === len - 1) return '{"message": "At least one element of data should satisfy test function.", "path": "#{schemaPath}"}';
         }
     },
-    [INCLUDES] (schemaValue: any, data: any[]) {
+    [INCLUDES] (schemaValue: any, data: any[]): string | void {
         let found = false;
         for (let i = 0; i < data.length; i++)
             if (data[i] === schemaValue) {
@@ -33,7 +33,7 @@ export const TypeArray = {
         if (!found)
             return '{"message": "Data should include #{schemaValue}.", "path": "#{schemaPath}"}';
     },
-    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string) {
+    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
         const body = (conditions: Array<[string, number]>, errChunk: string) => {
             const ifConditions = conditions
                 .map((val) => `data.length ${val[0]} ${val[1]}`)

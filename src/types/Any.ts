@@ -2,10 +2,10 @@ import { REQUIRED, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from
 import { schemaValidate } from './schemaValidate';
 
 export const TypeAny = {
-    [TYPE] (/** schemaValue: string, data: any */) {
+    [TYPE] (/** schemaValue: string, data: any */): void {
         //{break}
     },
-    [REQUIRED] (schemaValue: boolean, data: any) {
+    [REQUIRED] (schemaValue: boolean, data: any): string | void {
         if (data === undefined)
             if (!schemaValue) {
                 //{break}
