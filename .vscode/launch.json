@@ -28,7 +28,7 @@
             "args": [
                 "--require",
                 "ts-node/register",
-                "${workspaceFolder}/lib.dev/test/perf/benchmark.js"
+                "${workspaceFolder}/test/perf/benchmark.ts"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         }
