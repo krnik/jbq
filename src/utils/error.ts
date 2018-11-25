@@ -1,39 +1,9 @@
-import { SYM_TYPE_VALIDATE, TYPE } from '../constants';
+import { TYPE } from '../constants';
 
 export const Err = {
     codeChunk: {
         invalidDataPath (dataPath: string | string[]) {
             const errorMessage = `Data path in schema is invalid because it resolves to empty array. Please revisit this value ${dataPath}`;
-            return new Error(errorMessage);
-        },
-    },
-    wrapper: {
-        invalidTypeName (type: string) {
-            const errorMessage = `Can not add new type because it's name is not a "string" type. Got "${type}".`;
-            return new Error(errorMessage);
-        },
-        typeAlreadyDefined (typeName: string) {
-            const errorMessage = `Can not add <${typeName}> type because it already exists.`;
-            return new Error(errorMessage);
-        },
-        typeNotAnObject (typeName: string, type: string) {
-            const errorMessage = `Can not add <${typeName}> type because it must be an "object". Got "${type}".`;
-            return new Error(errorMessage);
-        },
-        invalidProperty (typeName: string, property: string, desired: string) {
-            const errorMessage = `Can not add <${typeName}> type because its [${property}] property is not of "${desired}" type.`;
-            return new Error(errorMessage);
-        },
-        invalidPropertyElems (typeName: string, property: string, desired: string) {
-            const errorMessage = `Can not add <${typeName}> type because it's [${property}] property elements must be of "${desired}" type.`;
-            return new Error(errorMessage);
-        },
-        missingSchemaValueValidaor (typeName: string, key: string) {
-            const errorMessage = `<${typeName}> type must have [${key}] schema validator function defined in [${SYM_TYPE_VALIDATE.toString()}] property.`;
-            return new Error(errorMessage);
-        },
-        missingTypeExtend (typeName: string, protoName: string) {
-            const errorMessage = `Can not extend <${typeName}> with <${protoName}> because it does not exist.`;
             return new Error(errorMessage);
         },
     },
@@ -62,17 +32,5 @@ export const Err = {
             const errorMessage = `Schema must have a [${TYPE}] property. Schema ${json}.`;
             return new Error(errorMessage);
         },
-    },
-    invalidArgument (paramName: string) {
-        const errorMessage = `Parameter "${paramName}" is required.`;
-        throw new Error(errorMessage);
-    },
-    invalidSchemaPropType (propName: string, desired: string, valueType: string) {
-        const errorMessage = `[${propName}] property requires schema value to be a "${desired}". Got "${valueType}" type instead.`;
-        return new Error(errorMessage);
-    },
-    unexpectedValue (propName: string, requirements: string) {
-        const errorMessage = `[${propName}] property requires schema value to be ${requirements}.`;
-        return new Error(errorMessage);
     },
 };
