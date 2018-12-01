@@ -1,4 +1,4 @@
-import { SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE, SYM_SCHEMA_COLLECTION } from '../../src/constants';
+import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
 import { jbq } from '../../src/core/jbq';
 import { createTypes } from '../../src/types/main';
 import { createData, schemas } from '../data/main';

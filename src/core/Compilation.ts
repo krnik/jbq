@@ -1,7 +1,9 @@
-import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
-import { IType, TypeWrapper } from '../types/Wrapper';
-import { Err, is } from '../utils/main';
+import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE, SYM_TYPE_RETURNS_BODY } from '../constants';
+import { IType, TypeWrapper, ITypeMethod } from '../types/Wrapper';
+import { Err } from '../utils/error';
+import { is } from '../utils/type';
 import { CodeChunk } from './CodeChunks';
+import { Debug } from '../utils/debug';
 
 const INDENT = Symbol('compilation_indent');
 
@@ -44,13 +46,13 @@ export class Compilation {
     private name: string;
     private types: TypeWrapper;
     private schema: ISchema;
-    private debugLog: boolean;
+    private debug: Debug;
 
     constructor (types: TypeWrapper, schemaName: string, schema: ISchema, debug: boolean) {
         this.types = types;
         this.name = schemaName;
         this.schema = schema;
-        this.debugLog = debug;
+        this.debug = new Debug(debug);
     }
 
     public exec (source = this.createSource(), context = this.createContext()): ISource {
@@ -65,7 +67,7 @@ export class Compilation {
         context: IContext,
         source: ISource,
     ) {
-        this.debug('schema', context.key, config[INDENT]);
+        this.debug('schema', context.schemaPath, config[INDENT]);
         const typeName: string = schema[TYPE] || config[TYPE];
         if (typeName == null)
             throw Err.compilation.missingSchemaTypeProperty(schema);
@@ -77,7 +79,7 @@ export class Compilation {
 
         source.code += CodeChunk.label(context.dataVariable);
 
-        const sortedEntries = this.sortByKey({ ...updatedConfig, ...schema }, type[SYM_TYPE_KEY_ORDER]!);
+        const sortedEntries = this.sortByKey({ ...updatedConfig, ...schema }, type[SYM_TYPE_KEY_ORDER]);
         for (const [property, schemaValue] of sortedEntries) {
             if (!type[property])
                 throw Err.compilation.missingTypeMethod(typeName, property);
@@ -166,6 +168,7 @@ export class Compilation {
     }
 
     private parseProperty (type: IType, schemaValue: any, context: IContext, source: ISource) {
+        // TODO: Add handling SYM_TYPE_RETURNS_BODY, SYM_TYPE_RETURNS_FN
         type[SYM_TYPE_VALIDATE][context.key](schemaValue);
         const method = type[context.key];
         if (method[SYM_TYPE_EXTERNAL]) {
@@ -218,11 +221,14 @@ export class Compilation {
     }
 
     private getMethodBody (
-        method: () => void,
+        method: ITypeMethod,
         context: IContext,
         schemaValue: any,
         paramOrLiteral: string,
     ) {
+        if (method[SYM_TYPE_RETURNS_BODY]) {
+
+        }
         let body = method.toString();
         const start = body.indexOf('{');
         const end = body.lastIndexOf('}');
@@ -301,15 +307,5 @@ export class Compilation {
             parameters: [],
             dataParameter: BASE_DATA_PARAMETER,
         };
-    }
-
-    private debug (level: 'schema' | 'property', message: string, indent?: string) {
-        if (!this.debugLog) return;
-        const levels = {
-            schema: (m: string, i: string) => `\x1b[32m${i}${m}\x1b[0m`,
-            property: (m: string, i: string) => `\x1b[36m${i}${m}\x1b[0m`,
-        };
-        // tslint:disable-next-line
-        return console.log(levels[level](message, indent || ''));
     }
 }

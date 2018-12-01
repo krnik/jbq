@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { EVERY, INCLUDES, LEN, MAX_LEN, MIN_LEN, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
+import { EVERY, INCLUDES, SOME, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeArray } from '../../../src/types/Array';
 import { values } from '../../data/main';
 
@@ -22,60 +22,60 @@ export default () => describe(TYPE_NAME.ARRAY, () => {
                 expect(() => TypeArray[SYM_TYPE_VALIDATE][TYPE](value)).to.throw();
         });
     });
-    describe(LEN, () => {
-        const base = 2;
-        it('valid value', () => {
-            const value = [1, 2];
-            expect(TypeArray[LEN](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value: any[] = [];
-            expect(TypeArray[LEN](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeArray[SYM_TYPE_VALIDATE][LEN](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeArray[SYM_TYPE_VALIDATE][LEN](value)).to.throw();
-        });
-    });
-    describe(MAX_LEN, () => {
-        const base = 10;
-        it('valid value', () => {
-            const value = new Array(9);
-            expect(TypeArray[MAX_LEN](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = new Array(11);
-            expect(TypeArray[MAX_LEN](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](value)).to.throw();
-        });
-    });
-    describe(MIN_LEN, () => {
-        const base = 2;
-        it('valid value', () => {
-            const value = new Array(4);
-            expect(TypeArray[MIN_LEN](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = new Array(1);
-            expect(TypeArray[MIN_LEN](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](value)).to.throw();
-        });
-    });
+    // describe(LEN, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         const value = [1, 2];
+    //         expect(TypeArray[LEN](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value: any[] = [];
+    //         expect(TypeArray[LEN](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeArray[SYM_TYPE_VALIDATE][LEN](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeArray[SYM_TYPE_VALIDATE][LEN](value)).to.throw();
+    //     });
+    // });
+    // describe(MAX_LEN, () => {
+    //     const base = 10;
+    //     it('valid value', () => {
+    //         const value = new Array(9);
+    //         expect(TypeArray[MAX_LEN](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = new Array(11);
+    //         expect(TypeArray[MAX_LEN](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeArray[SYM_TYPE_VALIDATE][MAX_LEN](value)).to.throw();
+    //     });
+    // });
+    // describe(MIN_LEN, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         const value = new Array(4);
+    //         expect(TypeArray[MIN_LEN](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = new Array(1);
+    //         expect(TypeArray[MIN_LEN](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeArray[SYM_TYPE_VALIDATE][MIN_LEN](value)).to.throw();
+    //     });
+    // });
     describe(INCLUDES, () => {
         const base = 10;
         it('valid value', () => {

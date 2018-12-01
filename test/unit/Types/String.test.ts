@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { LEN, MAX_LEN, MIN_LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
+import { LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeString } from '../../../src/types/String';
 import { values } from '../../data/main';
 
@@ -22,42 +22,42 @@ export default () => describe(TYPE_NAME.STRING, () => {
                 expect(() => TypeString[SYM_TYPE_VALIDATE][TYPE](value)).to.throw();
         });
     });
-    describe(MIN_LEN, () => {
-        const base = 10;
-        it('valid value', () => {
-            const value = 'Long string with at least 10 characters.';
-            expect(TypeString[MIN_LEN](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = 'Short.';
-            expect(TypeString[MIN_LEN](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeString[SYM_TYPE_VALIDATE][MIN_LEN](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeString[SYM_TYPE_VALIDATE][MIN_LEN](value)).to.throw();
-        });
-    });
-    describe(MAX_LEN, () => {
-        const base = 10;
-        it('valid value', () => {
-            const value = 'Short.';
-            expect(TypeString[MAX_LEN](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = 'Long string with at least 10 characters.';
-            expect(TypeString[MAX_LEN](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeString[SYM_TYPE_VALIDATE][MAX_LEN](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeString[SYM_TYPE_VALIDATE][MAX_LEN](value)).to.throw();
-        });
-    });
+    // describe(MIN_LEN, () => {
+    //     const base = 10;
+    //     it('valid value', () => {
+    //         const value = 'Long string with at least 10 characters.';
+    //         expect(TypeString[MIN_LEN](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = 'Short.';
+    //         expect(TypeString[MIN_LEN](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeString[SYM_TYPE_VALIDATE][MIN_LEN](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeString[SYM_TYPE_VALIDATE][MIN_LEN](value)).to.throw();
+    //     });
+    // });
+    // describe(MAX_LEN, () => {
+    //     const base = 10;
+    //     it('valid value', () => {
+    //         const value = 'Short.';
+    //         expect(TypeString[MAX_LEN](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = 'Long string with at least 10 characters.';
+    //         expect(TypeString[MAX_LEN](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeString[SYM_TYPE_VALIDATE][MAX_LEN](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeString[SYM_TYPE_VALIDATE][MAX_LEN](value)).to.throw();
+    //     });
+    // });
     describe(REGEX, () => {
         const base = /^Sho/i;
         it('valid value', () => {

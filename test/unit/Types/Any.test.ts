@@ -25,6 +25,10 @@ export default () => describe(TYPE_NAME.ANY, () => {
             const value = {};
             expect(TypeAny[REQUIRED](base, value)).to.be.equal(undefined);
         });
+        it('invalid value', () => {
+            const value = undefined;
+            expect(TypeAny[REQUIRED](base, value)).to.be.a('string');
+        });
         it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
             expect(TypeBoolean[SYM_TYPE_VALIDATE][VALUE](base)).to.be.equal(undefined);
         });

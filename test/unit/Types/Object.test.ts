@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { CONSTRUCTOR_NAME, INSTANCE_OF, MAX_KEY_COUNT, MAX_PROP_COUNT, MIN_KEY_COUNT, MIN_PROP_COUNT, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeObject } from '../../../src/types/Object';
 import { values } from '../../data/main';
 
@@ -89,78 +89,78 @@ export default () => describe(TYPE_NAME.OBJECT, () => {
                 expect(() => TypeObject[SYM_TYPE_VALIDATE][PROPERTIES](value)).to.throw();
         });
     });
-    describe(MIN_PROP_COUNT, () => {
-        const base = 2;
-        it('valid value', () => {
-            const value = {
-                prop: 1,
-                key: 1,
-            };
-            expect(TypeObject[MIN_PROP_COUNT](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = {};
-            expect(TypeObject[MIN_PROP_COUNT](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeObject[SYM_TYPE_VALIDATE][MIN_PROP_COUNT](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeObject[SYM_TYPE_VALIDATE][MIN_PROP_COUNT](value)).to.throw();
-        });
-    });
-    describe(MAX_PROP_COUNT, () => {
-        const base = 2;
-        it('valid value', () => {
-            expect(TypeObject[MAX_PROP_COUNT](base, {})).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = [1, 2, 3];
-            expect(TypeObject[MAX_PROP_COUNT](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeObject[SYM_TYPE_VALIDATE][MAX_PROP_COUNT](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_PROP_COUNT](value)).to.throw();
-        });
-    });
-    describe(MIN_KEY_COUNT, () => {
-        const base = 2;
-        it('valid value', () => {
-            const value = { a: 1, b: 2 };
-            expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = { a: 1 };
-            expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](value)).to.throw();
-        });
-    });
-    describe(MAX_KEY_COUNT, () => {
-        const base = 2;
-        it('valid value', () => {
-            const value = { a: 1 };
-            expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.equal(undefined);
-        });
-        it('invalid value', () => {
-            const value = { a: 1, b: 2, c: 3 };
-            expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.a('string');
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.number)
-                expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](value)).to.throw();
-        });
-    });
+    // describe(MIN_PROP_COUNT, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         const value = {
+    //             prop: 1,
+    //             key: 1,
+    //         };
+    //         expect(TypeObject[MIN_PROP_COUNT](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = {};
+    //         expect(TypeObject[MIN_PROP_COUNT](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeObject[SYM_TYPE_VALIDATE][MIN_PROP_COUNT](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeObject[SYM_TYPE_VALIDATE][MIN_PROP_COUNT](value)).to.throw();
+    //     });
+    // });
+    // describe(MAX_PROP_COUNT, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         expect(TypeObject[MAX_PROP_COUNT](base, {})).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = [1, 2, 3];
+    //         expect(TypeObject[MAX_PROP_COUNT](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeObject[SYM_TYPE_VALIDATE][MAX_PROP_COUNT](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_PROP_COUNT](value)).to.throw();
+    //     });
+    // });
+    // describe(MIN_KEY_COUNT, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         const value = { a: 1, b: 2 };
+    //         expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = { a: 1 };
+    //         expect(TypeObject[MIN_KEY_COUNT](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeObject[SYM_TYPE_VALIDATE][MIN_KEY_COUNT](value)).to.throw();
+    //     });
+    // });
+    // describe(MAX_KEY_COUNT, () => {
+    //     const base = 2;
+    //     it('valid value', () => {
+    //         const value = { a: 1 };
+    //         expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.equal(undefined);
+    //     });
+    //     it('invalid value', () => {
+    //         const value = { a: 1, b: 2, c: 3 };
+    //         expect(TypeObject[MAX_KEY_COUNT](base, value)).to.be.a('string');
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
+    //         expect(TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](base)).to.be.equal(undefined);
+    //     });
+    //     it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
+    //         for (const value of values.non.number)
+    //             expect(() => TypeObject[SYM_TYPE_VALIDATE][MAX_KEY_COUNT](value)).to.throw();
+    //     });
+    // });
 });

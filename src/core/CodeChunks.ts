@@ -1,5 +1,5 @@
 import { BASE_DATA_PARAMETER } from '../constants';
-import { Err } from '../utils/main';
+import { CodeChunkError } from './error';
 
 export const CodeChunk = {
     label: (dataVariable: string) => `label_${dataVariable}: {\n`,
@@ -36,14 +36,12 @@ const ${fnParam}_result = ${fnParam}(${schemaValue}, ${schemaPath}, ${dataVariab
 if (${fnParam}_result) return ${fnParam}_result;
     }`,
 
-    resolveDataCall (dataPath: string | string[], dataVariable: string) {
+    resolveDataPath (dataPath: string | string[], dataVariable: string) {
         const asStr = (str: string) => `\`${str.replace(/`/g, '\\`')}\``;
-        const paths = (Array.isArray(dataPath)
-            ? dataPath
-            : dataPath.split('/'))
+        const paths = (Array.isArray(dataPath) ? dataPath : dataPath.split('/'))
             .filter((e) => e.length);
         if (!paths.length)
-            throw Err.codeChunk.invalidDataPath(dataPath);
+            throw CodeChunkError.invalidDataPath(dataPath);
         const pathResolution = paths
             .map((e, i, arr) => {
                 const base = BASE_DATA_PARAMETER;
