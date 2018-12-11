@@ -1,4 +1,4 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, SYM_TYPE_RETURNS_BODY, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { schemaValidate } from './schemaValidate';
 
 interface IKeyCountMin { min: number; }
@@ -6,22 +6,22 @@ interface IKeyCountMax { max: number; }
 type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
 
 export const TypeObject = {
-    [TYPE] (_schemaValue: string, data: any): string | void {
-        if (!(data && typeof data === 'object' && !Array.isArray(data)))
-            return `{"message": "Data should be #{schemaValue} type. Got ${typeof data}.", "path": "#{schemaPath}"}`;
+    [TYPE] (_schemaValue: string, $DATA: any): string | void {
+        if (!($DATA && typeof $DATA === 'object' && !Array.isArray($DATA)))
+            return `{"message": "Data should be {{schemaValue}} type. Got ${typeof $DATA}.", "path": "{{schemaPath}}"}`;
     },
-    [CONSTRUCTOR_NAME] (schemaValue: string, data: any): string | void {
-        if (Object.getPrototypeOf(data).constructor.name !== schemaValue)
-            return `{"message": "Data should be direct instance of #{schemaValue}.", "path": "#{schemaPath"}`;
+    [CONSTRUCTOR_NAME] (schemaValue: string, $DATA: any): string | void {
+        if (Object.getPrototypeOf($DATA).constructor.name !== schemaValue)
+            return `{"message": "Data should be direct instance of {{schemaValue}}.", "path": "{{schemaPath}}"}`;
     },
-    [INSTANCE_OF] (schemaValue: () => void, data: any): string | void {
-        if (!(data instanceof schemaValue))
-            return `{"message": "Data should be instance of #{schemaValue.name}.", "path": "#{schemaPath}"}`;
+    [INSTANCE_OF] (schemaValue: () => void, $DATA: any): string | void {
+        if (!($DATA instanceof schemaValue))
+            return `{"message": "Data should be instance of {{schemaValue.name}}.", "path": "{{schemaPath}}"}`;
     },
-    [PROPERTIES] (schemaValue: Array<(string | number | symbol)>, data: any): string | void {
+    [PROPERTIES] (schemaValue: Array<(string | number | symbol)>, $DATA: any): string | void {
         for (const key of schemaValue)
-            if (!data.hasOwnProperty(key))
-                return `{"message": "Data should have ${key.toString()} property.", "path": "#{schemaPath}"}`;
+            if (!$DATA.hasOwnProperty(key))
+                return `{"message": "Data should have ${key.toString()} property.", "path": "{{schemaPath}}"}`;
     },
     [KEY_COUNT] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
         const body = (conditions: Array<[string, number]>, errChunk: string): string => {
@@ -68,10 +68,10 @@ export const TypeObject = {
         [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
         [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, 'Function'),
         [PROPERTIES]: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
-        [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT),
-        [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT),
+        [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
+        [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),
     },
 };
 
-Object.defineProperty(TypeObject[KEY_COUNT], SYM_TYPE_RETURNS_BODY, { value: true });
-Object.defineProperty(TypeObject[PROP_COUNT], SYM_TYPE_RETURNS_BODY, { value: true });
+Object.defineProperty(TypeObject[KEY_COUNT], SYM_METHOD_MACRO, { value: true });
+Object.defineProperty(TypeObject[PROP_COUNT], SYM_METHOD_MACRO, { value: true });

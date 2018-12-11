@@ -15,7 +15,15 @@ export const is = {
         return value instanceof Object;
     },
     objectInstance (value: any, constructorName: string) {
-        return value == null ? value : Object.getPrototypeOf(value).constructor.name === constructorName;
+        return value == null
+            ? value
+            : Object.getPrototypeOf(value).constructor.name === constructorName;
+    },
+    array (value: any, canBeEmpty?: boolean) {
+        return Array.isArray(value) && (canBeEmpty || value.length);
+    },
+    arrayOf (value: any, check: (...a: any[]) => boolean, canBeEmpty?: boolean) {
+        return Array.isArray(value) && value.every(check) && Boolean(canBeEmpty || value.length);
     },
     primitiveLiteral (value: any) {
         if (value == null) return true;
@@ -27,5 +35,11 @@ export const is = {
             default:
                 return false;
         }
+    },
+};
+
+export const as = {
+    string (str: string) {
+        return `\`${str.replace(/`/g, '\\`')}\``;
     },
 };

@@ -1,4 +1,4 @@
-import { SYM_METHOD_RETURNS_BODY, SYM_METHOD_RETURNS_FN, SYM_METHOD_WITH_CLOSURE, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../constants';
+import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../constants';
 import { OmitSymbols } from '../typings';
 import { is } from '../utils/type';
 import { WrapperError } from './error';
@@ -6,10 +6,9 @@ import { WrapperError } from './error';
 type TypeProtoValidationMethod = (v: any) => void;
 
 export interface ITypeMethod {
-    (...args: any[]): string | undefined | Function;
-    [SYM_METHOD_WITH_CLOSURE]?: boolean;
-    [SYM_METHOD_RETURNS_BODY]?: boolean;
-    [SYM_METHOD_RETURNS_FN]?: boolean;
+    (...args: any[]): string | undefined | Function | void;
+    [SYM_METHOD_CLOSURE]?: boolean;
+    [SYM_METHOD_MACRO]?: boolean;
 }
 
 export interface IType {
@@ -107,11 +106,9 @@ export class TypeWrapper {
     }
 
     private validateMethod (typeName: string, methodName: string, method: ITypeMethod) {
-        if ((method.hasOwnProperty(SYM_METHOD_WITH_CLOSURE) &&
-            method.hasOwnProperty(SYM_METHOD_RETURNS_BODY)) ||
-            (method.hasOwnProperty(SYM_METHOD_RETURNS_BODY) &&
-            method.hasOwnProperty(SYM_METHOD_RETURNS_FN)))
-        throw WrapperError.invalidMethodSymbols(typeName, methodName);
+        if (method.hasOwnProperty(SYM_METHOD_CLOSURE)
+            && method.hasOwnProperty(SYM_METHOD_MACRO))
+            throw WrapperError.invalidMethodSymbols(typeName, methodName);
     }
 
     private validateName (name: string, protoName?: string) {

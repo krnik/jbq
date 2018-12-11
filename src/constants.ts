@@ -1,9 +1,8 @@
 /**
  * TYPE CONSTANTS
  */
-export const SYM_METHOD_WITH_CLOSURE = Symbol.for('type_method_with_closure');
-export const SYM_METHOD_RETURNS_BODY = Symbol.for('type_method_returns_body');
-export const SYM_METHOD_RETURNS_FN = Symbol.for('type_method_returns_fn');
+export const SYM_METHOD_CLOSURE = Symbol.for('type_method_closure');
+export const SYM_METHOD_MACRO = Symbol.for('type_method_macro');
 export const SYM_TYPE_KEY_ORDER = Symbol.for('type_key_order');
 export const SYM_TYPE_VALIDATE = Symbol.for('type_validate');
 export const SYM_TYPE_FOR_LOOP = Symbol.for('type_for_loop');
@@ -22,29 +21,32 @@ export const VALUE = 'value';
 export const TYPE = 'type';
 export const SOME = 'some';
 export const LEN = 'len';
-export const MIN = 'min';
-export const MAX = 'max';
-export const TYPE_NAME = {
-    BOOLEAN: 'boolean',
-    STRING: 'string',
-    NUMBER: 'number',
-    OBJECT: 'object',
-    ARRAY: 'array',
-    ANY: 'any',
-};
+export enum TYPE_NAME {
+    BOOLEAN = 'boolean',
+    STRING = 'string',
+    NUMBER = 'number',
+    OBJECT = 'object',
+    ARRAY = 'array',
+    ANY = 'any',
+}
 /**
  * SCHEMA CONSTANTS
  */
 export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
-export const SYM_SCHEMA_CONFIG = Symbol.for('schema_config');
-export const SYM_SCHEMA_INHERIT = Symbol.for('schema_inherit');
 /**
  * TOKENS
  */
 export const TOKEN_BREAK = '//{break}';
-export const TOKEN_EXPR_REGEX = /#{((schemaValue|schemaPath).*?)}/g;
+export const TOKEN_EXPR_REGEX = /{{(.*?)}}/g;
 /**
  * COMPILATION CONSTANTS
  */
-export const BASE_DATA_PARAMETER = '$v';
+export enum PARAMETER {
+    DATA = '$DATA',
+    ARGUMENTS = '$ARGS',
+}
+/**
+ * PROPERTY CONSTANTS
+ */
+export const PROP_DATA_PATH = '$dataPath';

@@ -1,3 +1,4 @@
+import { PARAMETER } from '../constants';
 import { TypeWrapper } from '../types/Wrapper';
 import { OmitSymbols } from '../typings';
 import { Compilation } from './Compilation';
@@ -13,9 +14,9 @@ export function jbq<T, K extends keyof OmitSymbols<T>> (
 ) {
     const patterns = {} as Validators<T>;
     for (const [name, schema] of Object.entries(schemas)) {
-        const src = new Compilation(types, name, schema, debug).exec();
-        const validate = new Function([...src.parameters, src.dataParameter].toString(), src.code);
-        patterns[name as K] = validate.bind(undefined, ...src.arguments);
+        const src = new Compilation(types, schema, name, { debug }).execSync();
+        const validate = new Function(PARAMETER.ARGUMENTS, PARAMETER.DATA, src.code);
+        patterns[name as K] = validate.bind(undefined, src.arguments);
     }
     return patterns;
 }

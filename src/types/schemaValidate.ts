@@ -1,8 +1,23 @@
+import { PROP_DATA_PATH } from '../constants';
+import { IDataPathSchemaValue } from '../typings';
 import { is } from '../utils/type';
 import { SchemaValidationError, TypeProtoError } from './error';
 
-function primitive<T extends keyof typeof is> (typeName: string, methodName: string, type: T) {
+function dataPath (schemaValue: IDataPathSchemaValue) {
+    return schemaValue instanceof Object
+        && schemaValue.hasOwnProperty(PROP_DATA_PATH)
+        && (is.string(schemaValue[PROP_DATA_PATH])
+            || is.arrayOf(schemaValue[PROP_DATA_PATH], is.string));
+}
+
+function primitive<T extends keyof typeof is> (
+    typeName: string,
+    methodName: string,
+    type: T,
+    acceptDataPath?: boolean,
+) {
     return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+        if (acceptDataPath && dataPath(schemaValue)) return;
         const check = is[type] as ((v: any) => boolean);
         if (!check(schemaValue))
             throw SchemaValidationError.invalidSchemaType(
@@ -26,23 +41,42 @@ function isInstance (typeName: string, methodName: string, constructorName: stri
     };
 }
 
-function minMaxOrNumber (typeName: string, methodName: string) {
+function minMaxOrNumber (typeName: string, methodName: string, acceptDataPath?: boolean) {
     return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
-        if (typeof schemaValue === 'object'
-            && !('min' in schemaValue || 'max' in schemaValue))
-            throw SchemaValidationError.invalidSchemaType(
-                typeName,
-                methodName,
-                '{ min?: number; max?: number; }',
-                typeof schemaValue,
-            );
-        if (!is.number(schemaValue))
-            throw SchemaValidationError.invalidSchemaType(
-                typeName,
-                methodName,
-                'number',
-                typeof schemaValue,
-            );
+        if (acceptDataPath && dataPath(schemaValue)) return;
+        if (is.number(schemaValue)) return;
+        if (typeof schemaValue === 'object') {
+            if (!('min' in schemaValue || 'max' in schemaValue))
+                throw SchemaValidationError.invalidSchemaType(
+                    typeName,
+                    methodName,
+                    '{ [prop: string]: number } with at least one of keys ["min", "max"]',
+                    typeof schemaValue,
+                );
+            if ('min' in schemaValue && !(acceptDataPath && dataPath(schemaValue.min)
+                || is.number(schemaValue.min)))
+                throw SchemaValidationError.invalidSchemaType(
+                    typeName,
+                    methodName,
+                    '{ min: number | $dataPath }',
+                    typeof schemaValue.min,
+                );
+            if ('max' in schemaValue && !(acceptDataPath && dataPath(schemaValue.max)
+                || is.number(schemaValue.max)))
+                throw SchemaValidationError.invalidSchemaType(
+                    typeName,
+                    methodName,
+                    '{ max: number | $dataPath }',
+                    typeof schemaValue.max,
+                );
+            return;
+        }
+        throw SchemaValidationError.invalidSchemaType(
+            typeName,
+            methodName,
+            'number, $dataPath or { min?: number | $dataPath, max?: number | $dataPath }',
+            typeof schemaValue,
+        );
     };
 }
 
@@ -72,7 +106,7 @@ function arrayOf<T extends keyof typeof is> (
     elementType: T,
 ) {
     return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
-        if (!is.objectInstance(schemaValue, 'Array') || !schemaValue.length)
+        if (!is.array(schemaValue) || !schemaValue.length)
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
                 methodName,
@@ -80,25 +114,27 @@ function arrayOf<T extends keyof typeof is> (
                 typeof schemaValue,
             );
         const check = is[elementType] as ((v: any) => boolean);
-        if (!schemaValue.every((p: any) => check(p)))
+        if (!schemaValue.every((elem: any) => check(elem)))
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
                 methodName,
                 elementType,
-                typeof schemaValue.find((p: any) => !check(p)),
+                typeof schemaValue.find((elem: any) => !check(elem)),
             );
     };
 }
 
 function any (typeName: string, methodName: string) {
-    return (_schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => 0;
+    // tslint:disable-next-line: no-empty
+    return (_schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {};
 }
 
 export const schemaValidate = {
     any,
-    primitive,
-    minMaxOrNumber,
-    isInstance,
     arrayOf,
+    dataPath,
+    primitive,
+    isInstance,
+    minMaxOrNumber,
     arrayOfPropertyNames,
 };

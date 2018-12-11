@@ -62,7 +62,7 @@ export const SchemaValidationError = {
         expectedType: string,
         type: string,
     ) {
-        const errorMessage = `${printToken.property(methodName)} in ${printToken.typeProto(typeName)} property requires schema value to be a ${printToken.type(expectedType)}. Got ${printToken.type(type)} type instead.`;
+        const errorMessage = `${printToken.property(methodName)} property in ${printToken.typeProto(typeName)} type requires schema value to be a ${printToken.type(expectedType)}. Got ${printToken.type(type)} type instead.`;
         return new Error(errorMessage);
     },
 };

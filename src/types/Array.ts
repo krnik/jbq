@@ -1,64 +1,104 @@
-import { EVERY, INCLUDES, LEN, SOME, SYM_TYPE_FOR_LOOP, SYM_TYPE_RETURNS_BODY, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_METHOD_MACRO, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CodeBuilder } from '../core/Code';
+import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { is } from '../utils/type';
 import { schemaValidate } from './schemaValidate';
-
-interface IKeyCountMin { min: number; }
-interface IKeyCountMax { max: number; }
-type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
 export const TypeArray = {
-    [TYPE] (_schemaValue: string, data: any): string | void {
-        if (!Array.isArray(data))
-            return '{"message": "Data should be a #{schemaValue} type.", "path": "#{schemaPath}"}';
+    [TYPE] (_schemaValue: string, $DATA: any): string | void {
+        if (!Array.isArray($DATA))
+            return '{"message": "Data should be a {{schemaValue}} type.", "path": "{{schemaPath}}"}';
     },
-    [EVERY] (schemaValue: arrMethodCallback, data: any[]): string | void {
-        const len = data.length;
+    [EVERY] (schemaValue: arrMethodCallback, $DATA: any[]): string | void {
+        const len = $DATA.length;
         for (let i = 0; i < len; i++)
-            if (!schemaValue(data[i])) return '{"message": "Every element of data should satisfy test function.", "path": "#{schemaPath}"}';
+            if (!schemaValue($DATA[i])) return '{"message": "Every element of data should satisfy test function.", "path": "{{schemaPath}}"}';
     },
-    [SOME] (schemaValue: arrMethodCallback, data: any[]): string | void {
-        const len = data.length;
+    [SOME] (schemaValue: arrMethodCallback, $DATA: any[]): string | void {
+        const len = $DATA.length;
         for (let i = 0; i < len; i++) {
-            if (schemaValue(data[i])) break;
-            if (i === len - 1) return '{"message": "At least one element of data should satisfy test function.", "path": "#{schemaPath}"}';
+            if (schemaValue($DATA[i])) break;
+            if (i === len - 1) return '{"message": "At least one element of data should satisfy test function.", "path": "{{schemaPath}}"}';
         }
     },
-    [INCLUDES] (schemaValue: any, data: any[]): string | void {
+    [INCLUDES] (schemaValue: any, $DATA: any[]): string | void {
         let found = false;
-        for (let i = 0; i < data.length; i++)
-            if (data[i] === schemaValue) {
+        for (let i = 0; i < $DATA.length; i++)
+            if ($DATA[i] === schemaValue) {
                 found = true;
                 break;
             }
         if (!found)
-            return '{"message": "Data should include #{schemaValue}.", "path": "#{schemaPath}"}';
+            return '{"message": "Data should include {{schemaValue}}.", "path": "{{schemaPath}}"}';
     },
-    [LEN] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
-        const body = (conditions: Array<[string, number]>, errChunk: string) => {
-            const ifConditions = conditions
-                .map((val) => `data.length ${val[0]} ${val[1]}`)
-                .join(' || ');
-            const expected = conditions.map((v) => v.toString()).join('..');
-            return `if (${ifConditions})
-                return '{"message": "Data should have length ${errChunk} ${expected}.", "path": "${schemaPath}"}'`;
+    [LEN] (
+        parseValues: IParseValuesMinMax,
+        checkDataPath: DataPathChecker,
+        resolveDataPath: DataPathResolver,
+    ) {
+        const { schemaValue, dataVariable, schemaPath } = parseValues;
+        const dataVar = `${dataVariable}.length`;
+        if (is.number(schemaValue))
+            return CodeBuilder.createIf(
+                [{ cmp: '!==', val: schemaValue.toString() }],
+                schemaPath,
+                dataVar,
+                `Data length should be equal to ${schemaValue}.`,
+            );
+        if (checkDataPath(schemaValue)) {
+            const sch = schemaValue as IDataPathSchemaValue;
+            const varName = resolveDataPath(sch);
+            return CodeBuilder.createIf(
+                [{ cmp: '!==', val: varName }],
+                schemaPath,
+                dataVar,
+                `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}`,
+            );
+        }
+        const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
+        const valOrResolve = (value: any) => {
+            if (!checkDataPath(value)) return [`${value}`, value];
+            const varName = resolveDataPath(value);
+            return [`\${${varName}}`, varName];
         };
-        if (typeof schemaValue === 'number')
-            return body([['!==', schemaValue]], 'equal to');
-        if ('min' in schemaValue && 'max' in schemaValue)
-            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
-        if ('min' in schemaValue)
-            return body([['<', schemaValue.min]], 'smaller than');
-        else
-            return body([['>', schemaValue.max]], 'grater than');
+        if ('min' in schemaMinMax && 'max' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIf(
+                [{ cmp: '<', val: min }, { cmp: '>', val: max }],
+                schemaPath,
+                dataVar,
+                `Data length should be in range ${minVal}..${maxVal}.`,
+            );
+        }
+        if ('min' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            return CodeBuilder.createIf(
+                [{ cmp: '<', val: min }],
+                schemaPath,
+                dataVar,
+                `Data length should be greater than ${minVal}.`,
+            );
+        }
+        if ('max' in schemaMinMax) {
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIf(
+                [{ cmp: '>', val: max }],
+                schemaPath,
+                dataVar,
+                `Data length should be smaller than ${maxVal}.`,
+            );
+        }
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.ARRAY, TYPE, 'string'),
         [EVERY]: schemaValidate.isInstance(TYPE_NAME.ARRAY, EVERY, 'Function'),
         [SOME]: schemaValidate.isInstance(TYPE_NAME.ARRAY, SOME, 'Function'),
-        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.ARRAY, LEN),
+        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.ARRAY, LEN, true),
         [INCLUDES]: schemaValidate.any(TYPE_NAME.ARRAY, INCLUDES),
     },
     [SYM_TYPE_FOR_LOOP]: true,
 };
 
-Object.defineProperty(TypeArray[LEN], SYM_TYPE_RETURNS_BODY, { value: true });
+Object.defineProperty(TypeArray[LEN], SYM_METHOD_MACRO, { value: true });

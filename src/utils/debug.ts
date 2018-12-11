@@ -1,4 +1,4 @@
-export class Debug {
+export class DebugLog {
     private active: boolean = false;
 
     constructor (active: boolean) {

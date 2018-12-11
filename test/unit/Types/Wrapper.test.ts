@@ -3,8 +3,9 @@ import { SYM_TYPE_VALIDATE, TYPE_NAME } from '../../../src/constants';
 import { TypeArray } from '../../../src/types/Array';
 import { TypeBoolean } from '../../../src/types/Boolean';
 import { TypeWrapper } from '../../../src/types/Wrapper';
+import { createTypes } from '../../../src/types/main';
 
-export default () => describe('Wrapper', () => {
+describe('Type Wrapper', () => {
     describe('.set()', () => {
         it('It should accept valid type', () => {
             new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
@@ -94,6 +95,22 @@ export default () => describe('Wrapper', () => {
         it('It should return undefined if type does not exists', () => {
             const types = new TypeWrapper();
             expect(types.get(TYPE_NAME.ARRAY)).to.be.equal(undefined);
+        });
+    });
+    describe('.addMethod()', () => {
+        it('it should succesfully ad a method', () => {
+            const types = createTypes();
+            types.addMethod('any', 'newMethod', () => {}, () => {});
+            const typeAny = types.get('any')!;
+            expect(typeAny).to.haveOwnProperty('newMethod');
+        });
+        it('it should throw if method exists', () => {
+            const types = createTypes();
+            expect(() => types.addMethod('any', 'type', () => {}, () => {})).to.throw();
+        });
+        it('it should throw if type does not exists', () => {
+            const types = createTypes();
+            expect(() => types.addMethod('missing', 'type', () => {}, () => {})).to.throw();
         });
     });
 });
