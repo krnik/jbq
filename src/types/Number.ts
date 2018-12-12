@@ -13,10 +13,10 @@ export const TypeNumber = {
         parseValues: IParseValuesMinMax,
         checkDataPath: DataPathChecker,
         resolveDataPath: DataPathResolver,
-    ) {
+    ): string | undefined {
         const { schemaValue, schemaPath, dataVariable } = parseValues;
         if (is.number(schemaValue))
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 schemaPath,
                 dataVariable,
@@ -25,7 +25,7 @@ export const TypeNumber = {
         if (checkDataPath(schemaValue)) {
             const sch = schemaValue as IDataPathSchemaValue;
             const varName = resolveDataPath(sch);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
                 schemaPath,
                 dataVariable,
@@ -41,7 +41,7 @@ export const TypeNumber = {
         if ('min' in schemaMinMax && 'max' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }, { cmp: '>', val: max }],
                 schemaPath,
                 dataVariable,
@@ -50,7 +50,7 @@ export const TypeNumber = {
         }
         if ('min' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }],
                 schemaPath,
                 dataVariable,
@@ -59,7 +59,7 @@ export const TypeNumber = {
         }
         if ('max' in schemaMinMax) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '>', val: max }],
                 schemaPath,
                 dataVariable,

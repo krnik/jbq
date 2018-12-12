@@ -2,7 +2,7 @@ import { PARAMETER, PROP_DATA_PATH } from '../constants';
 import { IDataPathSchemaValue } from '../typings';
 import { as } from '../utils/type';
 import { Compilation } from './Compilation';
-import { CodeChunkError } from './error';
+import { CodeBuilderError } from './error';
 
 interface ICounter {
     dataNames: number;
@@ -14,6 +14,12 @@ interface IContext {
     dataVariable: string;
     currentProp: string;
     schemaPath: string;
+}
+
+interface IIfConditions {
+    cmp: string;
+    val: string;
+    variable?: string;
 }
 
 export interface ISource {
@@ -38,17 +44,30 @@ export class CodeBuilder {
     }
 
     public static createIf (
+        conditions: IIfConditions[],
+        conditionJoin: string,
+        dataVar?: string,
+    ) {
+        if (!conditions.length)
+            throw CodeBuilderError.emptyConditionArray();
+        const ifConditions = conditions
+            .map(({ cmp, val, variable }) => {
+                if (!variable && !dataVar)
+                    throw CodeBuilderError.variableAndDataVarFalsy();
+                return `${variable || dataVar} ${cmp} ${val}`;
+            })
+            .join(conditionJoin);
+        return `if (${ifConditions})`;
+    }
+
+    public static createIfReturn (
         conditions: Array<{ cmp: string, val: string }>,
         schemaPath: string,
         dataVar: string,
         msg: string,
         conditionJoin = ' || ',
     ) {
-        if (!conditions.length) throw new Error('conditions cannot be empty!');
-        const ifConditions = conditions
-            .map(({ cmp, val }) => `${dataVar} ${cmp} ${val}`)
-            .join(conditionJoin);
-        return `if (${ifConditions})
+        return `${CodeBuilder.createIf(conditions, conditionJoin, dataVar)}
             return \`{ "message": "${msg}", "path": "${schemaPath}" }\``;
     }
 
@@ -192,7 +211,7 @@ export class CodeBuilder {
         const paths = (Array.isArray(dataPath) ? dataPath : dataPath.split('/'))
             .filter((key) => key.length);
         if (!paths.length)
-            throw CodeChunkError.invalidDataPath(dataPath);
+            throw CodeBuilderError.invalidDataPath(dataPath);
         const pathResolution = paths
             .reduce<string[]>((acc, key, index) => {
                 acc.push(index

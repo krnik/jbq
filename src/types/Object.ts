@@ -1,9 +1,70 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CodeBuilder } from '../core/Code';
+import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { is } from '../utils/type';
 import { schemaValidate } from './schemaValidate';
 
-interface IKeyCountMin { min: number; }
-interface IKeyCountMax { max: number; }
-type KeyCountSchema = IKeyCountMax | IKeyCountMin | (IKeyCountMax & IKeyCountMin);
+function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
+    return function propKeyCountMacro (
+        parseValues: IParseValuesMinMax,
+        checkDataPath: DataPathChecker,
+        resolveDataPath: DataPathResolver,
+    ): string | undefined {
+        const { schemaValue, dataVariable, schemaPath } = parseValues;
+        const dataVar = resolveDataVarCmp(dataVariable);
+        if (is.number(schemaValue))
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: schemaValue.toString() }],
+                schemaPath,
+                dataVar,
+                `Data should have exactly ${schemaValue} keys.`,
+            );
+        if (checkDataPath(schemaValue)) {
+            const sch = schemaValue as IDataPathSchemaValue;
+            const varName = resolveDataPath(sch);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: varName }],
+                schemaPath,
+                dataVar,
+                `Data should have exactly \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])} keys.`,
+            );
+        }
+        const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
+        const valOrResolve = (value: any) => {
+            if (!checkDataPath(value)) return [`${value}`, value];
+            const varName = resolveDataPath(value);
+            return [`\${${varName}}`, varName];
+        };
+        if ('min' in schemaMinMax && 'max' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }, { cmp: '>', val: max }],
+                schemaPath,
+                dataVar,
+                `Data should have number of keys in range ${minVal}..${maxVal}.`,
+            );
+        }
+        if ('min' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }],
+                schemaPath,
+                dataVar,
+                `Data should have more than ${minVal} keys.`,
+            );
+        }
+        if ('max' in schemaMinMax) {
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '>', val: max }],
+                schemaPath,
+                dataVar,
+                `Data should have less than ${maxVal} keys.`,
+            );
+        }
+    };
+}
 
 export const TypeObject = {
     [TYPE] (_schemaValue: string, $DATA: any): string | void {
@@ -23,46 +84,9 @@ export const TypeObject = {
             if (!$DATA.hasOwnProperty(key))
                 return `{"message": "Data should have ${key.toString()} property.", "path": "{{schemaPath}}"}`;
     },
-    [KEY_COUNT] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
-        const body = (conditions: Array<[string, number]>, errChunk: string): string => {
-            const ifConds = conditions
-                .map((val) => `Object.keys(data).length ${val[0]} ${val[1]}`)
-                .join(' || ');
-            const expected = conditions
-                .map((val) => val.toString())
-                .join('..');
-            return `if (${ifConds}) {
-                return '{"message": "Data should have number of keys ${errChunk} ${expected}", "path": "${schemaPath}"}';
-            }`;
-        };
-        if (typeof schemaValue === 'number')
-            return body([['!==', schemaValue]], 'equal to');
-        if ('min' in schemaValue && 'max' in schemaValue)
-            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
-        if ('min' in schemaValue)
-            return body([['<', schemaValue.min]], 'greater than');
-        else
-            return body([['>', schemaValue.max]], 'smaller than');
-    },
-    [PROP_COUNT] (schemaValue: number | KeyCountSchema, schemaPath: string): string {
-        const body = (conditions: Array<[string, number]>, errChunk: string): string => {
-            const ifConditions = conditions
-                .map((val) => `(Object.getOwnPropertyNames(data).length + Object.getOwnPropertySymbols(data)) ${val[0]} ${val[1]}`)
-                .join(' || ');
-            const expected = conditions
-                .map((val) => val.toString())
-                .join('..');
-            return `if (${ifConditions})
-                return '{"message": "Data should have number of properties ${errChunk} ${expected}", "path": "${schemaPath}"}';`;
-        };
-        if (typeof schemaValue === 'number')
-            return body([['!==', schemaValue]], 'equal to');
-        if ('min' in schemaValue && 'max' in schemaValue)
-            return body([['<', schemaValue.min], ['>', schemaValue.max]], 'in range');
-        if ('min' in schemaValue)
-            return body([['<', schemaValue.min]], 'greater than');
-        return body([['>', schemaValue.max]], 'smaller than');
-    },
+    [KEY_COUNT]: createPropKeyCountMacro((d) => `Object.keys(${d}).length`),
+    [PROP_COUNT]: createPropKeyCountMacro((d) =>
+        `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}))`),
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
         [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),

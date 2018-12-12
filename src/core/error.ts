@@ -27,9 +27,17 @@ export const CompilationError = {
     },
 };
 
-export const CodeChunkError = {
+export const CodeBuilderError = {
     invalidDataPath (dataPath: string | string[]) {
         const errorMessage = `Data path in schema is invalid because it resolves to empty array. Please revisit this value ${dataPath}`;
+        return new Error(errorMessage);
+    },
+    emptyConditionArray () {
+        const errorMessage = 'CodeBuilder.createIf cannot create "if conditions" from an empty array.';
+        return new Error(errorMessage);
+    },
+    variableAndDataVarFalsy () {
+        const errorMessage = 'CodeBuilder.createIf cannot create "if conditions" if left-hand side of an operator is falsy.';
         return new Error(errorMessage);
     },
 };

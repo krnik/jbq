@@ -5,7 +5,6 @@ import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/main';
 import { IParseValues } from '../../src/typings';
 import { schemas } from '../data/main';
-import { printCode } from '../utils';
 
 describe('Compilation', () => {
     describe('Compiling schemas with valid data', () => {
@@ -96,7 +95,7 @@ describe('Compilation', () => {
             expect(entries[3][1]).to.be.equal(obj.second);
         });
     });
-    describe.skip(`${PROP_DATA_PATH} - with regular methods`, () => {
+    describe(`${PROP_DATA_PATH} - with regular methods`, () => {
         it(`it should correctly resolve ${PROP_DATA_PATH}`, () => {
             {
                 const Simple = {
@@ -176,8 +175,8 @@ describe('Compilation', () => {
             }
         });
         it.skip(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => { });
-
         it.skip(`it should parse ${PROP_DATA_PATH} schema`, () => { });
+        it.skip(`it should not resolve ${PROP_DATA_PATH} with new variable if there is already one defined for target property`);
     });
     describe(`functions with closures`, () => {
         const types = createTypes();
@@ -217,7 +216,6 @@ describe('Compilation', () => {
         {
             const schema = testSchemas.Closure;
             const source = new Compilation(types, schema, 'Closure').execSync();
-            printCode(source.code);
             const validator = new Function(source.argsParam, source.dataParam, source.code)
                 .bind(undefined, source.arguments);
             const validData = ['A String', null];
@@ -230,7 +228,6 @@ describe('Compilation', () => {
         {
             const schema = testSchemas.WithPath;
             const source = new Compilation(types, schema, 'WithPath').execSync();
-            printCode(source.code);
             const validator = new Function(source.argsParam, source.dataParam, source.code)
                 .bind(undefined, source.arguments);
             const validData = [{ mailing: null, enlistedOn: null }, { mailing: 'enabled', enlistedOn: 'all' }];

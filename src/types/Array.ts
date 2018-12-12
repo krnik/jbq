@@ -36,11 +36,11 @@ export const TypeArray = {
         parseValues: IParseValuesMinMax,
         checkDataPath: DataPathChecker,
         resolveDataPath: DataPathResolver,
-    ) {
+    ): string | undefined {
         const { schemaValue, dataVariable, schemaPath } = parseValues;
         const dataVar = `${dataVariable}.length`;
         if (is.number(schemaValue))
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 schemaPath,
                 dataVar,
@@ -49,11 +49,11 @@ export const TypeArray = {
         if (checkDataPath(schemaValue)) {
             const sch = schemaValue as IDataPathSchemaValue;
             const varName = resolveDataPath(sch);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
                 schemaPath,
                 dataVar,
-                `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}`,
+                `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
             );
         }
         const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
@@ -65,7 +65,7 @@ export const TypeArray = {
         if ('min' in schemaMinMax && 'max' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }, { cmp: '>', val: max }],
                 schemaPath,
                 dataVar,
@@ -74,7 +74,7 @@ export const TypeArray = {
         }
         if ('min' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }],
                 schemaPath,
                 dataVar,
@@ -83,7 +83,7 @@ export const TypeArray = {
         }
         if ('max' in schemaMinMax) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIf(
+            return CodeBuilder.createIfReturn(
                 [{ cmp: '>', val: max }],
                 schemaPath,
                 dataVar,
