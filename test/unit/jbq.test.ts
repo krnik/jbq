@@ -61,6 +61,7 @@ describe('Validator', () => {
         it('collection', () => {
             const numericOrString = {
                 [TYPE] (_base: string, $DATA: any) {
+                    // tslint:disable-next-line:curly
                     if (typeof $DATA !== 'number') {
                         if (typeof $DATA !== 'string')
                             return 'Expected numeric at: {{schemaPath}}.';

@@ -174,7 +174,9 @@ describe('Compilation', () => {
                     expect(validator(data)).to.be.a('string');
             }
         });
+        // tslint:disable-next-line:no-empty
         it.skip(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => { });
+        // tslint:disable-next-line:no-empty
         it.skip(`it should parse ${PROP_DATA_PATH} schema`, () => { });
         it.skip(`it should not resolve ${PROP_DATA_PATH} with new variable if there is already one defined for target property`);
     });
@@ -238,5 +240,6 @@ describe('Compilation', () => {
                 expect(validator(data)).to.be.a('string');
         }
     });
+    // tslint:disable-next-line:no-empty
     describe.skip(`${PROP_DATA_PATH} - with macros`, () => { });
 });

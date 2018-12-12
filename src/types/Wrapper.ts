@@ -6,7 +6,7 @@ import { WrapperError } from './error';
 type TypeProtoValidationMethod = (v: any) => void;
 
 export interface ITypeMethod {
-    (...args: any[]): string | undefined | Function | void;
+    (...args: any[]): string | undefined | void;
     [SYM_METHOD_CLOSURE]?: boolean;
     [SYM_METHOD_MACRO]?: boolean;
 }
