@@ -80,7 +80,7 @@ export const TypeString = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.STRING, TYPE, 'string'),
         [REGEX]: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, 'RegExp'),
-        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN),
+        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN, true),
         [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string'),
     },
 };

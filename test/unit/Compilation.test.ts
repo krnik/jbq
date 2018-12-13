@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
-import { PROP_DATA_PATH, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
+import { LEN, PROP_DATA_PATH, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/main';
 import { IParseValues } from '../../src/typings';
@@ -178,68 +178,135 @@ describe('Compilation', () => {
         it.skip(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => { });
         // tslint:disable-next-line:no-empty
         it.skip(`it should parse ${PROP_DATA_PATH} schema`, () => { });
-        it.skip(`it should not resolve ${PROP_DATA_PATH} with new variable if there is already one defined for target property`);
+        // tslint:disable-next-line:no-empty
+        it.skip(`it should not resolve ${PROP_DATA_PATH} with new variable if there is already one defined for target property`, () => { });
     });
     describe(`functions with closures`, () => {
-        const types = createTypes();
-        const nullabeStringType = {
-            [TYPE] (_schemaValue: IParseValues, path: string, $DATA: any) {
-                if ($DATA !== null && typeof $DATA !== 'string')
-                    return `{"message": "${$DATA}", "path": "${path}"}`;
-            },
-            logValue (schemaValue: null | string, path: string, $DATA: any) {
-                // tslint:disable-next-line:no-console
-                console.log({ schemaValue, path, $DATA });
-            },
-            [SYM_TYPE_VALIDATE]: {
-                [TYPE] (value: any) {
-                    if (typeof value !== 'string')
-                        throw new Error('expected string as type schema value');
+        it(`it should resolve ${PROP_DATA_PATH} in closure methods`, () => {
+            const types = createTypes();
+            const nullabeStringType = {
+                [TYPE] (_schemaValue: IParseValues, path: string, $DATA: any) {
+                    if ($DATA !== null && typeof $DATA !== 'string')
+                        return `{"message": "${$DATA}", "path": "${path}"}`;
                 },
-                // tslint:disable-next-line:no-empty
-                logValue (_value: any) {},
-            },
-        };
-        const testSchemas = {
-            Closure: {
-                [TYPE]: 'nullableString',
-            },
-            WithPath: {
-                [TYPE]: TYPE_NAME.OBJECT,
-                [SYM_SCHEMA_PROPERTIES]: {
-                    mailing: { [TYPE]: TYPE_NAME.ANY },
-                    enlistedOn: { [TYPE]: 'nullableString', logValue: { $dataPath: 'mailing' } },
+                logValue (_schemaValue: null | string, _path: string, _$DATA: any) {
+                    // tslint:disable-next-line:no-console
+                    // console.log({ schemaValue, path, $DATA });
                 },
-            },
-        };
-        Object.defineProperty(nullabeStringType[TYPE], SYM_METHOD_CLOSURE, { value: true });
-        Object.defineProperty(nullabeStringType.logValue, SYM_METHOD_CLOSURE, { value: true });
-        types.set('nullableString', nullabeStringType, { type: 'string' });
-        {
-            const schema = testSchemas.Closure;
-            const source = new Compilation(types, schema, 'Closure').execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
-                .bind(undefined, source.arguments);
-            const validData = ['A String', null];
-            for (const data of validData)
-                expect(validator(data)).to.be.equal(undefined);
-            const invalidData = [{}, [], true, 1, undefined];
-            for (const data of invalidData)
-                expect(validator(data)).to.be.a('string');
-        }
-        {
-            const schema = testSchemas.WithPath;
-            const source = new Compilation(types, schema, 'WithPath').execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
-                .bind(undefined, source.arguments);
-            const validData = [{ mailing: null, enlistedOn: null }, { mailing: 'enabled', enlistedOn: 'all' }];
-            for (const data of validData)
-                expect(validator(data)).to.be.equal(undefined);
-            const invalidData = [{}, { mailing: null, enlistedOn: true }];
-            for (const data of invalidData)
-                expect(validator(data)).to.be.a('string');
-        }
+                [SYM_TYPE_VALIDATE]: {
+                    [TYPE] (value: any) {
+                        if (typeof value !== 'string')
+                            throw new Error('expected string as type schema value');
+                    },
+                    // tslint:disable-next-line:no-empty
+                    logValue (_value: any) { },
+                },
+            };
+            const testSchemas = {
+                Closure: {
+                    [TYPE]: 'nullableString',
+                },
+                WithPath: {
+                    [TYPE]: TYPE_NAME.OBJECT,
+                    [SYM_SCHEMA_PROPERTIES]: {
+                        mailing: { [TYPE]: TYPE_NAME.ANY },
+                        enlistedOn: { [TYPE]: 'nullableString', logValue: { $dataPath: 'mailing' } },
+                    },
+                },
+            };
+            Object.defineProperty(nullabeStringType[TYPE], SYM_METHOD_CLOSURE, { value: true });
+            Object.defineProperty(nullabeStringType.logValue, SYM_METHOD_CLOSURE, { value: true });
+            types.set('nullableString', nullabeStringType, { type: 'string' });
+            {
+                const schema = testSchemas.Closure;
+                const source = new Compilation(types, schema, 'Closure').execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = ['A String', null];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [{}, [], true, 1, undefined];
+                for (const data of invalidData)
+                    expect(validator(data)).to.be.a('string');
+            }
+            {
+                const schema = testSchemas.WithPath;
+                const source = new Compilation(types, schema, 'WithPath').execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [{ mailing: null, enlistedOn: null }, { mailing: 'enabled', enlistedOn: 'all' }];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [{}, { mailing: null, enlistedOn: true }];
+                for (const data of invalidData)
+                    expect(validator(data)).to.be.a('string');
+            }
+        });
     });
-    // tslint:disable-next-line:no-empty
-    describe.skip(`${PROP_DATA_PATH} - with macros`, () => { });
+    describe(`${PROP_DATA_PATH} - with macros`, () => {
+        it(`it should resolve ${PROP_DATA_PATH} for macro methods`, () => {
+            const testSchemas = {
+                UserName: {
+                    [TYPE]: TYPE_NAME.OBJECT,
+                    [SYM_SCHEMA_PROPERTIES]: {
+                        range: {
+                            [TYPE]: TYPE_NAME.OBJECT,
+                            [SYM_SCHEMA_PROPERTIES]: {
+                                min: {
+                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [VALUE]: {
+                                        min: 0,
+                                        max: { [PROP_DATA_PATH]: 'range/max' },
+                                    },
+                                },
+                                max: {
+                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [VALUE]: {
+                                        min: { [PROP_DATA_PATH]: 'range/min' },
+                                    },
+                                },
+                            },
+                        },
+                        username: {
+                            [TYPE]: TYPE_NAME.STRING,
+                            [LEN]: {
+                                min: { [PROP_DATA_PATH]: 'range/min' },
+                                max: { [PROP_DATA_PATH]: 'range/max' },
+                            },
+                        },
+                    },
+                },
+            };
+            {
+                const schema = testSchemas.UserName;
+                const source = new Compilation(createTypes(), schema, 'UserName').execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [
+                    {
+                        range: { min: 6, max: 12 },
+                        username: 'SuperUser',
+                    },
+                    {
+                        range: { min: 3, max: 3 },
+                        username: 'Max',
+                    },
+                ];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [
+                    {
+                        range: { min: 5, max: 4 },
+                        username: '12345',
+                    },
+                    {
+                        range: { min: 5, max: 7 },
+                        username: 'SuperUser',
+                    },
+                ];
+                for (const data of invalidData)
+                    expect(validator(data)).to.be.a('string');
+            }
+        });
+    });
 });
