@@ -1,5 +1,5 @@
 import { callFaker, createData } from './create';
-import { schemas } from './schemas';
+import { schemas } from './schemas/main';
 
 export { callFaker, schemas, createData };
 

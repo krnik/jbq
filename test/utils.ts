@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import prettier from 'prettier';
 
+export const SYM_FAKER = Symbol.for('faker');
+
 export function isErrJSON (str: any) {
     expect(str).to.be.a('string');
     const obj = JSON.parse(str);
