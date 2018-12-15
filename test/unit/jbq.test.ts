@@ -1,33 +1,45 @@
+import { expect } from 'chai';
 import 'mocha';
 import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
 import { jbq } from '../../src/core/jbq';
+import { jbqTypes } from '../../src/main';
 import { createTypes } from '../../src/types/main';
-import { createData, schemas } from '../data/main';
+import { createData } from '../data/main';
+import { schemasAny } from '../data/schemas/Any.schemas';
+import { schemasArray } from '../data/schemas/Array.schemas';
+import { schemasBoolean } from '../data/schemas/Boolean.schemas';
+import { schemasNumber } from '../data/schemas/Number.schemas';
+import { schemasObject } from '../data/schemas/Object.schemas';
+import { schemasString } from '../data/schemas/String.schemas';
+import { isErrJSON } from '../utils';
 
-interface IValidator {
-    [k: string]: (x: any) => string | undefined;
-}
+const schemas = {
+    Any: schemasAny,
+    Array: schemasArray,
+    Boolean: schemasBoolean,
+    Number: schemasNumber,
+    Object: schemasObject,
+    String: schemasString,
+};
 
 describe('Validator', () => {
-    const testData = {
-        valid: createData(schemas.valid),
-        invalid: createData(schemas.invalid),
-    };
-    for (const key of Object.keys(testData.valid))
-        it(`valid value ${key}`, () => {
-            const validator = jbq(createTypes(), schemas.valid);
-            const res = (validator as IValidator)[key](testData.valid[key]);
-            if (res)
-                throw Error('it should not return error message');
+    for (const type of Object.keys(schemas)) {
+        type key = keyof typeof schemas;
+        describe(type, () => {
+            for (const { name, valid, schema } of schemas[type as key]) {
+                const { Test } = jbq(jbqTypes, { Test: schema });
+                const data = createData(schema);
+                if (valid)
+                    it(`VALID: ${name}`, () => {
+                        expect(Test(data)).to.be.equal(undefined);
+                    });
+                else
+                    it(`INVALID: ${name}`, () => {
+                        isErrJSON(Test(data));
+                    });
+            }
         });
-    for (const key of Object.keys(testData.invalid))
-        it(`invalid value ${key}`, () => {
-            const validator = jbq(createTypes(), schemas.invalid);
-            const res = (validator as IValidator)[key](testData.invalid[key]);
-            if (!res)
-                throw Error('it should return error message');
-        });
-
+    }
     describe(TOKEN_BREAK, () => {
         it('simple', () => {
             const stringNullable = {

@@ -15,7 +15,7 @@ interface ICompilationConfig {
     indent: number;
 }
 
-interface ISchema {
+export interface ISchema {
     [SYM_SCHEMA_PROPERTIES]?: {
         [schemaName: string]: ISchema;
     };

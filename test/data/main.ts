@@ -1,7 +1,6 @@
 import { callFaker, createData } from './create';
-import { schemas } from './schemas/main';
 
-export { callFaker, schemas, createData };
+export { callFaker, createData };
 
 export const values = {
     non: {

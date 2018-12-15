@@ -4,30 +4,25 @@ import { LEN, PROP_DATA_PATH, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYP
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/main';
 import { IParseValues } from '../../src/typings';
-import { schemas } from '../data/main';
+import { schemasAny } from '../data/schemas/Any.schemas';
+import { schemasArray } from '../data/schemas/Array.schemas';
+import { schemasBoolean } from '../data/schemas/Boolean.schemas';
+import { schemasNumber } from '../data/schemas/Number.schemas';
+import { schemasObject } from '../data/schemas/Object.schemas';
+import { schemasString } from '../data/schemas/String.schemas';
 
 describe('Compilation', () => {
-    describe('Compiling schemas with valid data', () => {
-        for (const name of Object.keys(schemas.valid))
-            it(`it should parse ${name} schema`, () => {
-                new Compilation(
-                    createTypes(),
-                    schemas.valid[name as keyof typeof schemas.valid]!,
-                    name,
-                )
-                    .execSync();
-            });
-    });
-    describe('Compiling schemas with invalid data', () => {
-        for (const name of Object.keys(schemas.invalid))
-            it(`it should parse ${name} schema`, () => {
-                new Compilation(
-                    createTypes(),
-                    schemas.invalid[name as keyof typeof schemas.invalid]!,
-                    name,
-                )
-                    .execSync();
-            });
+    it('Compiling test schemas', () => {
+        const suites = [
+            ...schemasAny,
+            ...schemasArray,
+            ...schemasBoolean,
+            ...schemasNumber,
+            ...schemasObject,
+            ...schemasString,
+        ];
+        for (const { schema, name } of suites)
+            new Compilation(createTypes(), schema, name).execSync();
     });
     describe('Compilation.prototype.evalExpressions', () => {
         it('it should interpolate values', () => {

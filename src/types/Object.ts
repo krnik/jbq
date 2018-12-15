@@ -86,7 +86,7 @@ export const TypeObject = {
     },
     [KEY_COUNT]: createPropKeyCountMacro((d) => `Object.keys(${d}).length`),
     [PROP_COUNT]: createPropKeyCountMacro((d) =>
-        `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}))`),
+        `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}).length)`),
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
         [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),

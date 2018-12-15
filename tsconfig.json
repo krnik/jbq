@@ -1,7 +1,8 @@
 {
   "include": [
     "src",
-    "test"
+    "test",
+    "md"
   ],
   "compilerOptions": {
     /* Basic Options */

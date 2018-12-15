@@ -32,6 +32,7 @@ export interface ISource {
 export class CodeBuilder {
     public static propertyAccessor (key: string) {
         if (/^[a-zA-Z_$][\w$]*$/.test(key)) return `.${key}`;
+        if (/^\d+$/.test(key)) return `[${key}]`;
         return `[${as.string(key)}]`;
     }
 

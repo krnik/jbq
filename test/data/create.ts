@@ -1,7 +1,7 @@
 import faker from 'faker';
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../src/constants';
-
-const SYM_FAKER = Symbol.for('faker') as any;
+import { SYM_SCHEMA_PROPERTIES } from '../../src/constants';
+import { ISchema } from '../../src/core/Compilation';
+import { SYM_FAKER } from '../utils';
 
 export function callFaker (fakerArgs: [string, any[]]) {
     const [path, args] = fakerArgs;
@@ -17,20 +17,26 @@ export function callFaker (fakerArgs: [string, any[]]) {
     return fn(...(Array.isArray(args) ? args : [args]));
 }
 
-export function createData (patterns: { [k: string]: any }) {
-    const result: { [k: string]: any } = {};
-    for (const [field, reqs] of Object.entries(patterns)) {
-        if (reqs[SYM_SCHEMA_PROPERTIES])
-            result[field] = createData(reqs[SYM_SCHEMA_PROPERTIES]);
-        if (reqs[SYM_SCHEMA_COLLECTION])
-            result[field] = new Array(~~(Math.random() * 20))
-                .fill(0).map(() => createData({ [field]: reqs[SYM_SCHEMA_COLLECTION] })[field]);
-        if (reqs[SYM_FAKER])
-            if (typeof reqs[SYM_FAKER] === 'function')
-                result[field] = reqs[SYM_FAKER]();
-            else result[field] = reqs[SYM_SCHEMA_COLLECTION]
-                ? new Array(3).fill(0).map(() => callFaker(reqs[SYM_FAKER]))
-                : callFaker(reqs[SYM_FAKER]);
+export interface ICreateInputSchema extends ISchema {
+    [SYM_FAKER]?: (() => any) | [string, any[]?];
+}
+
+export function createData (schema: ICreateInputSchema) {
+    let result: { [k: string]: any } = {};
+    let touched = false;
+    if (schema.hasOwnProperty(SYM_FAKER)) {
+        touched = true;
+        result = typeof schema[SYM_FAKER] === 'function'
+            ? (schema[SYM_FAKER] as () => any)()
+            : callFaker(schema[SYM_FAKER] as [string, any[]]);
     }
-    return result;
+    if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES))
+        for (const [field, subschema] of Object.entries(schema[SYM_SCHEMA_PROPERTIES]!)) {
+            const data = createData(subschema as ICreateInputSchema);
+            if (data !== undefined) {
+                touched = true;
+                result[field] = data;
+            }
+        }
+    return touched ? result : undefined ;
 }
