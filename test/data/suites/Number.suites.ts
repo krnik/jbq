@@ -2,9 +2,9 @@ import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_
 import { SYM_FAKER } from '../../utils';
 import { ITestSuite } from './typings';
 
-export const schemasNumber: ITestSuite[] = [
+export const suitesNumber: ITestSuite[] = [
     {
-        name: `${TYPE_NAME.NUMBER}_${TYPE}`,
+        name: `${TYPE_NAME.NUMBER}#${TYPE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -12,7 +12,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${TYPE}`,
+        name: `${TYPE_NAME.NUMBER}#${TYPE}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -20,7 +20,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${MULTIPLE_OF}`,
+        name: `${TYPE_NAME.NUMBER}#${MULTIPLE_OF}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -29,7 +29,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${MULTIPLE_OF}`,
+        name: `${TYPE_NAME.NUMBER}#${MULTIPLE_OF}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -38,7 +38,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${ONE_OF}`,
+        name: `${TYPE_NAME.NUMBER}#${ONE_OF}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -47,7 +47,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${ONE_OF}`,
+        name: `${TYPE_NAME.NUMBER}#${ONE_OF}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -56,7 +56,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- exact`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- exact`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -65,7 +65,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- exact`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- exact`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -74,7 +74,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- exact ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -92,7 +92,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- exact ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -110,7 +110,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -119,7 +119,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -128,7 +128,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -148,7 +148,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -168,7 +168,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -177,7 +177,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -186,7 +186,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -206,7 +206,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -226,7 +226,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min / max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -238,7 +238,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min / max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.NUMBER,
@@ -250,7 +250,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH} / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -275,7 +275,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH} / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -300,7 +300,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -325,7 +325,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -350,7 +350,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -375,7 +375,7 @@ export const schemasNumber: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.NUMBER}_${VALUE} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.NUMBER}#${VALUE} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,

@@ -2,9 +2,9 @@ import { TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
 import { ITestSuite } from './typings';
 
-export const schemasBoolean: ITestSuite[] = [
+export const suitesBoolean: ITestSuite[] = [
     {
-        name: `${TYPE_NAME.BOOLEAN}_${TYPE}`,
+        name: `${TYPE_NAME.BOOLEAN}#${TYPE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
@@ -12,7 +12,7 @@ export const schemasBoolean: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.BOOLEAN}_${TYPE}`,
+        name: `${TYPE_NAME.BOOLEAN}#${TYPE}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
@@ -20,7 +20,7 @@ export const schemasBoolean: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.BOOLEAN}_${VALUE}`,
+        name: `${TYPE_NAME.BOOLEAN}#${VALUE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
@@ -29,7 +29,7 @@ export const schemasBoolean: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.BOOLEAN}_${VALUE}`,
+        name: `${TYPE_NAME.BOOLEAN}#${VALUE}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,

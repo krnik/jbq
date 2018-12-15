@@ -2,9 +2,9 @@ import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_SCHEMA_PROPERTIES, TYPE
 import { SYM_FAKER } from '../../utils';
 import { ITestSuite } from './typings';
 
-export const schemasArray: ITestSuite[] = [
+export const suitesArray: ITestSuite[] = [
     {
-        name: `${TYPE_NAME.ARRAY}_${TYPE}`,
+        name: `${TYPE_NAME.ARRAY}#${TYPE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -12,7 +12,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${TYPE}`,
+        name: `${TYPE_NAME.ARRAY}#${TYPE}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -20,7 +20,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${EVERY}`,
+        name: `${TYPE_NAME.ARRAY}#${EVERY}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -29,7 +29,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${EVERY}`,
+        name: `${TYPE_NAME.ARRAY}#${EVERY}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -38,7 +38,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${SOME}`,
+        name: `${TYPE_NAME.ARRAY}#${SOME}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -47,7 +47,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${SOME}`,
+        name: `${TYPE_NAME.ARRAY}#${SOME}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -56,7 +56,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${INCLUDES}`,
+        name: `${TYPE_NAME.ARRAY}#${INCLUDES}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -65,7 +65,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${INCLUDES}`,
+        name: `${TYPE_NAME.ARRAY}#${INCLUDES}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -74,7 +74,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- exact`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- exact`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -83,7 +83,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- exact`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- exact`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -92,7 +92,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- exact ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -107,7 +107,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- exact ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -122,7 +122,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -131,7 +131,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -140,7 +140,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -155,7 +155,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -170,7 +170,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -179,7 +179,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -188,7 +188,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -203,7 +203,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -218,7 +218,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min / max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -227,7 +227,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min / max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
@@ -236,7 +236,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH} / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -254,7 +254,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH} / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -272,7 +272,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -290,7 +290,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -308,7 +308,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -326,7 +326,7 @@ export const schemasArray: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ARRAY}_${LEN} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.ARRAY}#${LEN} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,

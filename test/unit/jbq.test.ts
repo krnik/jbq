@@ -5,28 +5,28 @@ import { jbq } from '../../src/core/jbq';
 import { jbqTypes } from '../../src/main';
 import { createTypes } from '../../src/types/main';
 import { createData } from '../data/main';
-import { schemasAny } from '../data/schemas/Any.schemas';
-import { schemasArray } from '../data/schemas/Array.schemas';
-import { schemasBoolean } from '../data/schemas/Boolean.schemas';
-import { schemasNumber } from '../data/schemas/Number.schemas';
-import { schemasObject } from '../data/schemas/Object.schemas';
-import { schemasString } from '../data/schemas/String.schemas';
+import { suitesAny } from '../data/suites/Any.suites';
+import { suitesArray } from '../data/suites/Array.suites';
+import { suitesBoolean } from '../data/suites/Boolean.suites';
+import { suitesNumber } from '../data/suites/Number.suites';
+import { suitesObject } from '../data/suites/Object.suites';
+import { suitesString } from '../data/suites/String.suites';
 import { isErrJSON } from '../utils';
 
-const schemas = {
-    Any: schemasAny,
-    Array: schemasArray,
-    Boolean: schemasBoolean,
-    Number: schemasNumber,
-    Object: schemasObject,
-    String: schemasString,
+const suites = {
+    Any: suitesAny,
+    Array: suitesArray,
+    Boolean: suitesBoolean,
+    Number: suitesNumber,
+    Object: suitesObject,
+    String: suitesString,
 };
 
 describe('Validator', () => {
-    for (const type of Object.keys(schemas)) {
-        type key = keyof typeof schemas;
+    for (const type of Object.keys(suites)) {
+        type key = keyof typeof suites;
         describe(type, () => {
-            for (const { name, valid, schema } of schemas[type as key]) {
+            for (const { name, valid, schema } of suites[type as key]) {
                 const { Test } = jbq(jbqTypes, { Test: schema });
                 const data = createData(schema);
                 if (valid)

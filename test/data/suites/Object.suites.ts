@@ -2,9 +2,9 @@ import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_
 import { SYM_FAKER } from '../../utils';
 import { ITestSuite } from './typings';
 
-export const schemasObject: ITestSuite[] = [
+export const suitesObject: ITestSuite[] = [
     {
-        name: `${TYPE_NAME.OBJECT}_${TYPE}`,
+        name: `${TYPE_NAME.OBJECT}#${TYPE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -12,7 +12,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${TYPE}`,
+        name: `${TYPE_NAME.OBJECT}#${TYPE}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -20,7 +20,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${CONSTRUCTOR_NAME}`,
+        name: `${TYPE_NAME.OBJECT}#${CONSTRUCTOR_NAME}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -29,7 +29,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${CONSTRUCTOR_NAME}`,
+        name: `${TYPE_NAME.OBJECT}#${CONSTRUCTOR_NAME}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -38,7 +38,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${INSTANCE_OF}`,
+        name: `${TYPE_NAME.OBJECT}#${INSTANCE_OF}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -47,7 +47,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${INSTANCE_OF}`,
+        name: `${TYPE_NAME.OBJECT}#${INSTANCE_OF}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -56,7 +56,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROPERTIES}`,
+        name: `${TYPE_NAME.OBJECT}#${PROPERTIES}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -65,7 +65,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROPERTIES}`,
+        name: `${TYPE_NAME.OBJECT}#${PROPERTIES}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -74,7 +74,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- exact`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- exact`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -83,7 +83,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- exact`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- exact`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -92,7 +92,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- exact ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -110,7 +110,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- exact ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -128,7 +128,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -137,7 +137,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -146,7 +146,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -166,7 +166,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -186,7 +186,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -195,7 +195,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -204,7 +204,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -224,7 +224,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -244,7 +244,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min / max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -253,7 +253,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min / max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -262,7 +262,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH} / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -292,7 +292,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH} / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -322,7 +322,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -352,7 +352,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -382,7 +382,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -412,7 +412,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${KEY_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${KEY_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -442,7 +442,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- exact`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- exact`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -451,7 +451,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- exact`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- exact`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -460,7 +460,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- exact ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -478,7 +478,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- exact ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- exact ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -496,7 +496,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -505,7 +505,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -514,7 +514,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -534,7 +534,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -554,7 +554,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -563,7 +563,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -572,7 +572,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -592,7 +592,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -612,7 +612,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min / max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -621,7 +621,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min / max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -630,7 +630,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH} / max`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -660,7 +660,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH} / max`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH} / max`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -690,7 +690,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -720,7 +720,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
@@ -750,7 +750,7 @@ export const schemasObject: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.OBJECT}_${PROP_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
+        name: `${TYPE_NAME.OBJECT}#${PROP_COUNT} -- min ${PROP_DATA_PATH} / max ${PROP_DATA_PATH}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,

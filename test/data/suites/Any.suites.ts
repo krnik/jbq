@@ -2,9 +2,9 @@ import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
 import { ITestSuite } from './typings';
 
-export const schemasAny: ITestSuite[] = [
+export const suitesAny: ITestSuite[] = [
     {
-        name: `${TYPE_NAME.ANY}_${TYPE}`,
+        name: `${TYPE_NAME.ANY}#${TYPE}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ANY,
@@ -12,7 +12,7 @@ export const schemasAny: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ANY}_${REQUIRED}`,
+        name: `${TYPE_NAME.ANY}#${REQUIRED}`,
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ANY,
@@ -21,20 +21,11 @@ export const schemasAny: ITestSuite[] = [
         },
     },
     {
-        name: `${TYPE_NAME.ANY}_${REQUIRED}`,
+        name: `${TYPE_NAME.ANY}#${REQUIRED}`,
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ANY,
             [REQUIRED]: true,
-            [SYM_FAKER]: () => undefined,
-        },
-    },
-    {
-        name: `${TYPE_NAME.ARRAY}_${REQUIRED}`,
-        valid: true,
-        schema: {
-            [TYPE]: TYPE_NAME.ANY,
-            [REQUIRED]: false,
             [SYM_FAKER]: () => undefined,
         },
     },

@@ -4,22 +4,22 @@ import { LEN, PROP_DATA_PATH, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYP
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/main';
 import { IParseValues } from '../../src/typings';
-import { schemasAny } from '../data/schemas/Any.schemas';
-import { schemasArray } from '../data/schemas/Array.schemas';
-import { schemasBoolean } from '../data/schemas/Boolean.schemas';
-import { schemasNumber } from '../data/schemas/Number.schemas';
-import { schemasObject } from '../data/schemas/Object.schemas';
-import { schemasString } from '../data/schemas/String.schemas';
+import { suitesAny } from '../data/suites/Any.suites';
+import { suitesArray } from '../data/suites/Array.suites';
+import { suitesBoolean } from '../data/suites/Boolean.suites';
+import { suitesNumber } from '../data/suites/Number.suites';
+import { suitesObject } from '../data/suites/Object.suites';
+import { suitesString } from '../data/suites/String.suites';
 
 describe('Compilation', () => {
     it('Compiling test schemas', () => {
         const suites = [
-            ...schemasAny,
-            ...schemasArray,
-            ...schemasBoolean,
-            ...schemasNumber,
-            ...schemasObject,
-            ...schemasString,
+            ...suitesAny,
+            ...suitesArray,
+            ...suitesBoolean,
+            ...suitesNumber,
+            ...suitesObject,
+            ...suitesString,
         ];
         for (const { schema, name } of suites)
             new Compilation(createTypes(), schema, name).execSync();
