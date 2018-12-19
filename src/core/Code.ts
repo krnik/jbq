@@ -1,13 +1,14 @@
-import { PARAMETER, PROP_DATA_PATH } from '../constants';
+import { HANDLE_PATH_RESOLUTION, PARAMETER, PROP_DATA_PATH, SCHEMA_PATH_SEPARATOR, TYPE } from '../constants';
+import { schemaValidate } from '../types/schemaValidate';
 import { IDataPathSchemaValue } from '../typings';
 import { as } from '../utils/type';
 import { Compilation } from './Compilation';
 import { CodeBuilderError } from './error';
+import { ResolvedStore } from './ResolvedStore';
 
 interface ICounter {
-    dataNames: number;
+    data: number;
     parameters: number;
-    resolvedPaths: number;
 }
 
 interface IContext {
@@ -20,6 +21,13 @@ interface IIfConditions {
     cmp: string;
     val: string;
     variable?: string;
+}
+
+interface IIfOptions {
+    dataVariable?: string;
+    schemaPath: string;
+    message: string;
+    join?: string;
 }
 
 export interface ISource {
@@ -37,7 +45,7 @@ export class CodeBuilder {
     }
 
     public static parsePath (path: string | string[]) {
-        return `(${Array.isArray(path) ? path.join('/') : path})`;
+        return `(${Array.isArray(path) ? path.join(SCHEMA_PATH_SEPARATOR) : path})`;
     }
 
     public static createBreak (dataVar: string) {
@@ -46,7 +54,7 @@ export class CodeBuilder {
 
     public static createIf (
         conditions: IIfConditions[],
-        conditionJoin: string,
+        join?: string,
         dataVar?: string,
     ) {
         if (!conditions.length)
@@ -57,35 +65,41 @@ export class CodeBuilder {
                     throw CodeBuilderError.variableAndDataVarFalsy();
                 return `${variable || dataVar} ${cmp} ${val}`;
             })
-            .join(conditionJoin);
+            .join(join || ' || ');
         return `if (${ifConditions})`;
     }
 
     public static createIfReturn (
-        conditions: Array<{ cmp: string, val: string }>,
-        schemaPath: string,
-        dataVar: string,
-        msg: string,
-        conditionJoin = ' || ',
+        conditions: IIfConditions[],
+        options: IIfOptions,
     ) {
-        return `${CodeBuilder.createIf(conditions, conditionJoin, dataVar)}
-            return \`{ "message": "${msg}", "path": "${schemaPath}" }\``;
+        const { join, message, dataVariable, schemaPath } = options;
+        return `${CodeBuilder.createIf(conditions, join, dataVariable)}
+            return \`{ "message": "${message}", "path": "${schemaPath}" }\`;`;
     }
 
     public source: ISource;
     private context: IContext;
     private counter: ICounter = {
-        dataNames: -1,
+        data: -1,
         parameters: -1,
-        resolvedPaths: -1,
     };
-    // @ts-ignore
-    private compilation: Compilation;
+    private Compilation: Compilation;
+    private Store: ResolvedStore;
+    private resolvedStrat?: HANDLE_PATH_RESOLUTION;
 
-    constructor (schemaName: string, compilationInstance: Compilation) {
+    constructor (
+        schemaName: string,
+        compilation: Compilation,
+        resolvedStore: ResolvedStore,
+        resolvedStrat?: HANDLE_PATH_RESOLUTION,
+    ) {
         this.context = this.initializeContext(schemaName);
         this.source = this.initializeSource();
-        this.compilation = compilationInstance;
+        this.Compilation = compilation;
+        this.Store = resolvedStore;
+        if (resolvedStrat)
+            this.resolvedStrat = resolvedStrat;
     }
 
     public get schemaPath () {
@@ -112,11 +126,14 @@ export class CodeBuilder {
 
     public updateContext (property: string, updateDataVarName?: boolean) {
         this.context.currentProp = property;
-        this.context.schemaPath += `/${property}`;
-        if (updateDataVarName) {
-            this.counter.dataNames += 1;
-            this.context.dataVariable = `${PARAMETER.DATA}_${this.counter.dataNames}`;
-        }
+        this.context.schemaPath += `${SCHEMA_PATH_SEPARATOR}${property}`;
+        if (updateDataVarName)
+            this.updateDataVar();
+    }
+
+    public updateDataVar () {
+        this.counter.data += 1;
+        this.context.dataVariable = `${PARAMETER.DATA}_${this.counter.data}`;
     }
 
     public createParam (value: any) {
@@ -130,11 +147,11 @@ export class CodeBuilder {
     }
 
     public createBreakStatement () {
-        return `break label_${this.context.dataVariable};`;
+        return `break label_${this.dataVariable};`;
     }
 
     public openBlock () {
-        this.source.code += this.chunkOpenBlock(this.context.dataVariable);
+        this.source.code += this.chunkOpenBlock(this.dataVariable);
     }
 
     public closeBlock () {
@@ -142,16 +159,16 @@ export class CodeBuilder {
     }
 
     public defineVar (snapshotDataVar: string, key: string) {
-        this.source.code += this.chunkDefineVar(this.context.dataVariable, snapshotDataVar, key);
+        this.source.code += this.chunkDefineVar(this.dataVariable, snapshotDataVar, key);
     }
 
     public loopForOf (snapshotDataVar: string) {
-        this.source.code += this.chunkLoopForOf(this.context.dataVariable, snapshotDataVar);
+        this.source.code += this.chunkLoopForOf(this.dataVariable, snapshotDataVar);
     }
 
     public loopFor (snapshotDataVar: string) {
         this.source.code += this.chunkLoopFor(
-            this.context.dataVariable,
+            this.dataVariable,
             snapshotDataVar,
             `${snapshotDataVar}_accessor`,
         );
@@ -159,18 +176,79 @@ export class CodeBuilder {
 
     public callFnWithClosure (fnParam: string, schemaParam: string, resolvedValue?: string) {
         this.source.code += this.chunkCallFnWithClosure(
-            resolvedValue || this.context.dataVariable,
-            this.context.schemaPath,
+            resolvedValue || this.dataVariable,
+            this.schemaPath,
             fnParam,
             schemaParam,
         );
     }
 
     public resolveDataPath (schemaValue: IDataPathSchemaValue) {
-        this.counter.resolvedPaths += 1;
-        const resolvedVar = `${this.context.dataVariable}$${this.counter.resolvedPaths}`;
+        this.updateDataVar();
+        const resolvedVar = this.dataVariable;
+        this.Store.addVar(resolvedVar, schemaValue);
         this.source.code += this.chunkResolveDataPath(schemaValue[PROP_DATA_PATH], resolvedVar);
         return resolvedVar;
+    }
+
+    public verifyVars () {
+        const variables = this.Store.consumeVars();
+        let code = '';
+        let suffix = '';
+        if (!variables.length)
+            return suffix;
+        switch (this.resolvedStrat) {
+            case HANDLE_PATH_RESOLUTION.RETURN: {
+                const paths = variables
+                    .map(({ schemaValue }) => CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH]))
+                    .join(' OR ');
+                code = CodeBuilder.createIfReturn(
+                    variables.map(({ resolvedVar: variable }) =>
+                        ({ variable, cmp: '===', val: 'undefined' })),
+                    {
+                        schemaPath: this.schemaPath,
+                        message: `One of ${PROP_DATA_PATH} values (${paths}) resolved to undefined.`,
+                    },
+                );
+                break;
+            }
+            case HANDLE_PATH_RESOLUTION.SCHEMA: {
+                for (const { schemaValue } of variables) {
+                    if (schemaValue && !schemaValidate.dataPath(schemaValue))
+                        return suffix;
+                    if (!(schemaValue as IDataPathSchemaValue).hasOwnProperty(TYPE))
+                        return suffix;
+                    const pathSchema = schemaValue as IDataPathSchemaValue;
+                    const properties = [
+                        ...Object.getOwnPropertyNames(pathSchema),
+                        ...Object.getOwnPropertySymbols(pathSchema),
+                    ];
+                    const dataPathSchema = properties
+                        .filter((key) => key !== PROP_DATA_PATH)
+                        .reduce((o, k) => {
+                            o[k as string] = (schemaValue as IDataPathSchemaValue)[k as string];
+                            return o;
+                        }, ({} as { [k: string]: any }));
+                    const snapshot = this.snapshot;
+                    this.updateContext(PROP_DATA_PATH);
+                    this.Compilation.parseSchemaSync(dataPathSchema);
+                    snapshot.restore();
+                }
+                break;
+            }
+            case HANDLE_PATH_RESOLUTION.SKIP: {
+                const ifStatement = CodeBuilder.createIf(
+                    variables.map(({ resolvedVar: variable }) =>
+                        ({ variable, cmp: '!==', val: 'undefined' })),
+                    ' && ',
+                );
+                code = `${ifStatement} {\n`;
+                suffix = this.chunkCloseBlock();
+                break;
+            }
+        }
+        this.source.code += code;
+        return suffix;
     }
 
     private chunkOpenBlock (dataVarName: string) {
@@ -209,7 +287,9 @@ export class CodeBuilder {
     }
 
     private chunkResolveDataPath (dataPath: string | string[], resolvedVar: string) {
-        const paths = (Array.isArray(dataPath) ? dataPath : dataPath.split('/'))
+        const paths = (Array.isArray(dataPath)
+            ? dataPath
+            : dataPath.split(SCHEMA_PATH_SEPARATOR))
             .filter((key) => key.length);
         if (!paths.length)
             throw CodeBuilderError.invalidDataPath(dataPath);

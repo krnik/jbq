@@ -18,18 +18,22 @@ export const TypeNumber = {
         if (is.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
-                schemaPath,
-                dataVariable,
-                `Data should be equal to ${schemaValue}.`,
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be equal to ${schemaValue}.`,
+                },
             );
         if (checkDataPath(schemaValue)) {
             const sch = schemaValue as IDataPathSchemaValue;
             const varName = resolveDataPath(sch);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
-                schemaPath,
-                dataVariable,
-                `Data should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                },
             );
         }
         const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
@@ -43,27 +47,33 @@ export const TypeNumber = {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }, { cmp: '>', val: max }],
-                schemaPath,
-                dataVariable,
-                `Data should be in range ${minVal}..${maxVal}.`,
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be in range ${minVal}..${maxVal}.`,
+                },
             );
         }
         if ('min' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }],
-                schemaPath,
-                dataVariable,
-                `Data should be greater than ${minVal}.`,
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be greater than ${minVal}.`,
+                },
             );
         }
         if ('max' in schemaMinMax) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '>', val: max }],
-                schemaPath,
-                dataVariable,
-                `Data should be smaller than ${maxVal}.`,
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be smaller than ${maxVal}.`,
+                },
             );
         }
     },

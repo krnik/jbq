@@ -46,6 +46,12 @@ export enum PARAMETER {
     DATA = '$DATA',
     ARGUMENTS = '$ARGS',
 }
+export enum HANDLE_PATH_RESOLUTION {
+    SKIP = 'skip',
+    SCHEMA = 'schema',
+    RETURN = 'return',
+}
+export const SCHEMA_PATH_SEPARATOR = '/';
 /**
  * PROPERTY CONSTANTS
  */

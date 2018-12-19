@@ -15,18 +15,22 @@ function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
         if (is.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
-                schemaPath,
-                dataVar,
-                `Data should have exactly ${schemaValue} keys.`,
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data should have exactly ${schemaValue} keys.`,
+                },
             );
         if (checkDataPath(schemaValue)) {
             const sch = schemaValue as IDataPathSchemaValue;
             const varName = resolveDataPath(sch);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
-                schemaPath,
-                dataVar,
-                `Data should have exactly \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])} keys.`,
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data should have exactly \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])} keys.`,
+                },
             );
         }
         const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
@@ -40,27 +44,34 @@ function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }, { cmp: '>', val: max }],
-                schemaPath,
-                dataVar,
-                `Data should have number of keys in range ${minVal}..${maxVal}.`,
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data should have number of keys in range ${minVal}..${maxVal}.`,
+                },
             );
         }
         if ('min' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '<', val: min }],
-                schemaPath,
-                dataVar,
-                `Data should have more than ${minVal} keys.`,
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data should have more than ${minVal} keys.`,
+                },
             );
         }
         if ('max' in schemaMinMax) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '>', val: max }],
-                schemaPath,
-                dataVar,
-                `Data should have less than ${maxVal} keys.`,
+                {
+                    join: ' || ',
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data should have less than ${maxVal} keys.`,
+                },
             );
         }
     };

@@ -1,9 +1,8 @@
 import { PROP_DATA_PATH } from '../constants';
-import { IDataPathSchemaValue } from '../typings';
 import { is } from '../utils/type';
 import { SchemaValidationError, TypeProtoError } from './error';
 
-function dataPath (schemaValue: IDataPathSchemaValue) {
+function dataPath (schemaValue: any) {
     return schemaValue instanceof Object
         && schemaValue.hasOwnProperty(PROP_DATA_PATH)
         && (is.string(schemaValue[PROP_DATA_PATH])

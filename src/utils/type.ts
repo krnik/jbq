@@ -1,17 +1,17 @@
 export const is = {
-    boolean (value: any) {
+    boolean (value: any): value is boolean {
         return value === true || value === false;
     },
-    number (value: any) {
+    number (value: any): value is number {
         return typeof value === 'number' && value === value;
     },
-    string (value: any) {
+    string (value: any): value is string {
         return typeof value === 'string';
     },
-    symbol (value: any) {
+    symbol (value: any): value is symbol {
         return typeof value === 'symbol';
     },
-    object (value: any) {
+    object (value: any): value is object {
         return value instanceof Object;
     },
     objectInstance (value: any, constructorName: string) {

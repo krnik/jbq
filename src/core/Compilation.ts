@@ -1,19 +1,12 @@
 import { PARAMETER, SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { schemaValidate } from '../types/schemaValidate';
 import { IType, ITypeMethod, TypeWrapper } from '../types/Wrapper';
-import { IDataPathSchemaValue, IParseValues } from '../typings';
+import { IDataPathSchemaValue, IJBQOptions, IParseValues } from '../typings';
 import { DebugLog } from '../utils/debug';
 import { is } from '../utils/type';
 import { CodeBuilder } from './Code';
 import { CompilationError } from './error';
-
-interface ICompilationOptions {
-    debug?: boolean;
-}
-
-interface ICompilationConfig {
-    indent: number;
-}
+import { ResolvedStore } from './ResolvedStore';
 
 export interface ISchema {
     [SYM_SCHEMA_PROPERTIES]?: {
@@ -28,41 +21,43 @@ type Nullable<T> = null | undefined | T;
 export class Compilation {
     public Code: CodeBuilder;
     private Debug: DebugLog;
+    private Store: ResolvedStore;
     private types: TypeWrapper;
     private schema: ISchema;
+    private helpers = [
+        (v: any) => schemaValidate.dataPath(v),
+        (v: IDataPathSchemaValue) => this.Code.resolveDataPath(v),
+    ];
 
     constructor (
         types: TypeWrapper,
         schema: ISchema,
         schemaName: string,
-        options: ICompilationOptions = {},
+        options: IJBQOptions = {},
     ) {
         this.types = types;
         this.schema = schema;
         this.Debug = new DebugLog(Boolean(options.debug));
-        this.Code = new CodeBuilder(schemaName, this);
+        this.Store = new ResolvedStore();
+        this.Code = new CodeBuilder(schemaName, this, this.Store, options.handleResolvedPaths);
     }
 
     public execSync () {
-        const config = { indent: 0 };
-        this.parseSchemaSync(this.schema, config);
+        this.parseSchemaSync(this.schema);
         return this.Code.source;
     }
 
     // exec () {}
 
-    private parseSchemaSync (
-        schema: ISchema,
-        config: ICompilationConfig,
-    ) {
+    public parseSchemaSync (schema: ISchema) {
         const { Debug, Code } = this;
-        Debug.schema(Code.schemaPath, config.indent);
+        Debug.schema(Code.schemaPath);
+        Debug.incIndent(2);
         const typeName: Nullable<string> = schema[TYPE];
         if (typeName == null)
             throw CompilationError.missingSchemaTypeProperty(schema);
         const type = this.getType(typeName);
         const snapshot = Code.snapshot;
-        config.indent += 2;
 
         Code.openBlock();
 
@@ -71,7 +66,7 @@ export class Compilation {
             if (!type[property])
                 throw CompilationError.missingTypeMethod(typeName, property);
             type[SYM_TYPE_VALIDATE][property](schemaValue);
-            Debug.property(property, config.indent);
+            Debug.property(property);
             Code.updateContext(property);
             this.parseProperty(type[property], schemaValue);
             snapshot.restore();
@@ -93,7 +88,6 @@ export class Compilation {
                 }
                 this.parseSchemaSync(
                     schema[SYM_SCHEMA_PROPERTIES]![property as keyof typeof subSchemas],
-                    config,
                 );
                 snapshot.restore();
             }
@@ -104,17 +98,17 @@ export class Compilation {
             Code.updateContext('[]', true);
             if (type[SYM_TYPE_FOR_LOOP]) {
                 Code.loopFor(snapshot.dataVariable);
-                this.parseSchemaSync(elementSchema, config);
+                this.parseSchemaSync(elementSchema);
                 Code.closeBlock();
             } else {
-
                 Code.loopForOf(snapshot.dataVariable);
-                this.parseSchemaSync(elementSchema, config);
+                this.parseSchemaSync(elementSchema);
             }
             snapshot.restore();
         }
 
         Code.closeBlock();
+        Debug.incIndent(-2);
     }
 
     private parseProperty (method: ITypeMethod, schemaValue: any) {
@@ -123,30 +117,29 @@ export class Compilation {
             schemaPath: this.Code.schemaPath,
             dataVariable: this.Code.dataVariable,
         };
-        const helpers = [
-            (v: any) => schemaValidate.dataPath(v),
-            (v: IDataPathSchemaValue) => this.Code.resolveDataPath(v),
-        ];
         switch (true) {
             case method.hasOwnProperty(SYM_METHOD_CLOSURE):
-                this.parsePropertyWithClosure(method, parseValues);
+                this.parseMethodWithClosure(method, parseValues);
                 break;
             case method.hasOwnProperty(SYM_METHOD_MACRO):
-                this.Code.appendCode(method(parseValues, ...helpers) as string);
+                this.parseMethodMacro(method, parseValues);
                 break;
             default:
-                this.parsePropertyExtractBody(method, parseValues);
+                this.parseMethodExtractBody(method, parseValues);
         }
         this.Code.appendCode('\n');
     }
 
-    private parsePropertyExtractBody (method: ITypeMethod, parseValues: IParseValues) {
+    private parseMethodExtractBody (method: ITypeMethod, parseValues: IParseValues) {
         const { schemaValue, dataVariable } = parseValues;
         const isDataPath = schemaValidate.dataPath(parseValues.schemaValue);
         let resolvedPath: string;
+        let suffix = '';
         if (isDataPath) {
+            this.Store.openVars();
             resolvedPath = this.Code.resolveDataPath(schemaValue);
             parseValues.resolvedValue = resolvedPath;
+            suffix = this.Code.verifyVars();
         }
         let body = method.toString();
         const start = body.indexOf('{');
@@ -156,17 +149,17 @@ export class Compilation {
             .replace(TOKEN_BREAK, this.Code.createBreakStatement());
         body = this.evalExpressions(body, parseValues);
         body = this.replaceToken(body, PARAMETER.DATA, dataVariable);
-        // if isDataPath schemaValue must be replaced with resolved value
         const param = isDataPath
             ? resolvedPath!
             : is.primitiveLiteral(schemaValue)
                 ? this.toLiteral(schemaValue)
                 : this.Code.createParam(schemaValue);
         body = this.replaceToken(body, 'schemaValue', param);
-        this.Code.appendCode(body);
+        this.Code.appendCode(body + suffix);
     }
 
-    private parsePropertyWithClosure (method: ITypeMethod, parseValues: IParseValues) {
+    private parseMethodWithClosure (method: ITypeMethod, parseValues: IParseValues) {
+        this.Store.openVars();
         const { schemaValue } = parseValues;
         const resolvedValue = schemaValidate.dataPath(schemaValue)
             ? this.Code.resolveDataPath(schemaValue)
@@ -175,7 +168,16 @@ export class Compilation {
         const schemaParam = is.primitiveLiteral(schemaValue)
             ? this.toLiteral(schemaValue)
             : this.Code.createParam(schemaValue);
+        const suffix = this.Code.verifyVars();
         this.Code.callFnWithClosure(fnParam, schemaParam, resolvedValue);
+        this.Code.appendCode(suffix);
+    }
+
+    private parseMethodMacro (method: ITypeMethod, parseValues: IParseValues) {
+        this.Store.openVars();
+        const code = method(parseValues, ...this.helpers) as string;
+        const suffix = this.Code.verifyVars();
+        this.Code.appendCode(code + suffix);
     }
 
     private evalExpressions (str: string, parseValues: IParseValues) {
