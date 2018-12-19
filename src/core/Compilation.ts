@@ -160,16 +160,19 @@ export class Compilation {
 
     private parseMethodWithClosure (method: ITypeMethod, parseValues: IParseValues) {
         this.Store.openVars();
+        const snapshot = this.Code.snapshot;
         const { schemaValue } = parseValues;
         const resolvedValue = schemaValidate.dataPath(schemaValue)
             ? this.Code.resolveDataPath(schemaValue)
             : undefined;
         const fnParam = this.Code.createParam(method);
-        const schemaParam = is.primitiveLiteral(schemaValue)
-            ? this.toLiteral(schemaValue)
-            : this.Code.createParam(schemaValue);
+        const schemaParam = resolvedValue
+            || (is.primitiveLiteral(schemaValue)
+                ? this.toLiteral(schemaValue)
+                : this.Code.createParam(schemaValue));
         const suffix = this.Code.verifyVars();
-        this.Code.callFnWithClosure(fnParam, schemaParam, resolvedValue);
+        snapshot.restore();
+        this.Code.callFnWithClosure(fnParam, schemaParam);
         this.Code.appendCode(suffix);
     }
 

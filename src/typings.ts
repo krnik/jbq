@@ -1,4 +1,4 @@
-import { PROP_DATA_PATH } from './constants';
+import { HANDLE_PATH_RESOLUTION, PROP_DATA_PATH } from './constants';
 
 export type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[keyof T]>;
 
@@ -25,3 +25,8 @@ export interface IParseValuesMinMax extends IParseValues {
 export type DataPathResolver = (schemaValue: IDataPathSchemaValue) => string;
 
 export type DataPathChecker = (schemaValue: any) => boolean;
+
+export interface IJBQOptions {
+    debug?: boolean;
+    handleResolvedPaths?: HANDLE_PATH_RESOLUTION;
+}

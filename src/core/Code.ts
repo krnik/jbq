@@ -133,7 +133,9 @@ export class CodeBuilder {
 
     public updateDataVar () {
         this.counter.data += 1;
-        this.context.dataVariable = `${PARAMETER.DATA}_${this.counter.data}`;
+        const dataVar = `${PARAMETER.DATA}_${this.counter.data}`;
+        this.context.dataVariable = dataVar;
+        return dataVar;
     }
 
     public createParam (value: any) {
@@ -184,8 +186,7 @@ export class CodeBuilder {
     }
 
     public resolveDataPath (schemaValue: IDataPathSchemaValue) {
-        this.updateDataVar();
-        const resolvedVar = this.dataVariable;
+        const resolvedVar = this.updateDataVar();
         this.Store.addVar(resolvedVar, schemaValue);
         this.source.code += this.chunkResolveDataPath(schemaValue[PROP_DATA_PATH], resolvedVar);
         return resolvedVar;

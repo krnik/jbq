@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import 'mocha';
-import { LEN, PROP_DATA_PATH, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
+import { HANDLE_PATH_RESOLUTION, LEN, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
 import { createTypes } from '../../src/types/main';
-import { IParseValues } from '../../src/typings';
+import { schemaValidate } from '../../src/types/schemaValidate';
+import { IJBQOptions, IParseValues } from '../../src/typings';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';
@@ -25,15 +26,6 @@ describe('Compilation', () => {
             new Compilation(createTypes(), schema, name).execSync();
     });
     describe('Compilation.prototype.evalExpressions', () => {
-        it('it should interpolate values', () => {
-            const str = '{{schemaValue}} @ {{schemaPath}}';
-            // @ts-ignore
-            const res = Compilation.prototype.evalExpressions(str, {
-                schemaPath: '#/minLen',
-                schemaValue: 1999,
-            });
-            expect(res).to.be.equal(`1999 @ #/minLen`);
-        });
         it('it should eval expressions', () => {
             const tests = [
                 {
@@ -93,7 +85,7 @@ describe('Compilation', () => {
     describe(`${PROP_DATA_PATH} - with regular methods`, () => {
         it(`it should correctly resolve ${PROP_DATA_PATH}`, () => {
             {
-                const Simple = {
+                const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         verified: {
@@ -107,7 +99,8 @@ describe('Compilation', () => {
                         },
                     },
                 };
-                const source = new Compilation(createTypes(), Simple, 'Simple').execSync();
+                const source = new Compilation(createTypes(), Schema, 'Simple')
+                    .execSync();
                 const validator = new Function(source.argsParam, source.dataParam, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
@@ -124,7 +117,7 @@ describe('Compilation', () => {
                     expect(validator(data)).be.a('string');
             }
             {
-                const Nested = {
+                const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         received: {
@@ -152,7 +145,8 @@ describe('Compilation', () => {
                         },
                     },
                 };
-                const source = new Compilation(createTypes(), Nested, 'Nested').execSync();
+                const source = new Compilation(createTypes(), Schema, 'Nested')
+                    .execSync();
                 const validator = new Function(source.argsParam, source.dataParam, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
@@ -169,34 +163,197 @@ describe('Compilation', () => {
                     expect(validator(data)).to.be.a('string');
             }
         });
-        // tslint:disable-next-line:no-empty
-        it.skip(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => { });
-        // tslint:disable-next-line:no-empty
-        it.skip(`it should parse ${PROP_DATA_PATH} schema`, () => { });
-        // tslint:disable-next-line:no-empty
-        it.skip(`it should not resolve ${PROP_DATA_PATH} with new variable if there is already one defined for target property`, () => { });
+        it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.OBJECT,
+                    [SYM_SCHEMA_PROPERTIES]: {
+                        verified: {
+                            [TYPE]: TYPE_NAME.BOOLEAN,
+                        },
+                        active: {
+                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [VALUE]: {
+                                [PROP_DATA_PATH]: 'missing',
+                            },
+                        },
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [
+                    { verified: false, active: false },
+                    { verified: true, active: false },
+                    { verified: false, active: true },
+                    { verified: true, active: true },
+                ];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [
+                    { verified: true, active: false, missing: true },
+                    { verified: false, active: true, missing: false },
+                ];
+                for (const data of invalidData)
+                    expect(validator(data)).be.a('string');
+            }
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [VALUE]: {
+                        [PROP_DATA_PATH]: 'missing',
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [true, false];
+                for (const data of validData)
+                    expect(validator(data)).be.equal(undefined);
+            }
+        });
+        it(`it should parse ${PROP_DATA_PATH} schema`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.OBJECT,
+                    [SYM_SCHEMA_PROPERTIES]: {
+                        active: {
+                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [VALUE]: {
+                                [PROP_DATA_PATH]: 'verified',
+                                [TYPE]: TYPE_NAME.BOOLEAN,
+                            },
+                        },
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [
+                    { verified: false, active: false },
+                    { verified: true, active: true },
+                ];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [
+                    { verified: true, active: false },
+                    { verified: false, active: true },
+                    { active: true },
+                    { verified: 1, active: true },
+                ];
+                for (const data of invalidData)
+                    expect(validator(data)).be.a('string');
+            }
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [VALUE]: {
+                        [PROP_DATA_PATH]: 'missing',
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const invalidData = [true, false];
+                for (const data of invalidData)
+                    expect(validator(data)).be.a('string');
+            }
+        });
+        it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.OBJECT,
+                    [SYM_SCHEMA_PROPERTIES]: {
+                        verified: {
+                            [TYPE]: TYPE_NAME.BOOLEAN,
+                        },
+                        active: {
+                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [VALUE]: {
+                                [PROP_DATA_PATH]: 'missing',
+                            },
+                        },
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const validData = [
+                    { verified: false, active: false, missing: false },
+                    { verified: true, active: false, missing: false },
+                    { verified: false, active: true, missing: true },
+                    { verified: true, active: true, missing: true },
+                ];
+                for (const data of validData)
+                    expect(validator(data)).to.be.equal(undefined);
+                const invalidData = [
+                    { verified: true, active: false },
+                    { verified: false, active: true },
+                    { verified: true, active: false, missing: true },
+                    { verified: false, active: true, missing: false },
+                ];
+                for (const data of invalidData)
+                    expect(validator(data)).be.a('string');
+            }
+            {
+                const Schema = {
+                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [VALUE]: {
+                        [PROP_DATA_PATH]: 'missing',
+                    },
+                };
+                const source = new Compilation(createTypes(), Schema, 'Simple', options)
+                    .execSync();
+                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                    .bind(undefined, source.arguments);
+                const invalidData = [true, false];
+                for (const data of invalidData)
+                    expect(validator(data)).be.a('string');
+            }
+        });
     });
     describe(`functions with closures`, () => {
+        const nullabeStringType = {
+            [TYPE] (_schemaValue: IParseValues, path: string, $DATA: any) {
+                if ($DATA !== null && typeof $DATA !== 'string')
+                    return `{"message": "${$DATA}", "path": "${path}"}`;
+            },
+            logValue (_schemaValue: any, _path: string, _$DATA: null | string) {
+                // console.log({ schemaValue, path, $DATA });
+            },
+            value (schemaValue: any, path: string, $DATA: any) {
+                if (schemaValue !== $DATA)
+                    return `{"message": "Data expected to be equal ${schemaValue}, got ${$DATA}", "path": "${path}"}`;
+            },
+            [SYM_TYPE_VALIDATE]: {
+                [TYPE] (value: any) {
+                    if (typeof value !== 'string')
+                        throw new Error('expected string as type schema value');
+                },
+                logValue (_value: any) {
+                    return;
+                },
+                value (value: any) {
+                    if (value !== null && typeof value !== 'string' && !schemaValidate.dataPath(value))
+                        throw new Error('expected string, datapath or null');
+                },
+            },
+        };
+        const types = createTypes();
+        Object.defineProperty(nullabeStringType[TYPE], SYM_METHOD_CLOSURE, { value: true });
+        Object.defineProperty(nullabeStringType.logValue, SYM_METHOD_CLOSURE, { value: true });
+        Object.defineProperty(nullabeStringType.value, SYM_METHOD_CLOSURE, { value: true });
+        types.set('nullableString', nullabeStringType, { type: 'string' });
+
         it(`it should resolve ${PROP_DATA_PATH} in closure methods`, () => {
-            const types = createTypes();
-            const nullabeStringType = {
-                [TYPE] (_schemaValue: IParseValues, path: string, $DATA: any) {
-                    if ($DATA !== null && typeof $DATA !== 'string')
-                        return `{"message": "${$DATA}", "path": "${path}"}`;
-                },
-                logValue (_schemaValue: null | string, _path: string, _$DATA: any) {
-                    // tslint:disable-next-line:no-console
-                    // console.log({ schemaValue, path, $DATA });
-                },
-                [SYM_TYPE_VALIDATE]: {
-                    [TYPE] (value: any) {
-                        if (typeof value !== 'string')
-                            throw new Error('expected string as type schema value');
-                    },
-                    // tslint:disable-next-line:no-empty
-                    logValue (_value: any) { },
-                },
-            };
             const testSchemas = {
                 Closure: {
                     [TYPE]: 'nullableString',
@@ -209,9 +366,6 @@ describe('Compilation', () => {
                     },
                 },
             };
-            Object.defineProperty(nullabeStringType[TYPE], SYM_METHOD_CLOSURE, { value: true });
-            Object.defineProperty(nullabeStringType.logValue, SYM_METHOD_CLOSURE, { value: true });
-            types.set('nullableString', nullabeStringType, { type: 'string' });
             {
                 const schema = testSchemas.Closure;
                 const source = new Compilation(types, schema, 'Closure').execSync();
@@ -229,7 +383,10 @@ describe('Compilation', () => {
                 const source = new Compilation(types, schema, 'WithPath').execSync();
                 const validator = new Function(source.argsParam, source.dataParam, source.code)
                     .bind(undefined, source.arguments);
-                const validData = [{ mailing: null, enlistedOn: null }, { mailing: 'enabled', enlistedOn: 'all' }];
+                const validData = [
+                    { mailing: null, enlistedOn: null },
+                    { mailing: 'enabled', enlistedOn: 'all' },
+                ];
                 for (const data of validData)
                     expect(validator(data)).to.be.equal(undefined);
                 const invalidData = [{}, { mailing: null, enlistedOn: true }];
@@ -237,71 +394,338 @@ describe('Compilation', () => {
                     expect(validator(data)).to.be.a('string');
             }
         });
+        it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    compare: {
+                        [TYPE]: TYPE_NAME.ANY,
+                    },
+                    val: {
+                        [TYPE]: 'nullableString',
+                        value: {
+                            [PROP_DATA_PATH]: 'compare',
+                        },
+                    },
+                },
+            };
+            const source = new Compilation(types, Schema, 'Simple', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                { compare: null, val: null },
+                { compare: '0', val: '0' },
+                { val: null },
+                { val: '1' },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                { compare: null, val: '0' },
+                { compare: '0', val: null },
+                { val: 1 },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).be.a('string');
+        });
+        it(`it should parse ${PROP_DATA_PATH} schema`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    val: {
+                        [TYPE]: 'nullableString',
+                        value: {
+                            [PROP_DATA_PATH]: 'compare',
+                            [TYPE]: TYPE_NAME.ANY,
+                            [REQUIRED]: true,
+                        },
+                    },
+                },
+            };
+            const source = new Compilation(types, Schema, 'Simple', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                { compare: null, val: null },
+                { compare: '0', val: '0' },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                { compare: null, val: '0' },
+                { compare: '0', val: null },
+                { val: null },
+                { val: '1' },
+                { val: 1 },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).be.a('string');
+        });
+        it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    val: {
+                        [TYPE]: 'nullableString',
+                        value: {
+                            [PROP_DATA_PATH]: 'compare',
+                        },
+                    },
+                },
+            };
+            const source = new Compilation(types, Schema, 'Simple', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                { compare: null, val: null },
+                { compare: '0', val: '0' },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                { compare: null, val: '0' },
+                { compare: '0', val: null },
+                { val: null },
+                { val: '1' },
+                { val: 1 },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).be.a('string');
+        });
     });
     describe(`${PROP_DATA_PATH} - with macros`, () => {
         it(`it should resolve ${PROP_DATA_PATH} for macro methods`, () => {
-            const testSchemas = {
-                UserName: {
-                    [TYPE]: TYPE_NAME.OBJECT,
-                    [SYM_SCHEMA_PROPERTIES]: {
-                        range: {
-                            [TYPE]: TYPE_NAME.OBJECT,
-                            [SYM_SCHEMA_PROPERTIES]: {
-                                min: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
-                                    [VALUE]: {
-                                        min: 0,
-                                        max: { [PROP_DATA_PATH]: 'range/max' },
-                                    },
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    range: {
+                        [TYPE]: TYPE_NAME.OBJECT,
+                        [SYM_SCHEMA_PROPERTIES]: {
+                            min: {
+                                [TYPE]: TYPE_NAME.NUMBER,
+                                [VALUE]: {
+                                    min: 0,
+                                    max: { [PROP_DATA_PATH]: 'range/max' },
                                 },
-                                max: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
-                                    [VALUE]: {
-                                        min: { [PROP_DATA_PATH]: 'range/min' },
-                                    },
+                            },
+                            max: {
+                                [TYPE]: TYPE_NAME.NUMBER,
+                                [VALUE]: {
+                                    min: { [PROP_DATA_PATH]: 'range/min' },
                                 },
                             },
                         },
-                        username: {
-                            [TYPE]: TYPE_NAME.STRING,
-                            [LEN]: {
-                                min: { [PROP_DATA_PATH]: 'range/min' },
-                                max: { [PROP_DATA_PATH]: 'range/max' },
+                    },
+                    username: {
+                        [TYPE]: TYPE_NAME.STRING,
+                        [LEN]: {
+                            min: { [PROP_DATA_PATH]: 'range/min' },
+                            max: { [PROP_DATA_PATH]: 'range/max' },
+                        },
+                    },
+                },
+            };
+            const source = new Compilation(createTypes(), Schema, 'UserName').execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                {
+                    range: { min: 6, max: 12 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 3, max: 3 },
+                    username: 'Max',
+                },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                {
+                    range: { min: 5, max: 4 },
+                    username: '12345',
+                },
+                {
+                    range: { min: 5, max: 7 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 10, max: 5 },
+                    username: '12345',
+                },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).to.be.a('string');
+        });
+        it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    username: {
+                        [TYPE]: TYPE_NAME.STRING,
+                        [LEN]: {
+                            min: { [PROP_DATA_PATH]: 'range/min' },
+                            max: { [PROP_DATA_PATH]: 'range/max' },
+                        },
+                    },
+                },
+            };
+            const source = new Compilation(createTypes(), Schema, 'UserName', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                {
+                    range: { max: 12 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 3 },
+                    username: 'Max',
+                },
+                {
+                    username: 'Max',
+                },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                {
+                    range: { min: 5, max: 4 },
+                    username: '12345',
+                },
+                {
+                    range: { min: 5, max: 7 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 10, max: 5 },
+                    username: '12345',
+                },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).to.be.a('string');
+        });
+        it(`it should parse ${PROP_DATA_PATH} schema`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    username: {
+                        [TYPE]: TYPE_NAME.STRING,
+                        [LEN]: {
+                            min: {
+                                [PROP_DATA_PATH]: 'range/min',
+                                [TYPE]: TYPE_NAME.NUMBER,
+                                [VALUE]: {
+                                    min: 0,
+                                    max: { [PROP_DATA_PATH]: 'range/max' },
+                                },
+                            },
+                            max: {
+                                [PROP_DATA_PATH]: 'range/max',
+                                [TYPE]: TYPE_NAME.NUMBER,
+                                [VALUE]: {
+                                    min: { [PROP_DATA_PATH]: 'range/min' },
+                                },
                             },
                         },
                     },
                 },
             };
-            {
-                const schema = testSchemas.UserName;
-                const source = new Compilation(createTypes(), schema, 'UserName').execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
-                    .bind(undefined, source.arguments);
-                const validData = [
-                    {
-                        range: { min: 6, max: 12 },
-                        username: 'SuperUser',
+            const source = new Compilation(createTypes(), Schema, 'UserName', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                {
+                    range: { min: 6, max: 12 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 3, max: 3 },
+                    username: 'Max',
+                },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                {
+                    range: { min: 5, max: 4 },
+                    username: '12345',
+                },
+                {
+                    range: { min: 5, max: 7 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 10, max: 5 },
+                    username: '12345',
+                },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).to.be.a('string');
+        });
+        it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
+            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            const Schema = {
+                [TYPE]: TYPE_NAME.OBJECT,
+                [SYM_SCHEMA_PROPERTIES]: {
+                    username: {
+                        [TYPE]: TYPE_NAME.STRING,
+                        [LEN]: {
+                            min: {
+                                [PROP_DATA_PATH]: 'range/min',
+                            },
+                            max: {
+                                [PROP_DATA_PATH]: 'range/max',
+                            },
+                        },
                     },
-                    {
-                        range: { min: 3, max: 3 },
-                        username: 'Max',
-                    },
-                ];
-                for (const data of validData)
-                    expect(validator(data)).to.be.equal(undefined);
-                const invalidData = [
-                    {
-                        range: { min: 5, max: 4 },
-                        username: '12345',
-                    },
-                    {
-                        range: { min: 5, max: 7 },
-                        username: 'SuperUser',
-                    },
-                ];
-                for (const data of invalidData)
-                    expect(validator(data)).to.be.a('string');
-            }
+                },
+            };
+            const source = new Compilation(createTypes(), Schema, 'UserName', options)
+                .execSync();
+            const validator = new Function(source.argsParam, source.dataParam, source.code)
+                .bind(undefined, source.arguments);
+            const validData = [
+                {
+                    range: { min: 6, max: 12 },
+                    username: 'SuperUser',
+                },
+                {
+                    range: { min: 3, max: 3 },
+                    username: 'Max',
+                },
+            ];
+            for (const data of validData)
+                expect(validator(data)).to.be.equal(undefined);
+            const invalidData = [
+                {
+                    range: { min: 5 },
+                    username: '12345',
+                },
+                {
+                    range: { max: 7 },
+                    username: 'SuperUser',
+                },
+                {
+                    username: '12345',
+                },
+                {
+                    username: '123123',
+                    range: { min: 10, max: 3 },
+                },
+            ];
+            for (const data of invalidData)
+                expect(validator(data)).to.be.a('string');
         });
     });
 });
