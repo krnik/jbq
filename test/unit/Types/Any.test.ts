@@ -1,36 +1,29 @@
 import { expect } from 'chai';
-import { REQUIRED, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
+import 'mocha';
+import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeAny } from '../../../src/types/Any';
-import { TypeArray } from '../../../src/types/Array';
-import { TypeBoolean } from '../../../src/types/Boolean';
-import { values } from '../../data/main';
+import { IParseValues } from '../../../src/typings';
 
-export default () => describe(TYPE_NAME.ANY, () => {
+describe(TYPE_NAME.ANY, () => {
     describe(TYPE, () => {
-        const base = 'any';
         it('valid value', () => {
-            expect(TypeAny[TYPE]()).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeArray[SYM_TYPE_VALIDATE][TYPE](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.string)
-                expect(() => TypeAny[SYM_TYPE_VALIDATE][TYPE](value)).to.throw();
+            expect(TypeAny[TYPE]('', '')).to.be.equal(undefined);
         });
     });
     describe(REQUIRED, () => {
-        const base = true;
         it('valid value', () => {
-            const value = {};
-            expect(TypeAny[REQUIRED](base, value)).to.be.equal(undefined);
+            const value = { schemaValue: true } as IParseValues;
+            const onTrue = TypeAny[REQUIRED](value);
+            value.schemaValue = false;
+            const onFalse = TypeAny[REQUIRED](value);
+            expect(onTrue).to.be.a('string');
+            expect(onFalse).to.be.a('string');
+            expect(onTrue).to.not.be.equal(onFalse);
         });
-        it(`${SYM_TYPE_VALIDATE.toString()} valid value`, () => {
-            expect(TypeBoolean[SYM_TYPE_VALIDATE][VALUE](base)).to.be.equal(undefined);
-        });
-        it(`${SYM_TYPE_VALIDATE.toString()} invalid value`, () => {
-            for (const value of values.non.boolean)
-                expect(() => TypeBoolean[SYM_TYPE_VALIDATE][VALUE](value)).to.throw();
+        it('invalid value', () => {
+            const value = undefined;
+            // @ts-ignore
+            expect(() => TypeAny[REQUIRED](value)).to.throw();
         });
     });
 });

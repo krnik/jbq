@@ -1,132 +1,78 @@
-import AJV from 'ajv';
 import Benchmark from 'benchmark';
-import Joi from 'joi';
 import { jbq } from '../../src/core/jbq';
 import { createTypes } from '../../src/types/main';
-import { arrayTests } from './suites/array';
-import { booleanTests } from './suites/boolean';
-import { numberTests } from './suites/number';
-import { objectTests } from './suites/object';
-import { stringTests } from './suites/string';
+import { createData } from '../data/main';
+import { suitesAny } from '../data/suites/Any.suites';
+import { suitesArray } from '../data/suites/Array.suites';
+import { suitesBoolean } from '../data/suites/Boolean.suites';
+import { suitesNumber } from '../data/suites/Number.suites';
+import { suitesObject } from '../data/suites/Object.suites';
+import { suitesString } from '../data/suites/String.suites';
+import { ITestSuite } from '../data/suites/typings';
 
-const desiredTest = process.argv[2];
-const desiredLib = process.argv[3];
-const selectLibrary = (name: string) => desiredLib ? name === desiredLib : true;
-const allow = {
-    jbq: selectLibrary('jbq'),
-    ajv: selectLibrary('ajv'),
-    joi: selectLibrary('joi'),
-    yup: selectLibrary('yup'),
+const findArg = (prefix: string) => {
+    const regex = new RegExp(`^${prefix}[a-zA-Z_]+$`);
+    const arg = process.argv.find((a) => regex.test(a));
+    return arg && arg.replace(prefix, '');
 };
 
-interface ITest {
-    name: string;
-    data: any;
-    fail?: boolean;
-    schemas: Array<{
-        name: string;
-        data?: any;
-        ajv?: any;
-        jbq?: any;
-        joi?: any;
-        yup?: any;
-    }>;
-}
-export function createTests (bench: Benchmark.Suite, test: ITest) {
-    const check = {
-        vjs: {
-            pass (fn: (...x: any[]) => any) {
-                return () => {
-                    if (fn() !== undefined) throw Error('It should not return any errors.');
-                };
-            },
-            fail (fn: (...x: any[]) => any) {
-                return () => {
-                    if (fn() === undefined)
-                        throw Error('It should return an error.');
-                };
-            },
-        },
-        ajv: {
-            pass (fn: () => any) {
-                return () => {
-                    if (!fn()) throw Error('It should not return any errors.');
-                };
-            },
-            fail (fn: () => any) {
-                return () => {
-                    if (fn()) throw Error('It should return false.');
-                };
-            },
-        },
-        joi: {
-            pass (fn: () => any) {
-                return () => {
-                    if (fn().error) throw Error('It should not return any errors.');
-                };
-            },
-            fail (fn: () => any) {
-                return () => {
-                    if (!fn().error) throw Error('It should return an error.');
-                };
-            },
-        },
-        yup: {
-            pass (fn: () => any) {
-                return () => fn();
-            },
-            fail (fn: () => any) {
-                return () => {
-                    try {
-                        fn();
-                        throw Error('It should throw an error');
-                        // tslint:disable-next-line: no-empty
-                    } catch (err) { }
-                };
-            },
-        },
+const selectType = findArg('type=');
+const selectTest = findArg('test=');
+
+function handlePass (fn: (...x: any[]) => any) {
+    return () => {
+        if (fn() !== undefined) throw Error('It should not return any errors.');
     };
-    function createName (type: string, prop: string, lib: string) {
-        const t = `\x1b[36m${type}\x1b[0m`;
-        const p = `\x1b[33m${prop}\x1b[0m`;
-        const l = `\x1b[36m${lib}\x1b[0m`;
-        return `${t} # ${p} # ${l}`;
+}
+function handleFail (fn: (...x: any[]) => any) {
+    return () => {
+        if (fn() === undefined)
+            throw Error('It should return an error.');
+    };
+}
+
+const nameRegex = /^(?<type>\w+)#(?<test>\w+)/;
+function extractSuiteNames (name: string) {
+    interface IRegexpExec extends RegExpExecArray {
+        groups: {
+            type: string;
+            test: string;
+        };
     }
-    for (const schema of test.schemas) {
-        if (desiredTest)
-            if (desiredTest !== test.name && desiredTest !== schema.name)
-                continue;
-        const data = schema.data !== undefined ? schema.data : test.data;
-        const name = createName.bind(undefined, test.name, schema.name);
-        if (schema.jbq && allow.jbq) {
-            const jbqValidators = jbq(createTypes(), { test: schema.jbq });
-            const wrapper = test.fail ? check.vjs.fail : check.vjs.pass;
-            bench.add(name('jbq'), wrapper(jbqValidators.test.bind(undefined, data)));
-        }
-        if (schema.ajv && allow.ajv) {
-            const ajv = new AJV().compile(schema.ajv);
-            const wrapper = test.fail ? check.ajv.fail : check.ajv.pass;
-            bench.add(name('ajv'), wrapper(ajv.bind(undefined, data)));
-        }
-        if (schema.joi && allow.joi) {
-            const wrapper = test.fail ? check.joi.fail : check.joi.pass;
-            bench.add(name('joi'), wrapper(() => Joi.validate(data, schema.joi)));
-        }
-        if (schema.yup && allow.yup) {
-            const wrapper = test.fail ? check.yup.fail : check.yup.pass;
-            bench.add(name('yup'), wrapper(() => schema.yup.validateSync(data)));
-        }
+    const { groups: { type, test } } = nameRegex.exec(name)! as IRegexpExec;
+    return { type, test };
+}
+
+function printSuiteName (name: string, type: string, test: string, valid: boolean) {
+    const tp = `\x1b[36m${type}\x1b[0m`;
+    const tst = `\x1b[33m${test}\x1b[0m`;
+    const nameWithColor = name.replace(type, tp).replace(test, tst);
+    const prefixCol = valid ? 34 : 31;
+    const prefix = `\x1b[${prefixCol}m${valid ? 'Pass: ' : 'Fail: '}\x1b[0m`;
+    return `${prefix}${nameWithColor}`;
+}
+
+function createTests (bench: Benchmark.Suite, suites: ITestSuite[]) {
+    for (const { name, valid, schema } of suites) {
+        const { type, test } = extractSuiteNames(name);
+        if (selectType && selectType !== type) return;
+        if (selectTest && selectTest !== test) continue;
+        const data = createData(schema);
+        const { PerfTestFn } = jbq(createTypes(), { PerfTestFn: schema });
+        const perfFn = (valid ? handlePass : handleFail)(PerfTestFn.bind(undefined, data));
+        bench.add(printSuiteName(name, type, test, valid), perfFn);
     }
 }
 
 const Bench = new Benchmark.Suite();
-for (const test of [
-    ...arrayTests,
-    ...objectTests,
-    ...stringTests,
-    ...numberTests,
-    ...booleanTests,
-]) createTests(Bench, test);
+for (const suites of [
+    suitesAny,
+    suitesArray,
+    suitesBoolean,
+    suitesNumber,
+    suitesObject,
+    suitesString,
+]) createTests(Bench, suites);
 
 Bench
     // tslint:disable-next-line: no-console

@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/krnik/${NAME.REPO}.svg?branch=master)](https://travis-ci.org/krnik/${NAME.REPO})
+[![Build Status](https://travis-ci.org/krnik/${NAME.REPO}.svg?branch=master)]
+[![npm](https://img.shields.io/npm/v/${NAME.REPO}.svg)](vjs-validator)
+(https://travis-ci.org/krnik/${NAME.REPO})
 # Table Of Content
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
@@ -72,7 +74,7 @@ const schemas = {
 const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require('${NAME.REPO}');
 const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
 ```
-For more info about ${NAME.TYPES} see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
+For more info about `${NAME.TYPES}` see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
 > Pass data to validator
 ```javascript
 const data = {

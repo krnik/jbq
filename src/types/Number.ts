@@ -1,57 +1,96 @@
-import { MAX, MIN, MULTIPLE_OF, ONE_OF, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../constants';
+import { CodeBuilder } from '../core/Code';
+import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { is } from '../utils/type';
+import { schemaValidate } from './schemaValidate';
 
 export const TypeNumber = {
-    [TYPE] (_schemaValue: string, data: any) {
-        if (typeof data !== 'number' || data !== data)
-            return `Data should be a number (NaN excluded) type. Got ${typeof data}.`;
+    [TYPE] (_schemaValue: string, $DATA: any): string | void {
+        if (typeof $DATA !== 'number' || $DATA !== $DATA)
+            return `{"message": "Data should be a number (NaN excluded) type. Got ${typeof $DATA}.", "path": "{{schemaPath}}"}`;
     },
-    [MIN] (schemaValue: number, data: any) {
-        if (schemaValue > data)
-            return `Data expected to be equal to at least #{schemaValue}. Got ${data}.`;
+    [VALUE] (
+        parseValues: IParseValuesMinMax,
+        checkDataPath: DataPathChecker,
+        resolveDataPath: DataPathResolver,
+    ): string | undefined {
+        const { schemaValue, schemaPath, dataVariable } = parseValues;
+        if (is.number(schemaValue))
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: schemaValue.toString() }],
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be equal to ${schemaValue}.`,
+                },
+            );
+        if (checkDataPath(schemaValue)) {
+            const sch = schemaValue as IDataPathSchemaValue;
+            const varName = resolveDataPath(sch);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: varName }],
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                },
+            );
+        }
+        const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
+        const valOrResolve = (value: any) => {
+            if (!checkDataPath(value)) return [`${value}`, value];
+            const varName = resolveDataPath(value);
+            return [`\${${varName}}`, varName];
+        };
+        if ('min' in schemaMinMax && 'max' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }, { cmp: '>', val: max }],
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be in range ${minVal}..${maxVal}.`,
+                },
+            );
+        }
+        if ('min' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }],
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be greater than ${minVal}.`,
+                },
+            );
+        }
+        if ('max' in schemaMinMax) {
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '>', val: max }],
+                {
+                    schemaPath,
+                    dataVariable,
+                    message: `Data should be smaller than ${maxVal}.`,
+                },
+            );
+        }
     },
-    [MAX] (schemaValue: number, data: any) {
-        if (schemaValue < data)
-            return `Data expected to be equal to at most #{schemaValue}. Got ${data}.`;
+    [MULTIPLE_OF] (schemaValue: number, $DATA: any): string | void {
+        if ($DATA % schemaValue)
+            return `{"message": "Data expected to be multiply of {{schemaValue}}.", "path": "{{schemaPath}}"}`;
     },
-    [MULTIPLE_OF] (schemaValue: number, data: any) {
-        if (data % schemaValue)
-            return `Data expected to be multiply of #{schemaValue}.`;
-    },
-    [ONE_OF] (schemaValue: number[], data: any) {
-        if (!schemaValue.includes(data))
-            return `Data should be one of #{schemaValue.toString()}.`;
+    [ONE_OF] (schemaValue: number[], $DATA: any): string | void {
+        if (!schemaValue.includes($DATA))
+            return `{"message": "Data should be one of {{schemaValue.toString()}}.", "path": "{{schemaPath}}"}`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [MIN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN, 'number', typeof schemaValue);
-        },
-        [MAX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX, 'number', typeof schemaValue);
-        },
-        [MULTIPLE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MULTIPLE_OF, 'number', typeof schemaValue);
-        },
-        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            switch (true) {
-                case !is.objectInstance(schemaValue, 'Array'):
-                    throw Err.invalidSchemaPropType(ONE_OF, 'number[]', typeof schemaValue);
-                case !schemaValue.length:
-                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
-                case !schemaValue.every((e: any) => is.number(e)):
-                    throw Err.invalidSchemaPropType(
-                        ONE_OF,
-                        'number[]',
-                        typeof schemaValue.find((e: any) => !is.number(e)),
-                    );
-            }
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.NUMBER, TYPE, 'string'),
+        [VALUE]: schemaValidate.minMaxOrNumber(TYPE_NAME.NUMBER, VALUE, true),
+        [MULTIPLE_OF]: schemaValidate.primitive(TYPE_NAME.NUMBER, MULTIPLE_OF, 'number', true),
+        [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.NUMBER, ONE_OF, 'number'),
     },
 };
+
+Object.defineProperty(TypeNumber[VALUE], SYM_METHOD_MACRO, { value: true });

@@ -1,38 +1,53 @@
-import { SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE, SYM_SCHEMA_COLLECTION } from '../../src/constants';
+import { expect } from 'chai';
+import 'mocha';
+import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
 import { jbq } from '../../src/core/jbq';
+import { jbqTypes } from '../../src/main';
 import { createTypes } from '../../src/types/main';
-import { createData, schemas } from '../data/main';
+import { createData } from '../data/main';
+import { suitesAny } from '../data/suites/Any.suites';
+import { suitesArray } from '../data/suites/Array.suites';
+import { suitesBoolean } from '../data/suites/Boolean.suites';
+import { suitesNumber } from '../data/suites/Number.suites';
+import { suitesObject } from '../data/suites/Object.suites';
+import { suitesString } from '../data/suites/String.suites';
+import { isErrJSON } from '../utils';
 
-interface IValidator {
-    [k: string]: (x: any) => string | undefined;
-}
+const suites = {
+    Any: suitesAny,
+    Array: suitesArray,
+    Boolean: suitesBoolean,
+    Number: suitesNumber,
+    Object: suitesObject,
+    String: suitesString,
+};
 
-export default () => describe('Validator', () => {
-    const testData = {
-        valid: createData(schemas.valid),
-        invalid: createData(schemas.invalid),
-    };
-    for (const key of Object.keys(testData.valid))
-        it(`valid value ${key}`, () => {
-            const validator = jbq(createTypes(), schemas.valid);
-            const res = (validator as IValidator)[key](testData.valid[key]);
-            if (res) throw Error('it should not return error message');
+describe('Validator', () => {
+    for (const type of Object.keys(suites)) {
+        type key = keyof typeof suites;
+        describe(type, () => {
+            for (const { name, valid, schema } of suites[type as key]) {
+                const { Test } = jbq(jbqTypes, { Test: schema });
+                const data = createData(schema);
+                if (valid)
+                    it(`VALID: ${name}`, () => {
+                        expect(Test(data)).to.be.equal(undefined);
+                    });
+                else
+                    it(`INVALID: ${name}`, () => {
+                        isErrJSON(Test(data));
+                    });
+            }
         });
-    for (const key of Object.keys(testData.invalid))
-        it(`invalid value ${key}`, () => {
-            const validator = jbq(createTypes(), schemas.invalid);
-            const res = (validator as IValidator)[key](testData.invalid[key]);
-            if (!res) throw Error('it should return error message');
-        });
-
+    }
     describe(TOKEN_BREAK, () => {
         it('simple', () => {
             const stringNullable = {
-                [TYPE] (_base: string, data: any) {
-                    if (data === null) {
+                [TYPE] (_base: string, $DATA: any) {
+                    if ($DATA === null) {
                         //{break}
                     }
-                    if (typeof data !== 'string')
+                    if (typeof $DATA !== 'string')
                         return 'Expected string type!';
                 },
                 [SYM_TYPE_VALIDATE]: {
@@ -57,11 +72,11 @@ export default () => describe('Validator', () => {
         });
         it('collection', () => {
             const numericOrString = {
-                // @ts-ignore
-                [TYPE] (base: string, data: any) {
-                    if (typeof data !== 'number') {
-                        if (typeof data !== 'string')
-                            return 'Expected numeric at: #{schemaPath}.';
+                [TYPE] (_base: string, $DATA: any) {
+                    // tslint:disable-next-line:curly
+                    if (typeof $DATA !== 'number') {
+                        if (typeof $DATA !== 'string')
+                            return 'Expected numeric at: {{schemaPath}}.';
                         //{break}
                     }
                 },
@@ -79,8 +94,7 @@ export default () => describe('Validator', () => {
                     type: 'array',
                     [SYM_SCHEMA_COLLECTION]: {
                         type: 'numeric',
-                        min: 0,
-                        max: 1,
+                        value: { min: 0, max: 1},
                     },
                 },
             });

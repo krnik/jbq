@@ -1,65 +1,98 @@
-import { LEN, MAX_LEN, MIN_LEN, ONE_OF, REGEX, SYM_TYPE_VALIDATE, TYPE } from '../constants';
-import { Err, is } from '../utils/main';
+import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CodeBuilder } from '../core/Code';
+import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { is } from '../utils/type';
+import { schemaValidate } from './schemaValidate';
 
 export const TypeString = {
-    [TYPE] (_schemaValue: string, data: any) {
-        if (typeof data !== 'string')
-            return `Data should be #{schemaValue} type. Got ${typeof data}.`;
+    [TYPE] (_schemaValue: string, $DATA: any): string | void {
+        if (typeof $DATA !== 'string')
+            return `{"message": "Data should be a {{schemaValue}} type. Got ${typeof $DATA}.", "path": "{{schemaPath}}"}`;
     },
-    [MIN_LEN] (schemaValue: number, data: any) {
-        if (data.length < schemaValue)
-            return `Data expected to have length greater or equal than #{schemaValue}. Got ${data.length}.`;
+    [REGEX] (schemaValue: RegExp, $DATA: any): string | void {
+        if (!schemaValue.test($DATA))
+            return `{"message": "Data expected to pass {{schemaValue.toString()}} test.", "path": "{{schemaPath}}"}`;
     },
-    [MAX_LEN] (schemaValue: number, data: any) {
-        if (data.length > schemaValue)
-            return `Data expected to have length less or equal than #{schemaValue} chars. Got ${data.length}.`;
+    [LEN] (
+        parseValues: IParseValuesMinMax,
+        checkDataPath: DataPathChecker,
+        resolveDataPath: DataPathResolver,
+    ): string | undefined {
+        const { schemaValue, dataVariable, schemaPath } = parseValues;
+        const dataVar = `${dataVariable}.length`;
+        if (is.number(schemaValue))
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: schemaValue.toString() }],
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data length should be equal to ${schemaValue}.`,
+                },
+            );
+        if (checkDataPath(schemaValue)) {
+            const sch = schemaValue as IDataPathSchemaValue;
+            const varName = resolveDataPath(sch);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '!==', val: varName }],
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                },
+            );
+        }
+        const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
+        const valOrResolve = (value: any) => {
+            if (!checkDataPath(value)) return [`${value}`, value];
+            const varName = resolveDataPath(value);
+            return [`\${${varName}}`, varName];
+        };
+        if ('min' in schemaMinMax && 'max' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }, { cmp: '>', val: max }],
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data length should be in range ${minVal}..${maxVal}.`,
+                },
+            );
+        }
+        if ('min' in schemaMinMax) {
+            const [minVal, min] = valOrResolve(schemaMinMax.min);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '<', val: min }],
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data length should be greater than ${minVal}.`,
+                },
+            );
+        }
+        if ('max' in schemaMinMax) {
+            const [maxVal, max] = valOrResolve(schemaMinMax.max);
+            return CodeBuilder.createIfReturn(
+                [{ cmp: '>', val: max }],
+                {
+                    schemaPath,
+                    dataVariable: dataVar,
+                    message: `Data length should be smaller than ${maxVal}.`,
+                },
+            );
+        }
     },
-    [REGEX] (schemaValue: RegExp, data: any) {
-        if (!schemaValue.test(data))
-            return `Data expected to pass #{schemaValue.toString()} test.`;
-    },
-    [LEN] (schemaValue: number, data: any) {
-        if (data.length !== schemaValue)
-            return `Data expected to have length equal to #{schemaValue}. Got ${data.length}.`;
-    },
-    [ONE_OF] (schemaValue: string[], data: any) {
-        if (!schemaValue.includes(data))
-            return `Data expected to be one of #{schemaValue.toString()}.`;
+
+    [ONE_OF] (schemaValue: string[], $DATA: any): string | void {
+        if (!schemaValue.includes($DATA))
+            return `{"message": "Data expected to be one of [{{schemaValue.toString()}}].", "path": "{{schemaPath}}"}`;
     },
     [SYM_TYPE_VALIDATE]: {
-        [TYPE] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.string(schemaValue))
-                throw Err.invalidSchemaPropType(TYPE, 'string', typeof schemaValue);
-        },
-        [MIN_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MIN_LEN, 'number', typeof schemaValue);
-        },
-        [MAX_LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(MAX_LEN, 'number', typeof schemaValue);
-        },
-        [REGEX] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.objectInstance(schemaValue, 'RegExp'))
-                throw Err.invalidSchemaPropType(REGEX, 'RegExp', typeof schemaValue);
-        },
-        [LEN] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            if (!is.number(schemaValue))
-                throw Err.invalidSchemaPropType(LEN, 'number', typeof schemaValue);
-        },
-        [ONE_OF] (schemaValue: any = Err.invalidArgument('schemaValue')) {
-            switch (true) {
-                case !is.objectInstance(schemaValue, 'Array'):
-                    throw Err.invalidSchemaPropType(ONE_OF, 'string[]', typeof schemaValue);
-                case !schemaValue.length:
-                    throw Err.unexpectedValue(ONE_OF, 'an array with length at least 1');
-                case !schemaValue.every((e: any) => is.string(e)):
-                    throw Err.invalidSchemaPropType(
-                        ONE_OF,
-                        'string[]',
-                        typeof schemaValue.find((e: any) => !is.string(e)),
-                    );
-            }
-        },
+        [TYPE]: schemaValidate.primitive(TYPE_NAME.STRING, TYPE, 'string'),
+        [REGEX]: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, 'RegExp'),
+        [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN, true),
+        [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string'),
     },
 };
+
+Object.defineProperty(TypeString[LEN], SYM_METHOD_MACRO, { value: true });

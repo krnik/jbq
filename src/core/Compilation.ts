@@ -1,315 +1,226 @@
-import { BASE_DATA_PARAMETER, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_CONFIG, SYM_SCHEMA_PROPERTIES, SYM_TYPE_EXTERNAL, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
-import { IType, TypeWrapper } from '../types/Wrapper';
-import { Err, is } from '../utils/main';
-import { CodeChunk } from './CodeChunks';
+import { PARAMETER, SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
+import { schemaValidate } from '../types/schemaValidate';
+import { IType, ITypeMethod, TypeWrapper } from '../types/Wrapper';
+import { IDataPathSchemaValue, IJBQOptions, IParseValues } from '../typings';
+import { DebugLog } from '../utils/debug';
+import { is } from '../utils/type';
+import { CodeBuilder } from './Code';
+import { CompilationError } from './error';
+import { ResolvedStore } from './ResolvedStore';
 
-const INDENT = Symbol('compilation_indent');
-
-interface ISchema {
-    [SYM_SCHEMA_CONFIG]?: IConfig;
-    [SYM_SCHEMA_PROPERTIES]?: ISchemas;
+export interface ISchema {
+    [SYM_SCHEMA_PROPERTIES]?: {
+        [schemaName: string]: ISchema;
+    };
     [SYM_SCHEMA_COLLECTION]?: ISchema;
     [property: string]: any;
 }
 
-interface ISchemas {
-    [schema: string]: ISchema;
-}
-
-interface ISource {
-    code: string;
-    arguments: any[];
-    parameters: string[];
-    dataParameter: string;
-}
-
-interface IContext {
-    key: string;
-    dataVariable: string;
-    parameterCount: number;
-    resolvedCount: number;
-    schemaPath: string;
-}
-
-interface IDataPath {
-    $dataPath: string | string[];
-}
-
-export interface IConfig {
-    [TYPE]?: string;
-    [INDENT]?: string;
-}
+type Nullable<T> = null | undefined | T;
 
 export class Compilation {
-    private name: string;
+    public Code: CodeBuilder;
+    private Debug: DebugLog;
+    private Store: ResolvedStore;
     private types: TypeWrapper;
     private schema: ISchema;
-    private debugLog: boolean;
+    private helpers = [
+        (v: any) => schemaValidate.dataPath(v),
+        (v: IDataPathSchemaValue) => this.Code.resolveDataPath(v),
+    ];
 
-    constructor (types: TypeWrapper, schemaName: string, schema: ISchema, debug: boolean) {
-        this.types = types;
-        this.name = schemaName;
-        this.schema = schema;
-        this.debugLog = debug;
-    }
-
-    public exec (source = this.createSource(), context = this.createContext()): ISource {
-        const config = this.schema[SYM_SCHEMA_CONFIG] || {};
-        this.parseSchema(this.schema, config, context, source);
-        return source;
-    }
-
-    private parseSchema (
+    constructor (
+        types: TypeWrapper,
         schema: ISchema,
-        config: IConfig,
-        context: IContext,
-        source: ISource,
+        schemaName: string,
+        options: IJBQOptions = {},
     ) {
-        this.debug('schema', context.key, config[INDENT]);
-        const typeName: string = schema[TYPE] || config[TYPE];
+        this.types = types;
+        this.schema = schema;
+        this.Debug = new DebugLog(Boolean(options.debug));
+        this.Store = new ResolvedStore();
+        this.Code = new CodeBuilder(schemaName, this, this.Store, options.handleResolvedPaths);
+    }
+
+    public execSync () {
+        this.parseSchemaSync(this.schema);
+        return this.Code.source;
+    }
+
+    // exec () {}
+
+    public parseSchemaSync (schema: ISchema) {
+        const { Debug, Code } = this;
+        Debug.schema(Code.schemaPath);
+        Debug.incIndent(2);
+        const typeName: Nullable<string> = schema[TYPE];
         if (typeName == null)
-            throw Err.compilation.missingSchemaTypeProperty(schema);
-        if (!this.types.has(typeName))
-            throw Err.compilation.missingType(typeName);
-        const type = this.types.get(typeName)!;
-        const updatedConfig = this.updateConfig(config, schema);
-        const contextSnapshot = this.getContextSnapshot(context);
+            throw CompilationError.missingSchemaTypeProperty(schema);
+        const type = this.getType(typeName);
+        const snapshot = Code.snapshot;
 
-        source.code += CodeChunk.label(context.dataVariable);
+        Code.openBlock();
 
-        const sortedEntries = this.sortByKey({ ...updatedConfig, ...schema }, type[SYM_TYPE_KEY_ORDER]!);
-        for (const [property, schemaValue] of sortedEntries) {
+        const entries = this.sortEntries(schema, type);
+        for (const [property, schemaValue] of entries) {
             if (!type[property])
-                throw Err.compilation.missingTypeMethod(typeName, property);
-            this.updateContextKey(context, property);
-            this.debug(
-                'property',
-                `${context.key} @ ${context.schemaPath}`,
-                updatedConfig[INDENT],
-            );
-            if (!this.isDataPath(schemaValue))
-                this.parseProperty(type, schemaValue, context, source);
-            else
-                this.parsePropertyDataPath(type, schemaValue, context, source);
-            context.schemaPath = contextSnapshot.schemaPath;
+                throw CompilationError.missingTypeMethod(typeName, property);
+            type[SYM_TYPE_VALIDATE][property](schemaValue);
+            Debug.property(property);
+            Code.updateContext(property);
+            this.parseProperty(type[property], schemaValue);
+            snapshot.restore();
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
-            const keys = [
-                ...Object.getOwnPropertyNames(schema[SYM_SCHEMA_PROPERTIES]),
-                ...Object.getOwnPropertySymbols(schema[SYM_SCHEMA_PROPERTIES]),
+            const subSchemas = schema[SYM_SCHEMA_PROPERTIES]!;
+            const properties = [
+                ...Object.getOwnPropertyNames(subSchemas),
+                ...Object.getOwnPropertySymbols(subSchemas),
             ];
-            for (const [i, key] of keys.entries()) {
-                if (typeof key !== 'string') {
-                    context.parameterCount++;
-                    const parameter = `$${context.parameterCount}`;
-                    this.updateContextKey(context, key.toString(), `_${i}`);
-                    source.arguments.push(key);
-                    source.parameters.push(parameter);
-                    source.code += CodeChunk.defineVariable(
-                        context.dataVariable,
-                        contextSnapshot.dataVariable,
-                        parameter,
-                    );
+            for (const property of properties) {
+                if (typeof property !== 'string') {
+                    const parameter = Code.createParam(property);
+                    Code.defineVar(snapshot.dataVariable, parameter);
                 } else {
-                    this.updateContextKey(context, key, `_${i}`);
-                    source.code += CodeChunk.defineVariable(
-                        context.dataVariable,
-                        contextSnapshot.dataVariable,
-                        this.toLiteral(key),
-                    );
+                    Code.updateContext(property, true);
+                    Code.defineVar(snapshot.dataVariable, CodeBuilder.propertyAccessor(property));
                 }
-                this.parseSchema(
-                    schema[SYM_SCHEMA_PROPERTIES]![key as any],
-                    updatedConfig,
-                    context,
-                    source,
+                this.parseSchemaSync(
+                    schema[SYM_SCHEMA_PROPERTIES]![property as keyof typeof subSchemas],
                 );
-                context.dataVariable = contextSnapshot.dataVariable;
-                context.schemaPath = contextSnapshot.schemaPath;
+                snapshot.restore();
             }
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-            this.updateContextKey(context, '[]', '_i');
+            const elementSchema = schema[SYM_SCHEMA_COLLECTION]!;
+            Code.updateContext('[]', true);
             if (type[SYM_TYPE_FOR_LOOP]) {
-                const accessor = `${contextSnapshot.dataVariable}$i`;
-                source.code += CodeChunk.forLoop(
-                    context.dataVariable,
-                    contextSnapshot.dataVariable,
-                    accessor,
-                );
-                this.parseSchema(
-                    schema[SYM_SCHEMA_COLLECTION]!,
-                    updatedConfig,
-                    context,
-                    source,
-                );
-                source.code += CodeChunk.closeBlock();
+                Code.loopFor(snapshot.dataVariable);
+                this.parseSchemaSync(elementSchema);
+                Code.closeBlock();
             } else {
-                source.code += CodeChunk.forOfLoop(
-                    context.dataVariable,
-                    contextSnapshot.dataVariable,
-                );
-                this.parseSchema(
-                    schema[SYM_SCHEMA_COLLECTION]!,
-                    updatedConfig,
-                    context,
-                    source,
-                );
+                Code.loopForOf(snapshot.dataVariable);
+                this.parseSchemaSync(elementSchema);
             }
-            context.dataVariable = contextSnapshot.dataVariable;
-            context.schemaPath = contextSnapshot.schemaPath;
+            snapshot.restore();
         }
 
-        source.code += CodeChunk.closeBlock();
+        Code.closeBlock();
+        Debug.incIndent(-2);
     }
 
-    private parseProperty (type: IType, schemaValue: any, context: IContext, source: ISource) {
-        type[SYM_TYPE_VALIDATE][context.key](schemaValue);
-        const method = type[context.key];
-        if (method[SYM_TYPE_EXTERNAL]) {
-            context.parameterCount++;
-            const parameter = `$${context.parameterCount}`;
-            source.parameters.push(parameter);
-            source.arguments.push(method.bind(undefined, schemaValue, context.schemaPath));
-            source.code += CodeChunk.externCall(parameter, context.dataVariable);
-        } else {
-            const paramOrLiteral = is.primitiveLiteral(schemaValue)
-                ? this.toLiteral(schemaValue)
-                : (context.parameterCount++ , `$${context.parameterCount}`);
-            const body = this.getMethodBody(method, context, schemaValue, paramOrLiteral);
-            source.code += body;
-            if (!is.primitiveLiteral(schemaValue)) {
-                source.parameters.push(paramOrLiteral);
-                source.arguments.push(schemaValue);
-            }
+    private parseProperty (method: ITypeMethod, schemaValue: any) {
+        const parseValues: IParseValues = {
+            schemaValue,
+            schemaPath: this.Code.schemaPath,
+            dataVariable: this.Code.dataVariable,
+        };
+        switch (true) {
+            case method.hasOwnProperty(SYM_METHOD_CLOSURE):
+                this.parseMethodWithClosure(method, parseValues);
+                break;
+            case method.hasOwnProperty(SYM_METHOD_MACRO):
+                this.parseMethodMacro(method, parseValues);
+                break;
+            default:
+                this.parseMethodExtractBody(method, parseValues);
         }
+        this.Code.appendCode('\n');
     }
 
-    private parsePropertyDataPath (
-        type: IType,
-        schemaValue: IDataPath,
-        context: IContext,
-        source: ISource,
-    ) {
-        const method = type[context.key];
-        context.resolvedCount++;
-        const resolvedPath = `${context.dataVariable}_data_${context.resolvedCount}`;
-        source.code += CodeChunk.resolveDataCall(schemaValue.$dataPath, resolvedPath);
-        if (method[SYM_TYPE_EXTERNAL]) {
-            context.parameterCount++;
-            const parameter = `$${context.parameterCount}`;
-            source.parameters.push(parameter);
-            source.arguments.push(method);
-            source.code += CodeChunk.externCallResolve(
-                parameter,
-                resolvedPath,
-                this.toLiteral(context.schemaPath),
-                context.dataVariable,
-            );
-        } else
-            source.code += this.getMethodBody(
-                method,
-                context,
-                `\${${resolvedPath}}`,
-                resolvedPath,
-            );
-    }
-
-    private getMethodBody (
-        method: () => void,
-        context: IContext,
-        schemaValue: any,
-        paramOrLiteral: string,
-    ) {
+    private parseMethodExtractBody (method: ITypeMethod, parseValues: IParseValues) {
+        const { schemaValue, dataVariable } = parseValues;
+        const isDataPath = schemaValidate.dataPath(parseValues.schemaValue);
+        let resolvedPath: string;
+        let suffix = '';
+        if (isDataPath) {
+            this.Store.openVars();
+            resolvedPath = this.Code.resolveDataPath(schemaValue);
+            parseValues.resolvedValue = resolvedPath;
+            suffix = this.Code.verifyVars();
+        }
         let body = method.toString();
         const start = body.indexOf('{');
         const end = body.lastIndexOf('}');
         body = body
             .slice(start, end + 1)
-            .replace(TOKEN_BREAK, `break label_${context.dataVariable};`);
-        body = this.evalExpressions(body, context, schemaValue);
-        body = this.replaceToken(body, 'data', context.dataVariable);
-        return this.replaceToken(body, 'schemaValue', paramOrLiteral) + '\n';
+            .replace(TOKEN_BREAK, this.Code.createBreakStatement());
+        body = this.evalExpressions(body, parseValues);
+        body = this.replaceToken(body, PARAMETER.DATA, dataVariable);
+        const param = isDataPath
+            ? resolvedPath!
+            : is.primitiveLiteral(schemaValue)
+                ? this.toLiteral(schemaValue)
+                : this.Code.createParam(schemaValue);
+        body = this.replaceToken(body, 'schemaValue', param);
+        this.Code.appendCode(body + suffix);
     }
 
-    private evalExpressions (str: string, context: IContext, schemaValue: string) {
+    private parseMethodWithClosure (method: ITypeMethod, parseValues: IParseValues) {
+        this.Store.openVars();
+        const snapshot = this.Code.snapshot;
+        const { schemaValue } = parseValues;
+        const resolvedValue = schemaValidate.dataPath(schemaValue)
+            ? this.Code.resolveDataPath(schemaValue)
+            : undefined;
+        const fnParam = this.Code.createParam(method);
+        const schemaParam = resolvedValue
+            || (is.primitiveLiteral(schemaValue)
+                ? this.toLiteral(schemaValue)
+                : this.Code.createParam(schemaValue));
+        const suffix = this.Code.verifyVars();
+        snapshot.restore();
+        this.Code.callFnWithClosure(fnParam, schemaParam);
+        this.Code.appendCode(suffix);
+    }
+
+    private parseMethodMacro (method: ITypeMethod, parseValues: IParseValues) {
+        this.Store.openVars();
+        const code = method(parseValues, ...this.helpers) as string;
+        const suffix = this.Code.verifyVars();
+        this.Code.appendCode(code + suffix);
+    }
+
+    private evalExpressions (str: string, parseValues: IParseValues) {
+        const { schemaPath, schemaValue, resolvedValue } = parseValues;
         return str.replace(TOKEN_EXPR_REGEX, (_match, expr) => {
-            return new Function('schemaPath', 'schemaValue', `return ${expr}`)(context.schemaPath, schemaValue);
+            const fn = new Function(
+                'schemaPath',
+                'schemaValue',
+                'resolvedValue',
+                `return ${expr}`,
+            );
+            return fn(schemaPath, schemaValue, `\${${resolvedValue}}`);
         });
     }
 
-    private isDataPath (schemaValue: any) {
-        return typeof schemaValue === 'object' && schemaValue.hasOwnProperty('$dataPath');
+    private replaceToken (str: string, token: string, to: string) {
+        const escaped = token.replace(/[/{}$]/g, (m) => `\\${m}`);
+        const regex = new RegExp(`[^\\w_\\-\\$?](${escaped})\\b[^\\w$_]?`, 'g');
+        return str.replace(regex, (match, $1) => match.replace($1, to));
+    }
+
+    private getType (typeName: string) {
+        if (!this.types.has(typeName))
+            throw CompilationError.missingType(typeName);
+        return this.types.get(typeName)!;
+    }
+
+    private sortEntries (schema: ISchema, type: IType) {
+        const sortOrder = type[SYM_TYPE_KEY_ORDER];
+        const entries = Object.entries(schema);
+        const firstEntries = sortOrder
+            .map((key) => entries.find(([k]) => key === k)!)
+            .filter((entry) => entry);
+        const tailEntries = entries.filter(([key]) => !sortOrder.includes(key));
+        return [...firstEntries, ...tailEntries];
     }
 
     private toLiteral (schemaValue: any) {
         if (typeof schemaValue === 'string')
             return `\`${schemaValue.replace(/`/g, '\\`')}\``;
         return schemaValue;
-    }
-
-    private replaceToken (str: string, token: string, to: string) {
-        const regex = new RegExp(`[^\\w$_]\\b(${token})\\b[^\\w$_]?`, 'g');
-        return str.replace(regex, (match, $1) => match.replace($1, to));
-    }
-
-    private updateConfig (config: IConfig, schema: ISchema, indent = '') {
-        const newConfig = {
-            ...config,
-            ...(schema[SYM_SCHEMA_CONFIG] || {}),
-        };
-        newConfig[INDENT] = (newConfig[INDENT] || '') + indent;
-        return newConfig;
-    }
-
-    private sortByKey (schema: ISchema, firstKeys: string[]) {
-        const entries = Object.entries(schema);
-        const first = firstKeys
-            .map((key) => entries.find(([k]) => k === key)!)
-            .filter((e) => e);
-        const rest = entries.filter(([key]) => !firstKeys.includes(key));
-        return [...first, ...rest];
-    }
-
-    private createContext (): IContext {
-        return {
-            key: '',
-            dataVariable: BASE_DATA_PARAMETER,
-            parameterCount: -1,
-            resolvedCount: -1,
-            schemaPath: this.name.toUpperCase(),
-        };
-    }
-
-    private getContextSnapshot (context: IContext) {
-        return Object.assign({}, context);
-    }
-
-    private updateContextKey (context: IContext, key: string, dataVarSuffix?: string) {
-        context.key = key;
-        context.schemaPath = `${context.schemaPath}/${key}`;
-        if (dataVarSuffix)
-            context.dataVariable = context.dataVariable + dataVarSuffix;
-    }
-
-    private createSource (): ISource {
-        return {
-            code: '',
-            arguments: [],
-            parameters: [],
-            dataParameter: BASE_DATA_PARAMETER,
-        };
-    }
-
-    private debug (level: 'schema' | 'property', message: string, indent?: string) {
-        if (!this.debugLog) return;
-        const levels = {
-            schema: (m: string, i: string) => `\x1b[32m${i}${m}\x1b[0m`,
-            property: (m: string, i: string) => `\x1b[36m${i}${m}\x1b[0m`,
-        };
-        // tslint:disable-next-line
-        return console.log(levels[level](message, indent || ''));
     }
 }
