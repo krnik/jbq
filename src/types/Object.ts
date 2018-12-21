@@ -1,6 +1,6 @@
 import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { CodeBuilder } from '../core/Code';
-import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
 import { is } from '../utils/type';
 import { schemaValidate } from './schemaValidate';
 
@@ -22,14 +22,15 @@ function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
                 },
             );
         if (checkDataPath(schemaValue)) {
-            const sch = schemaValue as IDataPathSchemaValue;
-            const varName = resolveDataPath(sch);
+            const varName = resolveDataPath(schemaValue);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
                 {
                     schemaPath,
                     dataVariable: dataVar,
-                    message: `Data should have exactly \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])} keys.`,
+                    message: `Data should have exactly \${${varName}} ${
+                        CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
+                    } keys.`,
                 },
             );
         }

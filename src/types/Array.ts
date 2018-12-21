@@ -1,6 +1,6 @@
 import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_METHOD_MACRO, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { CodeBuilder } from '../core/Code';
-import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
 import { is } from '../utils/type';
 import { schemaValidate } from './schemaValidate';
 
@@ -17,10 +17,14 @@ export const TypeArray = {
     },
     [SOME] (schemaValue: arrMethodCallback, $DATA: any[]): string | void {
         const len = $DATA.length;
-        for (let i = 0; i < len; i++) {
-            if (schemaValue($DATA[i])) break;
-            if (i === len - 1) return '{"message": "At least one element of data should satisfy test function.", "path": "{{schemaPath}}"}';
-        }
+        let pass = false;
+        for (let i = 0; i < len; i++)
+            if (schemaValue($DATA[i])) {
+                pass = true;
+                break;
+            }
+        if (!pass)
+            return '{"message": "At least one element of data should satisfy test function.", "path": "{{schemaPath}}"}';
     },
     [INCLUDES] (schemaValue: any, $DATA: any[]): string | void {
         let found = false;
@@ -49,14 +53,13 @@ export const TypeArray = {
                 },
             );
         if (checkDataPath(schemaValue)) {
-            const sch = schemaValue as IDataPathSchemaValue;
-            const varName = resolveDataPath(sch);
+            const varName = resolveDataPath(schemaValue);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
                 {
                     schemaPath,
                     dataVariable: dataVar,
-                    message: `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                    message: `Data length should be equal to \${${varName}} ${CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])}.`,
                 },
             );
         }

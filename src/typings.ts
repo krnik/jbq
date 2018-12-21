@@ -4,7 +4,7 @@ export type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never 
 
 interface ISchemaMin { min: number; }
 interface ISchemaMax { max: number; }
-type SchemaMinMax = ISchemaMax | ISchemaMin | (ISchemaMax & ISchemaMin);
+type SchemaMinMax = ISchemaMax | ISchemaMin;
 
 export interface IDataPathSchemaValue {
     [PROP_DATA_PATH]: string | string[];
@@ -24,7 +24,7 @@ export interface IParseValuesMinMax extends IParseValues {
 
 export type DataPathResolver = (schemaValue: IDataPathSchemaValue) => string;
 
-export type DataPathChecker = (schemaValue: any) => boolean;
+export type DataPathChecker = (schemaValue: any) => schemaValue is IDataPathSchemaValue;
 
 export interface IJBQOptions {
     debug?: boolean;

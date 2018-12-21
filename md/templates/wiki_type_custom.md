@@ -1,4 +1,6 @@
-# Custom types in ${NAME.LIB}
+Soon
+
+<!-- # Custom types in ${NAME.LIB}
 One of ${NAME.LIB} goals was to allow users to create own type definitions with ease. Of course in order to work properly you have to follow some rules.
 
 ## Adding type to ${NAME.LIB}
@@ -200,4 +202,4 @@ function (data) {
 }
 ```
 
-> If type method has [`${SYM.TYPE_EXTERNAL}`] property it will not be able to break the labeled code block.
+> If type method has [`${SYM.TYPE_EXTERNAL}`] property it will not be able to break the labeled code block. -->
