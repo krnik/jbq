@@ -155,7 +155,7 @@ export const MD = {
 };
 
 export const BADGE = {
-    STATUS: '![](https://img.shields.io/travis/krnik/jbq.svg)',
+    STATUS: '[![Build Status](https://travis-ci.org/krnik/jbq.svg?branch=master)](https://travis-ci.org/krnik/jbq)',
     NPM: '[![](https://img.shields.io/npm/v/jbq.svg)](https://www.npmjs.com/package/jbq)',
     TYPES: '![](https://img.shields.io/npm/types/jbq.svg)',
 };

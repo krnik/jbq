@@ -1,4 +1,4 @@
-![](https://img.shields.io/travis/krnik/jbq.svg)
+[![Build Status](https://travis-ci.org/krnik/jbq.svg?branch=master)](https://travis-ci.org/krnik/jbq)
 [![](https://img.shields.io/npm/v/jbq.svg)](https://www.npmjs.com/package/jbq)
 ![](https://img.shields.io/npm/types/jbq.svg)
 
