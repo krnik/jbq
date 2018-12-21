@@ -1,6 +1,6 @@
 {
   "name": "jbq",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "JBQ - Yet another customizable JS schema validator.",
   "main": "lib/main.js",
   "directories": {
