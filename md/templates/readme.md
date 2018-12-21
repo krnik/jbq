@@ -6,7 +6,7 @@
 
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
-  - [{{MD.AREADME(MD.WIKI.DATA_PATH)}}](#mdareadmemdwikidatapath)
+  - [DataPath](#datapath)
 - [Wiki](#wiki)
 
 ***
@@ -52,7 +52,8 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 ```
 {{MD.example(_, 'use')}}
 
-### {{MD.AREADME(MD.WIKI.DATA_PATH)}}
+### DataPath
+{{MD.AREADME(MD.WIKI.DATA_PATH)}}
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 

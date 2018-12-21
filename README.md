@@ -6,7 +6,7 @@
 
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
-  - [[DataPath](https://github.com/krnik/jbq/wiki/DataPath)](#mdareadmemdwikidatapath)
+  - [DataPath](#datapath)
 - [Wiki](#wiki)
 
 ***
@@ -103,7 +103,8 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 ```
 
 
-### [DataPath](https://github.com/krnik/jbq/wiki/DataPath)
+### DataPath
+[DataPath](https://github.com/krnik/jbq/wiki/DataPath)
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 
