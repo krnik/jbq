@@ -1,7 +1,16 @@
-## Parser
-- [How it works?](#how-it-works?)
+Soon
+
+<!-- ## Parser
+- [How it works?](#how-it-works)
 - [Symbols](#symbols)
+  - [`${SYM.TYPE_KEY_ORDER}`](#symtypekeyorder)
+  - [`${SYM.TYPE_FOR_LOOP}`](#symtypeforloop)
+  - [`${SYM.TYPE_EXTERNAL}`](#symtypeexternal)
+  - [`${SYM.TYPE_VALIDATE}`](#symtypevalidate)
+  - [`${SYM.SCHEMA_PROPERTIES}`](#symschemaproperties)
+  - [`${SYM.SCHEMA_COLLECTION}`](#symschemacollection)
 - [Schema Config](#schema-config)
+  - [`${SYM.SCHEMA_CONFIG}`](#symschemaconfig)
 
 [Source Code](${PATH.PARSER.SRC})
 ***
@@ -174,4 +183,4 @@ const schema = {
         },
     },
 };
-```
+``` -->

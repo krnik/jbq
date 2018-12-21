@@ -1,0 +1,6 @@
+- Types
+    - {{MD.A(TYPE_NAME.ANY)}}
+    - {{MD.A(TYPE_NAME.ARRAY)}}
+    - {{MD.A(TYPE_NAME.NUMBER)}}
+    - {{MD.A(TYPE_NAME.OBJECT)}}
+    - {{MD.A(TYPE_NAME.STRING)}}

@@ -1,4 +1,6 @@
-## Type Wrapper
+Soon
+
+<!-- ## Type Wrapper
 > TypeWrapper is an instance to manage all validator types. It's based on Map object.
 
 [Source Code](${PATH.TYPE_WRAPPER.SRC})
@@ -24,4 +26,4 @@ If we choose the name `charlie` then we will be able to use `charlie` as a ${TYP
 
 **`typeObject`** is object that defines our new type. See [Custom Type](${WIKI.CUSTOM_TYPE}) for more details.
 
-**`typeToExtend`** name of type object that will be set as a prototype of the new type.
+**`typeToExtend`** name of type object that will be set as a prototype of the new type. -->

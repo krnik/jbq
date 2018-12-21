@@ -1,149 +1,165 @@
-[![Build Status](https://travis-ci.org/krnik/jbq.svg?branch=master)](https://travis-ci.org/krnik/jbq)
-# Table Of Content
+![](https://img.shields.io/travis/krnik/jbq.svg)
+[![](https://img.shields.io/npm/v/jbq.svg)](https://www.npmjs.com/package/jbq)
+![](https://img.shields.io/npm/types/jbq.svg)
+
+![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)
+
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
+  - [[DataPath](https://github.com/krnik/jbq/wiki/DataPath)](#mdareadmemdwikidatapath)
 - [Wiki](#wiki)
+
 ***
 ## Introduction
 ***
-Hi! Welcome to JBQ flexible validation library.
+Hi! Welcome to JBQ validation library.
 
-Features:
-- data validation
-- customisable types
-- based on schemas
+**Core Features:**
+- *fast data validation* - validator returns error message on first error
+- *based on schemas*
+
+Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
+
+**Types and Keywords:**
+- *[any](https://github.com/krnik/jbq/wiki/Type_Any)*: `required`, `type`
+- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `required`, `type`, `every`, `some`, `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `required`, `type`, `regex`, `len`, `oneOf`
+
+**Schema Symbol Keywords:**
+- *`Symbol.for('schema_properties')`*: defines a shape of subschemas of current schema
+- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
+
+**Other Features:**
+- *ability to define own types*
+- *ability to extend types with new keywords*
+- *prototypal inheritance of types*
+
+**Future Features:**
+- *asynchronous validator function execution*
+
 ***
 ## Usage Example
 ***
-> Define your schemas
-```javascript
-// This symbol is tells JBQ that properties
-// of passed value will be validated as well
-// You can read more about it in parser wiki page
-const PROPS = Symbol.for('schema_properties');
-const ITEMS = Symbol.for('schema_collection');
-const schemas = {
-    // User schema expects value to be an object
-    // with properties ['names', 'email']
-    User: {
-        // type tells JBQ which type
-        // should be used to validate data
-        // it is the only required property for schema
-        type: 'object',
-        properties: ['name', 'email'],
-        [PROPS]: {
-            names: {
-                type: 'array',
-                maxLen: 2,
-                [ITEMS]: {
+JBQ exports two entities, `jbq` and `jbqTypes`.
+- `jbq`: a function that will create validation functions
+- `jbqTypes`: [TypeWrapper](https://github.com/krnik/jbq/wiki/TypeWrapper) instance, a set of defined types used during schema parsing.
+
+```typescript
+    const { jbq, jbqTypes } = require('jbq');
+    const validators = jbq(types, schemas[, options]);
+```
+```typescript
+    const PROPS = Symbol.for('schema_properties');
+    const ITEMS = Symbol.for('schema_collection');
+    const schemas = {
+        // User schema expects value to be an object
+        // with properties ['names', 'email']
+        // 'name' property will be an array of string with 2 elements
+        User: {
+            type: 'object',
+            properties: ['name', 'email'],
+            [PROPS]: {
+                names: {
+                    type: 'array',
+                    len: 2,
+                    [ITEMS]: {
+                        type: 'string',
+                    },
+                },
+                email: {
                     type: 'string',
                 },
             },
-            email: {
-                type: 'string',
-            },
-        }
-    },
-    TwoChars: {
-        type: 'string',
-        len: 2,
-    },
-    Numbers: {
-        type: 'object',
-        [Symbol.for('schema_config')]: {
-            type: 'number',
         },
-        [PROPS]: {
-            smallest: {
-                min: 0,
-                max: 100,
-            },
-            medium: {
-                min: { $dataPath: 'smallest' },
-                max: { $dataPath: 'biggest' },
-            },
+        // TwoChars will be an string that will contain only 2 characters
+        TwoChars: {
+            type: 'string',
+            len: 2,
         },
-    },
-};
-```
-> Import and create JBQ instance
-```javascript
-// jbqTypes allows you to add your custom types
-const { jbq, jbqTypes } = require('jbq');
-const validator = jbq(jbqTypes, schemas);
-```
-For more info about jbqTypes see [WIKI](../../wiki/type-wrapper).
-> Pass data to validator
-```javascript
-const data = {
-    names: ['Jean', 'Claude'],
-    email: 'front@kick.com',
-};
-validator.User(data);
-// => undefined
-validator.TwoChars('122');
-// => error message
-validator.Numbers({ smallest: 5, medium: 10, biggest: 20 });
-// => undefined
-validator.Numbers({ smallest: 1, medium: 2, biggest: 0 });
-// => error message
+    };
+
+    const { User, TwoChars } = jbq(jbqTypes, schemas);
+
+    TwoChars('22');
+    // -> undefined: no error occured, data is valid
+    TwoChars('');
+    // -> error message as JSON string format
+
+    const userDataValid = {
+        email: 'just a string, no more requirements specified in schema',
+        names: ['Git', 'Hub'],
+    };
+    User(userDataValid);
+    // -> undefined: no error occured, data is valid
+
+    const userDataInvalid = {
+        email: 'a string',
+        names: ['Git', new String('Hub')],
+    };
+    User(userDataInvalid);
+    // -> error message saying that not all of `names` elements are string primitives
 ```
 
-### `$dataPath`
+
+### [DataPath](https://github.com/krnik/jbq/wiki/DataPath)
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
+
+**Keywords that support $dataPath:**
+- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `value`, `multipleOf`
+- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `len`
+
 Lets consider following object:
 ```javascript
 const object = {
         breakfast: {
             egg: 10.25,
-        },
-        'fruit/vegetable': {
-            apple: 'green',
-            carrot: 'red',
+            tea: 5.0,
         },
     },
 };
+
+{ $dataPath: 'breakfast/egg' }; // will match object.breakfast.egg -> 10.25
+{ $dataPath: 'breakfast/tea' }; // will match object.breakfast.tea -> 5.0
 ```
-
-```javascript
-// this path will match object.breakfast.egg ==> 10.25
-{ $dataPath: 'breakfast/egg' }
-// this path uses array syntax since one of properties includes '/'
-// it will match object['fruit/vegetable'].carrot ==> 'red'
-{ $dataPath: ['fruit/vegetable', 'carrot'] }
-
-const schemas = {
-    Menu: {
-        type: 'object',
-        [Symbol.for('schema_properties')]: {
-            colors: {
-                type: 'array',
-                includes: {
-                    $dataPath: ['fruit/vegetable', 'apple'],
+```typescript
+    const PROPS = Symbol.for('schema_properties');
+    const schemas = {
+        Menu: {
+            type: 'object',
+            [PROPS]: {
+                colors: {
+                    type: 'array',
+                    includes: {
+                        $dataPath: 'mainColor',
+                    },
                 },
             },
         },
-    },
-};
-const validator = jbq(jbqTypes, schemas);
-const data = {
-    colors: ['red', 'green', 'blue'],
-    'fruit/vegetable': {
-        apple: 'red',
-    },
-};
-validator.Menu(data);
-// => undefined
+    };
+    const validator = jbq(jbqTypes, schemas);
+    const dataValid = {
+        colors: ['red', 'green', 'blue'],
+        mailColor: 'red',
+    };
+    validator.Menu(dataValid);
+    // -> undefined
+
+    const dataInvalid = {
+        colors: ['yellow', 'blue'],
+        mainColor: 'red',
+    };
+    validator.Menu(dataInvalid);
+    // -> error message
 ```
-In case the path resolves to `undefined` the property using `$dataPath` resolution will be skipped.
+
+
+In case the `$dataPath` resolves to `undefined`, validator will handle the situation depending on `handleResolvedPaths` settings value.
+
 ***
-
-### Types
-Besides 6 built-in types this library offers you a possiblity to create your own type with own keywords and extend them with existing types.
-
-## Wiki
-- [Types](../../wiki/type)
-- [Type Wrapper](../../wiki/type-wrapper)
-- [Schema](../../wiki/parser)
+## [Wiki](/wiki)
 ***

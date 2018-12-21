@@ -74,6 +74,42 @@ export const suitesArray: ITestSuite[] = [
         },
     },
     {
+        name: `${TYPE_NAME.ARRAY}#${INCLUDES} -- ${PROP_DATA_PATH}`,
+        valid: true,
+        schema: {
+            [TYPE]: TYPE_NAME.OBJECT,
+            [SYM_SCHEMA_PROPERTIES]: {
+                element: {
+                    [TYPE]: TYPE_NAME.ANY,
+                    [SYM_FAKER]: () => 100,
+                },
+                arr: {
+                    [TYPE]: TYPE_NAME.ARRAY,
+                    [INCLUDES]: { [PROP_DATA_PATH]: 'element' },
+                    [SYM_FAKER]: () => [1, 10, 100],
+                },
+            },
+        },
+    },
+    {
+        name: `${TYPE_NAME.ARRAY}#${INCLUDES} -- ${PROP_DATA_PATH}`,
+        valid: false,
+        schema: {
+            [TYPE]: TYPE_NAME.OBJECT,
+            [SYM_SCHEMA_PROPERTIES]: {
+                element: {
+                    [TYPE]: TYPE_NAME.ANY,
+                    [SYM_FAKER]: () => 1000,
+                },
+                arr: {
+                    [TYPE]: TYPE_NAME.ARRAY,
+                    [INCLUDES]: { [PROP_DATA_PATH]: 'element' },
+                    [SYM_FAKER]: () => [1, 10, 100],
+                },
+            },
+        },
+    },
+    {
         name: `${TYPE_NAME.ARRAY}#${LEN} -- exact`,
         valid: true,
         schema: {

@@ -1,6 +1,6 @@
 import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../constants';
 import { CodeBuilder } from '../core/Code';
-import { DataPathChecker, DataPathResolver, IDataPathSchemaValue, IParseValuesMinMax } from '../typings';
+import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
 import { is } from '../utils/type';
 import { schemaValidate } from './schemaValidate';
 
@@ -25,14 +25,15 @@ export const TypeNumber = {
                 },
             );
         if (checkDataPath(schemaValue)) {
-            const sch = schemaValue as IDataPathSchemaValue;
-            const varName = resolveDataPath(sch);
+            const varName = resolveDataPath(schemaValue);
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: varName }],
                 {
                     schemaPath,
                     dataVariable,
-                    message: `Data should be equal to \${${varName}} ${CodeBuilder.parsePath(sch[PROP_DATA_PATH])}.`,
+                    message: `Data should be equal to \${${varName}} ${
+                        CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
+                    }.`,
                 },
             );
         }

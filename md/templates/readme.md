@@ -1,151 +1,84 @@
-[![Build Status](https://travis-ci.org/krnik/${NAME.REPO}.svg?branch=master)]
-[![npm](https://img.shields.io/npm/v/${NAME.REPO}.svg)](vjs-validator)
-(https://travis-ci.org/krnik/${NAME.REPO})
-# Table Of Content
+{{BADGE.STATUS}}
+{{BADGE.NPM}}
+{{BADGE.TYPES}}
+
+![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)
+
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
+  - [{{MD.AREADME(MD.WIKI.DATA_PATH)}}](#mdareadmemdwikidatapath)
 - [Wiki](#wiki)
+
 ***
 ## Introduction
 ***
-Hi! Welcome to ${NAME.LIB} flexible validation library.
+Hi! Welcome to JBQ validation library.
 
-Features:
-- data validation
-- customisable types
-- based on schemas
+**Core Features:**
+- *fast data validation* - validator returns error message on first error
+- *based on schemas*
+
+Every schema has only one required keywords which is `{{TYPE}}`. This keyword allows to resolve all other keywords of the schema.
+
+**Types and Keywords:**
+- *{{MD.AREADME(TYPE_NAME.ANY)}}*: `{{REQUIRED}}`, `{{TYPE}}`
+- *{{MD.AREADME(TYPE_NAME.ARRAY)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
+- *{{MD.AREADME(TYPE_NAME.NUMBER)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
+- *{{MD.AREADME(TYPE_NAME.OBJECT)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *{{MD.AREADME(TYPE_NAME.STRING)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`
+
+**Schema Symbol Keywords:**
+- *`Symbol.for('schema_properties')`*: defines a shape of subschemas of current schema
+- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
+
+**Other Features:**
+- *ability to define own types*
+- *ability to extend types with new keywords*
+- *prototypal inheritance of types*
+
+**Future Features:**
+- *asynchronous validator function execution*
+
 ***
 ## Usage Example
 ***
-> Define your schemas
-```javascript
-// This symbol is tells ${NAME.LIB} that properties
-// of passed value will be validated as well
-// You can read more about it in ${WIKI.PARSER} wiki page
-const PROPS = ${SYM.SCHEMA_PROPERTIES};
-const ITEMS = ${SYM.SCHEMA_COLLECTION};
-const schemas = {
-    // User schema expects value to be an object
-    // with properties ['names', 'email']
-    User: {
-        // ${TYPE_METHOD.TYPE} tells ${NAME.LIB} which type
-        // should be used to validate data
-        // it is the only required property for schema
-        ${TYPE_METHOD.TYPE}: 'object',
-        ${TYPE_METHOD.PROPERTIES}: ['name', 'email'],
-        [PROPS]: {
-            names: {
-                ${TYPE_METHOD.TYPE}: 'array',
-                ${TYPE_METHOD.MAX_LEN}: 2,
-                [ITEMS]: {
-                    ${TYPE_METHOD.TYPE}: 'string',
-                },
-            },
-            email: {
-                ${TYPE_METHOD.TYPE}: 'string',
-            },
-        }
-    },
-    TwoChars: {
-        ${TYPE_METHOD.TYPE}: 'string',
-        ${TYPE_METHOD.LEN}: 2,
-    },
-    Numbers: {
-        ${TYPE_METHOD.TYPE}: 'object',
-        [${SYM.SCHEMA_CONFIG}]: {
-            ${TYPE_METHOD.TYPE}: 'number',
-        },
-        [PROPS]: {
-            smallest: {
-                ${TYPE_METHOD.MIN}: 0,
-                ${TYPE_METHOD.MAX}: 100,
-            },
-            medium: {
-                ${TYPE_METHOD.MIN}: { $dataPath: 'smallest' },
-                ${TYPE_METHOD.MAX}: { $dataPath: 'biggest' },
-            },
-        },
-    },
-};
-```
-> Import and create ${NAME.LIB} instance
-```javascript
-// ${NAME.TYPES} allows you to add your custom types
-const { ${NAME.CONSTRUCTOR}, ${NAME.TYPES} } = require('${NAME.REPO}');
-const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
-```
-For more info about `${NAME.TYPES}` see [WIKI](../../wiki/${WIKI.TYPE_WRAPPER}).
-> Pass data to validator
-```javascript
-const data = {
-    names: ['Jean', 'Claude'],
-    email: 'front@kick.com',
-};
-validator.User(data);
-// => undefined
-validator.TwoChars('122');
-// => error message
-validator.Numbers({ smallest: 5, medium: 10, biggest: 20 });
-// => undefined
-validator.Numbers({ smallest: 1, medium: 2, biggest: 0 });
-// => error message
-```
+JBQ exports two entities, `jbq` and `jbqTypes`.
+- `jbq`: a function that will create validation functions
+- `jbqTypes`: {{MD.AREADME(MD.WIKI.TYPE_WRAPPER)}} instance, a set of defined types used during schema parsing.
 
-### `$dataPath`
+```typescript
+    const { jbq, jbqTypes } = require('jbq');
+    const validators = jbq(types, schemas[, options]);
+```
+{{MD.example(_, 'use')}}
+
+### {{MD.AREADME(MD.WIKI.DATA_PATH)}}
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
+
+**Keywords that support {{PROP_DATA_PATH}}:**
+- *{{MD.AREADME(TYPE_NAME.ARRAY)}}*: `{{INCLUDES}}`, `{{LEN}}`
+- *{{MD.AREADME(TYPE_NAME.NUMBER)}}*: `{{VALUE}}`, `{{MULTIPLE_OF}}`
+- *{{MD.AREADME(TYPE_NAME.OBJECT)}}*: `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *{{MD.AREADME(TYPE_NAME.STRING)}}*: `{{LEN}}`
+
 Lets consider following object:
 ```javascript
 const object = {
         breakfast: {
             egg: 10.25,
-        },
-        'fruit/vegetable': {
-            apple: 'green',
-            carrot: 'red',
+            tea: 5.0,
         },
     },
 };
-```
 
-```javascript
-// this path will match object.breakfast.egg ==> 10.25
-{ $dataPath: 'breakfast/egg' }
-// this path uses array syntax since one of properties includes '/'
-// it will match object['fruit/vegetable'].carrot ==> 'red'
-{ $dataPath: ['fruit/vegetable', 'carrot'] }
-
-const schemas = {
-    Menu: {
-        ${TYPE_METHOD.TYPE}: 'object',
-        [${SYM.SCHEMA_PROPERTIES}]: {
-            colors: {
-                ${TYPE_METHOD.TYPE}: 'array',
-                ${TYPE_METHOD.INCLUDES}: {
-                    $dataPath: ['fruit/vegetable', 'apple'],
-                },
-            },
-        },
-    },
-};
-const validator = ${NAME.CONSTRUCTOR}(${NAME.TYPES}, schemas);
-const data = {
-    colors: ['red', 'green', 'blue'],
-    'fruit/vegetable': {
-        apple: 'red',
-    },
-};
-validator.Menu(data);
-// => undefined
+{ {{PROP_DATA_PATH}}: 'breakfast/egg' }; // will match object.breakfast.egg -> 10.25
+{ {{PROP_DATA_PATH}}: 'breakfast/tea' }; // will match object.breakfast.tea -> 5.0
 ```
-In case the path resolves to `undefined` the property using `$dataPath` resolution will be skipped.
+{{MD.example(_, 'path')}}
+
+In case the `{{PROP_DATA_PATH}}` resolves to `undefined`, validator will handle the situation depending on `handleResolvedPaths` settings value.
+
 ***
-
-### Types
-Besides 6 built-in types this library offers you a possiblity to create your own type with own keywords and extend them with existing types.
-
-## Wiki
-- [Types](../../wiki/${WIKI.TYPE})
-- [Type Wrapper](../../wiki/${WIKI.TYPE_WRAPPER})
-- [Schema](../../wiki/${WIKI.PARSER})
+## [Wiki](/wiki)
 ***
