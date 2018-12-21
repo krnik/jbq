@@ -2,7 +2,7 @@
 [![](https://img.shields.io/npm/v/jbq.svg)](https://www.npmjs.com/package/jbq)
 ![](https://img.shields.io/npm/types/jbq.svg)
 
-![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)
+[![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)](https://github.com/djyde/Picas)
 
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)

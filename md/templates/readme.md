@@ -2,7 +2,7 @@
 {{BADGE.NPM}}
 {{BADGE.TYPES}}
 
-![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)
+[![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/md/images/jbq.png)](https://github.com/djyde/Picas)
 
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
