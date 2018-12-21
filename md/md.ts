@@ -11,6 +11,8 @@ function wikiTypeName (type: TYPE_NAME) {
     return `Type_${type.charAt(0).toUpperCase()}${type.slice(1)}`;
 }
 
+const WIKI_URL = 'https://github.com/krnik/jbq/wiki/';
+
 const WIKI = {
     MIN_MAX_OR_NUM: {
         template: 'wiki_min_max_or_number',
@@ -106,23 +108,22 @@ const code = '```';
 
 export const MD = {
     WIKI,
-    AWIKI (page: { name: string, template: string }, fromReadme?: boolean) {
-        const urlPrefix = fromReadme ? '/wiki/' : '';
-        return `[${page.name}](${urlPrefix}${page.name})`;
+    AWIKI (page: { name: string, template: string }) {
+        return `[${page.name}](${WIKI_URL}${page.name})`;
     },
     A (type: TYPE_NAME, anchor: string) {
         const file = wikiTypeName(type);
         const hash = anchor ? `#${anchor}` : '';
-        return `[${type}](${file}${hash})`;
+        return `[${type}](${WIKI_URL}${file}${hash})`;
     },
     AREADME (type: TYPE_NAME | { name: string }) {
         const file = typeof type === 'object'
             ? type.name
             : wikiTypeName(type);
-        return `[${type}](/wiki/${file})`;
+        return `[${typeof type === 'object' ? type.name : type}](${WIKI_URL}${file})`;
     },
     ASRC (type: TYPE_NAME) {
-        let url = '../blob/master/src/core/types/';
+        let url = 'https://github.com/krnik/jbq/blob/master/src/types/';
         switch (type) {
             case TYPE_NAME.ANY:
                 url += 'Any.ts';

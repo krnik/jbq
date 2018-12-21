@@ -6,7 +6,7 @@
 
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
-  - [[[object Object]](/wiki/DataPath)](#mdareadmemdwikidatapath)
+  - [[DataPath](https://github.com/krnik/jbq/wiki/DataPath)](#mdareadmemdwikidatapath)
 - [Wiki](#wiki)
 
 ***
@@ -21,11 +21,11 @@ Hi! Welcome to JBQ validation library.
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *[any](/wiki/Type_Any)*: `required`, `type`
-- *[array](/wiki/Type_Array)*: `required`, `type`, `every`, `some`, `includes`, `len`
-- *[number](/wiki/Type_Number)*: `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *[object](/wiki/Type_Object)*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *[string](/wiki/Type_String)*: `required`, `type`, `regex`, `len`, `oneOf`
+- *[any](https://github.com/krnik/jbq/wiki/Type_Any)*: `required`, `type`
+- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `required`, `type`, `every`, `some`, `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `required`, `type`, `regex`, `len`, `oneOf`
 
 **Schema Symbol Keywords:**
 - *`Symbol.for('schema_properties')`*: defines a shape of subschemas of current schema
@@ -44,7 +44,7 @@ Every schema has only one required keywords which is `type`. This keyword allows
 ***
 JBQ exports two entities, `jbq` and `jbqTypes`.
 - `jbq`: a function that will create validation functions
-- `jbqTypes`: [[object Object]](/wiki/TypeWrapper) instance, a set of defined types used during schema parsing.
+- `jbqTypes`: [TypeWrapper](https://github.com/krnik/jbq/wiki/TypeWrapper) instance, a set of defined types used during schema parsing.
 
 ```typescript
     const { jbq, jbqTypes } = require('jbq');
@@ -103,15 +103,15 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 ```
 
 
-### [[object Object]](/wiki/DataPath)
+### [DataPath](https://github.com/krnik/jbq/wiki/DataPath)
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 
-**Keywords that support {{PROP_DATA_PATH}:**
-- *[array](/wiki/Type_Array)*: `includes`, `len`
-- *[number](/wiki/Type_Number)*: `value`, `multipleOf`
-- *[object](/wiki/Type_Object)*: `keyCount`, `propCount`
-- *[string](/wiki/Type_String)*: `len`
+**Keywords that support $dataPath:**
+- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `value`, `multipleOf`
+- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `len`
 
 Lets consider following object:
 ```javascript

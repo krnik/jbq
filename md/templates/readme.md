@@ -56,7 +56,7 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 
-**Keywords that support {{PROP_DATA_PATH}:**
+**Keywords that support {{PROP_DATA_PATH}}:**
 - *{{MD.AREADME(TYPE_NAME.ARRAY)}}*: `{{INCLUDES}}`, `{{LEN}}`
 - *{{MD.AREADME(TYPE_NAME.NUMBER)}}*: `{{VALUE}}`, `{{MULTIPLE_OF}}`
 - *{{MD.AREADME(TYPE_NAME.OBJECT)}}*: `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
