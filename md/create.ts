@@ -1,22 +1,59 @@
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import * as CONST from '../src/constants';
-import { BADGE, MD, mdParts } from './md';
+import * as MD_CONST from './md_constants';
 
-const _entries = Object.entries(CONST);
-const params = _entries.map(([k]) => k).concat(['MD', 'BADGE']).join(',');
-const args = _entries.map<any>(([_, v]) => v).concat([MD, BADGE]);
+let currentPage: string;
+const params: string[] = [];
+const args: any[] = [];
+
+function bringToScope (obj: object) {
+    Object.entries(obj).forEach(([k, v]) => {
+        params.push(k);
+        args.push(v);
+    });
+}
+
+bringToScope(CONST);
+bringToScope(MD_CONST);
+bringToScope({ example, wikiLink, include });
 
 const exprRegex = /{{(.*?)}}/g;
-for (const part of mdParts) {
-    const templatePath = resolve(__dirname, 'templates', `${part.template}.md`);
-    if (!existsSync(templatePath))
-        continue;
-    const content = readFileSync(templatePath)
-        .toString()
+function compile (source: string) {
+    return source
         .replace(exprRegex, (_: any, match: string) => {
-            return new Function(`_,${params}`, `return ${match}`)(part.template, ...args);
+            return new Function(params.join(','), `return ${match}`)(...args);
         });
-    const path = resolve(__dirname, part.destination, `${part.name}.md`);
-    writeFileSync(path, content);
 }
+
+function example (exampleName: string) {
+    const examples = readFileSync(resolve(currentPage, 'examples.ts'));
+    const regex = new RegExp(`//example:${exampleName}\\b([\\W\\w]+)//example:${exampleName}\\b`);
+    const content = examples.toString().match(regex);
+    if (!content)
+        throw Error('Content not found!');
+    return `\`\`\`typescript${content[1]}\`\`\`\n`;
+
+}
+
+function wikiLink (pageName: string, display?: string) {
+    return `[${display || pageName}](${MD_CONST.WIKI_URL + pageName})`;
+}
+
+function include (fileName: string) {
+    const file = readFileSync(resolve(__dirname, 'includes', `${fileName}.md`)).toString();
+    return compile(file);
+}
+
+async function create () {
+    const pagesPath = resolve(__dirname, 'pages');
+    const pages = readdirSync(pagesPath);
+    for (const page of pages) {
+        currentPage = resolve(pagesPath, page);
+        const { NAME, PATH } = await import(resolve(currentPage, 'locals.ts'));
+        const content = compile(readFileSync(resolve(currentPage, 'template.md')).toString());
+        writeFileSync(resolve(PATH, NAME + '.md'), content);
+    }
+}
+
+create();

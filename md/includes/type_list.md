@@ -1,0 +1,5 @@
+- *{{MD.AREADME(TYPE_NAME.ANY)}}*: `{{REQUIRED}}`, `{{TYPE}}`
+- *{{MD.AREADME(TYPE_NAME.ARRAY)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
+- *{{MD.AREADME(TYPE_NAME.NUMBER)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
+- *{{MD.AREADME(TYPE_NAME.OBJECT)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *{{MD.AREADME(TYPE_NAME.STRING)}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`

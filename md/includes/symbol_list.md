@@ -1,0 +1,2 @@
+- *`Symbol.for('schema_properties')`*: defines a shape of subschemas of current schema
+- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
