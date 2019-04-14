@@ -1,9 +1,9 @@
 import { TYPE } from '../constants';
-import { printToken } from '../utils/printToken';
+import { printToken } from '../utils/print_token';
 
 export const CompilationError = {
     missingType (typeName: string) {
-        const errorMessage = `Could not find defintion of ${printToken.typeProto(typeName)} type.`;
+        const errorMessage = `Could not find defintion of ${printToken.typePrototype(typeName)} type.`;
         return new Error(errorMessage);
     },
     missingSchemaTypeProperty (schema: { [k: string]: any }) {
@@ -22,7 +22,7 @@ export const CompilationError = {
         return new Error(errorMessage);
     },
     missingTypeMethod (typeName: string, methodName: string) {
-        const errorMessage = `Could not find method ${printToken.property(methodName)} in ${printToken.typeProto(typeName)} type.`;
+        const errorMessage = `Could not find method ${printToken.property(methodName)} in ${printToken.typePrototype(typeName)} type.`;
         return new Error(errorMessage);
     },
 };

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import 'mocha';
 import { HANDLE_PATH_RESOLUTION, LEN, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
 import { Compilation } from '../../src/core/Compilation';
-import { createTypes } from '../../src/types/main';
+import { createTypes } from '../../src/types/mod';
 import { schemaValidate } from '../../src/types/schemaValidate';
 import { IJBQOptions, IParseValues } from '../../src/typings';
 import { suitesAny } from '../data/suites/Any.suites';

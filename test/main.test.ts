@@ -1,1 +1,1 @@
-import './unit/main.test';
+import './unit/mod.test';

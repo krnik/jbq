@@ -1,12 +1,12 @@
 import { PARAMETER, SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../constants';
 import { schemaValidate } from '../types/schemaValidate';
-import { IType, ITypeMethod, TypeWrapper } from '../types/Wrapper';
 import { IDataPathSchemaValue, IJBQOptions, IParseValues } from '../typings';
 import { DebugLog } from '../utils/debug';
 import { is } from '../utils/type';
 import { CodeBuilder } from './Code';
 import { CompilationError } from './error';
 import { ResolvedStore } from './ResolvedStore';
+import { TypeDefinition, TypeMethod, TypeWrapper } from './type_wrapper/type_wrapper';
 
 export interface ISchema {
     [SYM_SCHEMA_PROPERTIES]?: {
@@ -111,7 +111,7 @@ export class Compilation {
         Debug.incIndent(-2);
     }
 
-    private parseProperty (method: ITypeMethod, schemaValue: any) {
+    private parseProperty (method: TypeMethod, schemaValue: any) {
         const parseValues: IParseValues = {
             schemaValue,
             schemaPath: this.Code.schemaPath,
@@ -130,7 +130,7 @@ export class Compilation {
         this.Code.appendCode('\n');
     }
 
-    private parseMethodExtractBody (method: ITypeMethod, parseValues: IParseValues) {
+    private parseMethodExtractBody (method: TypeMethod, parseValues: IParseValues) {
         const { schemaValue, dataVariable } = parseValues;
         const isDataPath = schemaValidate.dataPath(parseValues.schemaValue);
         let resolvedPath: string;
@@ -158,7 +158,7 @@ export class Compilation {
         this.Code.appendCode(body + suffix);
     }
 
-    private parseMethodWithClosure (method: ITypeMethod, parseValues: IParseValues) {
+    private parseMethodWithClosure (method: TypeMethod, parseValues: IParseValues) {
         this.Store.openVars();
         const snapshot = this.Code.snapshot;
         const { schemaValue } = parseValues;
@@ -176,7 +176,7 @@ export class Compilation {
         this.Code.appendCode(suffix);
     }
 
-    private parseMethodMacro (method: ITypeMethod, parseValues: IParseValues) {
+    private parseMethodMacro (method: TypeMethod, parseValues: IParseValues) {
         this.Store.openVars();
         const code = method(parseValues, ...this.helpers) as string;
         const suffix = this.Code.verifyVars();
@@ -208,7 +208,7 @@ export class Compilation {
         return this.types.get(typeName)!;
     }
 
-    private sortEntries (schema: ISchema, type: IType) {
+    private sortEntries (schema: ISchema, type: TypeDefinition) {
         const sortOrder = type[SYM_TYPE_KEY_ORDER];
         const entries = Object.entries(schema);
         const firstEntries = sortOrder

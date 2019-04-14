@@ -1,7 +1,7 @@
 import Benchmark from 'benchmark';
 import { jbq } from '../../src/core/jbq';
-import { createTypes } from '../../src/types/main';
-import { createData } from '../data/main';
+import { createTypes } from '../../src/types/mod';
+import { createData } from '../data/mod';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';

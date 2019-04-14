@@ -3,8 +3,8 @@ import 'mocha';
 import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
 import { jbq } from '../../src/core/jbq';
 import { jbqTypes } from '../../src/main';
-import { createTypes } from '../../src/types/main';
-import { createData } from '../data/main';
+import { createTypes } from '../../src/types/mod';
+import { createData } from '../data/mod';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';
@@ -94,7 +94,7 @@ describe('Validator', () => {
                     type: 'array',
                     [SYM_SCHEMA_COLLECTION]: {
                         type: 'numeric',
-                        value: { min: 0, max: 1},
+                        value: { min: 0, max: 1 },
                     },
                 },
             });

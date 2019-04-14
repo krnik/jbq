@@ -1,7 +1,7 @@
 import { PARAMETER } from '../constants';
-import { TypeWrapper } from '../types/Wrapper';
 import { IJBQOptions, OmitSymbols } from '../typings';
 import { Compilation } from './Compilation';
+import { TypeWrapper } from './type_wrapper/type_wrapper';
 
 type ValidateFn = (data: any) => string | undefined;
 
