@@ -22,7 +22,7 @@ Expects 3 arguments:
 - **typeToExtend** `<string>`,
 
 **`typeName`** is a name under which new type will be visible for rest of the app.
-If we choose the name `charlie` then we will be able to use `charlie` as a ${TYPE_METHOD.TYPE} property value in schema.
+If we choose the name `charlie` then we will be able to use `charlie` as a ${TYPE} property value in schema.
 
 **`typeObject`** is object that defines our new type. See [Custom Type](${WIKI.CUSTOM_TYPE}) for more details.
 

@@ -21,14 +21,14 @@ Soon
 Let's start with an example. Consider following schema:
 ```javascript
 const NameSchema = {
-    ${TYPE_METHOD.TYPE}: 'string',
-    ${TYPE_METHOD.MIN_LEN}: 1,
-    ${TYPE_METHOD.MAX_LEN}: 64,
+    ${TYPE}: 'string',
+    ${MIN_LEN}: 1,
+    ${MAX_LEN}: 64,
 };
 ```
 The steps that parser takes are:
- - get value of `${TYPE_METHOD.TYPE}` property from `NameSchema` schema and get type object with that name (`string`)
-- if type method `${TYPE_METHOD.TYPE}` does not use external variables then take it's string content and create a block with this function. If method uses external variables (it has to be marked with `${SYM.TYPE_EXTERNAL}` symbol) then pass type method as an argument and invoke it.
+ - get value of `${TYPE}` property from `NameSchema` schema and get type object with that name (`string`)
+- if type method `${TYPE}` does not use external variables then take it's string content and create a block with this function. If method uses external variables (it has to be marked with `${SYM.TYPE_EXTERNAL}` symbol) then pass type method as an argument and invoke it.
 ```javascript
 // This is how string.type method looks like after parsing.
 // _d is a data variable
@@ -46,21 +46,21 @@ function (check_data_type) {
 ### Symbols
 ***
 #### `${SYM.TYPE_KEY_ORDER}`
-> Sets the order in which schema properties checks appear in parsed function for given type. It must be an array of strings. Default value - `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
+> Sets the order in which schema properties checks appear in parsed function for given type. It must be an array of strings. Default value - `[${REQUIRED}, ${TYPE}]`.
 
-Let's assume that our `${SYM.TYPE_KEY_ORDER}` has default value of `[${TYPE_METHOD.REQUIRED}, ${TYPE_METHOD.TYPE}]`.
+Let's assume that our `${SYM.TYPE_KEY_ORDER}` has default value of `[${REQUIRED}, ${TYPE}]`.
 Then parsed function checks will be sorted in order:
-1. `${TYPE_METHOD.REQUIRED}`
-2. `${TYPE_METHOD.TYPE}`
+1. `${REQUIRED}`
+2. `${TYPE}`
 3. Other type methods
 #### `${SYM.TYPE_FOR_LOOP}`
 > By default collections are iterated using for..of loop. This Symbol tells parser to use standard `for loop` for numeric indexed collections (Arrays) - which is 2-4 times faster than `for of loop` that uses iterators.
 ```javascript
 const customTypeThatUsesForLoop = {
-    ${TYPE_METHOD.TYPE} (base, data) {},
+    ${TYPE} (base, data) {},
     size (base, data) {},
     [${SYM.TYPE_VALIDATE}]: {
-        ${TYPE_METHOD.TYPE} (value) {},
+        ${TYPE} (value) {},
         size (value) {
             // check if property `size` in schema is an array with two numbers
             if (!Array.isArray(value) || value.length !== 2 || value.some((e) => isNaN(e)))
@@ -84,7 +84,7 @@ for (const scopedData of data) {
 > This symbol should be always an array with names of type methods that use resources from outside their scope. It tells parser when to pass this method as an argument and when it's ok to extract source of type method.
 ```javascript
 const customType = {
-    ${TYPE_METHOD.TYPE} (base, data) {},
+    ${TYPE} (base, data) {},
     area (base, path, data) {
         if (!externalFunction(data))
             return `There was an error in validation \${data} at \${schemaPath}.`;
@@ -93,7 +93,7 @@ const customType = {
     // otherwise `externalFunction` call would throw an error
     [${SYM.TYPE_EXTERNAL}]: ['area'],
     [${SYM.TYPE_VALIDATE}]: {
-        ${TYPE_METHOD.TYPE} (value) {},
+        ${TYPE} (value) {},
         area (value) {},
     },
 };
@@ -103,10 +103,10 @@ const customType = {
 > Every type method must have a corresponding `${SYM.TYPE_VALIDATE}` schema value validation method.
 ```javascript
 const customType = {
-    ${TYPE_METHOD.TYPE} (base, data) {},
+    ${TYPE} (base, data) {},
     size (base, data) {},
     [${SYM.TYPE_VALIDATE}]: {
-        ${TYPE_METHOD.TYPE} (value) {},
+        ${TYPE} (value) {},
         size (value) {
             // check if property `size` in schema is an array with two numbers
             if (!Array.isArray(value) || value.length !== 2 || value.some((e) => isNaN(e)))
@@ -119,19 +119,19 @@ const customType = {
 > This symbol tells validator that additional cheks are needed for keys of data defined as keys of `${SYM.SCHEMA_PROPERTIES}` object. Please note that in this object `${SYM.SCHEMA_CONFIG}` will be read as another property of data. This is to allow validation of symbol properties of data.
 ```javascript
 const schema = {
-    ${TYPE_METHOD.TYPE}: 'object',
+    ${TYPE}: 'object',
     [${SYM.SCHEMA_PROPERTIES}]: {
         [Symbol('custom_symbol')]: {
-            ${TYPE_METHOD.TYPE}: 'object',
+            ${TYPE}: 'object',
             // ...
         },
         dependencies: {
-            ${TYPE_METHOD.TYPE}: 'object',
+            ${TYPE}: 'object',
             // ...
         },
         // This symbol will be read as a property of passed data
         [${SYM.SCHEMA_CONFIG}]: {
-            ${TYPE_METHOD.TYPE}: 'boolean',
+            ${TYPE}: 'boolean',
         },
     },
 };
@@ -140,7 +140,7 @@ const schema = {
 > This symbol tells parser that schema in `${SYM.SCHEMA_COLLECTION}` property will be applied to every element of data. Validation function will use `for of` loop to iterate over elements of data.
 ```javascript
 const schema = {
-    ${TYPE_METHOD.TYPE}: 'map',
+    ${TYPE}: 'map',
     [${SYM.SCHEMA_COLLECTION}]: {
         ${TYPE_METHOD}: 'array',
     },
@@ -150,36 +150,36 @@ const schema = {
 ```
 ### Schema Config
 #### `${SYM.SCHEMA_CONFIG}`
-> This symbol enables passing down ${TYPE_METHOD.TYPE} property down the schema tree. Let's look at example.
+> This symbol enables passing down ${TYPE} property down the schema tree. Let's look at example.
 ```javascript
 const schema = {
-    ${TYPE_METHOD.TYPE}: 'some-object',
+    ${TYPE}: 'some-object',
     // All schemas down the tree will inherit properties
     // of ${SYM.SCHEMA_CONFIG} object
     [${SYM.SCHEMA_CONFIG}]: {
-        ${TYPE_METHOD.TYPE}: 'string',
+        ${TYPE}: 'string',
     },
     [${SYM.SCHEMA_PROPERTIES}]: {
         // Here ${SYM.SCHEMA_CONFIG} would be interpreted as property of passed data
         firstName: {
-            // implicit ${TYPE_METHOD.TYPE}: 'string',
-            ${TYPE_METHOD.MIN_LEN}: 1,
-            ${TYPE_METHOD.MAX_LEN}: 32,
+            // implicit ${TYPE}: 'string',
+            ${MIN_LEN}: 1,
+            ${MAX_LEN}: 32,
         },
         midName: {
-            // implicit ${TYPE_METHOD.TYPE}: 'string',
-            ${TYPE_METHOD.MIN_LEN}: 1,
-            ${TYPE_METHOD.MAX_LEN}: 32,
+            // implicit ${TYPE}: 'string',
+            ${MIN_LEN}: 1,
+            ${MAX_LEN}: 32,
         },
         lastName: {
-            // implicit ${TYPE_METHOD.TYPE}: 'string',
-            ${TYPE_METHOD.MIN_LEN}: 1,
-            ${TYPE_METHOD.MAX_LEN}: 64,
+            // implicit ${TYPE}: 'string',
+            ${MIN_LEN}: 1,
+            ${MAX_LEN}: 64,
         },
         street: {
-            // implicit ${TYPE_METHOD.TYPE}: 'string',
-            ${TYPE_METHOD.MIN_LEN}: 4,
-            ${TYPE_METHOD.REGEX}: /St\.$/,
+            // implicit ${TYPE}: 'string',
+            ${MIN_LEN}: 4,
+            ${REGEX}: /St\.$/,
         },
     },
 };

@@ -30,21 +30,25 @@ Every schema has only one required keywords which is `{{TYPE}}`. This keyword al
 - *ability to extend types with new keywords*
 - *prototypal inheritance of types*
 
-**Future Features:**
+**ROADMAP:**
 - *asynchronous validator function execution*
+- *support JSONSchema translation*
+- *support Joi/Yup schema translation*
+- *support Class Validator translation*
+- *asynchronous validator function compliation*
 
 ***
 ## Usage Example
 ***
 JBQ exports two entities, `jbq` and `jbqTypes`.
 - `jbq`: a function that will create validation functions
-- `jbqTypes`: {{MD.AREADME(MD.WIKI.TYPE_WRAPPER)}} instance, a set of defined types used during schema parsing.
+- `jbqTypes`: {{wikiLink('typewrapper', 'TypesWrapper')}} instance, a set of defined types used during schema parsing.
 
 {{example('use')}}
 {{example('schema')}}
 
 ### DataPath
-{{wikiLink('datapath')}}
+{{wikiLink('datapath', 'Data Path')}}
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 
@@ -63,6 +67,5 @@ Here is the working example.
 <!-- TODO: Add links to `handleResolvedPaths` enum -->
 In case the `{{PROP_DATA_PATH}}` resolves to `undefined`, validator will handle the situation depending on `handleResolvedPaths` settings value.
 
-***
 ## [Wiki]({{WIKI_URL}})
 ***

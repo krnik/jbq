@@ -16,7 +16,7 @@ function bringToScope (obj: object) {
 
 bringToScope(CONST);
 bringToScope(MD_CONST);
-bringToScope({ example, wikiLink, include });
+bringToScope({ example, wikiLink, include, wikiType, sourceLink });
 
 const exprRegex = /{{(.*?)}}/g;
 function compile (source: string) {
@@ -38,6 +38,18 @@ function example (exampleName: string) {
 
 function wikiLink (pageName: string, display?: string) {
     return `[${display || pageName}](${MD_CONST.WIKI_URL + pageName})`;
+}
+
+function wikiType (type: CONST.TYPE_NAME, anchor: string, anc?: number) {
+    const typeFile = `Type${type.charAt(0).toUpperCase()}${type.slice(1)}`;
+    const hash = anchor ? `#${anchor}` : '';
+    return `[${anc ? anchor : type}](${MD_CONST.WIKI_URL}${typeFile}${hash})`;
+}
+
+function sourceLink (type: CONST.TYPE_NAME) {
+    return `[Source](https://github.com/krnik/jbq/blob/master/src/types/${
+        type.charAt(0).toUpperCase() + type.slice(1)
+        }.ts)`;
 }
 
 function include (fileName: string) {

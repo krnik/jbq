@@ -7,11 +7,11 @@
     - [`{{LEN}}`](#len)
 
 # TYPE: `{{TYPE_NAME.STRING}}`
-> {{MD.ASRC(TYPE_NAME.STRING)}}
+> {{sourceLink(TYPE_NAME.STRING)}}
 
 ## Available schema keywords
 ### `{{REQUIRED}}`
-> Inherited from {{MD.A(TYPE_NAME.ANY, REQUIRED)}}.
+> Inherited from {{wikiType(TYPE_NAME.ANY, REQUIRED)}}.
 
 ### `{{TYPE}}`
 {{example(TYPE)}}
@@ -25,5 +25,5 @@
 {{example(ONE_OF)}}
 
 ### `{{LEN}}`
-> Accepts {{MD.AWIKI(MD.WIKI.MIN_MAX_OR_NUM)}} schema value.
+> Accepts {{wikiLink('MinMaxSchema')}} schema value.
 {{example(LEN)}}

@@ -5,7 +5,7 @@
 
 # TYPE: `{{TYPE_NAME.ANY}}`
 Base type, it's used as a prototype for all other built-in types.
-> {{MD.ASRC(TYPE_NAME.ANY)}}.
+> {{sourceLink(TYPE_NAME.ANY)}}.
 
 ## Available schema keywords
 

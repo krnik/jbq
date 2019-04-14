@@ -9,11 +9,11 @@
     - [`{{PROP_COUNT}}`](#propcount)
 
 # TYPE: `{{TYPE_NAME.OBJECT}}`
-> {{MD.ASRC(TYPE_NAME.OBJECT)}}.
+> {{sourceLink(TYPE_NAME.OBJECT)}}.
 
 ## Available schema keywords
 ### `{{REQUIRED}}`
-> Inherited from {{MD.A(TYPE_NAME.ANY, REQUIRED)}}.
+> Inherited from {{wikiType(TYPE_NAME.ANY, REQUIRED)}}.
 
 ### `{{TYPE}}`
 {{example(TYPE)}}
@@ -33,13 +33,13 @@
 {{example(PROPERTIES)}}
 
 ### `{{KEY_COUNT}}`
-> Accepts {{MD.AWIKI(MD.WIKI.MIN_MAX_OR_NUM)}} schema value.
+> Accepts {{wikiLink('MinMaxSchema')}} schema value.
 
 > Checks count of all enumerable properties of data.
 {{example(KEY_COUNT)}}
 
 ### `{{PROP_COUNT}}`
-> Accepts {{MD.AWIKI(MD.WIKI.MIN_MAX_OR_NUM)}} schema value.
+> Accepts {{wikiLink('MinMaxSchema')}} schema value.
 
 > Checks count of all properties of data.
 {{example(PROP_COUNT)}}

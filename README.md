@@ -10,6 +10,7 @@
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
   - [DataPath](#datapath)
+- [Missing Features](#missing-features)
 - [Wiki](#wiki)
 
 ***
@@ -24,11 +25,11 @@ Hi! Welcome to JBQ validation library.
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *[any](https://github.com/krnik/jbq/wiki/Type_Any)*: `required`, `type`
-- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `required`, `type`, `every`, `some`, `includes`, `len`
-- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `required`, `type`, `regex`, `len`, `oneOf`
+- *[any](https://github.com/krnik/jbq/wiki/TypeAny)*: `required`, `type`
+- *[array](https://github.com/krnik/jbq/wiki/TypeArray)*: `required`, `type`, `every`, `some`, `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/TypeNumber)*: `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[object](https://github.com/krnik/jbq/wiki/TypeObject)*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/TypeString)*: `required`, `type`, `regex`, `len`, `oneOf`
 
 
 **Schema Symbol Keywords:**
@@ -49,11 +50,11 @@ Every schema has only one required keywords which is `type`. This keyword allows
 ***
 JBQ exports two entities, `jbq` and `jbqTypes`.
 - `jbq`: a function that will create validation functions
-- `jbqTypes`: [TypeWrapper](https://github.com/krnik/jbq/wiki/TypeWrapper) instance, a set of defined types used during schema parsing.
+- `jbqTypes`: [TypesWrapper](https://github.com/krnik/jbq/wiki/typewrapper) instance, a set of defined types used during schema parsing.
 
 ```typescript
 const { jbq, jbqTypes } = require('jbq');
-const validators = jbq(jbqTypes, schemas, options);
+jbq(jbqTypes, schemas, options);
 ```
 
 ```typescript
@@ -101,20 +102,20 @@ User({
 
 
 ### DataPath
-https://github.com/krnik/jbq/wiki/datapath
+[Data Path](https://github.com/krnik/jbq/wiki/datapath)
 Data path accepts a string or array of strings which will be used to resolve value from data root.
 It can be used when you don't know exact schema values.
 
 **Keywords that support $dataPath:**
-- *[array](https://github.com/krnik/jbq/wiki/Type_Array)*: `includes`, `len`
-- *[number](https://github.com/krnik/jbq/wiki/Type_Number)*: `value`, `multipleOf`
-- *[object](https://github.com/krnik/jbq/wiki/Type_Object)*: `keyCount`, `propCount`
-- *[string](https://github.com/krnik/jbq/wiki/Type_String)*: `len`
+- *[array](https://github.com/krnik/jbq/wiki/TypeArray)*: `includes`, `len`
+- *[number](https://github.com/krnik/jbq/wiki/TypeNumber)*: `value`, `multipleOf`
+- *[object](https://github.com/krnik/jbq/wiki/TypeObject)*: `keyCount`, `propCount`
+- *[string](https://github.com/krnik/jbq/wiki/TypeString)*: `len`
 
 
 Lets consider following object:
 ```typescript
-const object = {
+const data = {
     breakfast: {
         egg: 10.25,
         tea: 5.0,
@@ -169,5 +170,12 @@ validator.Menu({
 In case the `$dataPath` resolves to `undefined`, validator will handle the situation depending on `handleResolvedPaths` settings value.
 
 ***
+## Missing Features
+- Asynchronous validation for big datasets
+- Create schemas Joi/Yup way
+- Create schemas using Class Decorators
+- JSONSchema support
+***
+
 ## [Wiki](https://github.com/krnik/jbq/wiki/)
 ***

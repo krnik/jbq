@@ -7,7 +7,7 @@ const schemas = {};
 const options = {};
 //example:use
 const { jbq, jbqTypes } = require('jbq');
-const validators = jbq(jbqTypes, schemas, options);
+jbq(jbqTypes, schemas, options);
 //example:use
 }
 
@@ -60,7 +60,7 @@ User({
 }
 
 //example:datapathObject
-const object = {
+const data = {
     breakfast: {
         egg: 10.25,
         tea: 5.0,

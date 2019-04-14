@@ -8,11 +8,11 @@
     - [`{{LEN}}`](#len)
 
 # TYPE: `{{TYPE_NAME.ARRAY}}`
-> {{MD.ASRC(TYPE_NAME.ARRAY)}}.
+> {{sourceLink(TYPE_NAME.ARRAY)}}.
 
 ## Available schema keywords
 ### `{{REQUIRED}}`
-> Inherited from {{MD.A(TYPE_NAME.ANY, REQUIRED)}}.
+> Inherited from {{wikiType(TYPE_NAME.ANY, REQUIRED)}}.
 
 ### `{{TYPE}}`
 {{example(TYPE)}}
@@ -36,5 +36,5 @@
 ### `{{LEN}}`
 > Checks the length of an array.
 
-> Accepts {{MD.AWIKI(MD.WIKI.MIN_MAX_OR_NUM)}} schema value.
+> Accepts {{wikiLink('MinMaxSchema')}} schema value.
 {{example(LEN)}}

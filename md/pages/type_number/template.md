@@ -7,17 +7,17 @@
     - [`{{ONE_OF}}`](#oneof)
 
 # TYPE: `{{TYPE_NAME.NUMBER}}`
-> {{MD.ASRC(TYPE_NAME.NUMBER)}}.
+> {{sourceLink(TYPE_NAME.NUMBER)}}.
 
 ## Available schema keywords
 ### `{{REQUIRED}}`
-> Inherited from {{MD.A(TYPE_NAME.ANY, REQUIRED)}}.
+> Inherited from {{wikiType(TYPE_NAME.ANY, REQUIRED)}}.
 
 ### `{{TYPE}}`
 {{example(TYPE)}}
 
 ### `{{VALUE}}`
-> Accepts {{MD.AWIKI(MD.WIKI.MIN_MAX_OR_NUM)}} schema value.
+> Accepts {{wikiLink('MinMaxSchema')}} schema value.
 {{example(VALUE)}}
 
 ### `{{MULTIPLE_OF}}`
