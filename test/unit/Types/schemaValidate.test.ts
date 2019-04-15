@@ -107,7 +107,7 @@ describe('schemaValidate', () => {
         });
     });
     describe('isInstance', () => {
-        const fn = schemaValidate.isInstance(tName, mName, 'Array');
+        const fn = schemaValidate.isInstance(tName, mName, Array);
         it('it should throw on invalid values', () => {
             expect(() => fn({})).to.throw();
         });

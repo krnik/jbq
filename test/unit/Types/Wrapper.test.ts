@@ -97,17 +97,17 @@ describe('Type Wrapper', () => {
     describe('.addMethod()', () => {
         it('it should succesfully ad a method', () => {
             const types = createTypes();
-            types.addMethod('any', 'newMethod', () => { }, () => { });
+            types.addMethod('any', 'newMethod', () => void 0, () => void 0);
             const typeAny = types.get('any')!;
             expect(typeAny).to.haveOwnProperty('newMethod');
         });
         it('it should throw if method exists', () => {
             const types = createTypes();
-            expect(() => types.addMethod('any', 'type', () => { }, () => { })).to.throw();
+            expect(() => types.addMethod('any', 'type', () => void 0, () => void 0)).to.throw();
         });
         it('it should throw if type does not exists', () => {
             const types = createTypes();
-            expect(() => types.addMethod('missing', 'type', () => { }, () => { })).to.throw();
+            expect(() => types.addMethod('missing', 'type', () => void 0, () => void 0)).to.throw();
         });
     });
 });

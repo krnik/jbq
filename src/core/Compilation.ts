@@ -2,7 +2,7 @@ import { PARAMETER, SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_SCHEMA_COLLECTION,
 import { schemaValidate } from '../types/schemaValidate';
 import { IDataPathSchemaValue, IJBQOptions, IParseValues } from '../typings';
 import { DebugLog } from '../utils/debug';
-import { is } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { CodeBuilder } from './Code';
 import { CompilationError } from './error';
 import { ResolvedStore } from './ResolvedStore';
@@ -151,7 +151,7 @@ export class Compilation {
         body = this.replaceToken(body, PARAMETER.DATA, dataVariable);
         const param = isDataPath
             ? resolvedPath!
-            : is.primitiveLiteral(schemaValue)
+            : TypeReflect.primitiveLiteral(schemaValue)
                 ? this.toLiteral(schemaValue)
                 : this.Code.createParam(schemaValue);
         body = this.replaceToken(body, 'schemaValue', param);
@@ -167,7 +167,7 @@ export class Compilation {
             : undefined;
         const fnParam = this.Code.createParam(method);
         const schemaParam = resolvedValue
-            || (is.primitiveLiteral(schemaValue)
+            || (TypeReflect.primitiveLiteral(schemaValue)
                 ? this.toLiteral(schemaValue)
                 : this.Code.createParam(schemaValue));
         const suffix = this.Code.verifyVars();

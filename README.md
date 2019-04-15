@@ -10,7 +10,6 @@
 - [Introduction](#introduction)
 - [Usage Example](#usage-example)
   - [DataPath](#datapath)
-- [Missing Features](#missing-features)
 - [Wiki](#wiki)
 
 ***
@@ -42,8 +41,12 @@ Every schema has only one required keywords which is `type`. This keyword allows
 - *ability to extend types with new keywords*
 - *prototypal inheritance of types*
 
-**Future Features:**
+**ROADMAP:**
 - *asynchronous validator function execution*
+- *support JSONSchema translation*
+- *support Joi/Yup schema translation*
+- *support Class Validator translation*
+- *asynchronous validator function compliation*
 
 ***
 ## Usage Example
@@ -168,14 +171,6 @@ validator.Menu({
 
 <!-- TODO: Add links to `handleResolvedPaths` enum -->
 In case the `$dataPath` resolves to `undefined`, validator will handle the situation depending on `handleResolvedPaths` settings value.
-
-***
-## Missing Features
-- Asynchronous validation for big datasets
-- Create schemas Joi/Yup way
-- Create schemas using Class Decorators
-- JSONSchema support
-***
 
 ## [Wiki](https://github.com/krnik/jbq/wiki/)
 ***

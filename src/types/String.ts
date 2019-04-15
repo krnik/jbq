@@ -1,7 +1,7 @@
 import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { CodeBuilder } from '../core/Code';
 import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
-import { is } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { schemaValidate } from './schemaValidate';
 
 export const TypeString = {
@@ -20,7 +20,7 @@ export const TypeString = {
     ): string | undefined {
         const { schemaValue, dataVariable, schemaPath } = parseValues;
         const dataVar = `${dataVariable}.length`;
-        if (is.number(schemaValue))
+        if (TypeReflect.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 {
@@ -38,7 +38,7 @@ export const TypeString = {
                     dataVariable: dataVar,
                     message: `Data length should be equal to \${${varName}} ${
                         CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
-                    }.`,
+                        }.`,
                 },
             );
         }
@@ -90,7 +90,7 @@ export const TypeString = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.STRING, TYPE, 'string'),
-        [REGEX]: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, 'RegExp'),
+        [REGEX]: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, RegExp),
         [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN, true),
         [ONE_OF]: schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string'),
     },

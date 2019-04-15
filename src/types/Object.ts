@@ -1,7 +1,7 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROP_COUNT, PROP_DATA_PATH, PROPERTIES, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { CodeBuilder } from '../core/Code';
 import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
-import { is } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { schemaValidate } from './schemaValidate';
 
 function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
@@ -12,7 +12,7 @@ function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
     ): string | undefined {
         const { schemaValue, dataVariable, schemaPath } = parseValues;
         const dataVar = resolveDataVarCmp(dataVariable);
-        if (is.number(schemaValue))
+        if (TypeReflect.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 {
@@ -30,7 +30,7 @@ function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
                     dataVariable: dataVar,
                     message: `Data should have exactly \${${varName}} ${
                         CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
-                    } keys.`,
+                        } keys.`,
                 },
             );
         }
@@ -102,7 +102,7 @@ export const TypeObject = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
         [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
-        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, 'Function'),
+        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, Function),
         [PROPERTIES]: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
         [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
         [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),

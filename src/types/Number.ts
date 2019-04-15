@@ -1,7 +1,7 @@
 import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../constants';
 import { CodeBuilder } from '../core/Code';
 import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
-import { is } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { schemaValidate } from './schemaValidate';
 
 export const TypeNumber = {
@@ -15,7 +15,7 @@ export const TypeNumber = {
         resolveDataPath: DataPathResolver,
     ): string | undefined {
         const { schemaValue, schemaPath, dataVariable } = parseValues;
-        if (is.number(schemaValue))
+        if (TypeReflect.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 {
@@ -33,7 +33,7 @@ export const TypeNumber = {
                     dataVariable,
                     message: `Data should be equal to \${${varName}} ${
                         CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
-                    }.`,
+                        }.`,
                 },
             );
         }

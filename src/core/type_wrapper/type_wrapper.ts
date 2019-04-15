@@ -204,7 +204,7 @@ export class TypeWrapper {
             if (method.hasOwnProperty(SYM_METHOD_MACRO) && method.hasOwnProperty(SYM_METHOD_CLOSURE))
                 throw TypeWrapper.Error.invalidMethodSymbols(typeName, propertyName);
 
-            if (!TypeReflect.objectInstance(typePrototype[SYM_TYPE_VALIDATE][propertyName as K], Function))
+            if (!TypeReflect.instance(typePrototype[SYM_TYPE_VALIDATE][propertyName as K], Function))
                 throw TypeWrapper.Error.missingSchemaValueValidaor(typeName, propertyName);
         }
     }

@@ -66,7 +66,7 @@ export class TypeReflect {
     }
 
     // tslint:disable-next-line:ban-types
-    public static objectInstance<T = object> (value: any, constructor: Function): value is T {
+    public static instance<T = object> (value: any, constructor: Function): value is T {
         return value == null
             ? value
             : Object.getPrototypeOf(value).constructor.name === constructor.name;
@@ -88,11 +88,8 @@ export class TypeReflect {
                 return false;
         }
     }
-}
 
-// TODO: remove or uncomment
-// export const as = {
-//     string (str: string) {
-//         return `\`${str.replace(/`/g, '\\`')}\``;
-//     },
-// };
+    public static asString (str: string) {
+        return `\`${str.replace(/`/g, '\\`')}\``;
+    }
+}

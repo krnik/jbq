@@ -1,7 +1,7 @@
 import { HANDLE_PATH_RESOLUTION, PARAMETER, PROP_DATA_PATH, SCHEMA_PATH_SEPARATOR, TYPE } from '../constants';
 import { schemaValidate } from '../types/schemaValidate';
 import { IDataPathSchemaValue } from '../typings';
-import { as } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { Compilation } from './Compilation';
 import { CodeBuilderError } from './error';
 import { ResolvedStore } from './ResolvedStore';
@@ -41,7 +41,7 @@ export class CodeBuilder {
     public static propertyAccessor (key: string) {
         if (/^[a-zA-Z_$][\w$]*$/.test(key)) return `.${key}`;
         if (/^\d+$/.test(key)) return `[${key}]`;
-        return `[${as.string(key)}]`;
+        return `[${TypeReflect.asString(key)}]`;
     }
 
     public static parsePath (path: string | string[]) {
@@ -283,7 +283,7 @@ export class CodeBuilder {
         schemaParam: string,
     ) {
         const resultVar = `${fnParam.replace(/[\[\]]/g, '')}_res`;
-        return `const ${resultVar} = ${fnParam}(${schemaParam}, ${as.string(schemaPath)}, ${dataVar});
+        return `const ${resultVar} = ${fnParam}(${schemaParam}, ${TypeReflect.asString(schemaPath)}, ${dataVar});
         if (${resultVar}) return ${resultVar};\n`;
     }
 

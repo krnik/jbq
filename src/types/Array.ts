@@ -1,7 +1,7 @@
 import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_METHOD_MACRO, SYM_TYPE_FOR_LOOP, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
 import { CodeBuilder } from '../core/Code';
 import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
-import { is } from '../utils/type';
+import { TypeReflect } from '../utils/type_reflect';
 import { schemaValidate } from './schemaValidate';
 
 type arrMethodCallback = (elem: any, index?: number, arr?: any[]) => boolean;
@@ -43,7 +43,7 @@ export const TypeArray = {
     ): string | undefined {
         const { schemaValue, dataVariable, schemaPath } = parseValues;
         const dataVar = `${dataVariable}.length`;
-        if (is.number(schemaValue))
+        if (TypeReflect.number(schemaValue))
             return CodeBuilder.createIfReturn(
                 [{ cmp: '!==', val: schemaValue.toString() }],
                 {
@@ -106,8 +106,8 @@ export const TypeArray = {
     },
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.ARRAY, TYPE, 'string'),
-        [EVERY]: schemaValidate.isInstance(TYPE_NAME.ARRAY, EVERY, 'Function'),
-        [SOME]: schemaValidate.isInstance(TYPE_NAME.ARRAY, SOME, 'Function'),
+        [EVERY]: schemaValidate.isInstance(TYPE_NAME.ARRAY, EVERY, Function),
+        [SOME]: schemaValidate.isInstance(TYPE_NAME.ARRAY, SOME, Function),
         [LEN]: schemaValidate.minMaxOrNumber(TYPE_NAME.ARRAY, LEN, true),
         [INCLUDES]: schemaValidate.any(TYPE_NAME.ARRAY, INCLUDES),
     },
