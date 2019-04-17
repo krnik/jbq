@@ -8,7 +8,7 @@ import { suitesBoolean } from '../data/suites/Boolean.suites';
 import { suitesNumber } from '../data/suites/Number.suites';
 import { suitesObject } from '../data/suites/Object.suites';
 import { suitesString } from '../data/suites/String.suites';
-import { ITestSuite } from '../data/suites/typings';
+import { TestSuite } from '../data/suites/typings';
 
 const findArg = (prefix: string) => {
     const regex = new RegExp(`^${prefix}[a-zA-Z_]+$`);
@@ -52,7 +52,7 @@ function printSuiteName (name: string, type: string, test: string, valid: boolea
     return `${prefix}${nameWithColor}`;
 }
 
-function createTests (bench: Benchmark.Suite, suites: ITestSuite[]) {
+function createTests (bench: Benchmark.Suite, suites: TestSuite[]) {
     for (const { name, valid, schema } of suites) {
         const { type, test } = extractSuiteNames(name);
         if (selectType && selectType !== type) return;

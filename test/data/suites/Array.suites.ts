@@ -1,8 +1,8 @@
 import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
-import { ITestSuite } from './typings';
+import { TestSuite } from './typings';
 
-export const suitesArray: ITestSuite[] = [
+export const suitesArray: TestSuite[] = [
     {
         name: `${TYPE_NAME.ARRAY}#${TYPE}`,
         valid: true,

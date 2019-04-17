@@ -3,12 +3,12 @@ import { jbq, jbqTypes } from '../../../src/main';
 
 
 {
-const schemas = {};
-const options = {};
-//example:use
-const { jbq, jbqTypes } = require('jbq');
-jbq(jbqTypes, schemas, options);
-//example:use
+    const schemas = {};
+    const options = {};
+    //example:use
+    const { jbq, jbqTypes } = require('jbq');
+    jbq(jbqTypes, schemas, options);
+    //example:use
 }
 
 
@@ -20,7 +20,7 @@ const PROPS = Symbol.for('schema_properties');
 const ITEMS = Symbol.for('schema_collection');
 const userSchema = {                //  Define `userSchema`
     type: 'object',                 //  ▶ that is an object
-    properties: ['names', 'email'], //  ▶ that have two properies 'names' and 'email'
+    keys: ['names', 'email'],       //  ▶ that must have only two properies 'names' and 'email'
     [PROPS]: {                      //  ▶ those properties have following schemas
         names: {                    //  ⯁ `names` property:
             type: 'array',          //      ▷ is an array

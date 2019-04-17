@@ -133,9 +133,12 @@ export const TOKEN_EXPR_REGEX = /{{(.*?)}}/g;
 /**
  * Enum representing parameter names of validation function.
  */
-export enum PARAMETER {
-    DATA = '$DATA',
-    ARGUMENTS = '$ARGS',
+export enum ParameterName {
+    Data = '$DATA',
+    Arguments = '$ARGS',
+    SchemaValue = 'schemaValue',
+    SchemaPath = 'schemaPath',
+    ResolvedValue = 'resolvedValue',
 }
 
 /**
@@ -143,12 +146,12 @@ export enum PARAMETER {
  * Each of the variants defines what to do if `$dataPath` resolves
  * to `undefined`.
  */
-export enum HANDLE_PATH_RESOLUTION {
+export enum PathResolutionStrategy {
     /**
      * If `$dataPath` resolves to `undefined` - skip the check of a property that
      * expected value.
      */
-    SKIP = 'skip',
+    Skip = 'skip',
     /**
      * Validate resolved `$dataPath` is validated by schema.
      *
@@ -165,11 +168,15 @@ export enum HANDLE_PATH_RESOLUTION {
      *      }
      *    };
      */
-    SCHEMA = 'schema',
+    Schema = 'schema',
     /**
      * Returns an error from validation function.
      */
-    RETURN = 'return',
+    Return = 'return',
+    /**
+     * Ignores the fact that the `$dataPath` resolved to undefined.
+     */
+    Ignore = 'ignore',
 }
 
 export const SCHEMA_PATH_SEPARATOR = '/';

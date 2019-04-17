@@ -1,9 +1,35 @@
 import { PROP_DATA_PATH } from '../constants';
-import { IDataPathSchemaValue } from '../typings';
+import { DataPathSchemaValue } from '../typings';
+import { printToken } from '../utils/print_token';
 import { TypeReflect } from '../utils/type_reflect';
-import { SchemaValidationError, TypeProtoError } from './error';
 
-function dataPath (schemaValue: any): schemaValue is IDataPathSchemaValue {
+const SchemaValidationError = {
+    missingArgument (typeName: string, methodName: string): Error {
+        const errorMessage = `Schema validation method ${
+            printToken.typePrototype(typeName)
+            } in ${
+            printToken.property(methodName)
+            } type expects 'schemaValue' parameter to not be undefined.`;
+        throw new Error(errorMessage);
+    },
+    invalidSchemaType (
+        typeName: string,
+        methodName: string,
+        expectedType: string,
+        type: string,
+    ): Error {
+        const errorMessage = `${
+            printToken.property(methodName)
+            } property in ${
+            printToken.typePrototype(typeName)
+            } type requires schema value to be a ${
+            printToken.type(expectedType)
+            }. Got ${printToken.type(type)} type instead.`;
+        return new Error(errorMessage);
+    },
+};
+
+function dataPath (schemaValue: any): schemaValue is DataPathSchemaValue {
     return schemaValue instanceof Object
         && schemaValue.hasOwnProperty(PROP_DATA_PATH)
         && (TypeReflect.string(schemaValue[PROP_DATA_PATH])
@@ -16,7 +42,7 @@ function primitive<T extends keyof typeof TypeReflect> (
     type: T,
     acceptDataPath?: boolean,
 ) {
-    return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
         if (acceptDataPath && dataPath(schemaValue)) return;
         const check = TypeReflect[type] as ((v: any) => boolean);
         if (!check(schemaValue))
@@ -29,8 +55,9 @@ function primitive<T extends keyof typeof TypeReflect> (
     };
 }
 
+// tslint:disable-next-line:ban-types
 function isInstance (typeName: string, methodName: string, constructor: Function) {
-    return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
         if (!TypeReflect.instance(schemaValue, constructor))
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -42,7 +69,7 @@ function isInstance (typeName: string, methodName: string, constructor: Function
 }
 
 function minMaxOrNumber (typeName: string, methodName: string, acceptDataPath?: boolean) {
-    return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
         if (acceptDataPath && dataPath(schemaValue)) return;
         if (TypeReflect.number(schemaValue)) return;
         if (typeof schemaValue === 'object') {
@@ -81,7 +108,7 @@ function minMaxOrNumber (typeName: string, methodName: string, acceptDataPath?: 
 }
 
 function arrayOfPropertyNames (typeName: string, methodName: string) {
-    return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
         if (!TypeReflect.instance<any[]>(schemaValue, Array) || !schemaValue.length)
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -105,7 +132,7 @@ function arrayOf<T extends keyof typeof TypeReflect> (
     methodName: string,
     elementType: T,
 ) {
-    return (schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => {
+    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
         if (!TypeReflect.array(schemaValue) || !schemaValue.length)
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -126,7 +153,7 @@ function arrayOf<T extends keyof typeof TypeReflect> (
 
 function any (typeName: string, methodName: string) {
     // tslint:disable-next-line: no-empty
-    return (_schemaValue: any = TypeProtoError.missingArgument(typeName, methodName)) => { };
+    return (_schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => { };
 }
 
 export const schemaValidate = {

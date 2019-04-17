@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import 'mocha';
 import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
 import { TypeAny } from '../../../src/types/Any';
-import { IParseValues } from '../../../src/typings';
+import { ParseValues } from '../../../src/typings';
 
 describe(TYPE_NAME.ANY, () => {
     describe(TYPE, () => {
@@ -12,7 +12,7 @@ describe(TYPE_NAME.ANY, () => {
     });
     describe(REQUIRED, () => {
         it('valid value', () => {
-            const value = { schemaValue: true } as IParseValues;
+            const value = { schemaValue: true } as ParseValues;
             const onTrue = TypeAny[REQUIRED](value);
             value.schemaValue = false;
             const onFalse = TypeAny[REQUIRED](value);

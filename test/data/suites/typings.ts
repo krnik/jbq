@@ -1,7 +1,7 @@
-import { ICreateInputSchema } from '../create';
+import { CreateInputSchema } from '../create';
 
-export interface ITestSuite {
+export interface TestSuite {
     name: string;
     valid: boolean;
-    schema: ICreateInputSchema;
+    schema: CreateInputSchema;
 }

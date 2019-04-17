@@ -1,8 +1,8 @@
 import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
-import { ITestSuite } from './typings';
+import { TestSuite } from './typings';
 
-export const suitesObject: ITestSuite[] = [
+export const suitesObject: TestSuite[] = [
     {
         name: `${TYPE_NAME.OBJECT}#${TYPE}`,
         valid: true,

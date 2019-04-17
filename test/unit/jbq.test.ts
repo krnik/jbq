@@ -70,6 +70,7 @@ describe('Validator', () => {
             const expectUndef = validator.OptionalName();
             if (expectUndef === undefined) throw new Error('Expected to return error message');
         });
+
         it('collection', () => {
             const numericOrString = {
                 [TYPE] (_base: string, $DATA: any) {
@@ -98,6 +99,7 @@ describe('Validator', () => {
                     },
                 },
             });
+
             const validValues = [
                 [1, 0, '0', '1', '3', 'Yo'],
                 [1, 0, '0', '1000'],
@@ -107,9 +109,11 @@ describe('Validator', () => {
                 [2, 0],
                 ['1', true],
             ];
+
             for (const val of validValues)
                 if (validator.ArrayOfNumerics(val))
                     throw new Error('Expected to pass');
+
             for (const val of invalidValues)
                 if (validator.ArrayOfNumerics(val) === undefined)
                     throw new Error('Expected to return error message');

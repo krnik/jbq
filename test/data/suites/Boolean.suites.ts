@@ -1,8 +1,8 @@
 import { TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
-import { ITestSuite } from './typings';
+import { TestSuite } from './typings';
 
-export const suitesBoolean: ITestSuite[] = [
+export const suitesBoolean: TestSuite[] = [
     {
         name: `${TYPE_NAME.BOOLEAN}#${TYPE}`,
         valid: true,

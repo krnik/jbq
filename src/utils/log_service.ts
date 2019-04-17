@@ -1,6 +1,17 @@
 import { SCHEMA_PATH_SEPARATOR } from '../constants';
 
-export class DebugLog {
+interface Logger {
+    debug (message: string, ...args: any[]): void;
+}
+
+// tslint:disable-next-line: no-console
+let LOGGER: Logger = { debug: console.log };
+
+export class LogService {
+    public static setLogger (logger: Logger) {
+        LOGGER = logger;
+    }
+
     private active: boolean = false;
     private indent = 0;
 
@@ -29,7 +40,6 @@ export class DebugLog {
     }
 
     private log (message: string) {
-        // tslint:disable-next-line: no-console
-        console.log(message);
+        LOGGER.debug(message);
     }
 }

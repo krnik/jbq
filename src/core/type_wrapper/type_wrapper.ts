@@ -1,106 +1,15 @@
-import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../constants';
+import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../constants';
 import { OmitSymbols } from '../../typings';
 import { TypeReflect } from '../../utils/type_reflect';
+import { TypeDefinition } from './interface/type_definition.interface';
+import { TypeMethod, TypeValidationMethod } from './interface/type_method.interface';
+import { TypePrototype } from './interface/type_prototype.interface';
 import { TypeWrapperErorr } from './type_wrapper.error';
 
 /**
- * Interface representing a shape of added to the type map type prototype.
- *
- * `[Symbol.for('type_key_order')]` - determines order in which the type
- * methods are used during creation of validation function. If not defined, the order
- * will depend on ECMASCript implementation.
- *
- * `[Symbol.for('type_validate')]` - must have as many methods as many methods
- * have TypeDefinition object. Methods in this object are used to validate if
- * value from schema can be accepted as an argument in TypeDefinition respective
- * method.
- *
- * # Example
- *
- *     const certainType = jbqTypes.get('any');
- *     // certain type shape
- *     {
- *        type (schemaValue, $DATA) {
- *          // method body used to create final validation function
- *        },
- *        required (schemaValue, $DATA) {
- *          // method body used to create final validation function
- *        },
- *        [Symbol.for('type_validate')]: {
- *            // method responsible for validation schema input
- *            // must throw on incorrect input
- *            type (schemaValue) {},
- *            required (schemaValue) {},
- *        },
- *        [Symbol.for('type_key_order')]: ['required', 'type'],
- *     }
+ * Class responsible for storing all TypeDefinitions and supply
+ * them to the code generator during schema parsing.
  */
-export interface TypeDefinition {
-    [method: string]: TypeMethod;
-    [SYM_TYPE_VALIDATE]: {
-        [method: string]: TypePrototypeValidationMethod;
-    };
-    [SYM_TYPE_KEY_ORDER]: string[];
-    [SYM_TYPE_FOR_LOOP]?: boolean;
-}
-
-/**
- * Interface representing a function that is a TypeDefinition validation method.
- * This function is used to build final validation function.
- *
- * Usually, during building of validation function, TypeMethod function is stringified
- * and its body is used to build a validation block in validation function.
- *
- * There are two exceptions. Symbols defined below determine behavior of code generator
- * when parsing TypeMethod with respective property.
- *
- * `[Symbol.for('type_method_closure')]` - If TypeMethod function have this property
- * set to true then code generator will use a reference to this function in validation
- * function instead of extracting its body. This allows to use external variables during
- * validation what would not be possible in some cases  if the function body
- * would be stringified.
- *
- * `[Symbol.for('type_method_macro')]` - Type of TypeMethod function that will return
- * a chunk of validation function. So instead of being parsed this function is simply
- * invoked with some Code Generator helper functions passed as arguments.
- * See [VALUE](https://github.com/krnik/jbq/blob/master/src/types/Number.ts) method example.
- */
-export interface TypeMethod {
-    (...args: any[]): string | undefined | void;
-    [SYM_METHOD_CLOSURE]?: boolean;
-    [SYM_METHOD_MACRO]?: boolean;
-}
-
-/**
- * Alias to any function that is used to validate schema input.
- */
-type TypePrototypeValidationMethod = (v: any) => void;
-
-/**
- * Type that represents all regular methods of TypePrototype that are used
- * during creation of validation function.
- */
-type TypePrototypeMethods<T> = {
-    [K in keyof T]: TypeMethod;
-};
-
-/**
- * Type that represents all symbol properties of TypePrototype.
- *
- *     Symbol.for('type_validate')
- *     Symbol.for('type_key_order')
- *     Symbol.for('type_for_loop')
- */
-interface TypePrototypeSymbols<T> {
-    [SYM_TYPE_VALIDATE]: {
-        [K in keyof T]: TypePrototypeValidationMethod;
-    };
-    [SYM_TYPE_FOR_LOOP]?: boolean;
-    [SYM_TYPE_KEY_ORDER]?: string[];
-}
-
-type TypePrototype<T> = TypePrototypeMethods<OmitSymbols<T>> & TypePrototypeSymbols<OmitSymbols<T>>;
-
 export class TypeWrapper {
     private static Error = TypeWrapperErorr;
 
@@ -162,7 +71,7 @@ export class TypeWrapper {
         typeName: string,
         methodName: string,
         method: TypeMethod,
-        schemaValidationMethod: TypePrototypeValidationMethod,
+        schemaValidationMethod: TypeValidationMethod,
     ): TypeWrapper {
         if (!this.types.has(typeName))
             throw TypeWrapper.Error.missingTypeToAddMethod(typeName, methodName);
@@ -209,7 +118,11 @@ export class TypeWrapper {
         }
     }
 
-    private mergeTypeKeyOrder (primaryKeys: string[], secondaryKeys: string[]): string[] {
+    private mergeTypeKeyOrder (
+        this: TypeWrapper,
+        primaryKeys: string[],
+        secondaryKeys: string[],
+    ): string[] {
         return [...primaryKeys, ...secondaryKeys].reduce(
             (acc, key) => acc.includes(key) ? acc : (acc.push(key), acc),
             [] as string[],
