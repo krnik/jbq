@@ -32,19 +32,6 @@ function handleFail (fn: (...x: any[]) => any) {
     };
 }
 
-function handlePassAsync (fn: any) {
-    return async () => {
-        if (await fn() !== undefined) throw Error('It should not return any errors.');
-    };
-}
-
-function handleFailAsync (fn: (...x: any[]) => any) {
-    return async () => {
-        if (await fn() === undefined)
-            throw Error('It should return an error.');
-    };
-}
-
 const nameRegex = /^(?<type>\w+)#(?<test>\w+)/;
 function extractSuiteNames (name: string) {
     interface IRegexpExec extends RegExpExecArray {
@@ -78,10 +65,6 @@ function createTests (bench: Benchmark.Suite, suites: TestSuite[]) {
         const { PerfTestFn } = jbq(createTypes(), { PerfTestFn: schema });
         const perfFn = (valid ? handlePass : handleFail)(PerfTestFn.bind(undefined, data));
         bench.add(printSuiteName(name, type, test, valid), perfFn);
-
-        const { AsyncPerfTestFn } = jbq(createTypes(), { AsyncPerfTestFn: schema }, { async: true });
-        const asyncPerfFn = (valid ? handlePassAsync : handleFailAsync)(AsyncPerfTestFn.bind(undefined, data));
-        bench.add(printSuiteName(`${name} - async`, type, test, valid), asyncPerfFn);
     }
 }
 
