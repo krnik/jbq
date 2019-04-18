@@ -29,4 +29,5 @@ export type DataPathChecker = (schemaValue: any) => schemaValue is DataPathSchem
 export interface JBQOptions {
     debug?: boolean;
     handleResolvedPaths?: PathResolutionStrategy;
+    async?: boolean;
 }

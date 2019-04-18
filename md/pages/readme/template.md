@@ -31,11 +31,11 @@ Every schema has only one required keywords which is `{{TYPE}}`. This keyword al
 - *prototypal inheritance of types*
 
 **ROADMAP:**
-- *asynchronous validator function execution*
-- *support JSONSchema translation*
-- *support Joi/Yup schema translation*
-- *support Class Validator translation*
-- *asynchronous validator function compliation*
+- [x] *asynchronous validator function execution*
+- [ ] *support Class Validator translation*
+- [ ] *support Joi/Yup schema translation*
+- [ ] *support JSONSchema translation*
+- [ ] *asynchronous validator function compliation*
 
 ***
 ## Usage Example

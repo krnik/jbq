@@ -26,6 +26,7 @@ export class Compilation {
     private schema: Schema;
     private sourceBuilder: SourceBuilder;
     private resolvedPaths: ResolvedPathStore;
+    private options: CompilationOptions;
     private macroHelpers = [
         (value: any) => schemaValidate.dataPath(value),
         (value: DataPathSchemaValue) => this.sourceBuilder.resolveDataPath(value),
@@ -36,7 +37,6 @@ export class Compilation {
         schema: Schema,
         schemaName: string,
         options: CompilationOptions = {},
-
     ) {
         this.schema = schema;
         this.types = types;
@@ -48,6 +48,7 @@ export class Compilation {
             this.resolvedPaths,
             options.handleResolvedPaths,
         );
+        this.options = options;
     }
 
     public execSync (this: Compilation): SourceBuilderProduct {
@@ -83,6 +84,10 @@ export class Compilation {
             this.parseProperty(type[property], schemaValue);
 
             sourceSnapshot.restore();
+
+            // TODO: refactor when async will take care of large collections
+            if (this.options.async)
+                this.sourceBuilder.append('\nyield;\n');
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {

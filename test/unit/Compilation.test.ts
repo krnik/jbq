@@ -24,8 +24,10 @@ describe('Compilation', () => {
             ...suitesObject,
             ...suitesString,
         ];
-        for (const { schema, name } of suites)
+        for (const { schema, name } of suites) {
             new Compilation(createTypes(), schema, name).execSync();
+            new Compilation(createTypes(), schema, name, { async: true }).execSync();
+        }
     });
     describe('Compilation.prototype.evaluateExpressions', () => {
         it('it should eval expressions', () => {

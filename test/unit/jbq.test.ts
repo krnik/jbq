@@ -28,15 +28,23 @@ describe('Validator', () => {
         describe(type, () => {
             for (const { name, valid, schema } of suites[type as key]) {
                 const { Test } = jbq(jbqTypes, { Test: schema });
+                const { TestAsync } = jbq(jbqTypes, { TestAsync: schema }, { async: true });
                 const data = createData(schema);
-                if (valid)
+                if (valid) {
                     it(`VALID: ${name}`, () => {
                         expect(Test(data)).to.be.equal(undefined);
                     });
-                else
+                    it(`VALID: ${name} - async`, async () => {
+                        expect(await TestAsync(data)).to.be.equal(undefined);
+                    });
+                } else {
                     it(`INVALID: ${name}`, () => {
                         isErrJSON(Test(data));
                     });
+                    it(`INVALID: ${name} - async`, async () => {
+                        isErrJSON(await TestAsync(data));
+                    });
+                }
             }
         });
     }

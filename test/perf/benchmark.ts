@@ -24,9 +24,23 @@ function handlePass (fn: (...x: any[]) => any) {
         if (fn() !== undefined) throw Error('It should not return any errors.');
     };
 }
+
 function handleFail (fn: (...x: any[]) => any) {
     return () => {
         if (fn() === undefined)
+            throw Error('It should return an error.');
+    };
+}
+
+function handlePassAsync (fn: any) {
+    return async () => {
+        if (await fn() !== undefined) throw Error('It should not return any errors.');
+    };
+}
+
+function handleFailAsync (fn: (...x: any[]) => any) {
+    return async () => {
+        if (await fn() === undefined)
             throw Error('It should return an error.');
     };
 }
@@ -55,12 +69,19 @@ function printSuiteName (name: string, type: string, test: string, valid: boolea
 function createTests (bench: Benchmark.Suite, suites: TestSuite[]) {
     for (const { name, valid, schema } of suites) {
         const { type, test } = extractSuiteNames(name);
+
         if (selectType && selectType !== type) return;
         if (selectTest && selectTest !== test) continue;
+
         const data = createData(schema);
+
         const { PerfTestFn } = jbq(createTypes(), { PerfTestFn: schema });
         const perfFn = (valid ? handlePass : handleFail)(PerfTestFn.bind(undefined, data));
         bench.add(printSuiteName(name, type, test, valid), perfFn);
+
+        const { AsyncPerfTestFn } = jbq(createTypes(), { AsyncPerfTestFn: schema }, { async: true });
+        const asyncPerfFn = (valid ? handlePassAsync : handleFailAsync)(AsyncPerfTestFn.bind(undefined, data));
+        bench.add(printSuiteName(`${name} - async`, type, test, valid), asyncPerfFn);
     }
 }
 

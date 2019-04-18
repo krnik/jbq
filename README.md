@@ -42,11 +42,11 @@ Every schema has only one required keywords which is `type`. This keyword allows
 - *prototypal inheritance of types*
 
 **ROADMAP:**
-- *asynchronous validator function execution*
-- *support JSONSchema translation*
-- *support Joi/Yup schema translation*
-- *support Class Validator translation*
-- *asynchronous validator function compliation*
+- [x] *asynchronous validator function execution*
+- [ ] *support Class Validator translation*
+- [ ] *support Joi/Yup schema translation*
+- [ ] *support JSONSchema translation*
+- [ ] *asynchronous validator function compliation*
 
 ***
 ## Usage Example
@@ -56,16 +56,16 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 - `jbqTypes`: [TypesWrapper](https://github.com/krnik/jbq/wiki/typewrapper) instance, a set of defined types used during schema parsing.
 
 ```typescript
-const { jbq, jbqTypes } = require('jbq');
-jbq(jbqTypes, schemas, options);
-```
+    const { jbq, jbqTypes } = require('jbq');
+    jbq(jbqTypes, schemas, options);
+    ```
 
 ```typescript
 const PROPS = Symbol.for('schema_properties');
 const ITEMS = Symbol.for('schema_collection');
 const userSchema = {                //  Define `userSchema`
     type: 'object',                 //  ▶ that is an object
-    properties: ['names', 'email'], //  ▶ that have two properies 'names' and 'email'
+    keys: ['names', 'email'],       //  ▶ that must have only two properies 'names' and 'email'
     [PROPS]: {                      //  ▶ those properties have following schemas
         names: {                    //  ⯁ `names` property:
             type: 'array',          //      ▷ is an array
