@@ -1,3 +1,3 @@
 import './Compilation.test';
 import './jbq.test';
-import './types/mod.test';
+import './Types/mod.test';
