@@ -1,32 +1,33 @@
-import { HANDLE_PATH_RESOLUTION, PROP_DATA_PATH } from './constants';
+import { PathResolutionStrategy, PROP_DATA_PATH } from './constants';
 
 export type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[keyof T]>;
 
-interface ISchemaMin { min: number; }
-interface ISchemaMax { max: number; }
-type SchemaMinMax = ISchemaMax | ISchemaMin;
+interface SchemaMin { min: number; }
+interface SchemaMax { max: number; }
+type SchemaMinMax = SchemaMax | SchemaMin;
 
-export interface IDataPathSchemaValue {
+export interface DataPathSchemaValue {
     [PROP_DATA_PATH]: string | string[];
     [key: string]: any;
 }
 
-export interface IParseValues {
+export interface ParseValues {
     schemaValue: any;
     schemaPath: string;
-    dataVariable: string;
+    variableName: string;
     resolvedValue?: string;
 }
 
-export interface IParseValuesMinMax extends IParseValues {
-    schemaValue: SchemaMinMax | number | IDataPathSchemaValue;
+export interface ParseValuesMinMax extends ParseValues {
+    schemaValue: SchemaMinMax | number | DataPathSchemaValue;
 }
 
-export type DataPathResolver = (schemaValue: IDataPathSchemaValue) => string;
+export type DataPathResolver = (schemaValue: DataPathSchemaValue) => string;
 
-export type DataPathChecker = (schemaValue: any) => schemaValue is IDataPathSchemaValue;
+export type DataPathChecker = (schemaValue: any) => schemaValue is DataPathSchemaValue;
 
-export interface IJBQOptions {
+export interface JBQOptions {
     debug?: boolean;
-    handleResolvedPaths?: HANDLE_PATH_RESOLUTION;
+    handleResolvedPaths?: PathResolutionStrategy;
+    async?: boolean;
 }

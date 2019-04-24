@@ -1,8 +1,8 @@
 import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
-import { ITestSuite } from './typings';
+import { TestSuite } from './typings';
 
-export const suitesAny: ITestSuite[] = [
+export const suitesAny: TestSuite[] = [
     {
         name: `${TYPE_NAME.ANY}#${TYPE}`,
         valid: true,

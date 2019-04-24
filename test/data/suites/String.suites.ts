@@ -1,8 +1,8 @@
 import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
-import { ITestSuite } from './typings';
+import { TestSuite } from './typings';
 
-export const suitesString: ITestSuite[] = [
+export const suitesString: TestSuite[] = [
     {
         name: `${TYPE_NAME.STRING}#${TYPE}`,
         valid: true,

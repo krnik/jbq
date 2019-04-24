@@ -3,8 +3,8 @@ import 'mocha';
 import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
 import { jbq } from '../../src/core/jbq';
 import { jbqTypes } from '../../src/main';
-import { createTypes } from '../../src/types/main';
-import { createData } from '../data/main';
+import { createTypes } from '../../src/types/mod';
+import { createData } from '../data/mod';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';
@@ -28,15 +28,23 @@ describe('Validator', () => {
         describe(type, () => {
             for (const { name, valid, schema } of suites[type as key]) {
                 const { Test } = jbq(jbqTypes, { Test: schema });
+                const { TestAsync } = jbq(jbqTypes, { TestAsync: schema }, { async: true });
                 const data = createData(schema);
-                if (valid)
+                if (valid) {
                     it(`VALID: ${name}`, () => {
                         expect(Test(data)).to.be.equal(undefined);
                     });
-                else
+                    it(`VALID: ${name} - async`, async () => {
+                        expect(await TestAsync(data)).to.be.equal(undefined);
+                    });
+                } else {
                     it(`INVALID: ${name}`, () => {
                         isErrJSON(Test(data));
                     });
+                    it(`INVALID: ${name} - async`, async () => {
+                        isErrJSON(await TestAsync(data));
+                    });
+                }
             }
         });
     }
@@ -70,6 +78,7 @@ describe('Validator', () => {
             const expectUndef = validator.OptionalName();
             if (expectUndef === undefined) throw new Error('Expected to return error message');
         });
+
         it('collection', () => {
             const numericOrString = {
                 [TYPE] (_base: string, $DATA: any) {
@@ -94,10 +103,11 @@ describe('Validator', () => {
                     type: 'array',
                     [SYM_SCHEMA_COLLECTION]: {
                         type: 'numeric',
-                        value: { min: 0, max: 1},
+                        value: { min: 0, max: 1 },
                     },
                 },
             });
+
             const validValues = [
                 [1, 0, '0', '1', '3', 'Yo'],
                 [1, 0, '0', '1000'],
@@ -107,9 +117,11 @@ describe('Validator', () => {
                 [2, 0],
                 ['1', true],
             ];
+
             for (const val of validValues)
                 if (validator.ArrayOfNumerics(val))
                     throw new Error('Expected to pass');
+
             for (const val of invalidValues)
                 if (validator.ArrayOfNumerics(val) === undefined)
                     throw new Error('Expected to return error message');

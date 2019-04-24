@@ -1,5 +1,5 @@
 import { jbq } from './core/jbq';
-import { createTypes } from './types/main';
+import { createTypes } from './types/mod';
 
 const jbqTypes = createTypes();
 

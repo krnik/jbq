@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import 'mocha';
 import { PROP_DATA_PATH } from '../../../src/constants';
 import { schemaValidate } from '../../../src/types/schemaValidate';
-import { values } from '../../data/main';
+import { values } from '../../data/mod';
 
 describe('schemaValidate', () => {
     const tName = 'schemaValidate test';
@@ -107,7 +107,7 @@ describe('schemaValidate', () => {
         });
     });
     describe('isInstance', () => {
-        const fn = schemaValidate.isInstance(tName, mName, 'Array');
+        const fn = schemaValidate.isInstance(tName, mName, Array);
         it('it should throw on invalid values', () => {
             expect(() => fn({})).to.throw();
         });

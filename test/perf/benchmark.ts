@@ -1,14 +1,14 @@
 import Benchmark from 'benchmark';
 import { jbq } from '../../src/core/jbq';
-import { createTypes } from '../../src/types/main';
-import { createData } from '../data/main';
+import { createTypes } from '../../src/types/mod';
+import { createData } from '../data/mod';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';
 import { suitesNumber } from '../data/suites/Number.suites';
 import { suitesObject } from '../data/suites/Object.suites';
 import { suitesString } from '../data/suites/String.suites';
-import { ITestSuite } from '../data/suites/typings';
+import { TestSuite } from '../data/suites/typings';
 
 const findArg = (prefix: string) => {
     const regex = new RegExp(`^${prefix}[a-zA-Z_]+$`);
@@ -24,6 +24,7 @@ function handlePass (fn: (...x: any[]) => any) {
         if (fn() !== undefined) throw Error('It should not return any errors.');
     };
 }
+
 function handleFail (fn: (...x: any[]) => any) {
     return () => {
         if (fn() === undefined)
@@ -52,12 +53,15 @@ function printSuiteName (name: string, type: string, test: string, valid: boolea
     return `${prefix}${nameWithColor}`;
 }
 
-function createTests (bench: Benchmark.Suite, suites: ITestSuite[]) {
+function createTests (bench: Benchmark.Suite, suites: TestSuite[]) {
     for (const { name, valid, schema } of suites) {
         const { type, test } = extractSuiteNames(name);
+
         if (selectType && selectType !== type) return;
         if (selectTest && selectTest !== test) continue;
+
         const data = createData(schema);
+
         const { PerfTestFn } = jbq(createTypes(), { PerfTestFn: schema });
         const perfFn = (valid ? handlePass : handleFail)(PerfTestFn.bind(undefined, data));
         bench.add(printSuiteName(name, type, test, valid), perfFn);

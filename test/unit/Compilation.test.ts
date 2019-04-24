@@ -1,10 +1,12 @@
 import { expect } from 'chai';
 import 'mocha';
-import { HANDLE_PATH_RESOLUTION, LEN, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
-import { Compilation } from '../../src/core/Compilation';
-import { createTypes } from '../../src/types/main';
+import { LEN, PathResolutionStrategy, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
+import { Compilation } from '../../src/core/compilation/compilation';
+import { CompilationOptions } from '../../src/core/compilation/interface/compilation_options.interface';
+import { TypeDefinition } from '../../src/core/type_wrapper/interface/type_definition.interface';
+import { createTypes } from '../../src/types/mod';
 import { schemaValidate } from '../../src/types/schemaValidate';
-import { IJBQOptions, IParseValues } from '../../src/typings';
+import { JBQOptions, ParseValues } from '../../src/typings';
 import { suitesAny } from '../data/suites/Any.suites';
 import { suitesArray } from '../data/suites/Array.suites';
 import { suitesBoolean } from '../data/suites/Boolean.suites';
@@ -22,10 +24,12 @@ describe('Compilation', () => {
             ...suitesObject,
             ...suitesString,
         ];
-        for (const { schema, name } of suites)
+        for (const { schema, name } of suites) {
             new Compilation(createTypes(), schema, name).execSync();
+            new Compilation(createTypes(), schema, name, { async: true }).execSync();
+        }
     });
-    describe('Compilation.prototype.evalExpressions', () => {
+    describe('Compilation.prototype.evaluateExpressions', () => {
         it('it should eval expressions', () => {
             const tests = [
                 {
@@ -50,13 +54,12 @@ describe('Compilation', () => {
                 },
             ];
             for (const { expr, val, expected } of tests) {
-                // @ts-ignore
-                const res = Compilation.prototype.evalExpressions(expr, val);
+                const res = Compilation.prototype['evaluateExpressions'](expr, val as ParseValues);
                 expect(res).to.be.equal(expected);
             }
         });
     });
-    describe('Compilation.prototype.sortByKey', () => {
+    describe('Compilation.prototype.sortSchemaEntries', () => {
         it('it should sort object entries by given order', () => {
             const obj = {
                 first: 1,
@@ -70,8 +73,8 @@ describe('Compilation', () => {
             const type = {
                 [SYM_TYPE_KEY_ORDER]: ['first', 'third', 'last'],
             };
-            // @ts-ignore
-            const entries = Compilation.prototype.sortEntries(obj, type);
+
+            const entries = Compilation.prototype['sortSchemaEntries'](obj, type as TypeDefinition);
             expect(entries[0][0]).to.be.equal(keyOrder[0]);
             expect(entries[0][1]).to.be.equal(obj.first);
             expect(entries[1][0]).to.be.equal(keyOrder[1]);
@@ -101,7 +104,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple')
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
                     { verified: false, active: false },
@@ -147,7 +150,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Nested')
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
                     { received: { age: 20 }, valid: { minimum: 15, maximum: 25 } },
@@ -164,7 +167,7 @@ describe('Compilation', () => {
             }
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            const options: CompilationOptions = { handleResolvedPaths: PathResolutionStrategy.Skip };
             {
                 const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
@@ -182,8 +185,8 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
-                    .bind(undefined, source.arguments);
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code).bind(undefined, source.arguments);
+
                 const validData = [
                     { verified: false, active: false },
                     { verified: true, active: false },
@@ -192,6 +195,7 @@ describe('Compilation', () => {
                 ];
                 for (const data of validData)
                     expect(validator(data)).to.be.equal(undefined);
+
                 const invalidData = [
                     { verified: true, active: false, missing: true },
                     { verified: false, active: true, missing: false },
@@ -208,7 +212,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [true, false];
                 for (const data of validData)
@@ -216,7 +220,7 @@ describe('Compilation', () => {
             }
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
             {
                 const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
@@ -232,7 +236,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
                     { verified: false, active: false },
@@ -258,7 +262,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const invalidData = [true, false];
                 for (const data of invalidData)
@@ -266,7 +270,7 @@ describe('Compilation', () => {
             }
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
             {
                 const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
@@ -284,7 +288,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
                     { verified: false, active: false, missing: false },
@@ -312,7 +316,7 @@ describe('Compilation', () => {
                 };
                 const source = new Compilation(createTypes(), Schema, 'Simple', options)
                     .execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const invalidData = [true, false];
                 for (const data of invalidData)
@@ -322,7 +326,7 @@ describe('Compilation', () => {
     });
     describe(`functions with closures`, () => {
         const nullabeStringType = {
-            [TYPE] (_schemaValue: IParseValues, path: string, $DATA: any) {
+            [TYPE] (_schemaValue: ParseValues, path: string, $DATA: any) {
                 if ($DATA !== null && typeof $DATA !== 'string')
                     return `{"message": "${$DATA}", "path": "${path}"}`;
             },
@@ -369,7 +373,7 @@ describe('Compilation', () => {
             {
                 const schema = testSchemas.Closure;
                 const source = new Compilation(types, schema, 'Closure').execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = ['A String', null];
                 for (const data of validData)
@@ -381,7 +385,7 @@ describe('Compilation', () => {
             {
                 const schema = testSchemas.WithPath;
                 const source = new Compilation(types, schema, 'WithPath').execSync();
-                const validator = new Function(source.argsParam, source.dataParam, source.code)
+                const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                     .bind(undefined, source.arguments);
                 const validData = [
                     { mailing: null, enlistedOn: null },
@@ -395,7 +399,7 @@ describe('Compilation', () => {
             }
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Skip };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -412,7 +416,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(types, Schema, 'Simple', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 { compare: null, val: null },
@@ -431,7 +435,7 @@ describe('Compilation', () => {
                 expect(validator(data)).be.a('string');
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -447,7 +451,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(types, Schema, 'Simple', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 { compare: null, val: null },
@@ -466,7 +470,7 @@ describe('Compilation', () => {
                 expect(validator(data)).be.a('string');
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -480,7 +484,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(types, Schema, 'Simple', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 { compare: null, val: null },
@@ -532,7 +536,7 @@ describe('Compilation', () => {
                 },
             };
             const source = new Compilation(createTypes(), Schema, 'UserName').execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 {
@@ -564,7 +568,7 @@ describe('Compilation', () => {
                 expect(validator(data)).to.be.a('string');
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SKIP };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Skip };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -579,7 +583,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(createTypes(), Schema, 'UserName', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 {
@@ -614,7 +618,7 @@ describe('Compilation', () => {
                 expect(validator(data)).to.be.a('string');
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.SCHEMA };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -642,7 +646,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(createTypes(), Schema, 'UserName', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 {
@@ -674,7 +678,7 @@ describe('Compilation', () => {
                 expect(validator(data)).to.be.a('string');
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, () => {
-            const options: IJBQOptions = { handleResolvedPaths: HANDLE_PATH_RESOLUTION.RETURN };
+            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -693,7 +697,7 @@ describe('Compilation', () => {
             };
             const source = new Compilation(createTypes(), Schema, 'UserName', options)
                 .execSync();
-            const validator = new Function(source.argsParam, source.dataParam, source.code)
+            const validator = new Function(source.argsParameter, source.dataParameter, source.code)
                 .bind(undefined, source.arguments);
             const validData = [
                 {

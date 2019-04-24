@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { SYM_SCHEMA_PROPERTIES } from '../../src/constants';
-import { ISchema } from '../../src/core/Compilation';
+import { Schema } from '../../src/core/compilation/interface/schema.interface';
 import { SYM_FAKER } from '../utils';
 
 export function callFaker (fakerArgs: [string, any[]]) {
@@ -17,11 +17,11 @@ export function callFaker (fakerArgs: [string, any[]]) {
     return fn(...(Array.isArray(args) ? args : [args]));
 }
 
-export interface ICreateInputSchema extends ISchema {
+export interface CreateInputSchema extends Schema {
     [SYM_FAKER]?: (() => any) | [string, any[]?];
 }
 
-export function createData (schema: ICreateInputSchema) {
+export function createData (schema: CreateInputSchema) {
     let result: { [k: string]: any } = {};
     let touched = false;
     if (schema.hasOwnProperty(SYM_FAKER)) {
@@ -32,11 +32,11 @@ export function createData (schema: ICreateInputSchema) {
     }
     if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES))
         for (const [field, subschema] of Object.entries(schema[SYM_SCHEMA_PROPERTIES]!)) {
-            const data = createData(subschema as ICreateInputSchema);
+            const data = createData(subschema as CreateInputSchema);
             if (data !== undefined) {
                 touched = true;
                 result[field] = data;
             }
         }
-    return touched ? result : undefined ;
+    return touched ? result : undefined;
 }

@@ -1,79 +1,113 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
-import { CodeBuilder } from '../core/Code';
-import { DataPathChecker, DataPathResolver, IParseValuesMinMax } from '../typings';
-import { is } from '../utils/type';
+import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROP_COUNT, PROP_DATA_PATH, PROPERTIES, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import { CodeGenerator } from '../core/code_gen/code_gen';
+import { ComparisonOperator } from '../core/code_gen/token/operator';
+import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../typings';
+import { TypeReflect } from '../utils/type_reflect';
 import { schemaValidate } from './schemaValidate';
 
 function createPropKeyCountMacro (resolveDataVarCmp: (d: string) => string) {
     return function propKeyCountMacro (
-        parseValues: IParseValuesMinMax,
+        parseValues: ParseValuesMinMax,
         checkDataPath: DataPathChecker,
         resolveDataPath: DataPathResolver,
     ): string | undefined {
-        const { schemaValue, dataVariable, schemaPath } = parseValues;
-        const dataVar = resolveDataVarCmp(dataVariable);
-        if (is.number(schemaValue))
-            return CodeBuilder.createIfReturn(
-                [{ cmp: '!==', val: schemaValue.toString() }],
-                {
+        const { schemaValue, variableName, schemaPath } = parseValues;
+        const dataVar = resolveDataVarCmp(variableName);
+        if (TypeReflect.number(schemaValue))
+            return `${
+                CodeGenerator.renderIfStatement([{
+                    value: schemaValue.toString(),
+                    variableName: dataVar,
+                    operator: ComparisonOperator.NotEqualStrict,
+                }])
+                }\n${
+                CodeGenerator.renderReturnJSONMessage(
+                    `Data should have exactly ${schemaValue} keys.`,
                     schemaPath,
-                    dataVariable: dataVar,
-                    message: `Data should have exactly ${schemaValue} keys.`,
-                },
-            );
+                )
+                }`;
+
         if (checkDataPath(schemaValue)) {
             const varName = resolveDataPath(schemaValue);
-            return CodeBuilder.createIfReturn(
-                [{ cmp: '!==', val: varName }],
-                {
-                    schemaPath,
-                    dataVariable: dataVar,
-                    message: `Data should have exactly \${${varName}} ${
-                        CodeBuilder.parsePath(schemaValue[PROP_DATA_PATH])
+            return `${
+                CodeGenerator.renderIfStatement([{
+                    value: varName,
+                    variableName: dataVar,
+                    operator: ComparisonOperator.NotEqualStrict,
+                }])
+                }\n${
+                CodeGenerator.renderReturnJSONMessage(
+                    `Data should have exactly \${${varName}} ${
+                    CodeGenerator.renderDataPath(schemaValue[PROP_DATA_PATH])
                     } keys.`,
-                },
-            );
+                    schemaPath,
+                )
+                }`;
         }
-        const schemaMinMax = schemaValue as Exclude<IParseValuesMinMax['schemaValue'], number>;
+
+        const schemaMinMax = schemaValue as Exclude<ParseValuesMinMax['schemaValue'], number>;
         const valOrResolve = (value: any) => {
             if (!checkDataPath(value)) return [`${value}`, value];
             const varName = resolveDataPath(value);
             return [`\${${varName}}`, varName];
         };
+
         if ('min' in schemaMinMax && 'max' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIfReturn(
-                [{ cmp: '<', val: min }, { cmp: '>', val: max }],
-                {
+            return `${
+                CodeGenerator.renderIfStatement(
+                    [
+                        {
+                            operator: ComparisonOperator.LessThan,
+                            value: min,
+                            variableName: dataVar,
+                        },
+                        {
+                            operator: ComparisonOperator.GreaterThan,
+                            value: max,
+                            variableName: dataVar,
+                        },
+                    ],
+                )
+                }\n${
+                CodeGenerator.renderReturnJSONMessage(
+                    `Data should have number of keys in range ${minVal}..${maxVal}.`,
                     schemaPath,
-                    dataVariable: dataVar,
-                    message: `Data should have number of keys in range ${minVal}..${maxVal}.`,
-                },
-            );
+                )
+                }`;
         }
+
         if ('min' in schemaMinMax) {
             const [minVal, min] = valOrResolve(schemaMinMax.min);
-            return CodeBuilder.createIfReturn(
-                [{ cmp: '<', val: min }],
-                {
+            return `${
+                CodeGenerator.renderIfStatement([{
+                    operator: ComparisonOperator.LessThan,
+                    value: min,
+                    variableName: dataVar,
+                }])
+                }\n${
+                CodeGenerator.renderReturnJSONMessage(
+                    `Data should have more than ${minVal} keys.`,
                     schemaPath,
-                    dataVariable: dataVar,
-                    message: `Data should have more than ${minVal} keys.`,
-                },
-            );
+                )
+                }`;
+
         }
         if ('max' in schemaMinMax) {
             const [maxVal, max] = valOrResolve(schemaMinMax.max);
-            return CodeBuilder.createIfReturn(
-                [{ cmp: '>', val: max }],
-                {
-                    join: ' || ',
+            return `${
+                CodeGenerator.renderIfStatement([{
+                    operator: ComparisonOperator.GreaterThan,
+                    value: max,
+                    variableName: dataVar,
+                }])
+                }\n${
+                CodeGenerator.renderReturnJSONMessage(
+                    `Data should have less than ${maxVal} keys.`,
                     schemaPath,
-                    dataVariable: dataVar,
-                    message: `Data should have less than ${maxVal} keys.`,
-                },
-            );
+                )
+                }`;
         }
     };
 }
@@ -102,7 +136,7 @@ export const TypeObject = {
     [SYM_TYPE_VALIDATE]: {
         [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
         [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
-        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, 'Function'),
+        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, Function),
         [PROPERTIES]: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
         [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
         [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),

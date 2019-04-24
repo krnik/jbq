@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { SYM_TYPE_VALIDATE, TYPE_NAME } from '../../../src/constants';
+import { TypeWrapper } from '../../../src/core/type_wrapper/type_wrapper';
 import { TypeArray } from '../../../src/types/Array';
 import { TypeBoolean } from '../../../src/types/Boolean';
-import { TypeWrapper } from '../../../src/types/Wrapper';
-import { createTypes } from '../../../src/types/main';
+import { createTypes } from '../../../src/types/mod';
 
 describe('Type Wrapper', () => {
     describe('.set()', () => {
@@ -14,9 +14,6 @@ describe('Type Wrapper', () => {
             expect(() => new TypeWrapper()
                 .set(TYPE_NAME.ARRAY, TypeArray)
                 .set(TYPE_NAME.ARRAY, TypeBoolean)).to.throw();
-        });
-        it('It should throw an error if type name to be set is not a string', () => {
-            expect(() => new TypeWrapper().set(123 as any, TypeArray)).to.throw();
         });
         it('It should reject type that lacks schema validation method', () => {
             const customType: any = { method () { return; } };
@@ -100,17 +97,17 @@ describe('Type Wrapper', () => {
     describe('.addMethod()', () => {
         it('it should succesfully ad a method', () => {
             const types = createTypes();
-            types.addMethod('any', 'newMethod', () => {}, () => {});
+            types.addMethod('any', 'newMethod', () => void 0, () => void 0);
             const typeAny = types.get('any')!;
             expect(typeAny).to.haveOwnProperty('newMethod');
         });
         it('it should throw if method exists', () => {
             const types = createTypes();
-            expect(() => types.addMethod('any', 'type', () => {}, () => {})).to.throw();
+            expect(() => types.addMethod('any', 'type', () => void 0, () => void 0)).to.throw();
         });
         it('it should throw if type does not exists', () => {
             const types = createTypes();
-            expect(() => types.addMethod('missing', 'type', () => {}, () => {})).to.throw();
+            expect(() => types.addMethod('missing', 'type', () => void 0, () => void 0)).to.throw();
         });
     });
 });
