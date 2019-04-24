@@ -3,12 +3,12 @@ import { jbq, jbqTypes } from '../../../src/main';
 
 
 {
-    const schemas = {};
-    const options = {};
-    //example:use
-    const { jbq, jbqTypes } = require('jbq');
-    jbq(jbqTypes, schemas, options);
-    //example:use
+const schemas = {};
+const options = {};
+//example:use
+const { jbq, jbqTypes } = require('jbq');
+jbq(jbqTypes, schemas, options);
+//example:use
 }
 
 

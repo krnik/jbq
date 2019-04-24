@@ -56,9 +56,9 @@ JBQ exports two entities, `jbq` and `jbqTypes`.
 - `jbqTypes`: [TypesWrapper](https://github.com/krnik/jbq/wiki/typewrapper) instance, a set of defined types used during schema parsing.
 
 ```typescript
-    const { jbq, jbqTypes } = require('jbq');
-    jbq(jbqTypes, schemas, options);
-    ```
+const { jbq, jbqTypes } = require('jbq');
+jbq(jbqTypes, schemas, options);
+```
 
 ```typescript
 const PROPS = Symbol.for('schema_properties');
