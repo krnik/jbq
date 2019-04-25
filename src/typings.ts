@@ -2,9 +2,9 @@ import { PathResolutionStrategy, PROP_DATA_PATH } from './constants';
 
 export type OmitSymbols<T> = Pick<T, { [K in keyof T]: K extends symbol ? never : K }[keyof T]>;
 
-interface SchemaMin { min: number; }
-interface SchemaMax { max: number; }
-type SchemaMinMax = SchemaMax | SchemaMin;
+export interface SchemaMin { min: number; }
+export interface SchemaMax { max: number; }
+export type SchemaMinMax = SchemaMax | SchemaMin | number;
 
 export interface DataPathSchemaValue {
     [PROP_DATA_PATH]: string | string[];
@@ -19,7 +19,7 @@ export interface ParseValues {
 }
 
 export interface ParseValuesMinMax extends ParseValues {
-    schemaValue: SchemaMinMax | number | DataPathSchemaValue;
+    schemaValue: SchemaMinMax | DataPathSchemaValue;
 }
 
 export type DataPathResolver = (schemaValue: DataPathSchemaValue) => string;

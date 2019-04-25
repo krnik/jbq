@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import 'mocha';
-import { LEN, PathResolutionStrategy, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../src/constants';
-import { Compilation } from '../../src/core/compilation/compilation';
-import { CompilationOptions } from '../../src/core/compilation/interface/compilation_options.interface';
-import { TypeDefinition } from '../../src/core/type_wrapper/interface/type_definition.interface';
-import { createTypes } from '../../src/types/mod';
-import { schemaValidate } from '../../src/types/schemaValidate';
-import { JBQOptions, ParseValues } from '../../src/typings';
-import { suitesAny } from '../data/suites/Any.suites';
-import { suitesArray } from '../data/suites/Array.suites';
-import { suitesBoolean } from '../data/suites/Boolean.suites';
-import { suitesNumber } from '../data/suites/Number.suites';
-import { suitesObject } from '../data/suites/Object.suites';
-import { suitesString } from '../data/suites/String.suites';
+import { LEN, PathResolutionStrategy, PROP_DATA_PATH, REQUIRED, SYM_METHOD_CLOSURE, SYM_SCHEMA_PROPERTIES, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
+import { Compilation } from '../../../src/core/compilation/compilation';
+import { CompilationOptions } from '../../../src/core/compilation/interface/compilation_options.interface';
+import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
+import { createTypes } from '../../../src/types/mod';
+import { schemaValidate } from '../../../src/types/schema_validator';
+import { JBQOptions, ParseValues } from '../../../src/typings';
+import { suitesAny } from '../../data/suites/Any.suites';
+import { suitesArray } from '../../data/suites/Array.suites';
+import { suitesBoolean } from '../../data/suites/Boolean.suites';
+import { suitesNumber } from '../../data/suites/Number.suites';
+import { suitesObject } from '../../data/suites/Object.suites';
+import { suitesString } from '../../data/suites/String.suites';
 
 describe('Compilation', () => {
     it('Compiling test schemas', () => {

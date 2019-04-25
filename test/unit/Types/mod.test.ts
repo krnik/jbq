@@ -1,8 +1,7 @@
-import './Any.test';
-import './Array.test';
-import './Boolean.test';
-import './Number.test';
-import './Object.test';
-import './schemaValidate.test';
-import './String.test';
-import './Wrapper.test';
+import './any.test';
+import './array.test';
+import './boolean.test';
+import './number.test';
+import './object.test';
+import './schema_validate';
+import './string.test';

@@ -4,7 +4,7 @@ import { TypeReflect } from '../../utils/type_reflect';
 import { TypeDefinition } from './interface/type_definition.interface';
 import { TypeMethod, TypeValidationMethod } from './interface/type_method.interface';
 import { TypePrototype } from './interface/type_prototype.interface';
-import { TypeWrapperErorr } from './type_wrapper.error';
+import { TypeWrapperErorr } from './type_wrapper_error';
 
 /**
  * Class responsible for storing all TypeDefinitions and supply

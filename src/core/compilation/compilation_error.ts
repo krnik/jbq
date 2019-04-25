@@ -25,7 +25,7 @@ export class CompilationError {
         return new Error(errorMessage);
     }
 
-    public static missingTypeMethod (typeName: string, methodName: string) {
+    public static missingTypeMethod (typeName: string, methodName: string): Error {
         const errorMessage = `Could not find method ${
             printToken.property(methodName)
             } in ${

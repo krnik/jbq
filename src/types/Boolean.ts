@@ -1,5 +1,5 @@
 import { SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../constants';
-import { schemaValidate } from './schemaValidate';
+import { schemaValidate } from './schema_validator';
 
 export const TypeBoolean = {
     [TYPE] (_schemaValue: string, $DATA: any): string | void {

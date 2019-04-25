@@ -1,5 +1,5 @@
 import { ParameterName, PathResolutionStrategy, PROP_DATA_PATH, SCHEMA_PATH_SEPARATOR, TYPE } from '../../constants';
-import { schemaValidate } from '../../types/schemaValidate';
+import { schemaValidate } from '../../types/schema_validator';
 import { DataPathSchemaValue } from '../../typings';
 import { CodeGenerator } from '../code_gen/code_gen';
 import { ComparisonOperator } from '../code_gen/token/operator';

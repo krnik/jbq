@@ -4,8 +4,7 @@ interface Logger {
     debug (message: string, ...args: any[]): void;
 }
 
-// tslint:disable-next-line: no-console
-let LOGGER: Logger = { debug: console.log };
+let LOGGER: Logger = { debug: () => { } };
 
 export class LogService {
     public static setLogger (logger: Logger) {

@@ -1,17 +1,17 @@
 import { expect } from 'chai';
 import 'mocha';
-import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../src/constants';
-import { jbq } from '../../src/core/jbq';
-import { jbqTypes } from '../../src/main';
-import { createTypes } from '../../src/types/mod';
-import { createData } from '../data/mod';
-import { suitesAny } from '../data/suites/Any.suites';
-import { suitesArray } from '../data/suites/Array.suites';
-import { suitesBoolean } from '../data/suites/Boolean.suites';
-import { suitesNumber } from '../data/suites/Number.suites';
-import { suitesObject } from '../data/suites/Object.suites';
-import { suitesString } from '../data/suites/String.suites';
-import { isErrJSON } from '../utils';
+import { SYM_SCHEMA_COLLECTION, SYM_TYPE_VALIDATE, TOKEN_BREAK, TYPE } from '../../../src/constants';
+import { jbq } from '../../../src/core/jbq';
+import { jbqTypes } from '../../../src/main';
+import { createTypes } from '../../../src/types/mod';
+import { createData } from '../../data/mod';
+import { suitesAny } from '../../data/suites/Any.suites';
+import { suitesArray } from '../../data/suites/Array.suites';
+import { suitesBoolean } from '../../data/suites/Boolean.suites';
+import { suitesNumber } from '../../data/suites/Number.suites';
+import { suitesObject } from '../../data/suites/Object.suites';
+import { suitesString } from '../../data/suites/String.suites';
+import { isErrJSON } from '../../utils';
 
 const suites = {
     Any: suitesAny,

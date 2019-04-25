@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ONE_OF, REGEX, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeString } from '../../../src/types/String';
+import { TypeString } from '../../../src/types/string';
 
 describe(TYPE_NAME.STRING, () => {
     describe(TYPE, () => {

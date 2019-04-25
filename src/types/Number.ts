@@ -3,7 +3,7 @@ import { CodeGenerator } from '../core/code_gen/code_gen';
 import { ComparisonOperator } from '../core/code_gen/token/operator';
 import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../typings';
 import { TypeReflect } from '../utils/type_reflect';
-import { schemaValidate } from './schemaValidate';
+import { schemaValidate } from './schema_validator';
 
 export const TypeNumber = {
     [TYPE] (_schemaValue: string, $DATA: any): string | void {

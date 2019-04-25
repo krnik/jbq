@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { CONSTRUCTOR_NAME, INSTANCE_OF, PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeObject } from '../../../src/types/Object';
+import { TypeObject } from '../../../src/types/object';
 
 describe(TYPE_NAME.OBJECT, () => {
     describe(TYPE, () => {

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
 import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeAny } from '../../../src/types/Any';
+import { TypeAny } from '../../../src/types/any';
 import { ParseValues } from '../../../src/typings';
 
 describe(TYPE_NAME.ANY, () => {

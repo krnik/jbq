@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeNumber } from '../../../src/types/Number';
+import { TypeNumber } from '../../../src/types/number';
 
 describe(TYPE_NAME.NUMBER, () => {
     describe(TYPE, () => {

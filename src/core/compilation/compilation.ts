@@ -1,12 +1,12 @@
 import { ParameterName, SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TOKEN_BREAK, TOKEN_EXPR_REGEX, TYPE } from '../../constants';
-import { schemaValidate } from '../../types/schemaValidate';
+import { schemaValidate } from '../../types/schema_validator';
 import { DataPathSchemaValue, ParseValues } from '../../typings';
 import { LogService } from '../../utils/log_service';
 import { TypeReflect } from '../../utils/type_reflect';
 import { TypeDefinition } from '../type_wrapper/interface/type_definition.interface';
 import { TypeMethod } from '../type_wrapper/interface/type_method.interface';
 import { TypeWrapper } from '../type_wrapper/type_wrapper';
-import { CompilationError } from './compilation.error';
+import { CompilationError } from './compilation_error';
 import { CompilationOptions } from './interface/compilation_options.interface';
 import { Schema } from './interface/schema.interface';
 import { SourceBuilderProduct } from './interface/source_builder_product.interface';

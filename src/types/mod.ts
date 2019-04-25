@@ -1,11 +1,11 @@
 import { TYPE_NAME } from '../constants';
 import { TypeWrapper } from '../core/type_wrapper/type_wrapper';
-import { TypeAny } from './Any';
-import { TypeArray } from './Array';
-import { TypeBoolean } from './Boolean';
-import { TypeNumber } from './Number';
-import { TypeObject } from './Object';
-import { TypeString } from './String';
+import { TypeAny } from './any';
+import { TypeArray } from './array';
+import { TypeBoolean } from './boolean';
+import { TypeNumber } from './number';
+import { TypeObject } from './object';
+import { TypeString } from './string';
 
 export function createTypes () {
     return new TypeWrapper()
