@@ -1,9 +1,6 @@
 .vscode
-.editorconfig
 .gitmodules
 .travis.yml
-tslint.json
-tsconfig*
 
 jbq.wiki
 md

@@ -1,3 +1,7 @@
 {
-    "tslint.alwaysShowRuleFailuresAsWarnings": true,
+    "search.usePCRE2": true,
+    "eslint.workingDirectories": [
+        "./src",
+        "./test"
+    ],
 }

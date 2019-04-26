@@ -13,7 +13,8 @@
     "tsc:dev:watch": "node_modules/.bin/tsc -w -p ./tsconfig.dev.json",
     "test": "mocha --require ts-node/register ./test/main.test.ts",
     "test:cov": "c8 mocha --require ts-node/register ./test/main.test.ts",
-    "test:perf": "node --require ts-node/register ./test/perf/benchmark.ts"
+    "test:perf": "node --require ts-node/register ./test/perf/benchmark.ts",
+    "lint": "eslint src/**/*.ts test/**/*.ts md/**/*.ts"
   },
   "keywords": [
     "validator"
@@ -32,14 +33,18 @@
     "@types/mocha": "5.2.6",
     "@types/node": "11.13.7",
     "@types/prettier": "1.16.3",
+    "@typescript-eslint/eslint-plugin": "1.7.0",
+    "@typescript-eslint/parser": "1.7.0",
     "benchmark": "2.1.4",
     "c8": "3.5.0",
     "chai": "4.2.0",
+    "eslint": "5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "faker": "4.1.0",
     "mocha": "6.1.4",
-    "prettier": "1.17.0",
+    "prettier": "^1.17.0",
     "ts-node": "8.1.0",
-    "tslint": "5.16.0",
     "typescript": "3.4.5"
   },
   "dependencies": {}
