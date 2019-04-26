@@ -4,43 +4,55 @@ import { TypeWrapper } from '../../../src/core/type_wrapper/type_wrapper';
 import { TypeArray } from '../../../src/types/array';
 import { TypeBoolean } from '../../../src/types/boolean';
 import { createTypes } from '../../../src/types/mod';
+import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
 
-describe('Type Wrapper', () => {
-    describe('.set()', () => {
-        it('It should accept valid type', () => {
+describe('Type Wrapper', (): void => {
+    describe('.set()', (): void => {
+        it('It should accept valid type', (): void => {
             new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
         });
-        it('It should throw an error when adding if type is already declared', () => {
-            expect(() => new TypeWrapper()
-                .set(TYPE_NAME.ARRAY, TypeArray)
-                .set(TYPE_NAME.ARRAY, TypeBoolean)).to.throw();
+        it('It should throw an error when adding if type is already declared', (): void => {
+            expect(
+                (): TypeWrapper =>
+                    new TypeWrapper()
+                        .set(TYPE_NAME.ARRAY, TypeArray)
+                        .set(TYPE_NAME.ARRAY, TypeBoolean),
+            ).to.throw();
         });
-        it('It should reject type that lacks schema validation method', () => {
-            const customType: any = { method () { return; } };
-            expect(() => new TypeWrapper().set('customType', customType)).to.throw();
-        });
-        it('It should throw an error when extending with non-existent type', () => {
+        it('It should reject type that lacks schema validation method', (): void => {
             const customType = {
-                method () { return; },
+                method(): void {},
+            };
+            expect(
+                (): TypeWrapper =>
+                    new TypeWrapper().set('customType', (customType as unknown) as TypeDefinition),
+            ).to.throw();
+        });
+        it('It should throw an error when extending with non-existent type', (): void => {
+            const customType = {
+                method(): void {},
                 [SYM_TYPE_VALIDATE]: {
-                    method () { return; },
+                    method(): void {},
                 },
             };
-            expect(() => new TypeWrapper()
-                .set(TYPE_NAME.ARRAY, TypeArray)
-                .set('customType', customType, { type: TYPE_NAME.OBJECT })).to.throw();
+            expect(
+                (): TypeWrapper =>
+                    new TypeWrapper()
+                        .set(TYPE_NAME.ARRAY, TypeArray)
+                        .set('customType', customType, { type: TYPE_NAME.OBJECT }),
+            ).to.throw();
         });
-        it('It should extend custom type with existing one', () => {
+        it('It should extend custom type with existing one', (): void => {
             const customType = {
-                method () { return; },
+                method(): void {},
                 [SYM_TYPE_VALIDATE]: {
-                    method () { return; },
+                    method(): void {},
                 },
             };
             const types = new TypeWrapper()
                 .set(TYPE_NAME.ARRAY, TypeArray)
                 .set('customType', customType, { type: TYPE_NAME.ARRAY });
-            const custom = types.get('customType')!;
+            const custom = types.get('customType') as TypeDefinition;
             expect(custom).to.be.an('object');
             expect(custom).to.have.property('method');
             expect(custom[SYM_TYPE_VALIDATE].method).to.be.a('function');
@@ -49,24 +61,24 @@ describe('Type Wrapper', () => {
                 expect(custom[SYM_TYPE_VALIDATE][key]).to.be.an('function');
             }
         });
-        it('It should extend types multiple times', () => {
+        it('It should extend types multiple times', (): void => {
             const customType = {
-                method () { return; },
+                method(): void {},
                 [SYM_TYPE_VALIDATE]: {
-                    method () { return; },
+                    method(): void {},
                 },
             };
             const anotherCustomType = {
-                anotherMethod () { return; },
+                anotherMethod(): void {},
                 [SYM_TYPE_VALIDATE]: {
-                    anotherMethod () { return; },
+                    anotherMethod(): void {},
                 },
             };
             const types = new TypeWrapper()
                 .set(TYPE_NAME.ARRAY, TypeArray)
                 .set('customType', customType, { type: TYPE_NAME.ARRAY })
                 .set('anotherCustomType', anotherCustomType, { type: 'customType' });
-            const anotherCustom = types.get('anotherCustomType')!;
+            const anotherCustom = types.get('anotherCustomType') as TypeDefinition;
             expect(anotherCustom).to.be.an('object');
             expect(anotherCustom).to.have.property('anotherMethod');
             expect(anotherCustom[SYM_TYPE_VALIDATE].anotherMethod).to.be.an('function');
@@ -76,38 +88,44 @@ describe('Type Wrapper', () => {
             }
         });
     });
-    describe('.has()', () => {
-        it('It should return boolean', () => {
+    describe('.has()', (): void => {
+        it('It should return boolean', (): void => {
             const types = new TypeWrapper();
             types.set(TYPE_NAME.ARRAY, TypeArray);
             expect(types.has(TYPE_NAME.ARRAY)).to.be.equal(true);
             expect(types.has(TYPE_NAME.BOOLEAN)).to.be.equal(false);
         });
     });
-    describe('.get()', () => {
-        it('It should return type if it exists', () => {
+    describe('.get()', (): void => {
+        it('It should return type if it exists', (): void => {
             const types = new TypeWrapper().set(TYPE_NAME.ARRAY, TypeArray);
             expect(types.get(TYPE_NAME.ARRAY)).to.be.equal(TypeArray);
         });
-        it('It should return undefined if type does not exists', () => {
+        it('It should return undefined if type does not exists', (): void => {
             const types = new TypeWrapper();
             expect(types.get(TYPE_NAME.ARRAY)).to.be.equal(undefined);
         });
     });
-    describe('.addMethod()', () => {
-        it('it should succesfully ad a method', () => {
+    describe('.addMethod()', (): void => {
+        it('it should succesfully ad a method', (): void => {
             const types = createTypes();
-            types.addMethod('any', 'newMethod', () => void 0, () => void 0);
-            const typeAny = types.get('any')!;
+            types.addMethod('any', 'newMethod', (): void => void 0, (): void => void 0);
+            const typeAny = types.get('any') as TypeDefinition;
             expect(typeAny).to.haveOwnProperty('newMethod');
         });
-        it('it should throw if method exists', () => {
+        it('it should throw if method exists', (): void => {
             const types = createTypes();
-            expect(() => types.addMethod('any', 'type', () => void 0, () => void 0)).to.throw();
+            expect(
+                (): TypeWrapper =>
+                    types.addMethod('any', 'type', (): void => void 0, (): void => void 0),
+            ).to.throw();
         });
-        it('it should throw if type does not exists', () => {
+        it('it should throw if type does not exists', (): void => {
             const types = createTypes();
-            expect(() => types.addMethod('missing', 'type', () => void 0, () => void 0)).to.throw();
+            expect(
+                (): TypeWrapper =>
+                    types.addMethod('missing', 'type', (): void => void 0, (): void => void 0),
+            ).to.throw();
         });
     });
 });

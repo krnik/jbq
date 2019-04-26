@@ -1,6 +1,12 @@
-import { ParameterName, PathResolutionStrategy, PROP_DATA_PATH, SCHEMA_PATH_SEPARATOR, TYPE } from '../../constants';
+import {
+    ParameterName,
+    PathResolutionStrategy,
+    PROP_DATA_PATH,
+    SCHEMA_PATH_SEPARATOR,
+    TYPE,
+} from '../../constants';
 import { schemaValidate } from '../../types/schema_validator';
-import { DataPathSchemaValue } from '../../typings';
+import { DataPath } from '../../typings';
 import { CodeGenerator } from '../code_gen/code_gen';
 import { ComparisonOperator } from '../code_gen/token/operator';
 import { Compilation } from './compilation';
@@ -10,6 +16,7 @@ import { SourceBuilderCounter } from './interface/source_builder_counter.interfa
 import { SourceBuilderProduct } from './interface/source_builder_product.interface';
 import { SourceBuilderSnapshot } from './interface/source_builder_snapshot.interface';
 import { ResolvedPathStore } from './resolved_path_store';
+import { IfCondition } from '../code_gen/interface/if_condition.interface';
 
 /**
  * Class responsible for main validation function composition logic.
@@ -24,7 +31,7 @@ export class SourceBuilder {
     private resolvedPaths: ResolvedPathStore;
     private Compilation: Compilation;
 
-    constructor (
+    public constructor(
         compilation: Compilation,
         schemaName: string,
         resolvedPaths: ResolvedPathStore,
@@ -38,21 +45,21 @@ export class SourceBuilder {
         this.product = this.createInitialProduct();
     }
 
-    public getProduct (this: SourceBuilder): SourceBuilderProduct {
+    public getProduct(this: SourceBuilder): SourceBuilderProduct {
         return this.product;
     }
 
     /**
      * Returns path from root of the `Schema` to currently processed part of it.
      */
-    public getSchemaPath (this: SourceBuilder): string {
+    public getSchemaPath(this: SourceBuilder): string {
         return this.context.schemaPath;
     }
 
     /**
      * Returns name of currently used data variable.
      */
-    public getVariableName (this: SourceBuilder): string {
+    public getVariableName(this: SourceBuilder): string {
         return this.context.variableName;
     }
 
@@ -60,13 +67,13 @@ export class SourceBuilder {
      * Returns a Snapshot of `SourceBuilder` context so it can be restored later
      * as if the compilation wouldn't went deeper into the schema tree.
      */
-    public getContextSnapshot (this: SourceBuilder): SourceBuilderSnapshot {
+    public getContextSnapshot(this: SourceBuilder): SourceBuilderSnapshot {
         const { schemaPath, variableName, currentProperty } = this.context;
         return {
             schemaPath,
             variableName,
             currentProperty,
-            restore: () => {
+            restore: (): void => {
                 this.context.schemaPath = schemaPath;
                 this.context.variableName = variableName;
                 this.context.currentProperty = currentProperty;
@@ -79,15 +86,14 @@ export class SourceBuilder {
      * currently processed property of schema and the path to currently processed
      * part of schema is also up to date.
      */
-    public updateBuilderContext (
+    public updateBuilderContext(
         this: SourceBuilder,
         currentProperty: string,
         updateVariableName: boolean = false,
     ): void {
         this.context.currentProperty = currentProperty;
         this.context.schemaPath += `${SCHEMA_PATH_SEPARATOR}${currentProperty}`;
-        if (updateVariableName)
-            this.updateVariableName();
+        if (updateVariableName) this.updateVariableName();
     }
 
     /**
@@ -95,7 +101,7 @@ export class SourceBuilder {
      * `SourceBuilder` and then return newly updated variable name of soon to be
      * currently processed data value.
      */
-    public updateVariableName (this: SourceBuilder): string {
+    public updateVariableName(this: SourceBuilder): string {
         this.counter.ofDataVariables += 1;
 
         const variableName = `${ParameterName.Data}_${this.counter.ofDataVariables}`;
@@ -107,7 +113,7 @@ export class SourceBuilder {
      * Increases the created parameter counter, pushes new argument value to the
      * argument array and returns a string that will resolve to pushed value.
      */
-    public createParameter (this: SourceBuilder, value: any): string {
+    public createParameter(this: SourceBuilder, value: unknown): string {
         this.counter.parameters += 1;
         this.product.arguments.push(value);
         return `${this.product.argsParameter}[${this.counter.parameters}]`;
@@ -116,15 +122,14 @@ export class SourceBuilder {
     /**
      * Appends labeled block opening to the product source code.
      */
-    public openLabeledBlock (this: SourceBuilder): void {
-        this.product.code += CodeGenerator
-            .renderOpenLabeledBlock(this.context.variableName);
+    public openLabeledBlock(this: SourceBuilder): void {
+        this.product.code += CodeGenerator.renderOpenLabeledBlock(this.context.variableName);
     }
 
     /**
      * Appends `}` to the product source code.
      */
-    public closeBlock (this: SourceBuilder): void {
+    public closeBlock(this: SourceBuilder): void {
         this.product.code += CodeGenerator.renderCloseBlock();
     }
 
@@ -132,36 +137,42 @@ export class SourceBuilder {
      * Appends `$dataPath` resolution to the product source code.
      * Then, returns the variable name to which resolved value is assigned to.
      */
-    public resolveDataPath (schemaValue: DataPathSchemaValue): string {
+    public resolveDataPath(schemaValue: DataPath): string {
         const variableName = this.updateVariableName();
         this.resolvedPaths.add(variableName, schemaValue);
-        this.product.code += CodeGenerator.renderDataPathResolution(schemaValue[PROP_DATA_PATH], variableName);
+        this.product.code += CodeGenerator.renderDataPathResolution(
+            schemaValue[PROP_DATA_PATH],
+            variableName,
+        );
         return variableName;
     }
 
     /**
      * Perform handling of `$dataPath` resolution results.
      */
-    public validateResolvedVariables (this: SourceBuilder): string {
+    public validateResolvedVariables(this: SourceBuilder): string {
         const variables = this.resolvedPaths.consume();
 
-        if (variables.length === 0)
-            return '';
+        if (variables.length === 0) return '';
 
         let code = '';
         let suffix = '';
 
         switch (this.pathResolutionStrategy) {
             case PathResolutionStrategy.Return: {
-                const paths = variables
-                    .map(({ schemaValue }) => CodeGenerator.renderDataPath(schemaValue[PROP_DATA_PATH]));
+                const paths = variables.map(
+                    ({ schemaValue }): string =>
+                        CodeGenerator.renderDataPath(schemaValue[PROP_DATA_PATH]),
+                );
 
                 code = CodeGenerator.renderIfStatement(
-                    variables.map(({ variableName }) => ({
-                        variableName,
-                        value: 'undefined',
-                        operator: ComparisonOperator.EqualStrict,
-                    })),
+                    variables.map(
+                        ({ variableName }): IfCondition => ({
+                            variableName,
+                            value: 'undefined',
+                            operator: ComparisonOperator.EqualStrict,
+                        }),
+                    ),
                 );
                 code += CodeGenerator.renderReturnJSONMessage(
                     `One of ${PROP_DATA_PATH} values (${paths}) resolved to undefined.`,
@@ -172,11 +183,9 @@ export class SourceBuilder {
 
             case PathResolutionStrategy.Schema: {
                 for (const { schemaValue } of variables) {
-                    if (schemaValue && !schemaValidate.dataPath(schemaValue))
-                        return suffix;
+                    if (schemaValue && !schemaValidate.dataPath(schemaValue)) return suffix;
 
-                    if (!(schemaValue.hasOwnProperty(TYPE)))
-                        return suffix;
+                    if (!schemaValue.hasOwnProperty(TYPE)) return suffix;
 
                     const properties = [
                         ...Object.getOwnPropertyNames(schemaValue),
@@ -184,15 +193,12 @@ export class SourceBuilder {
                     ];
 
                     const schemaOfDataPath = properties
-                        .filter((key) => key !== PROP_DATA_PATH)
-                        .reduce(
-                            (acc, key) => {
-                                // Hack to ignore `symbol` indexing error.
-                                acc[key as string] = schemaValue[key as string];
-                                return acc;
-                            },
-                            {} as Schema,
-                        );
+                        .filter((key): boolean => key !== PROP_DATA_PATH)
+                        .reduce<Schema>((acc, key): Schema => {
+                            // Hack to ignore `symbol` indexing error.
+                            acc[key as string] = schemaValue[key as string];
+                            return acc;
+                        }, {});
 
                     const snapshot = this.getContextSnapshot();
                     this.updateBuilderContext(PROP_DATA_PATH);
@@ -204,11 +210,13 @@ export class SourceBuilder {
 
             case PathResolutionStrategy.Skip: {
                 const ifStatement = CodeGenerator.renderIfStatement(
-                    variables.map(({ variableName }) => ({
-                        variableName,
-                        value: 'undefined',
-                        operator: ComparisonOperator.NotEqualStrict,
-                    })),
+                    variables.map(
+                        ({ variableName }): IfCondition => ({
+                            variableName,
+                            value: 'undefined',
+                            operator: ComparisonOperator.NotEqualStrict,
+                        }),
+                    ),
                 );
 
                 code += `${ifStatement} {`;
@@ -227,18 +235,18 @@ export class SourceBuilder {
     /**
      * Appends a string to the end of the product source code.
      */
-    public append (this: SourceBuilder, code: string): void {
+    public append(this: SourceBuilder, code: string): void {
         this.product.code += code;
     }
 
     /**
      * Returns a break statement chunk for currently processed block.
      */
-    public breakStatement (this: SourceBuilder): string {
+    public breakStatement(this: SourceBuilder): string {
         return CodeGenerator.renderLabeledBreakStatement(this.context.variableName);
     }
 
-    public callClosure (this: SourceBuilder, functionParam: string, schemaParam: string): void {
+    public callClosure(this: SourceBuilder, functionParam: string, schemaParam: string): void {
         this.product.code += CodeGenerator.renderFunctionCall(
             functionParam,
             schemaParam,
@@ -247,7 +255,7 @@ export class SourceBuilder {
         );
     }
 
-    public defineVariable (this: SourceBuilder, variableName: string, accessor: string): void {
+    public defineVariable(this: SourceBuilder, variableName: string, accessor: string): void {
         this.product.code += CodeGenerator.renderVariableInitialization(
             this.context.variableName,
             variableName,
@@ -255,17 +263,25 @@ export class SourceBuilder {
         );
     }
 
-    public forLoop (this: SourceBuilder, variableName: string, useForOfLoop: boolean): void {
+    public forLoop(this: SourceBuilder, variableName: string, useForOfLoop: boolean): void {
         this.product.code += useForOfLoop
-            ? CodeGenerator.renderForOfLoop(this.context.variableName, variableName, this.context.schemaPath)
-            : CodeGenerator.renderForLoop(this.context.variableName, variableName, `${variableName}_accessor`);
+            ? CodeGenerator.renderForOfLoop(
+                  this.context.variableName,
+                  variableName,
+                  this.context.schemaPath,
+              )
+            : CodeGenerator.renderForLoop(
+                  this.context.variableName,
+                  variableName,
+                  `${variableName}_accessor`,
+              );
     }
 
-    public propertyAccessor (this: SourceBuilder, property: string): string {
+    public propertyAccessor(this: SourceBuilder, property: string): string {
         return CodeGenerator.renderPropertyAccessor(property);
     }
 
-    private createInitialProduct (this: SourceBuilder): SourceBuilderProduct {
+    private createInitialProduct(this: SourceBuilder): SourceBuilderProduct {
         return {
             code: '',
             arguments: [],
@@ -274,7 +290,7 @@ export class SourceBuilder {
         };
     }
 
-    private createInitialContext (this: SourceBuilder, schemaName: string): SourceBuilderContext {
+    private createInitialContext(this: SourceBuilder, schemaName: string): SourceBuilderContext {
         return {
             variableName: ParameterName.Data,
             currentProperty: '',
@@ -282,7 +298,7 @@ export class SourceBuilder {
         };
     }
 
-    private createInitialCounter (this: SourceBuilder): SourceBuilderCounter {
+    private createInitialCounter(this: SourceBuilder): SourceBuilderCounter {
         return {
             parameters: -1,
             ofDataVariables: -1,

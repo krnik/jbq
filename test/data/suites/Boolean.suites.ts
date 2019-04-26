@@ -8,7 +8,7 @@ export const suitesBoolean: TestSuite[] = [
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
-            [SYM_FAKER]: () => true,
+            [SYM_FAKER]: (): boolean => true,
         },
     },
     {
@@ -16,7 +16,7 @@ export const suitesBoolean: TestSuite[] = [
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
-            [SYM_FAKER]: () => null,
+            [SYM_FAKER]: (): null => null,
         },
     },
     {
@@ -25,7 +25,7 @@ export const suitesBoolean: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
             [VALUE]: true,
-            [SYM_FAKER]: () => true,
+            [SYM_FAKER]: (): boolean => true,
         },
     },
     {
@@ -34,7 +34,7 @@ export const suitesBoolean: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.BOOLEAN,
             [VALUE]: false,
-            [SYM_FAKER]: () => true,
+            [SYM_FAKER]: (): boolean => true,
         },
     },
 ];

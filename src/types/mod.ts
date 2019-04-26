@@ -7,7 +7,7 @@ import { TypeNumber } from './number';
 import { TypeObject } from './object';
 import { TypeString } from './string';
 
-export function createTypes () {
+export function createTypes(): TypeWrapper {
     return new TypeWrapper()
         .set(TYPE_NAME.ANY, TypeAny)
         .set(TYPE_NAME.STRING, TypeString, { type: TYPE_NAME.ANY })

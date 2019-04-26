@@ -1,4 +1,14 @@
-import { CONSTRUCTOR_NAME, INSTANCE_OF, KEY_COUNT, PROPERTIES, PROP_COUNT, PROP_DATA_PATH, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
+import {
+    CONSTRUCTOR_NAME,
+    INSTANCE_OF,
+    KEY_COUNT,
+    PROPERTIES,
+    PROP_COUNT,
+    PROP_DATA_PATH,
+    SYM_SCHEMA_PROPERTIES,
+    TYPE,
+    TYPE_NAME,
+} from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
 import { TestSuite } from './typings';
 
@@ -8,7 +18,7 @@ export const suitesObject: TestSuite[] = [
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
-            [SYM_FAKER]: () => ({}),
+            [SYM_FAKER]: (): object => ({}),
         },
     },
     {
@@ -16,7 +26,7 @@ export const suitesObject: TestSuite[] = [
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
-            [SYM_FAKER]: () => [],
+            [SYM_FAKER]: (): object => [],
         },
     },
     {
@@ -25,7 +35,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [CONSTRUCTOR_NAME]: 'Set',
-            [SYM_FAKER]: () => new Set(),
+            [SYM_FAKER]: (): object => new Set(),
         },
     },
     {
@@ -34,7 +44,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [CONSTRUCTOR_NAME]: 'Array',
-            [SYM_FAKER]: () => new Set(),
+            [SYM_FAKER]: (): object => new Set(),
         },
     },
     {
@@ -43,7 +53,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [INSTANCE_OF]: Set,
-            [SYM_FAKER]: () => new Set(),
+            [SYM_FAKER]: (): object => new Set(),
         },
     },
     {
@@ -52,7 +62,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [INSTANCE_OF]: Map,
-            [SYM_FAKER]: () => new Set(),
+            [SYM_FAKER]: (): object => new Set(),
         },
     },
     {
@@ -61,7 +71,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROPERTIES]: ['key', Symbol.for('key')],
-            [SYM_FAKER]: () => ({ key: true, [Symbol.for('key')]: true }),
+            [SYM_FAKER]: (): object => ({ key: true, [Symbol.for('key')]: true }),
         },
     },
     {
@@ -70,7 +80,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROPERTIES]: ['key', Symbol.for('key')],
-            [SYM_FAKER]: () => ({ [Symbol.for('key')]: true }),
+            [SYM_FAKER]: (): object => ({ [Symbol.for('key')]: true }),
         },
     },
     {
@@ -79,7 +89,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: 0,
-            [SYM_FAKER]: () => ({}),
+            [SYM_FAKER]: (): object => ({}),
         },
     },
     {
@@ -88,7 +98,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: 1,
-            [SYM_FAKER]: () => ({}),
+            [SYM_FAKER]: (): object => ({}),
         },
     },
     {
@@ -99,12 +109,12 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 0,
+                    [SYM_FAKER]: (): number => 0,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: { [PROP_DATA_PATH]: 'keys' },
-                    [SYM_FAKER]: () => ({}),
+                    [SYM_FAKER]: (): object => ({}),
                 },
             },
         },
@@ -117,12 +127,12 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: { [PROP_DATA_PATH]: 'keys' },
-                    [SYM_FAKER]: () => ({}),
+                    [SYM_FAKER]: (): object => ({}),
                 },
             },
         },
@@ -133,7 +143,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { min: 1 },
-            [SYM_FAKER]: () => ({ whoa: true }),
+            [SYM_FAKER]: (): object => ({ whoa: true }),
         },
     },
     {
@@ -142,7 +152,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { min: 2 },
-            [SYM_FAKER]: () => ({ whoa: true }),
+            [SYM_FAKER]: (): object => ({ whoa: true }),
         },
     },
     {
@@ -153,14 +163,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: {
                         min: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true }),
+                    [SYM_FAKER]: (): object => ({ whoa: true }),
                 },
             },
         },
@@ -173,14 +183,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 2,
+                    [SYM_FAKER]: (): number => 2,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: {
                         min: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true }),
+                    [SYM_FAKER]: (): object => ({ whoa: true }),
                 },
             },
         },
@@ -191,7 +201,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { max: 2 },
-            [SYM_FAKER]: () => ({ whoa: true }),
+            [SYM_FAKER]: (): object => ({ whoa: true }),
         },
     },
     {
@@ -200,7 +210,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { max: 0 },
-            [SYM_FAKER]: () => ({ whoa: true }),
+            [SYM_FAKER]: (): object => ({ whoa: true }),
         },
     },
     {
@@ -211,14 +221,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: {
                         max: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true }),
+                    [SYM_FAKER]: (): object => ({ whoa: true }),
                 },
             },
         },
@@ -231,14 +241,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 0,
+                    [SYM_FAKER]: (): number => 0,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [KEY_COUNT]: {
                         max: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true }),
+                    [SYM_FAKER]: (): object => ({ whoa: true }),
                 },
             },
         },
@@ -249,7 +259,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { min: 1, max: 2 },
-            [SYM_FAKER]: () => ({ whoa: 1 }),
+            [SYM_FAKER]: (): object => ({ whoa: 1 }),
         },
     },
     {
@@ -258,7 +268,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [KEY_COUNT]: { min: 2, max: 2 },
-            [SYM_FAKER]: () => ({ whoa: 1 }),
+            [SYM_FAKER]: (): object => ({ whoa: 1 }),
         },
     },
     {
@@ -272,11 +282,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -286,7 +296,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: 2,
                     },
-                    [SYM_FAKER]: () => ({ whoa: true, yeah: false }),
+                    [SYM_FAKER]: (): object => ({ whoa: true, yeah: false }),
                 },
             },
         },
@@ -302,11 +312,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                     },
                 },
@@ -316,7 +326,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: 2,
                     },
-                    [SYM_FAKER]: () => ({ whoa: true, yeah: false }),
+                    [SYM_FAKER]: (): object => ({ whoa: true, yeah: false }),
                 },
             },
         },
@@ -332,11 +342,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -346,7 +356,7 @@ export const suitesObject: TestSuite[] = [
                         min: 1,
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true, yeah: false }),
+                    [SYM_FAKER]: (): object => ({ whoa: true, yeah: false }),
                 },
             },
         },
@@ -362,11 +372,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                     },
                 },
@@ -376,7 +386,7 @@ export const suitesObject: TestSuite[] = [
                         min: 3,
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true, yeah: false }),
+                    [SYM_FAKER]: (): object => ({ whoa: true, yeah: false }),
                 },
             },
         },
@@ -392,11 +402,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -406,7 +416,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ whoa: true, yeah: false }),
+                    [SYM_FAKER]: (): object => ({ whoa: true, yeah: false }),
                 },
             },
         },
@@ -422,11 +432,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -436,7 +446,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({}),
+                    [SYM_FAKER]: (): object => ({}),
                 },
             },
         },
@@ -447,7 +457,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: 1,
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -456,7 +466,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: 2,
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -467,12 +477,12 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: { [PROP_DATA_PATH]: 'keys' },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -485,12 +495,12 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 2,
+                    [SYM_FAKER]: (): number => 2,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: { [PROP_DATA_PATH]: 'keys' },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -501,7 +511,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { min: 1 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -510,7 +520,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { min: 2 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -521,14 +531,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: {
                         min: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -541,14 +551,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 2,
+                    [SYM_FAKER]: (): number => 2,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: {
                         min: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -559,7 +569,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { max: 2 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -568,7 +578,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { max: 0 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -579,14 +589,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1,
+                    [SYM_FAKER]: (): number => 1,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: {
                         max: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -599,14 +609,14 @@ export const suitesObject: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 keys: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 0,
+                    [SYM_FAKER]: (): number => 0,
                 },
                 obj: {
                     [TYPE]: TYPE_NAME.OBJECT,
                     [PROP_COUNT]: {
                         max: { [PROP_DATA_PATH]: 'keys' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
                 },
             },
         },
@@ -617,7 +627,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { min: 1, max: 2 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -626,7 +636,7 @@ export const suitesObject: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.OBJECT,
             [PROP_COUNT]: { min: 2, max: 2 },
-            [SYM_FAKER]: () => ({ [Symbol()]: 0 }),
+            [SYM_FAKER]: (): object => ({ [Symbol()]: 0 }),
         },
     },
     {
@@ -640,11 +650,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -654,7 +664,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: 2,
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0, [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0, [Symbol()]: 0 }),
                 },
             },
         },
@@ -670,11 +680,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                     },
                 },
@@ -684,7 +694,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: 2,
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0, [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0, [Symbol()]: 0 }),
                 },
             },
         },
@@ -700,11 +710,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -714,7 +724,7 @@ export const suitesObject: TestSuite[] = [
                         min: 1,
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0, [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0, [Symbol()]: 0 }),
                 },
             },
         },
@@ -730,11 +740,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1,
+                            [SYM_FAKER]: (): number => 1,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 2,
+                            [SYM_FAKER]: (): number => 2,
                         },
                     },
                 },
@@ -744,7 +754,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0, [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0, [Symbol()]: 0 }),
                 },
             },
         },
@@ -760,11 +770,11 @@ export const suitesObject: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 3,
+                            [SYM_FAKER]: (): number => 3,
                         },
                     },
                 },
@@ -774,7 +784,7 @@ export const suitesObject: TestSuite[] = [
                         min: { [PROP_DATA_PATH]: 'keys/min' },
                         max: { [PROP_DATA_PATH]: 'keys/max' },
                     },
-                    [SYM_FAKER]: () => ({ [Symbol()]: 0, [Symbol()]: 0 }),
+                    [SYM_FAKER]: (): object => ({ [Symbol()]: 0, [Symbol()]: 0 }),
                 },
             },
         },

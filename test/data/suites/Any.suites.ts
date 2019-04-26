@@ -17,7 +17,7 @@ export const suitesAny: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ANY,
             [REQUIRED]: true,
-            [SYM_FAKER]: () => true,
+            [SYM_FAKER]: (): boolean => true,
         },
     },
     {
@@ -26,7 +26,7 @@ export const suitesAny: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ANY,
             [REQUIRED]: true,
-            [SYM_FAKER]: () => undefined,
+            [SYM_FAKER]: (): undefined => undefined,
         },
     },
 ];

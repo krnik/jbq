@@ -20,5 +20,5 @@ export interface Schema {
         [schemaName: string]: Schema;
     };
     [SYM_SCHEMA_COLLECTION]?: Schema;
-    [property: string]: any;
+    [property: string]: unknown;
 }

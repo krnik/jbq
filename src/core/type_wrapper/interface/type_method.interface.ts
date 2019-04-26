@@ -22,6 +22,7 @@ import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO } from '../../../constants';
  * See [VALUE](https://github.com/krnik/jbq/blob/master/src/types/Number.ts) method example.
  */
 export interface TypeMethod {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (...args: any[]): string | undefined | void;
     [SYM_METHOD_CLOSURE]?: boolean;
     [SYM_METHOD_MACRO]?: boolean;
@@ -30,4 +31,4 @@ export interface TypeMethod {
 /**
  * Alias to any function that is used to validate schema input.
  */
-export type TypeValidationMethod = (v: any) => void;
+export type TypeValidationMethod = (v: unknown) => void;

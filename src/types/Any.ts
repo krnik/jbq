@@ -1,12 +1,20 @@
-import { REQUIRED, SYM_METHOD_MACRO, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE, TYPE, TYPE_NAME } from '../constants';
+import {
+    REQUIRED,
+    SYM_METHOD_MACRO,
+    SYM_TYPE_KEY_ORDER,
+    SYM_TYPE_VALIDATE,
+    TYPE,
+    TYPE_NAME,
+} from '../constants';
 import { ParseValues } from '../typings';
 import { schemaValidate } from './schema_validator';
 
 export const TypeAny = {
-    [TYPE] (_schemaValue: string, _$DATA: any): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    [TYPE](_schemaValue: string, _$DATA: unknown): void {
         //{break}
     },
-    [REQUIRED] (parseValues: ParseValues): string {
+    [REQUIRED](parseValues: ParseValues): string {
         const { variableName, schemaValue, schemaPath } = parseValues;
         return schemaValue
             ? `if (${variableName} === undefined)

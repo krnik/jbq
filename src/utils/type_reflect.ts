@@ -10,65 +10,64 @@
  *         // that the array is of type string[]
  *     }
  *
- *     const checkIfUser = (v: any): v is User => {
+ *     const checkIfUser = (v: unknown): v is User => {
  *         // if v is a User object return true
  *     }
- *     const responseBody: any = {};
+ *     const responseBody: unknown = {};
  *     if (TypeReflect.objectShape(responseBody, checkIfUser)) {
  *         // inside this block TypeScript will infer
  *         // that the responseBody is User object
  *     }
  */
 export class TypeReflect {
-    public static boolean (value: any): value is boolean {
+    public static boolean(value: unknown): value is boolean {
         return value === true || value === false;
     }
 
-    public static number (value: any): value is number {
+    public static number(value: unknown): value is number {
         return typeof value === 'number' && value === value;
     }
 
-    public static bigInt (value: any): value is bigint {
+    public static bigInt(value: unknown): value is bigint {
         return typeof value === 'bigint';
     }
 
-    public static string (value: any): value is string {
+    public static string(value: unknown): value is string {
         return typeof value === 'string';
     }
 
-    public static symbol (value: any): value is symbol {
+    public static symbol(value: unknown): value is symbol {
         return typeof value === 'symbol';
     }
 
-    public static object<T extends object = object> (value: any): value is T {
+    public static object<T extends object = object>(value: unknown): value is T {
         return value instanceof Object && value !== null;
     }
 
-    public static objectShape<T extends object = object> (
-        value: any,
-        valueCheck: (val: any, ...rest: any[]) => val is T,
+    public static objectShape<T extends object = object>(
+        value: unknown,
+        valueCheck: (val: unknown, ...rest: unknown[]) => val is T,
     ): value is T {
         return valueCheck(value);
     }
 
-    public static array<T = unknown> (value: any, allowEmpty?: boolean): value is T[] {
+    public static array<T = unknown>(value: unknown, allowEmpty?: boolean): value is T[] {
         return Array.isArray(value) && (allowEmpty || Boolean(value.length));
     }
 
-    public static arrayOf<T = unknown> (
-        value: any,
-        elemCheck: (val: any, ...rest: any[]) => val is T,
+    public static arrayOf<T = unknown>(
+        value: unknown,
+        elemCheck: (val: unknown, ...rest: unknown[]) => val is T,
         allowEmpty?: boolean,
     ): value is T[] {
-        return Array.isArray(value)
-            && value.every(elemCheck)
-            && (allowEmpty || Boolean(value.length));
+        return (
+            Array.isArray(value) && value.every(elemCheck) && (allowEmpty || Boolean(value.length))
+        );
     }
 
-    // tslint:disable-next-line:ban-types
-    public static instance<T = object> (value: any, constructor: Function): value is T {
+    public static instance<T = object>(value: unknown, constructor: Function): value is T {
         return value == null
-            ? value
+            ? false
             : Object.getPrototypeOf(value).constructor.name === constructor.name;
     }
 
@@ -76,7 +75,7 @@ export class TypeReflect {
      * This function will return true if it's possible to
      * represent `value` argument as a literal.
      */
-    public static primitiveLiteral (value: any): boolean {
+    public static primitiveLiteral(value: unknown): boolean {
         if (value == null) return true;
         switch (typeof value) {
             case 'string':
@@ -89,7 +88,7 @@ export class TypeReflect {
         }
     }
 
-    public static asString (str: string) {
+    public static asString(str: string): string {
         return `\`${str.replace(/`/g, '\\`')}\``;
     }
 }

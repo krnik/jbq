@@ -1,4 +1,13 @@
-import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
+import {
+    EVERY,
+    INCLUDES,
+    LEN,
+    PROP_DATA_PATH,
+    SOME,
+    SYM_SCHEMA_PROPERTIES,
+    TYPE,
+    TYPE_NAME,
+} from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
 import { TestSuite } from './typings';
 
@@ -8,7 +17,7 @@ export const suitesArray: TestSuite[] = [
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [SYM_FAKER]: () => ([]),
+            [SYM_FAKER]: (): [] => [],
         },
     },
     {
@@ -16,7 +25,7 @@ export const suitesArray: TestSuite[] = [
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [SYM_FAKER]: () => ({}),
+            [SYM_FAKER]: (): object => ({}),
         },
     },
     {
@@ -24,8 +33,8 @@ export const suitesArray: TestSuite[] = [
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [EVERY]: (elem: any) => typeof elem === 'number',
-            [SYM_FAKER]: () => [0, 1, 1, 1, 0, 0, 1],
+            [EVERY]: (elem: unknown): boolean => typeof elem === 'number',
+            [SYM_FAKER]: (): number[] => [0, 1, 1, 1, 0, 0, 1],
         },
     },
     {
@@ -33,8 +42,8 @@ export const suitesArray: TestSuite[] = [
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [EVERY]: (elem: any) => typeof elem === 'number',
-            [SYM_FAKER]: () => [0, 1, 1, 1, 0, 0, 1, false],
+            [EVERY]: (elem: unknown): boolean => typeof elem === 'number',
+            [SYM_FAKER]: (): unknown[] => [0, 1, 1, 1, 0, 0, 1, false],
         },
     },
     {
@@ -42,8 +51,8 @@ export const suitesArray: TestSuite[] = [
         valid: true,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [SOME]: (elem: any) => typeof elem === 'undefined',
-            [SYM_FAKER]: () => [0, 1, 1, 1, 0, , 1, false],
+            [SOME]: (elem: unknown): boolean => typeof elem === 'undefined',
+            [SYM_FAKER]: (): unknown[] => [0, 1, 1, 1, 0, , 1, false],
         },
     },
     {
@@ -51,8 +60,8 @@ export const suitesArray: TestSuite[] = [
         valid: false,
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
-            [SOME]: (elem: any) => typeof elem === 'function',
-            [SYM_FAKER]: () => [0, 1, 1, 1, 0, , 1, false],
+            [SOME]: (elem: unknown): boolean => typeof elem === 'function',
+            [SYM_FAKER]: (): unknown[] => [0, 1, 1, 1, 0, , 1, false],
         },
     },
     {
@@ -61,7 +70,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [INCLUDES]: 100,
-            [SYM_FAKER]: () => [100],
+            [SYM_FAKER]: (): unknown[] => [100],
         },
     },
     {
@@ -70,7 +79,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [INCLUDES]: 100,
-            [SYM_FAKER]: () => [10],
+            [SYM_FAKER]: (): unknown[] => [10],
         },
     },
     {
@@ -81,12 +90,12 @@ export const suitesArray: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 element: {
                     [TYPE]: TYPE_NAME.ANY,
-                    [SYM_FAKER]: () => 100,
+                    [SYM_FAKER]: (): unknown => 100,
                 },
                 arr: {
                     [TYPE]: TYPE_NAME.ARRAY,
                     [INCLUDES]: { [PROP_DATA_PATH]: 'element' },
-                    [SYM_FAKER]: () => [1, 10, 100],
+                    [SYM_FAKER]: (): unknown[] => [1, 10, 100],
                 },
             },
         },
@@ -99,12 +108,12 @@ export const suitesArray: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 element: {
                     [TYPE]: TYPE_NAME.ANY,
-                    [SYM_FAKER]: () => 1000,
+                    [SYM_FAKER]: (): unknown => 1000,
                 },
                 arr: {
                     [TYPE]: TYPE_NAME.ARRAY,
                     [INCLUDES]: { [PROP_DATA_PATH]: 'element' },
-                    [SYM_FAKER]: () => [1, 10, 100],
+                    [SYM_FAKER]: (): unknown[] => [1, 10, 100],
                 },
             },
         },
@@ -115,7 +124,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: 0,
-            [SYM_FAKER]: () => [],
+            [SYM_FAKER]: (): unknown[] => [],
         },
     },
     {
@@ -124,7 +133,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: 0,
-            [SYM_FAKER]: () => [0],
+            [SYM_FAKER]: (): unknown[] => [0],
         },
     },
     {
@@ -139,7 +148,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: [], len: 0 }),
+            [SYM_FAKER]: (): object => ({ array: [], len: 0 }),
         },
     },
     {
@@ -154,7 +163,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: [], len: 10 }),
+            [SYM_FAKER]: (): object => ({ array: [], len: 10 }),
         },
     },
     {
@@ -163,7 +172,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { min: 1 },
-            [SYM_FAKER]: () => [null],
+            [SYM_FAKER]: (): unknown[] => [null],
         },
     },
     {
@@ -172,7 +181,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { min: 2 },
-            [SYM_FAKER]: () => [null],
+            [SYM_FAKER]: (): unknown[] => [null],
         },
     },
     {
@@ -187,7 +196,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: [], len: 0 }),
+            [SYM_FAKER]: (): object => ({ array: [], len: 0 }),
         },
     },
     {
@@ -202,7 +211,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: [0], len: 5 }),
+            [SYM_FAKER]: (): object => ({ array: [0], len: 5 }),
         },
     },
     {
@@ -211,7 +220,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { max: 10 },
-            [SYM_FAKER]: () => new Array(5),
+            [SYM_FAKER]: (): unknown[] => new Array(5),
         },
     },
     {
@@ -220,7 +229,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { max: 4 },
-            [SYM_FAKER]: () => new Array(5),
+            [SYM_FAKER]: (): unknown[] => new Array(5),
         },
     },
     {
@@ -235,7 +244,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: [], len: 0 }),
+            [SYM_FAKER]: (): object => ({ array: [], len: 0 }),
         },
     },
     {
@@ -250,7 +259,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(10), len: 5 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(10), len: 5 }),
         },
     },
     {
@@ -259,7 +268,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { min: 2, max: 4 },
-            [SYM_FAKER]: () => [1, 2, 3],
+            [SYM_FAKER]: (): unknown[] => [1, 2, 3],
         },
     },
     {
@@ -268,7 +277,7 @@ export const suitesArray: TestSuite[] = [
         schema: {
             [TYPE]: TYPE_NAME.ARRAY,
             [LEN]: { min: 1, max: 2 },
-            [SYM_FAKER]: () => [1, 2, 3],
+            [SYM_FAKER]: (): unknown[] => [1, 2, 3],
         },
     },
     {
@@ -286,7 +295,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 4 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 4 }),
         },
     },
     {
@@ -304,7 +313,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 8 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 8 }),
         },
     },
     {
@@ -322,7 +331,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 6 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 6 }),
         },
     },
     {
@@ -340,7 +349,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 4 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 4 }),
         },
     },
     {
@@ -358,7 +367,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 4, maximum: 10 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 4, maximum: 10 }),
         },
     },
     {
@@ -376,7 +385,7 @@ export const suitesArray: TestSuite[] = [
                 },
                 len: { [TYPE]: TYPE_NAME.NUMBER },
             },
-            [SYM_FAKER]: () => ({ array: new Array(5), len: 6, maximum: 6 }),
+            [SYM_FAKER]: (): object => ({ array: new Array(5), len: 6, maximum: 6 }),
         },
     },
 ];

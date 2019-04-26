@@ -19,32 +19,33 @@ const findArg = (prefix: string) => {
 const selectType = findArg('type=');
 const selectTest = findArg('test=');
 
-function handlePass (fn: (...x: any[]) => any) {
+function handlePass(fn: (...x: any[]) => any) {
     return () => {
         if (fn() !== undefined) throw Error('It should not return any errors.');
     };
 }
 
-function handleFail (fn: (...x: any[]) => any) {
+function handleFail(fn: (...x: any[]) => any) {
     return () => {
-        if (fn() === undefined)
-            throw Error('It should return an error.');
+        if (fn() === undefined) throw Error('It should return an error.');
     };
 }
 
 const nameRegex = /^(?<type>\w+)#(?<test>\w+)/;
-function extractSuiteNames (name: string) {
+function extractSuiteNames(name: string) {
     interface IRegexpExec extends RegExpExecArray {
         groups: {
             type: string;
             test: string;
         };
     }
-    const { groups: { type, test } } = nameRegex.exec(name)! as IRegexpExec;
+    const {
+        groups: { type, test },
+    } = nameRegex.exec(name)! as IRegexpExec;
     return { type, test };
 }
 
-function printSuiteName (name: string, type: string, test: string, valid: boolean) {
+function printSuiteName(name: string, type: string, test: string, valid: boolean) {
     const tp = `\x1b[36m${type}\x1b[0m`;
     const tst = `\x1b[33m${test}\x1b[0m`;
     const nameWithColor = name.replace(type, tp).replace(test, tst);
@@ -53,7 +54,7 @@ function printSuiteName (name: string, type: string, test: string, valid: boolea
     return `${prefix}${nameWithColor}`;
 }
 
-function createTests (bench: Benchmark.Suite, suites: TestSuite[]) {
+function createTests(bench: Benchmark.Suite, suites: TestSuite[]) {
     for (const { name, valid, schema } of suites) {
         const { type, test } = extractSuiteNames(name);
 
@@ -76,9 +77,7 @@ for (const suites of [
     suitesNumber,
     suitesObject,
     suitesString,
-]) createTests(Bench, suites);
+])
+    createTests(Bench, suites);
 
-Bench
-    // tslint:disable-next-line: no-console
-    .on('cycle', (event: any) => console.log(String(event.target)))
-    .run({ async: true });
+Bench.on('cycle', (event: any) => console.log(String(event.target))).run({ async: true });

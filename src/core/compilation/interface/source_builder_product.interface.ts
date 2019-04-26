@@ -15,7 +15,7 @@ export interface SourceBuilderProduct {
      * Array is used instead of naming every argument separately because
      * functions length is `u8` type while arrays length is `u32` type.
      */
-    arguments: any[];
+    arguments: unknown[];
     /**
      * Name of the parameter that represents input value.
      */

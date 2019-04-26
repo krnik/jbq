@@ -7,7 +7,7 @@ let currentPage: string;
 const params: string[] = [];
 const args: any[] = [];
 
-function bringToScope (obj: object) {
+function bringToScope(obj: object) {
     Object.entries(obj).forEach(([k, v]) => {
         params.push(k);
         args.push(v);
@@ -19,45 +19,42 @@ bringToScope(MD_CONST);
 bringToScope({ example, wikiLink, include, wikiType, sourceLink });
 
 const exprRegex = /{{(.*?)}}/g;
-function compile (source: string) {
-    return source
-        .replace(exprRegex, (_: any, match: string) => {
-            return new Function(params.join(','), `return ${match}`)(...args);
-        });
+function compile(source: string) {
+    return source.replace(exprRegex, (_: any, match: string) => {
+        return new Function(params.join(','), `return ${match}`)(...args);
+    });
 }
 
-function example (exampleName: string) {
+function example(exampleName: string) {
     const examples = readFileSync(resolve(currentPage, 'examples.ts'));
     const regex = new RegExp(`//example:${exampleName}\\b([\\W\\w]+)//example:${exampleName}\\b`);
     const content = examples.toString().match(regex);
-    if (!content)
-        throw Error('Content not found!');
+    if (!content) throw Error('Content not found!');
     return `\`\`\`typescript${content[1]}\`\`\`\n`;
-
 }
 
-function wikiLink (pageName: string, display?: string) {
+function wikiLink(pageName: string, display?: string) {
     return `[${display || pageName}](${MD_CONST.WIKI_URL + pageName})`;
 }
 
-function wikiType (type: CONST.TYPE_NAME, anchor: string, anc?: number) {
+function wikiType(type: CONST.TYPE_NAME, anchor: string, anc?: number) {
     const typeFile = `Type${type.charAt(0).toUpperCase()}${type.slice(1)}`;
     const hash = anchor ? `#${anchor}` : '';
     return `[${anc ? anchor : type}](${MD_CONST.WIKI_URL}${typeFile}${hash})`;
 }
 
-function sourceLink (type: CONST.TYPE_NAME) {
-    return `[Source](https://github.com/krnik/jbq/blob/master/src/types/${
-        type.charAt(0).toUpperCase() + type.slice(1)
-        }.ts)`;
+function sourceLink(type: CONST.TYPE_NAME) {
+    return `[Source](https://github.com/krnik/jbq/blob/master/src/types/${type
+        .charAt(0)
+        .toUpperCase() + type.slice(1)}.ts)`;
 }
 
-function include (fileName: string) {
+function include(fileName: string) {
     const file = readFileSync(resolve(__dirname, 'includes', `${fileName}.md`)).toString();
     return compile(file);
 }
 
-async function create () {
+async function create() {
     const pagesPath = resolve(__dirname, 'pages');
     const pages = readdirSync(pagesPath);
     for (const page of pages) {

@@ -1,29 +1,32 @@
 import { ParameterName } from '../constants';
 import { JBQOptions, OmitSymbols } from '../typings';
 import { Compilation } from './compilation/compilation';
+import { Schema } from './compilation/interface/schema.interface';
 import { TypeWrapper } from './type_wrapper/type_wrapper';
 
-const AsyncFnConstructor = Object
-    // tslint:disable-next-line:no-empty
-    .getPrototypeOf(async function* (): unknown { })
-    .constructor;
+const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {}).constructor;
 
-type ValidateFn = (data: any) => string | undefined;
-type AsyncValidateFn = (data: any) => Promise<string | undefined>;
+type SyncValidationFunction = (data: unknown) => string | undefined;
+type AsyncValidationFunction = (data: unknown) => Promise<string | undefined>;
 
-type Validators<T, F> = { [P in keyof OmitSymbols<T>]: F };
+type ValidationFn<T> = T extends { async: infer A }
+    ? A extends true
+        ? AsyncValidationFunction
+        : SyncValidationFunction
+    : SyncValidationFunction;
 
-export function jbq<T, K extends keyof OmitSymbols<T>> (
+type Validators<T, O> = { [P in keyof OmitSymbols<T>]: ValidationFn<O> };
+
+export function jbq<T, K extends keyof OmitSymbols<T>, O extends JBQOptions>(
     types: TypeWrapper,
     schemas: T,
-    options: JBQOptions = {},
-) {
-    type ValidationFunction = typeof options.async extends true ? ValidateFn : AsyncValidateFn;
-    const patterns = {} as Validators<T, ValidationFunction>;
-    for (const [name, schema] of Object.entries(schemas)) {
-        const src = new Compilation(types, schema, name, options).execSync();
+    options?: O,
+): Validators<T, O> {
+    const patterns = Object.create(null) as Validators<T, O>;
+    for (const [name, schema] of Object.entries(schemas) as [K, Schema][]) {
+        const src = new Compilation(types, schema, name as string, options).execSync();
 
-        if (typeof options.async === 'boolean') {
+        if (options && typeof options.async === 'boolean') {
             const validate = new AsyncFnConstructor(
                 ParameterName.Arguments,
                 ParameterName.Data,
@@ -31,21 +34,21 @@ export function jbq<T, K extends keyof OmitSymbols<T>> (
             );
 
             const bound = validate.bind(undefined, src.arguments);
-            patterns[name as K] = async function asyncValidationFunction ($DATA: any): Promise<string | undefined> {
+
+            patterns[name] = (async function asyncValidationFunction(
+                $DATA: unknown,
+            ): Promise<string | undefined> {
                 const generator = bound($DATA);
                 while (true) {
                     const result = await generator.next();
 
-                    if (result.value !== undefined)
-                        return result.value;
-                    if (result.done)
-                        return;
+                    if (result.value !== undefined) return result.value;
+                    if (result.done) return;
                 }
-            };
+            } as unknown) as ValidationFn<O>;
         } else {
             const validate = new Function(ParameterName.Arguments, ParameterName.Data, src.code);
             patterns[name as K] = validate.bind(undefined, src.arguments);
-
         }
     }
     return patterns;

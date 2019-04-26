@@ -1,4 +1,12 @@
-import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_NAME } from '../../../src/constants';
+import {
+    LEN,
+    ONE_OF,
+    PROP_DATA_PATH,
+    REGEX,
+    SYM_SCHEMA_PROPERTIES,
+    TYPE,
+    TYPE_NAME,
+} from '../../../src/constants';
 import { SYM_FAKER } from '../../utils';
 import { TestSuite } from './typings';
 
@@ -81,7 +89,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 5,
+                    [SYM_FAKER]: (): number => 5,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -99,7 +107,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 10,
+                    [SYM_FAKER]: (): number => 10,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -135,7 +143,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 0,
+                    [SYM_FAKER]: (): number => 0,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -155,7 +163,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1000,
+                    [SYM_FAKER]: (): number => 1000,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -193,7 +201,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 1000,
+                    [SYM_FAKER]: (): number => 1000,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -213,7 +221,7 @@ export const suitesString: TestSuite[] = [
             [SYM_SCHEMA_PROPERTIES]: {
                 len: {
                     [TYPE]: TYPE_NAME.NUMBER,
-                    [SYM_FAKER]: () => 0,
+                    [SYM_FAKER]: (): number => 0,
                 },
                 str: {
                     [TYPE]: TYPE_NAME.STRING,
@@ -260,11 +268,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1000,
+                            [SYM_FAKER]: (): number => 1000,
                         },
                     },
                 },
@@ -290,11 +298,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                     },
                 },
@@ -320,11 +328,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1000,
+                            [SYM_FAKER]: (): number => 1000,
                         },
                     },
                 },
@@ -350,11 +358,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                     },
                 },
@@ -380,11 +388,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 1000,
+                            [SYM_FAKER]: (): number => 1000,
                         },
                     },
                 },
@@ -410,11 +418,11 @@ export const suitesString: TestSuite[] = [
                     [SYM_SCHEMA_PROPERTIES]: {
                         min: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                         max: {
                             [TYPE]: TYPE_NAME.NUMBER,
-                            [SYM_FAKER]: () => 0,
+                            [SYM_FAKER]: (): number => 0,
                         },
                     },
                 },
