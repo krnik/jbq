@@ -39,7 +39,7 @@
             "args": [
                 "--require",
                 "ts-node/register",
-                "${workspaceFolder}/src/class_syntax/class_syntax.ts"
+                "${workspaceFolder}/src/class_syntax.ts"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         }

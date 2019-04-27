@@ -1,9 +1,17 @@
 .vscode
 .gitmodules
+.editorconfig
+.eslintrc.js
+.prettierrc.js
 .travis.yml
+
+tsconfig.build.json
+tsconfig.dev.json
+tsconfig.json
 
 jbq.wiki
 md
+src
 
 lib.dev
 coverage
