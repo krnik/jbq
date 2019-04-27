@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
-import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeAny } from '../../../src/types/any';
-import { ParseValues } from '../../../src/typings';
+import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { TypeAny } from '../../../src/type/any';
+import { ParseValues } from '../../../src/misc/typings';
 
 describe(
     TYPE_NAME.ANY,

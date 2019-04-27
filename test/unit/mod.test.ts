@@ -1,2 +1,2 @@
 import './core/mod.test';
-import './types/mod.test';
+import './type/mod.test';

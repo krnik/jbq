@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeNumber } from '../../../src/types/number';
+import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { TypeNumber } from '../../../src/type/number';
 
 describe(
     TYPE_NAME.NUMBER,

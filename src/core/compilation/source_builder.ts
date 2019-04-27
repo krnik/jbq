@@ -4,9 +4,9 @@ import {
     PROP_DATA_PATH,
     SCHEMA_PATH_SEPARATOR,
     TYPE,
-} from '../../constants';
-import { schemaValidate } from '../../types/schema_validator';
-import { DataPath } from '../../typings';
+} from '../../misc/constants';
+import { schemaValidate } from '../../type/schema_validator';
+import { DataPath } from '../../misc/typings';
 import { CodeGenerator } from '../code_gen/code_gen';
 import { ComparisonOperator } from '../code_gen/token/operator';
 import { Compilation } from './compilation';

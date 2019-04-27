@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { SYM_SCHEMA_PROPERTIES } from '../../src/constants';
+import { SYM_SCHEMA_PROPERTIES } from '../../src/misc/constants';
 import { Schema } from '../../src/core/compilation/interface/schema.interface';
 import { SYM_FAKER } from '../utils';
 

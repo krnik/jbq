@@ -1,5 +1,5 @@
-import { TYPE } from '../../constants';
-import { PrintToken } from '../../utils/print_token';
+import { TYPE } from '../../misc/constants';
+import { PrintToken } from '../../util/print_token';
 
 export class CompilationError {
     public static missingType(typeName: string): Error {

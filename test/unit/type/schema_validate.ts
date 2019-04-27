@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
-import { PROP_DATA_PATH } from '../../../src/constants';
-import { schemaValidate } from '../../../src/types/schema_validator';
+import { PROP_DATA_PATH } from '../../../src/misc/constants';
+import { schemaValidate } from '../../../src/type/schema_validator';
 import { values } from '../../data/mod';
 
 describe('schemaValidate', (): void => {

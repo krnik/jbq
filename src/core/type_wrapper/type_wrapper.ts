@@ -3,9 +3,9 @@ import {
     SYM_METHOD_MACRO,
     SYM_TYPE_KEY_ORDER,
     SYM_TYPE_VALIDATE,
-} from '../../constants';
-import { OmitSymbols } from '../../typings';
-import { TypeReflect } from '../../utils/type_reflect';
+} from '../../misc/constants';
+import { OmitSymbols } from '../../misc/typings';
+import { TypeReflect } from '../../util/type_reflect';
 import { TypeDefinition } from './interface/type_definition.interface';
 import { TypeMethod, TypeValidationMethod } from './interface/type_method.interface';
 import { TypePrototype } from './interface/type_prototype.interface';

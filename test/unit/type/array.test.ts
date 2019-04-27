@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
-import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME } from '../../../src/constants';
-import { TypeArray } from '../../../src/types/array';
+import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { TypeArray } from '../../../src/type/array';
 
 describe(
     TYPE_NAME.ARRAY,

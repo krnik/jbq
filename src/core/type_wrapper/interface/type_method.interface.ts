@@ -1,4 +1,4 @@
-import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO } from '../../../constants';
+import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO } from '../../../misc/constants';
 
 /**
  * Interface representing a function that is a TypeDefinition validation method.

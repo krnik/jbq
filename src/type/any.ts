@@ -5,8 +5,8 @@ import {
     SYM_TYPE_VALIDATE,
     TYPE,
     TYPE_NAME,
-} from '../constants';
-import { ParseValues } from '../typings';
+} from '../misc/constants';
+import { ParseValues } from '../misc/typings';
 import { schemaValidate } from './schema_validator';
 
 export const TypeAny = {

@@ -1,6 +1,6 @@
-import { TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
+import { TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
 import { SYM_FAKER } from '../../utils';
-import { TestSuite } from './typings';
+import { TestSuite } from './suite.interface';
 
 export const suitesBoolean: TestSuite[] = [
     {

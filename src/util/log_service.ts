@@ -1,4 +1,4 @@
-import { SCHEMA_PATH_SEPARATOR } from '../constants';
+import { SCHEMA_PATH_SEPARATOR } from '../misc/constants';
 
 interface Logger {
     debug(message: string, ...args: unknown[]): void;

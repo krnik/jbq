@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { SYM_TYPE_VALIDATE, TYPE_NAME } from '../../../src/constants';
+import { SYM_TYPE_VALIDATE, TYPE_NAME } from '../../../src/misc/constants';
 import { TypeWrapper } from '../../../src/core/type_wrapper/type_wrapper';
-import { TypeArray } from '../../../src/types/array';
-import { TypeBoolean } from '../../../src/types/boolean';
-import { createTypes } from '../../../src/types/mod';
+import { TypeArray } from '../../../src/type/array';
+import { TypeBoolean } from '../../../src/type/boolean';
+import { createTypes } from '../../../src/type/mod';
 import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
 
 describe('Type Wrapper', (): void => {

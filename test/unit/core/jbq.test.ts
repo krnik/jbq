@@ -5,17 +5,17 @@ import {
     SYM_TYPE_VALIDATE,
     TOKEN_BREAK,
     TYPE,
-} from '../../../src/constants';
+} from '../../../src/misc/constants';
 import { jbq } from '../../../src/core/jbq';
 import { jbqTypes } from '../../../src/main';
-import { createTypes } from '../../../src/types/mod';
+import { createTypes } from '../../../src/type/mod';
 import { createData } from '../../data/mod';
-import { suitesAny } from '../../data/suites/Any.suites';
-import { suitesArray } from '../../data/suites/Array.suites';
-import { suitesBoolean } from '../../data/suites/Boolean.suites';
-import { suitesNumber } from '../../data/suites/Number.suites';
-import { suitesObject } from '../../data/suites/Object.suites';
-import { suitesString } from '../../data/suites/String.suites';
+import { suitesAny } from '../../data/suites/any_suite';
+import { suitesArray } from '../../data/suites/array_suite';
+import { suitesBoolean } from '../../data/suites/boolean_suite';
+import { suitesNumber } from '../../data/suites/number_suite';
+import { suitesObject } from '../../data/suites/object_suite';
+import { suitesString } from '../../data/suites/string_suite';
 import { isErrJSON } from '../../utils';
 
 const suites = {

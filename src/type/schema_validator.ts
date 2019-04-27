@@ -1,7 +1,7 @@
-import { PROP_DATA_PATH } from '../constants';
-import { DataPath } from '../typings';
-import { PrintToken } from '../utils/print_token';
-import { TypeReflect } from '../utils/type_reflect';
+import { PROP_DATA_PATH } from '../misc/constants';
+import { DataPath } from '../misc/typings';
+import { PrintToken } from '../util/print_token';
+import { TypeReflect } from '../util/type_reflect';
 
 const SchemaValidationError = {
     missingArgument(typeName: string, methodName: string): Error {

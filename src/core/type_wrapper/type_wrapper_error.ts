@@ -1,5 +1,5 @@
-import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE } from '../../constants';
-import { PrintToken } from '../../utils/print_token';
+import { SYM_METHOD_CLOSURE, SYM_METHOD_MACRO, SYM_TYPE_VALIDATE } from '../../misc/constants';
+import { PrintToken } from '../../util/print_token';
 
 export class TypeWrapperErorr {
     public static typeAlreadyExists(typeName: string): Error {

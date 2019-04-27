@@ -10,11 +10,11 @@ import {
     TOKEN_BREAK,
     TOKEN_EXPR_REGEX,
     TYPE,
-} from '../../constants';
-import { schemaValidate } from '../../types/schema_validator';
-import { DataPath, ParseValues, Option } from '../../typings';
-import { LogService } from '../../utils/log_service';
-import { TypeReflect } from '../../utils/type_reflect';
+} from '../../misc/constants';
+import { schemaValidate } from '../../type/schema_validator';
+import { DataPath, ParseValues, Option } from '../../misc/typings';
+import { LogService } from '../../util/log_service';
+import { TypeReflect } from '../../util/type_reflect';
 import { TypeDefinition } from '../type_wrapper/interface/type_definition.interface';
 import { TypeMethod } from '../type_wrapper/interface/type_method.interface';
 import { TypeWrapper } from '../type_wrapper/type_wrapper';

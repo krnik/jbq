@@ -1,5 +1,5 @@
-import { ParameterName } from '../constants';
-import { JBQOptions, OmitSymbols } from '../typings';
+import { ParameterName } from '../misc/constants';
+import { JBQOptions, OmitSymbols } from '../misc/typings';
 import { Compilation } from './compilation/compilation';
 import { Schema } from './compilation/interface/schema.interface';
 import { TypeWrapper } from './type_wrapper/type_wrapper';

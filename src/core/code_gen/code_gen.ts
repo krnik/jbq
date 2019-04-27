@@ -1,5 +1,5 @@
-import { ParameterName, SCHEMA_PATH_SEPARATOR } from '../../constants';
-import { TypeReflect } from '../../utils/type_reflect';
+import { ParameterName, SCHEMA_PATH_SEPARATOR } from '../../misc/constants';
+import { TypeReflect } from '../../util/type_reflect';
 import { CodeGeneratorError } from './code_gen_error';
 import { IfCondition } from './interface/if_condition.interface';
 import { Keyword } from './token/keyword';

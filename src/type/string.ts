@@ -7,11 +7,11 @@ import {
     SYM_TYPE_VALIDATE,
     TYPE,
     TYPE_NAME,
-} from '../constants';
+} from '../misc/constants';
 import { CodeGenerator } from '../core/code_gen/code_gen';
 import { ComparisonOperator } from '../core/code_gen/token/operator';
-import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../typings';
-import { TypeReflect } from '../utils/type_reflect';
+import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../misc/typings';
+import { TypeReflect } from '../util/type_reflect';
 import { schemaValidate } from './schema_validator';
 
 export const TypeString = {

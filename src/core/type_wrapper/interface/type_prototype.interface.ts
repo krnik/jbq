@@ -1,5 +1,5 @@
-import { SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../../constants';
-import { OmitSymbols } from '../../../typings';
+import { SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../../misc/constants';
+import { OmitSymbols } from '../../../misc/typings';
 import { TypeMethod, TypeValidationMethod } from './type_method.interface';
 
 /**

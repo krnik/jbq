@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { TYPE, TYPE_NAME, VALUE } from '../../../src/constants';
-import { TypeBoolean } from '../../../src/types/boolean';
+import { TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
+import { TypeBoolean } from '../../../src/type/boolean';
 
 describe(
     TYPE_NAME.BOOLEAN,
