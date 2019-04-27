@@ -1,9 +1,9 @@
-import { ParameterName, SCHEMA_PATH_SEPARATOR } from '../../misc/constants';
-import { TypeReflect } from '../../util/type_reflect';
-import { CodeGeneratorError } from './code_gen_error';
-import { IfCondition } from './interface/if_condition.interface';
-import { Keyword } from './token/keyword';
-import { ComparisonOperator, LogicalOperator } from './token/operator';
+import { ParameterName, SCHEMA_PATH_SEPARATOR } from '../misc/constants';
+import { TypeReflect } from '../util/type_reflect';
+import { CodeGeneratorError } from './code_gen/code_gen_error';
+import { IfCondition } from './code_gen/interface/if_condition.interface';
+import { Keyword } from './code_gen/token/keyword';
+import { ComparisonOperator, LogicalOperator } from './code_gen/token/operator';
 
 /**
  * Utility class that provides functionality to help building validation
@@ -100,10 +100,12 @@ export class CodeGenerator {
     ): string {
         if (conditions.length === 0) throw CodeGenerator.Error.emptyIfConditionArray();
         return `${Keyword.If} (${conditions
-            .map(({ operator, value, variableName, negate }) => {
-                const condition = `${variableName} ${operator} ${value}`;
-                return negate ? `!(${condition})` : condition;
-            })
+            .map(
+                ({ operator, value, variableName, negate }): string => {
+                    const condition = `${variableName} ${operator} ${value}`;
+                    return negate ? `!(${condition})` : condition;
+                },
+            )
             .join(condLogicOperator)})`;
     }
 
@@ -245,13 +247,13 @@ export class CodeGenerator {
         const paths = (Array.isArray(dataPath)
             ? dataPath
             : dataPath.split(SCHEMA_PATH_SEPARATOR)
-        ).filter((key) => key.length);
+        ).filter((key): number => key.length);
 
         if (!paths.length) throw CodeGenerator.Error.invalidDataPath(dataPath);
 
         const pathResolution = paths
             .reduce(
-                (acc, key, index) => {
+                (acc, key, index): string[] => {
                     acc.push(
                         index > 0
                             ? `${acc[index - 1]}${CodeGenerator.renderPropertyAccessor(key)}`

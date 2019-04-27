@@ -8,7 +8,7 @@ import {
     TYPE_NAME,
     VALUE,
 } from '../misc/constants';
-import { CodeGenerator } from '../core/code_gen/code_gen';
+import { CodeGenerator } from '../core/code_gen';
 import { ComparisonOperator } from '../core/code_gen/token/operator';
 import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../misc/typings';
 import { TypeReflect } from '../util/type_reflect';

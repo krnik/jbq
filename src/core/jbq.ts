@@ -1,8 +1,8 @@
 import { ParameterName } from '../misc/constants';
 import { JBQOptions, OmitSymbols } from '../misc/typings';
-import { Compilation } from './compilation/compilation';
+import { Compilation } from './compilation';
 import { Schema } from './compilation/interface/schema.interface';
-import { TypeWrapper } from './type_wrapper/type_wrapper';
+import { TypeWrapper } from './type_wrapper';
 
 const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {}).constructor;
 

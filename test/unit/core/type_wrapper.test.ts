@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SYM_TYPE_VALIDATE, TYPE_NAME } from '../../../src/misc/constants';
-import { TypeWrapper } from '../../../src/core/type_wrapper/type_wrapper';
+import { TypeWrapper } from '../../../src/core/type_wrapper';
 import { TypeArray } from '../../../src/type/array';
 import { TypeBoolean } from '../../../src/type/boolean';
 import { createTypes } from '../../../src/type/mod';

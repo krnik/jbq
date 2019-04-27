@@ -13,7 +13,7 @@ import {
     TYPE_NAME,
     VALUE,
 } from '../../../src/misc/constants';
-import { Compilation } from '../../../src/core/compilation/compilation';
+import { Compilation } from '../../../src/core/compilation';
 import { CompilationOptions } from '../../../src/core/compilation/interface/compilation_options.interface';
 import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
 import { createTypes } from '../../../src/type/mod';

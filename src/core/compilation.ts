@@ -10,20 +10,20 @@ import {
     TOKEN_BREAK,
     TOKEN_EXPR_REGEX,
     TYPE,
-} from '../../misc/constants';
-import { schemaValidate } from '../../type/schema_validator';
-import { DataPath, ParseValues, Option } from '../../misc/typings';
-import { LogService } from '../../util/log_service';
-import { TypeReflect } from '../../util/type_reflect';
-import { TypeDefinition } from '../type_wrapper/interface/type_definition.interface';
-import { TypeMethod } from '../type_wrapper/interface/type_method.interface';
-import { TypeWrapper } from '../type_wrapper/type_wrapper';
-import { CompilationError } from './compilation_error';
-import { CompilationOptions } from './interface/compilation_options.interface';
-import { Schema } from './interface/schema.interface';
-import { SourceBuilderProduct } from './interface/source_builder_product.interface';
-import { ResolvedPathStore } from './resolved_path_store';
-import { SourceBuilder } from './source_builder';
+} from '../misc/constants';
+import { schemaValidate } from '../type/schema_validator';
+import { DataPath, ParseValues, Option } from '../misc/typings';
+import { LogService } from '../util/log_service';
+import { TypeReflect } from '../util/type_reflect';
+import { TypeDefinition } from './type_wrapper/interface/type_definition.interface';
+import { TypeMethod } from './type_wrapper/interface/type_method.interface';
+import { TypeWrapper } from './type_wrapper';
+import { CompilationError } from './compilation/compilation_error';
+import { CompilationOptions } from './compilation/interface/compilation_options.interface';
+import { Schema } from './compilation/interface/schema.interface';
+import { SourceBuilderProduct } from './compilation/interface/source_builder_product.interface';
+import { ResolvedPathStore } from './compilation/resolved_path_store';
+import { SourceBuilder } from './compilation/source_builder';
 
 /**
  * Compilation class responsible for coordination of other subclasses

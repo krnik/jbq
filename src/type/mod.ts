@@ -1,5 +1,5 @@
 import { TYPE_NAME } from '../misc/constants';
-import { TypeWrapper } from '../core/type_wrapper/type_wrapper';
+import { TypeWrapper } from '../core/type_wrapper';
 import { TypeAny } from './any';
 import { TypeArray } from './array';
 import { TypeBoolean } from './boolean';

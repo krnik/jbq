@@ -7,9 +7,9 @@ import {
 } from '../../misc/constants';
 import { schemaValidate } from '../../type/schema_validator';
 import { DataPath } from '../../misc/typings';
-import { CodeGenerator } from '../code_gen/code_gen';
+import { CodeGenerator } from '../code_gen';
 import { ComparisonOperator } from '../code_gen/token/operator';
-import { Compilation } from './compilation';
+import { Compilation } from '../compilation';
 import { Schema } from './interface/schema.interface';
 import { SourceBuilderContext } from './interface/source_builder_context.interface';
 import { SourceBuilderCounter } from './interface/source_builder_counter.interface';
