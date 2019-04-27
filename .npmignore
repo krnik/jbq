@@ -9,6 +9,8 @@
 tsconfig.build.json
 tsconfig.dev.json
 tsconfig.json
+build.ts
+build_deno.ts
 
 jbq.wiki
 md
@@ -17,4 +19,6 @@ src
 lib.dev
 coverage
 test
-build.ts
+
+*.ts
+!*.d.ts
