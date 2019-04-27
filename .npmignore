@@ -1,6 +1,7 @@
 .vscode
 .gitmodules
 .editorconfig
+.eslintignore
 .eslintrc.js
 .prettierrc.js
 .travis.yml
@@ -16,3 +17,4 @@ src
 lib.dev
 coverage
 test
+build.ts

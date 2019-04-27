@@ -1,7 +1,7 @@
-import { readdirSync, renameSync, rmdirSync, existsSync, statSync, unlink, unlinkSync } from 'fs';
+import { existsSync, readdirSync, renameSync, rmdirSync, statSync, unlinkSync } from 'fs';
 import { resolve } from 'path';
 
-function rm (src: string): void {
+function rm(src: string): void {
     const stat = statSync(src);
     if (stat.isFile()) {
         unlinkSync(src);
