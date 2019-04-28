@@ -1,29 +1,13 @@
-import { Validator } from './class_syntax/decorator/class_decorator';
-import { schema, shape, string, collection } from './class_syntax/decorator/decorator';
+import { compile } from './class_syntax/class_decorator';
 
-export * from './class_syntax/decorator/class_decorator';
+export * from './class_syntax/alteration_decorator';
+export * from './class_syntax/class_decorator';
+export * from './class_syntax/validation_decorator';
 
-export class AsyncValidator {
-    public build(this: AsyncValidator): Promise<AsyncValidator> {
-        return Promise.resolve(this);
+export class Validator<HasAsyncTransforms extends boolean = false> {
+    public build(data: unknown): HasAsyncTransforms extends true ? Promise<this> : this {
+        const errorMessage = `One of validation classes is using default .build method which should be overwritten by @compile() decorator.\nData received:${data}.`;
+        throw new Error(errorMessage);
     }
+    public constructor(_data: unknown) {}
 }
-
-class Elo {
-    @string
-    public siema!: string;
-}
-
-@schema({ type: 'object', required: false })
-@Validator
-class Siema {
-    @schema({ required: false, type: 'string' })
-    public firstName!: string;
-
-    @shape(Elo)
-    @collection(Elo)
-    public arr!: Elo[];
-}
-
-console.log(new Siema().firstName);
-process.exit(0);

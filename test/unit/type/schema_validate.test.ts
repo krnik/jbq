@@ -12,7 +12,7 @@ describe('schemaValidate', (): void => {
         const validateFn = schemaValidate.any(tName, mName);
 
         it('it should throw if argument is not provided', (): void => {
-            expect((): void => validateFn()).to.throw();
+            expect((): void => validateFn(undefined)).to.throw();
         });
 
         it('it should return undefined on any value', (): void => {
@@ -25,7 +25,7 @@ describe('schemaValidate', (): void => {
         const validateFn = schemaValidate.arrayOf(tName, mName, 'string');
 
         it('it should throw if argument is not provided', (): void => {
-            expect((): void => validateFn()).to.throw();
+            expect((): void => validateFn(undefined)).to.throw();
         });
 
         it('it should throw on non-array value', (): void => {

@@ -1,3 +1,7 @@
+import { Constructor } from '../misc/typings';
+
+type ObjWithKeys<K extends string, V> = { [P in K]: V };
+
 /**
  * Utility class that reduces the boilerplate code.
  * It enables easy `if` statement assessments.
@@ -44,11 +48,13 @@ export class TypeReflect {
         return value instanceof Object && value !== null;
     }
 
-    public static objectShape<T extends object = object>(
+    public static objectProps<P extends string, V = unknown>(
         value: unknown,
-        valueCheck: (val: unknown, ...rest: unknown[]) => val is T,
-    ): value is T {
-        return valueCheck(value);
+        keys: P[],
+    ): value is ObjWithKeys<P, V> {
+        return TypeReflect.object(value)
+            ? keys.every((k): boolean => value.hasOwnProperty(k))
+            : false;
     }
 
     public static array<T = unknown>(value: unknown, allowEmpty?: boolean): value is T[] {
@@ -65,7 +71,10 @@ export class TypeReflect {
         );
     }
 
-    public static instance<T = object>(value: unknown, constructor: Function): value is T {
+    public static instance<T extends Constructor>(
+        value: unknown,
+        constructor: T,
+    ): value is InstanceType<T> {
         return value == null
             ? false
             : Object.getPrototypeOf(value).constructor.name === constructor.name;

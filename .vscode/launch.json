@@ -31,17 +31,6 @@
                 "${workspaceFolder}/test/perf/benchmark.ts"
             ],
             "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Class Syntax",
-            "args": [
-                "--require",
-                "ts-node/register",
-                "${workspaceFolder}/src/class_syntax.ts"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

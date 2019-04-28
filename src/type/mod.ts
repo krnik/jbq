@@ -16,3 +16,5 @@ export function createTypes(): TypeWrapper {
         .set(TYPE_NAME.OBJECT, TypeObject, { type: TYPE_NAME.ANY })
         .set(TYPE_NAME.ARRAY, TypeArray, { type: TYPE_NAME.ANY });
 }
+
+export const jbqTypes = createTypes();

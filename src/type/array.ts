@@ -18,22 +18,21 @@ import { schemaValidate } from './schema_validator';
 
 // TODO: maybe pass $DATA[i], i, $DATA instead of $DATA[i]
 // check perf
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type arrMethodCallback = (elem: any, index: number, arr: any[]) => boolean;
+type ArrIterCallback<T = unknown> = (elem: T, index: number, arr: T[]) => boolean;
 
 export const TypeArray = {
     [TYPE](_schemaValue: string, $DATA: unknown): string | void {
         if (!Array.isArray($DATA))
             return '{"message": "Data should be a {{schemaValue}} type.", "path": "{{schemaPath}}"}';
     },
-    [EVERY](schemaValue: arrMethodCallback, $DATA: unknown[]): string | void {
+    [EVERY]<T>(schemaValue: ArrIterCallback<T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
         for (let i = 0; i < len; i++)
             // @ts-ignore
             if (!schemaValue($DATA[i]))
                 return '{"message": "Every element of data should satisfy test function.", "path": "{{schemaPath}}"}';
     },
-    [SOME](schemaValue: arrMethodCallback, $DATA: unknown[]): string | void {
+    [SOME]<T>(schemaValue: ArrIterCallback<T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
         let pass = false;
         for (let i = 0; i < len; i++)

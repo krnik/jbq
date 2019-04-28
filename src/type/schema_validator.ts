@@ -1,5 +1,5 @@
 import { PROP_DATA_PATH } from '../misc/constants';
-import { DataPath } from '../misc/typings';
+import { DataPath, Constructor } from '../misc/typings';
 import { PrintToken } from '../util/print_token';
 import { TypeReflect } from '../util/type_reflect';
 
@@ -38,15 +38,19 @@ function dataPath(schemaValue: unknown): schemaValue is DataPath {
     );
 }
 
+type SchemaValidator = (v: unknown) => void;
+
 function primitive<T extends keyof typeof TypeReflect>(
     typeName: string,
     methodName: string,
     type: T,
     acceptDataPath?: boolean,
-) {
-    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
+): SchemaValidator {
+    return (
+        schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
         if (acceptDataPath && dataPath(schemaValue)) return;
-        const check = TypeReflect[type] as ((v: any) => boolean);
+        const check = TypeReflect[type] as ((v: unknown) => boolean);
         if (!check(schemaValue))
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -57,8 +61,14 @@ function primitive<T extends keyof typeof TypeReflect>(
     };
 }
 
-function isInstance(typeName: string, methodName: string, constructor: Function) {
-    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
+function isInstance(
+    typeName: string,
+    methodName: string,
+    constructor: Constructor,
+): SchemaValidator {
+    return (
+        schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
         if (!TypeReflect.instance(schemaValue, constructor))
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -69,11 +79,18 @@ function isInstance(typeName: string, methodName: string, constructor: Function)
     };
 }
 
-function minMaxOrNumber(typeName: string, methodName: string, acceptDataPath?: boolean) {
-    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
+function minMaxOrNumber(
+    typeName: string,
+    methodName: string,
+    acceptDataPath?: boolean,
+): SchemaValidator {
+    return (
+        schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
         if (acceptDataPath && dataPath(schemaValue)) return;
         if (TypeReflect.number(schemaValue)) return;
-        if (typeof schemaValue === 'object') {
+
+        if (typeof schemaValue === 'object' && schemaValue !== null) {
             if (!('min' in schemaValue || 'max' in schemaValue))
                 throw SchemaValidationError.invalidSchemaType(
                     typeName,
@@ -81,8 +98,9 @@ function minMaxOrNumber(typeName: string, methodName: string, acceptDataPath?: b
                     '{ [prop: string]: number } with at least one of keys ["min", "max"]',
                     typeof schemaValue,
                 );
+
             if (
-                'min' in schemaValue &&
+                TypeReflect.objectProps(schemaValue, ['min']) &&
                 !(
                     (acceptDataPath && dataPath(schemaValue.min)) ||
                     TypeReflect.number(schemaValue.min)
@@ -94,8 +112,9 @@ function minMaxOrNumber(typeName: string, methodName: string, acceptDataPath?: b
                     '{ min: number | $dataPath }',
                     typeof schemaValue.min,
                 );
+
             if (
-                'max' in schemaValue &&
+                TypeReflect.objectProps(schemaValue, ['max']) &&
                 !(
                     (acceptDataPath && dataPath(schemaValue.max)) ||
                     TypeReflect.number(schemaValue.max)
@@ -107,8 +126,10 @@ function minMaxOrNumber(typeName: string, methodName: string, acceptDataPath?: b
                     '{ max: number | $dataPath }',
                     typeof schemaValue.max,
                 );
+
             return;
         }
+
         throw SchemaValidationError.invalidSchemaType(
             typeName,
             methodName,
@@ -118,9 +139,11 @@ function minMaxOrNumber(typeName: string, methodName: string, acceptDataPath?: b
     };
 }
 
-function arrayOfPropertyNames(typeName: string, methodName: string) {
-    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
-        if (!TypeReflect.instance<any[]>(schemaValue, Array) || !schemaValue.length)
+function arrayOfPropertyNames(typeName: string, methodName: string): SchemaValidator {
+    return (
+        schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
+        if (!TypeReflect.instance(schemaValue, Array) || !schemaValue.length)
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
                 methodName,
@@ -129,7 +152,8 @@ function arrayOfPropertyNames(typeName: string, methodName: string) {
             );
         if (
             !schemaValue.every(
-                (p: any) => TypeReflect.string(p) || TypeReflect.number(p) || TypeReflect.symbol(p),
+                (p: unknown): boolean =>
+                    TypeReflect.string(p) || TypeReflect.number(p) || TypeReflect.symbol(p),
             )
         )
             throw SchemaValidationError.invalidSchemaType(
@@ -137,7 +161,7 @@ function arrayOfPropertyNames(typeName: string, methodName: string) {
                 methodName,
                 'symbol | number | string',
                 typeof schemaValue.find(
-                    (p: any) =>
+                    (p: unknown): boolean =>
                         !(TypeReflect.string(p) || TypeReflect.number(p) || TypeReflect.symbol(p)),
                 ),
             );
@@ -148,8 +172,10 @@ function arrayOf<T extends keyof typeof TypeReflect>(
     typeName: string,
     methodName: string,
     elementType: T,
-) {
-    return (schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {
+): SchemaValidator {
+    return (
+        schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
         if (!TypeReflect.array(schemaValue) || !schemaValue.length)
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
@@ -157,19 +183,23 @@ function arrayOf<T extends keyof typeof TypeReflect>(
                 'array',
                 typeof schemaValue,
             );
-        const check = TypeReflect[elementType] as ((v: any) => boolean);
-        if (!schemaValue.every((elem: any) => check(elem)))
+        const check = TypeReflect[elementType] as ((v: unknown) => boolean);
+        if (!schemaValue.every((elem: unknown): boolean => check(elem)))
             throw SchemaValidationError.invalidSchemaType(
                 typeName,
                 methodName,
                 elementType,
-                typeof schemaValue.find((elem: any) => !check(elem)),
+                typeof schemaValue.find((elem: unknown): boolean => !check(elem)),
             );
     };
 }
 
-function any(typeName: string, methodName: string) {
-    return (_schemaValue: any = SchemaValidationError.missingArgument(typeName, methodName)) => {};
+function any(typeName: string, methodName: string): SchemaValidator {
+    return (
+        _schemaValue: unknown = SchemaValidationError.missingArgument(typeName, methodName),
+    ): void => {
+        _schemaValue;
+    };
 }
 
 export const schemaValidate = {
