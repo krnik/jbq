@@ -1,43 +1,38 @@
-import { existsSync, readdirSync, renameSync, rmdirSync, statSync, unlinkSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-function rm(src: string): void {
-    const stat = statSync(src);
-    if (stat.isFile()) {
-        unlinkSync(src);
-    } else {
-        for (const path of readdirSync(src)) {
-            rm(resolve(src, path));
+const IMPORT_REGEX = /from\W*'(?<path>.+?)'/g;
+
+function updateImports(path: string): void {
+    if (!statSync(path).isDirectory()) throw new Error('Cannot walk non-directory');
+
+    for (const content of readdirSync(path)) {
+        const contentPath = resolve(path, content);
+        if (statSync(contentPath).isDirectory()) {
+            updateImports(contentPath);
+        } else {
+            writeFileSync(
+                contentPath,
+                readFileSync(contentPath)
+                    .toString()
+                    .replace(
+                        IMPORT_REGEX,
+                        (m: string, s: string): string => m.replace(s, `${s}.js`),
+                    ),
+            );
         }
-        rmdirSync(src);
     }
 }
 
-function move(src: string, dest: string): void {
-    const source = resolve(__dirname, src);
-    const files = readdirSync(source);
+function copyMetaFiles(dest: string, files: string[]): void {
+    const source = resolve(__dirname, dest);
     for (const file of files) {
-        const srcPath = resolve(__dirname, src, file);
-        try {
-            const destPath = resolve(dest, file);
-            if (existsSync(destPath)) {
-                rm(destPath);
-            }
-            renameSync(srcPath, resolve(dest, file));
-        } catch (e) {
-            console.error(`Could not move: ${srcPath}`);
-        }
-    }
-    if (readdirSync(source).length === 0) {
-        console.log('Moved all files.');
-        rmdirSync(source);
-    } else {
-        for (const path of files) {
-            if (existsSync(path)) {
-                rm(path);
-            }
-        }
+        const filePath = resolve(__dirname, file);
+        if (!existsSync(filePath)) throw new Error('Cannot copy file that does not exist!');
+
+        writeFileSync(resolve(source, file), readFileSync(filePath));
     }
 }
 
-move('./lib', '.');
+copyMetaFiles('./build', ['./README.md', './package.json']);
+updateImports('./build');

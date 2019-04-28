@@ -1,10 +1,4 @@
-node_modules
-lib.dev
-coverage
-
-class_syntax*
-core
-type
-util
-misc
-main.*
+/node_modules/
+/coverage/
+/deno/
+/build/
