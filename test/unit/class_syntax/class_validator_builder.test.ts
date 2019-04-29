@@ -1,12 +1,12 @@
-import 'mocha';
 import { expect } from 'chai';
+import 'mocha';
+import { check, gen, property } from 'testcheck';
 import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
-import { check, property, gen } from 'testcheck';
 import {
+    SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
     TYPE,
     TYPE_NAME,
-    SYM_SCHEMA_COLLECTION,
 } from '../../../src/misc/constants';
 
 interface TestClass {
@@ -97,6 +97,8 @@ describe('ClassValidatorBuilder', (): void => {
                 other.getSchema(),
             );
         });
+
+        it.skip('NESTED INSTANCES', (): void => {});
 
         it('it should append subSchema to the root schema_properties property', (): void => {
             const builder = ClassValidatorBuilder.extract(createClass());
