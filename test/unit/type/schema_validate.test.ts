@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import 'mocha';
 import { PROP_DATA_PATH } from '../../../src/misc/constants';
 import { schemaValidate } from '../../../src/type/schema_validator';
 import { values } from '../../data/mod';
+import { check, property, gen } from 'testcheck';
 
 describe('schemaValidate', (): void => {
     const tName = 'schemaValidate test';
@@ -16,8 +16,14 @@ describe('schemaValidate', (): void => {
         });
 
         it('it should return undefined on any value', (): void => {
-            for (const val of [1, true, '', {}, null, Symbol()])
-                expect(validateFn(val)).to.be.equal(undefined);
+            check(
+                property(
+                    gen.JSONPrimitive,
+                    (value): void => {
+                        expect(validateFn(value)).to.be.equal(undefined);
+                    },
+                ),
+            );
         });
     });
 
@@ -29,7 +35,14 @@ describe('schemaValidate', (): void => {
         });
 
         it('it should throw on non-array value', (): void => {
-            for (const val of values.non.array) expect((): void => validateFn(val)).to.throw();
+            check(
+                property(
+                    gen.JSONPrimitive,
+                    (value): void => {
+                        expect((): void => validateFn(value)).to.throw();
+                    },
+                ),
+            );
         });
 
         it('it should throw if array is empty', (): void => {

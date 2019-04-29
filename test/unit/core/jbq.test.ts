@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import 'mocha';
 import {
     SYM_SCHEMA_COLLECTION,
     SYM_TYPE_VALIDATE,

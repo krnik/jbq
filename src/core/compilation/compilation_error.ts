@@ -9,7 +9,7 @@ export class CompilationError {
         return new Error(errorMessage);
     }
 
-    public static missingSchemaTypeProperty(schema: { [k: string]: unknown }): Error {
+    public static missingSchemaTypeProperty(schema: { [k: string]: unknown }, path: string): Error {
         let json: string;
         try {
             for (const sym of Object.getOwnPropertySymbols(schema)) {
@@ -20,7 +20,7 @@ export class CompilationError {
         } catch (err) {
             json = `keys: [${Object.keys(schema).join(',')}]`;
         }
-        const errorMessage = `Schema must have a [${TYPE}] property. Schema ${json}.`;
+        const errorMessage = `Schema must have a [${TYPE}] property. Schema ${json}. Path: ${path}.`;
         return new Error(errorMessage);
     }
 

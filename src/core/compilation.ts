@@ -75,7 +75,11 @@ export class Compilation {
         log.incIndent(2);
 
         const typeName = schema[TYPE] as (string | undefined);
-        if (typeName === undefined) throw Compilation.Error.missingSchemaTypeProperty(schema);
+        if (typeName === undefined)
+            throw Compilation.Error.missingSchemaTypeProperty(
+                schema,
+                sourceBuilder.getSchemaPath(),
+            );
 
         const type = this.getType(typeName);
         const sourceSnapshot = sourceBuilder.getContextSnapshot();

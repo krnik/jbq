@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import 'mocha';
 import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/misc/constants';
 import { TypeAny } from '../../../src/type/any';
 import { ParseValues } from '../../../src/misc/typings';
+import { check, property, gen } from 'testcheck';
 
 describe(
     TYPE_NAME.ANY,
@@ -11,7 +11,14 @@ describe(
             TYPE,
             (): void => {
                 it('valid value', (): void => {
-                    expect(TypeAny[TYPE]('', '')).to.be.equal(undefined);
+                    check(
+                        property(
+                            gen.JSONPrimitive,
+                            (value): void => {
+                                expect(TypeAny[TYPE]('any', value)).to.be.equal(undefined);
+                            },
+                        ),
+                    );
                 });
             },
         );

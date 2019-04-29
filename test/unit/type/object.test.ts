@@ -7,6 +7,7 @@ import {
     TYPE_NAME,
 } from '../../../src/misc/constants';
 import { TypeObject } from '../../../src/type/object';
+import { check, property, gen } from 'testcheck';
 
 describe(
     TYPE_NAME.OBJECT,
@@ -16,12 +17,31 @@ describe(
             (): void => {
                 const base = 'object';
                 it('valid value', (): void => {
-                    const value = {};
-                    expect(TypeObject[TYPE](base, value)).to.be.equal(undefined);
+                    check(
+                        property(
+                            gen.object({}),
+                            (value): void => {
+                                expect(TypeObject[TYPE](base, value)).to.be.equal(undefined);
+                            },
+                        ),
+                    );
                 });
                 it('invalid value', (): void => {
-                    const value = true;
-                    expect(TypeObject[TYPE](base, value)).to.be.a('string');
+                    const nonObject = gen.oneOf<unknown>([
+                        gen.number,
+                        gen.string,
+                        gen.null,
+                        gen.undefined,
+                        gen.array(gen.int),
+                    ]);
+                    check(
+                        property(
+                            nonObject,
+                            (value): void => {
+                                expect(TypeObject[TYPE](base, value)).to.be.a('string');
+                            },
+                        ),
+                    );
                 });
             },
         );

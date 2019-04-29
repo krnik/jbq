@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import 'mocha';
 import { check, gen, property } from 'testcheck';
 import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
 import {
@@ -8,14 +7,15 @@ import {
     TYPE,
     TYPE_NAME,
 } from '../../../src/misc/constants';
+import { Constructor } from '../../../src/misc/typings';
+import { Schema } from '../../../src/core/compilation/interface/schema.interface';
 
-interface TestClass {
-    (...args: unknown[]): unknown;
+interface TestClass extends Constructor {
     [k: string]: unknown;
 }
 
 function createClass(): TestClass {
-    return function Test(): void {};
+    return class Test {};
 }
 
 describe('ClassValidatorBuilder', (): void => {
@@ -36,8 +36,76 @@ describe('ClassValidatorBuilder', (): void => {
             const schema = Test[(symbols[0] as unknown) as string];
             expect(builder).to.be.equal(schema);
 
-            expect(builder).to.have.all.keys(['schema', 'properties', 'defaults', 'transforms']);
+            expect(builder).to.have.all.keys(['schema', 'constr', 'propertyMeta']);
             expect(builder).to.be.instanceOf(ClassValidatorBuilder);
+        });
+    });
+
+    describe('.shouldInstantiate', (): void => {
+        it('it should append [CREATE_INSTANCE] symbol to the constructor', (): void => {
+            const Test = createClass();
+            ClassValidatorBuilder.shouldInstantiate(Test);
+            const [sym] = Object.getOwnPropertySymbols(Test);
+            expect(Test[(sym as unknown) as string]).to.be.equal(true);
+        });
+    });
+
+    describe('.shouldCreateInstance', (): void => {
+        it('it should return true if class was marked with .shouldInstantiate', (): void => {
+            const Test = createClass();
+            ClassValidatorBuilder.shouldInstantiate(Test);
+            expect(ClassValidatorBuilder.extract(Test).shouldCreateInstance()).to.be.equal(true);
+        });
+    });
+
+    describe('.getSchema', (): void => {
+        it('it should return builder schema', (): void => {
+            expect(ClassValidatorBuilder.extract(createClass()).getSchema()).to.have.property(
+                TYPE,
+                TYPE_NAME.OBJECT,
+            );
+        });
+    });
+
+    describe('.getMeta', (): void => {
+        it('it should return properties meta map', (): void => {
+            expect(ClassValidatorBuilder.extract(createClass()).getMeta()).to.be.instanceOf(Map);
+        });
+    });
+
+    describe('.updateMeta', (): void => {
+        it('it should create default meta propery', (): void => {
+            const builder = ClassValidatorBuilder.extract(createClass());
+            const meta = builder.getMeta();
+            expect(meta.size).to.be.equal(0);
+
+            const prop = 'Test';
+            builder['updateMeta'](prop);
+            expect(meta.size).to.be.equal(1);
+            expect(meta.has(prop)).to.be.equal(true);
+            expect(meta.get(prop))
+                .to.be.an('object')
+                .that.have.all.keys(['default', 'transform', 'Constructor', 'iterateOverData']);
+        });
+
+        it('it should update existing meta property', (): void => {
+            const builder = ClassValidatorBuilder.extract(createClass());
+            const meta = builder.getMeta();
+            expect(meta.size).to.be.equal(0);
+
+            const prop = 'Test';
+            builder['updateMeta'](prop);
+            expect(meta.size).to.be.equal(1);
+            expect(meta.has(prop)).to.be.equal(true);
+            expect(meta.get(prop))
+                .to.be.an('object')
+                .that.have.all.keys(['default', 'transform', 'Constructor', 'iterateOverData']);
+
+            const callback = (): boolean => true;
+            builder['updateMeta'](prop, 'default', callback);
+            expect(meta.size).to.be.equal(1);
+            expect(meta.has(prop)).to.be.equal(true);
+            expect(meta.get(prop)).to.have.property('default', callback);
         });
     });
 
@@ -77,50 +145,153 @@ describe('ClassValidatorBuilder', (): void => {
         });
     });
 
+    describe('.ensureProperty', (): void => {
+        it('it should ensure that property exists', (): void => {
+            const key = 'Test';
+            const obj: Schema = {};
+            const builder = ClassValidatorBuilder.extract(createClass());
+            builder['ensureProperty'](obj, key);
+            expect(obj[key]).to.be.an('object');
+            expect(Object.keys(obj[key] as object))
+                .to.be.an('array')
+                .that.have.lengthOf(0);
+        });
+    });
+
     describe('.setSymbolSchemaProperty', (): void => {
-        it('it should append subSchema to the root schema_collection property', (): void => {
-            const builder = ClassValidatorBuilder.extract(createClass());
-            const other = ClassValidatorBuilder.extract(createClass());
-            other.append(TYPE, TYPE_NAME.ANY);
+        describe(
+            SYM_SCHEMA_PROPERTIES.toString(),
+            (): void => {
+                it('it should append source properties to the root schema as ClassDecorator', (): void => {
+                    const builder = ClassValidatorBuilder.extract(createClass());
+                    const otherClass = createClass();
+                    const other = ClassValidatorBuilder.extract(otherClass);
+                    other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
 
-            builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, other);
-            expect(builder.getSchema()[SYM_SCHEMA_COLLECTION]).to.be.equal(other.getSchema());
-        });
+                    builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass);
+                    expect(builder['getSubSchemas']()['isBool']).to.be.deep.eq(
+                        other['getSubSchemas']()['isBool'],
+                    );
+                    expect(builder.getMeta().size).to.be.equal(0);
+                });
 
-        it('it should append subSchema to the subProperty schema_collection property', (): void => {
-            const builder = ClassValidatorBuilder.extract(createClass());
-            const other = ClassValidatorBuilder.extract(createClass());
-            other.append(TYPE, TYPE_NAME.ANY);
+                it('it should append source properties to the root subproperty as PropertyDecorator', (): void => {
+                    const builder = ClassValidatorBuilder.extract(createClass());
+                    const otherClass = createClass();
+                    const other = ClassValidatorBuilder.extract(otherClass);
+                    other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
 
-            builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, other, 'prop');
-            expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_COLLECTION]).to.be.equal(
-                other.getSchema(),
-            );
-        });
+                    builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass, 'prop');
+                    expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_PROPERTIES]).to.be.deep.eq(
+                        other['getSubSchemas'](),
+                    );
+                    expect(builder.getMeta().get('prop')).to.be.an('object');
+                });
 
-        it.skip('NESTED INSTANCES', (): void => {});
+                it('it should throw is source is undefined and source is not decorated with @instantiate', (): void => {
+                    const builder = ClassValidatorBuilder.extract(createClass());
+                    const otherClass = createClass();
+                    expect(
+                        (): unknown =>
+                            builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass),
+                    ).to.throw();
+                });
 
-        it('it should append subSchema to the root schema_properties property', (): void => {
-            const builder = ClassValidatorBuilder.extract(createClass());
-            const other = ClassValidatorBuilder.extract(createClass());
-            other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                describe('source marked with .shouldInstantiate', (): void => {
+                    it('it should append source properties to the root schema as ClassDecorator', (): void => {
+                        const builder = ClassValidatorBuilder.extract(createClass());
+                        const otherClass = createClass();
+                        const other = ClassValidatorBuilder.extract(otherClass);
+                        ClassValidatorBuilder.shouldInstantiate(otherClass);
+                        expect(other.shouldCreateInstance()).to.be.equal(true);
+                        other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
 
-            builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, other);
-            expect(builder['getSubSchemas']()['isBool']).to.be.deep.eq(
-                other['getSubSchemas']()['isBool'],
-            );
-        });
+                        builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass);
+                        expect(builder['getSubSchemas']()['isBool']).to.be.deep.eq(
+                            other['getSubSchemas']()['isBool'],
+                        );
+                        expect(builder.getMeta().size).to.be.equal(0);
+                    });
 
-        it('it should append subSchema to the subProperty schema_properties property', (): void => {
-            const builder = ClassValidatorBuilder.extract(createClass());
-            const other = ClassValidatorBuilder.extract(createClass());
-            other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                    it('it should not append source properties to the root subproperty as PropertyDecorator', (): void => {
+                        const builder = ClassValidatorBuilder.extract(createClass());
+                        const otherClass = createClass();
+                        const other = ClassValidatorBuilder.extract(otherClass);
+                        other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                        ClassValidatorBuilder.shouldInstantiate(otherClass);
+                        expect(other.shouldCreateInstance()).to.be.equal(true);
 
-            builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, other, 'prop');
-            expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_PROPERTIES]).to.be.deep.eq(
-                other['getSubSchemas'](),
-            );
-        });
+                        builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass, 'prop');
+                        expect(builder['getSubSchemas']()).to.be.deep.eq({});
+                        expect(builder.getMeta().get('prop'))
+                            .to.be.an('object')
+                            .that.has.property('Constructor', otherClass);
+                    });
+                });
+            },
+        );
+
+        describe(
+            SYM_SCHEMA_COLLECTION.toString(),
+            (): void => {
+                it('it should append source schema to the root schema as ClassDecorator', (): void => {
+                    const builder = ClassValidatorBuilder.extract(createClass());
+                    const otherClass = createClass();
+                    const other = ClassValidatorBuilder.extract(otherClass);
+                    other.append(TYPE, TYPE_NAME.ANY);
+
+                    builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass);
+                    expect(builder.getSchema()[SYM_SCHEMA_COLLECTION]).to.be.equal(
+                        other.getSchema(),
+                    );
+                });
+
+                it('it should append source schema to the subproperty as PropertyDecorator', (): void => {
+                    const builder = ClassValidatorBuilder.extract(createClass());
+                    const otherClass = createClass();
+                    const other = ClassValidatorBuilder.extract(otherClass);
+                    other.append(TYPE, TYPE_NAME.ANY);
+
+                    builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass, 'prop');
+                    expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_COLLECTION]).to.be.equal(
+                        other.getSchema(),
+                    );
+                });
+
+                describe('source marked with .shouldInstantiate', (): void => {
+                    it('it should append source schema as ClassDecorator', (): void => {
+                        const builder = ClassValidatorBuilder.extract(createClass());
+                        const otherClass = createClass();
+                        const other = ClassValidatorBuilder.extract(otherClass);
+                        ClassValidatorBuilder.shouldInstantiate(otherClass);
+                        other.append(TYPE, TYPE_NAME.ANY);
+
+                        builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass);
+                        expect(builder.getSchema()[SYM_SCHEMA_COLLECTION]).to.be.equal(
+                            other.getSchema(),
+                        );
+                    });
+
+                    it('it should not append source schema as PropertyDecorator', (): void => {
+                        const builder = ClassValidatorBuilder.extract(createClass());
+                        const otherClass = createClass();
+                        const other = ClassValidatorBuilder.extract(otherClass);
+                        ClassValidatorBuilder.shouldInstantiate(otherClass);
+                        other.append(TYPE, TYPE_NAME.ANY);
+
+                        builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass, 'prop');
+                        expect(builder['getSubSchemas']().hasOwnProperty('prop')).to.be.equal(
+                            false,
+                        );
+                        const meta = builder.getMeta().get('prop');
+                        expect(meta)
+                            .to.be.an('object')
+                            .that.have.property('Constructor', otherClass);
+                        expect(meta).to.have.property('iterateOverData', true);
+                    });
+                });
+            },
+        );
     });
 
     describe('.addDefault', (): void => {
@@ -133,7 +304,9 @@ describe('ClassValidatorBuilder', (): void => {
                     (p): void => {
                         const callback = (): void => {};
                         builder.addDefault(p, callback);
-                        expect(builder.getProperties().has(p)).to.be.equal(true);
+                        expect(builder.getMeta().get(p))
+                            .to.be.an('object')
+                            .that.have.property('default', callback);
                     },
                 ),
             );
@@ -150,7 +323,9 @@ describe('ClassValidatorBuilder', (): void => {
                     (p): void => {
                         const callback = (): void => {};
                         builder.addTransform(p, callback);
-                        expect(builder.getProperties().has(p)).to.be.equal(true);
+                        expect(builder.getMeta().has(p))
+                            .to.be.an('object')
+                            .that.have.property(p, callback);
                     },
                 ),
             );
@@ -170,6 +345,14 @@ describe('ClassValidatorBuilder', (): void => {
                 .to.be.an('object')
                 .that.have.property('prop');
             expect(builder['getSubSchemas']()['prop']).to.have.property('key', 'value');
+        });
+
+        it('it should ensure property of sub schemas if property parameter is supplied', (): void => {
+            const builder = ClassValidatorBuilder.extract(createClass());
+            const subSchemas = builder['getSubSchemas']('Test');
+            expect(subSchemas)
+                .to.be.an('object')
+                .that.have.property('Test');
         });
     });
 });

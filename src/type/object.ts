@@ -113,7 +113,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
 export const TypeObject = {
     [TYPE](_schemaValue: string, $DATA: unknown): string | void {
         if (!($DATA && typeof $DATA === 'object' && !Array.isArray($DATA)))
-            return `{"message": "Data should be {{schemaValue}} type. Got ${typeof $DATA}.", "path": "{{schemaPath}}"}`;
+            return `{"message": "Data should be {{schemaValue}} type.", "path": "{{schemaPath}}"}`;
     },
     [CONSTRUCTOR_NAME](schemaValue: string, $DATA: object): string | void {
         if (Object.getPrototypeOf($DATA).constructor.name !== schemaValue)

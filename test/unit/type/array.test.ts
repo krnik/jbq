@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import 'mocha';
 import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME } from '../../../src/misc/constants';
 import { TypeArray } from '../../../src/type/array';
+import { check, property, gen } from 'testcheck';
 
 describe(
     TYPE_NAME.ARRAY,
@@ -11,12 +11,25 @@ describe(
             (): void => {
                 const base = 'array';
                 it('valid value', (): void => {
-                    const data = [1, 2];
-                    expect(TypeArray[TYPE](base, data)).to.be.equal(undefined);
+                    check(
+                        property(
+                            gen.array(gen.number, { size: 5 }),
+                            (value): void => {
+                                expect(TypeArray[TYPE](base, value)).to.be.equal(undefined);
+                            },
+                        ),
+                    );
                 });
                 it('invalid value', (): void => {
-                    const value = {};
-                    expect(TypeArray[TYPE](base, value)).to.be.a('string');
+                    const nonArray = gen.oneOf([gen.JSONPrimitive, gen.object({ x: gen.null })]);
+                    check(
+                        property(
+                            nonArray,
+                            (value): void => {
+                                expect(TypeArray[TYPE](base, value)).to.be.a('string');
+                            },
+                        ),
+                    );
                 });
             },
         );

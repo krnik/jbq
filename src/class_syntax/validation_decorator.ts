@@ -33,11 +33,15 @@ type Decorator = (...args: DecoratorParams) => void;
 
 type DecoratorTypes = 'value' | 'constructor' | 'callback';
 
+/** Decorator factory that expects value of type T as an argument. */
+type ValueFactory<T> = (schemaValue: T) => Decorator;
+/** Decorator factory that expects Constructor as an argument. */
 type ConstructorFactory = <T>(schemaShape: Constructor<T>) => Decorator;
+/** Decorator factory that expects function that returns boolean as an argument. */
 type CallbackFactory = <T>(callback: ArrIterCallback<boolean, T>) => Decorator;
 
 type DecoratorFactoryB<B extends DecoratorTypes, T> = B extends 'value'
-    ? (schemaValue: T) => Decorator
+    ? ValueFactory<T>
     : B extends 'constructor'
     ? ConstructorFactory
     : B extends 'callback'
@@ -189,16 +193,14 @@ type SchemaSymbol = typeof SYM_SCHEMA_PROPERTIES | typeof SYM_SCHEMA_COLLECTION;
 const decoratorSubSchemaFactory = (schemaSymbol: SchemaSymbol): ConstructorFactory => (
     schemaShape: Constructor,
 ): Decorator => (...args: DecoratorParams): void => {
-    const target = ClassValidatorBuilder.extract(schemaShape);
-
     if (isClassDecorator(args)) {
         const [constructor] = args;
         const builder = ClassValidatorBuilder.extract(constructor);
-        builder.setSymbolSchemaProperty(schemaSymbol, target);
+        builder.setSymbolSchemaProperty(schemaSymbol, schemaShape);
     } else {
         const [prototype, property] = args;
         const builder = ClassValidatorBuilder.extract(prototype.constructor);
-        builder.setSymbolSchemaProperty(schemaSymbol, target, property);
+        builder.setSymbolSchemaProperty(schemaSymbol, schemaShape, property);
     }
 };
 

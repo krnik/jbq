@@ -243,6 +243,7 @@ export class CodeGenerator {
     public static renderDataPathResolution(
         dataPath: string | string[],
         variableName: string,
+        baseVariable: string = ParameterName.Data,
     ): string {
         const paths = (Array.isArray(dataPath)
             ? dataPath
@@ -257,7 +258,7 @@ export class CodeGenerator {
                     acc.push(
                         index > 0
                             ? `${acc[index - 1]}${CodeGenerator.renderPropertyAccessor(key)}`
-                            : `${ParameterName.Data}${CodeGenerator.renderPropertyAccessor(key)}`,
+                            : `${baseVariable}${CodeGenerator.renderPropertyAccessor(key)}`,
                     );
                     return acc;
                 },

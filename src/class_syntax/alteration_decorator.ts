@@ -1,7 +1,4 @@
 import { ClassValidatorBuilder } from './class_validator_builder';
-import { Callback } from '../misc/typings';
-
-type DefaultValue<T> = T | Callback<T>;
 
 /**
  * *Property decorator.*
@@ -22,7 +19,7 @@ type DefaultValue<T> = T | Callback<T>;
  *      class Person extends Validator {
  *          \@optional
  *          \@string
- *          \@withDefault('John Snow')
+ *          \@withDefault(() => 'John Snow')
  *          name!: string;
  *
  *          \@withDefault((person: Person) => {
@@ -54,14 +51,11 @@ type DefaultValue<T> = T | Callback<T>;
  * If a function will return the promise then the promise will not be awaited during
  * setting the defaul values.
  */
-export const withDefault = <T>(defaultValue: DefaultValue<T>): PropertyDecorator => (
+export const withDefault = <T>(buildDefault: (data: unknown) => T): PropertyDecorator => (
     prototype: object,
     property: string | symbol,
 ): void => {
-    const builder = ClassValidatorBuilder.extract(prototype.constructor);
-    if (typeof defaultValue === 'function')
-        builder.addDefault(property, defaultValue as CallableFunction);
-    else builder.addDefault(property, (): DefaultValue<T> => defaultValue);
+    ClassValidatorBuilder.extract(prototype.constructor).addDefault(property, buildDefault);
 };
 
 /**
