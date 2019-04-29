@@ -12,27 +12,31 @@ import {
 } from '../misc/constants';
 import { CodeGenerator } from '../core/code_gen';
 import { ComparisonOperator } from '../core/code_gen/token/operator';
-import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../misc/typings';
+import {
+    DataPathChecker,
+    DataPathResolver,
+    ParseValuesMinMax,
+    ArrIterCallback,
+} from '../misc/typings';
 import { TypeReflect } from '../util/type_reflect';
 import { schemaValidate } from './schema_validator';
 
 // TODO: maybe pass $DATA[i], i, $DATA instead of $DATA[i]
 // check perf
-type ArrIterCallback<T = unknown> = (elem: T, index: number, arr: T[]) => boolean;
 
 export const TypeArray = {
     [TYPE](_schemaValue: string, $DATA: unknown): string | void {
         if (!Array.isArray($DATA))
             return '{"message": "Data should be a {{schemaValue}} type.", "path": "{{schemaPath}}"}';
     },
-    [EVERY]<T>(schemaValue: ArrIterCallback<T>, $DATA: unknown[]): string | void {
+    [EVERY]<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
         for (let i = 0; i < len; i++)
             // @ts-ignore
             if (!schemaValue($DATA[i]))
                 return '{"message": "Every element of data should satisfy test function.", "path": "{{schemaPath}}"}';
     },
-    [SOME]<T>(schemaValue: ArrIterCallback<T>, $DATA: unknown[]): string | void {
+    [SOME]<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
         let pass = false;
         for (let i = 0; i < len; i++)

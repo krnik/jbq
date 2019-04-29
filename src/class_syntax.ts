@@ -1,5 +1,3 @@
-import { compile } from './class_syntax/class_decorator';
-
 export * from './class_syntax/alteration_decorator';
 export * from './class_syntax/class_decorator';
 export * from './class_syntax/validation_decorator';

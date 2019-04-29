@@ -45,3 +45,5 @@ export interface Constructor<T = {}> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Callback<T = unknown> = (...args: any[]) => T;
+
+export type ArrIterCallback<R = unknown, T = unknown> = (elem: T, index: number, arr: T[]) => R;
