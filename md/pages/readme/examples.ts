@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { jbq, jbqTypes } from '../../../src/main';
 
 
@@ -20,7 +19,7 @@ const PROPS = Symbol.for('schema_properties');
 const ITEMS = Symbol.for('schema_collection');
 const userSchema = {                //  Define `userSchema`
     type: 'object',                 //  ▶ that is an object
-    keys: ['names', 'email'],       //  ▶ that must have only two properies 'names' and 'email'
+    properties: ['names', 'email'], //  ▶ that must have only two properies 'names' and 'email'
     [PROPS]: {                      //  ▶ those properties have following schemas
         names: {                    //  ⯁ `names` property:
             type: 'array',          //      ▷ is an array

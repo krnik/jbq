@@ -1,4 +1,4 @@
-import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../../constants';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from '../../../misc/constants';
 
 /**
  * Interface representing a Schema passed down to compilation functions.
@@ -20,5 +20,5 @@ export interface Schema {
         [schemaName: string]: Schema;
     };
     [SYM_SCHEMA_COLLECTION]?: Schema;
-    [property: string]: any;
+    [property: string]: unknown;
 }

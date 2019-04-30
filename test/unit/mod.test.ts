@@ -1,3 +1,3 @@
-import './Compilation.test';
-import './jbq.test';
-import './Types/mod.test';
+import './core/mod.test';
+import './type/mod.test';
+import './class_syntax/mod.test';

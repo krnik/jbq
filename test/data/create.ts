@@ -1,9 +1,9 @@
 import faker from 'faker';
-import { SYM_SCHEMA_PROPERTIES } from '../../src/constants';
+import { SYM_SCHEMA_PROPERTIES } from '../../src/misc/constants';
 import { Schema } from '../../src/core/compilation/interface/schema.interface';
 import { SYM_FAKER } from '../utils';
 
-export function callFaker (fakerArgs: [string, any[]]) {
+export function callFaker(fakerArgs: [string, unknown[]]): unknown {
     const [path, args] = fakerArgs;
     const props = path.split('.');
     let fn = faker;
@@ -18,25 +18,35 @@ export function callFaker (fakerArgs: [string, any[]]) {
 }
 
 export interface CreateInputSchema extends Schema {
-    [SYM_FAKER]?: (() => any) | [string, any[]?];
+    [SYM_FAKER]?: (() => unknown) | [string, unknown[]?];
 }
 
-export function createData (schema: CreateInputSchema) {
-    let result: { [k: string]: any } = {};
+interface FakerData {
+    [k: string]: unknown;
+}
+export function createData(schema: CreateInputSchema): FakerData | undefined {
+    let result: FakerData = {};
     let touched = false;
     if (schema.hasOwnProperty(SYM_FAKER)) {
         touched = true;
-        result = typeof schema[SYM_FAKER] === 'function'
-            ? (schema[SYM_FAKER] as () => any)()
-            : callFaker(schema[SYM_FAKER] as [string, any[]]);
+        result =
+            typeof schema[SYM_FAKER] === 'function'
+                ? ((schema[SYM_FAKER] as () => unknown)() as FakerData)
+                : (callFaker(schema[SYM_FAKER] as [string, unknown[]]) as FakerData);
     }
-    if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES))
-        for (const [field, subschema] of Object.entries(schema[SYM_SCHEMA_PROPERTIES]!)) {
+
+    if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
+        const props = schema[SYM_SCHEMA_PROPERTIES] as Exclude<
+            Schema[typeof SYM_SCHEMA_PROPERTIES],
+            undefined
+        >;
+        for (const [field, subschema] of Object.entries(props)) {
             const data = createData(subschema as CreateInputSchema);
             if (data !== undefined) {
                 touched = true;
                 result[field] = data;
             }
         }
+    }
     return touched ? result : undefined;
 }

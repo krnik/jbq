@@ -1,14 +1,12 @@
-import { SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../../constants';
-import { OmitSymbols } from '../../../typings';
+import { SYM_TYPE_FOR_LOOP, SYM_TYPE_KEY_ORDER, SYM_TYPE_VALIDATE } from '../../../misc/constants';
+import { OmitSymbols } from '../../../misc/typings';
 import { TypeMethod, TypeValidationMethod } from './type_method.interface';
 
 /**
  * Type that represents all regular methods of TypePrototype that are used
  * during creation of validation function.
  */
-type TypePrototypeMethods<T> = {
-    [K in keyof T]: TypeMethod;
-};
+type TypePrototypeMethods<T> = { [K in keyof T]: TypeMethod };
 
 /**
  * Type that represents all symbol properties of TypePrototype.
@@ -18,11 +16,10 @@ type TypePrototypeMethods<T> = {
  *     Symbol.for('type_for_loop')
  */
 interface TypePrototypeSymbols<T> {
-    [SYM_TYPE_VALIDATE]: {
-        [K in keyof T]: TypeValidationMethod;
-    };
+    [SYM_TYPE_VALIDATE]: { [K in keyof T]: TypeValidationMethod };
     [SYM_TYPE_FOR_LOOP]?: boolean;
     [SYM_TYPE_KEY_ORDER]?: string[];
 }
 
-export type TypePrototype<T> = TypePrototypeMethods<OmitSymbols<T>> & TypePrototypeSymbols<OmitSymbols<T>>;
+export type TypePrototype<T> = TypePrototypeMethods<OmitSymbols<T>> &
+    TypePrototypeSymbols<OmitSymbols<T>>;

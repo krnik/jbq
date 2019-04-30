@@ -1,4 +1,4 @@
-import { PathResolutionStrategy } from '../../../constants';
+import { PathResolutionStrategy } from '../../../misc/constants';
 
 export interface CompilationOptions {
     debug?: boolean;
