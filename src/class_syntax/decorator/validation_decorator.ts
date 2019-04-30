@@ -17,11 +17,11 @@ import {
     VALUE,
     SYM_SCHEMA_PROPERTIES,
     SYM_SCHEMA_COLLECTION,
-} from '../misc/constants';
-import { Schema } from '../core/compilation/interface/schema.interface';
-import { ParseValuesMinMax, Constructor, ArrIterCallback } from '../misc/typings';
-import { TypeReflect } from '../util/type_reflect';
-import { ClassValidatorBuilder } from './class_validator_builder';
+} from '../../misc/constants';
+import { Schema } from '../../core/compilation/interface/schema.interface';
+import { ParseValuesMinMax, Constructor, ArrIterCallback } from '../../misc/typings';
+import { TypeReflect } from '../../util/type_reflect';
+import { ClassValidatorBuilder } from '../class_validator_builder';
 
 type ClassDecoratorParams = [Function];
 
@@ -137,7 +137,7 @@ export const includes = decoratorFactory(INCLUDES);
 export const len = decoratorFactory<ParseValuesMinMax['schemaValue']>(LEN);
 
 /** Assigns schema `value` property to provided value */
-export const value = decoratorFactory<number | boolean>(VALUE);
+export const value = decoratorFactory<ParseValuesMinMax['schemaValue'] | boolean>(VALUE);
 
 /** Assigns schema `multipleOf` property to provided number */
 export const multipleOf = decoratorFactory<number>(MULTIPLE_OF);
@@ -163,6 +163,10 @@ export const instanceOf = decoratorFactory<never, 'constructor'>(INSTANCE_OF);
 /** Assigns schema `constructorName` property to provided value */
 export const constructorName = decoratorFactory<string>(CONSTRUCTOR_NAME);
 
+/**
+ * Assigns received schemaObject to the target schema.
+ * Always succeeds (does not check if properties exists or not).
+ */
 export const schema = (schemaObject: Schema): Decorator => (...args: DecoratorParams): void => {
     const schemaProperties = [
         ...Object.getOwnPropertyNames(schemaObject),

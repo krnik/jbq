@@ -82,7 +82,7 @@ export class ClassValidatorBuilder {
         kind?: K,
         value?: V,
     ): void {
-        const meta = this.propertyMeta.get(property);
+        let meta = this.propertyMeta.get(property);
         if (meta === undefined) {
             const propertyMeta: PropertyMeta = {
                 default: undefined,
@@ -90,9 +90,17 @@ export class ClassValidatorBuilder {
                 Constructor: undefined,
                 iterateOverData: false,
             };
-            if (kind !== undefined) propertyMeta[kind] = value;
             this.propertyMeta.set(property, propertyMeta);
-        } else if (kind !== undefined) {
+            meta = propertyMeta;
+        }
+
+        if (kind !== undefined) {
+            if (kind === 'Constructor' && meta.Constructor !== undefined) {
+                const errorMessage = `Attempt to set Constructor property of ${
+                    this.constr.name
+                }[${property.toString()}] while it already exists.`;
+                throw new Error(errorMessage);
+            }
             meta[kind] = value;
         }
     }
@@ -212,24 +220,18 @@ export class ClassValidatorBuilder {
 
             if (property === undefined) {
                 this.ensureProperty(this.schema, SYM_SCHEMA_PROPERTIES);
-                // This will still overwrite this[PROP][key]. Merge instead.
-                // Include symbols
-                for (const key of Object.keys(sourceSchema))
-                    (this.schema[SYM_SCHEMA_PROPERTIES] as SchemaProps)[key] = sourceSchema[key];
-                return this;
+
+                return this.mergeSchema(
+                    this.schema[SYM_SCHEMA_PROPERTIES] as SchemaProps,
+                    sourceSchema,
+                );
             } else {
                 this.updateMeta(property);
                 const own = this.getSubSchemas(property)[property as string];
                 this.ensureProperty(own, SYM_SCHEMA_PROPERTIES);
-                // Include Symbols
-                for (const key of Object.keys(sourceSchema)) {
-                    (own[SYM_SCHEMA_PROPERTIES] as SchemaProps)[key] = sourceSchema[key];
-                }
+                return this.mergeSchema(own[SYM_SCHEMA_PROPERTIES] as SchemaProps, sourceSchema);
             }
         } else {
-            // TODO: If Class has SYM_COLL and there is an attempt to overwrite it
-            // return Error
-
             if (property !== undefined && shouldInstantiate) {
                 this.updateMeta(property, 'Constructor', sourceConstructor);
                 this.updateMeta(property, 'iterateOverData', true);
@@ -237,9 +239,21 @@ export class ClassValidatorBuilder {
             }
 
             if (property === undefined) {
+                if (this.schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
+                    const errorMessage = `Cannot append ${SYM_SCHEMA_COLLECTION.toString()} twice to the ${
+                        this.constr.name
+                    } schema.`;
+                    throw new Error(errorMessage);
+                }
                 this.schema[SYM_SCHEMA_COLLECTION] = sourceBuilder.getSchema();
             } else {
                 const subSchema = this.getSubSchemas(property)[property as string];
+                if (subSchema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
+                    const errorMessage = `Cannot append ${SYM_SCHEMA_COLLECTION.toString()} twice to the ${
+                        this.constr.name
+                    }[${property.toString()}]`;
+                    throw new Error(errorMessage);
+                }
                 subSchema[SYM_SCHEMA_COLLECTION] = sourceBuilder.getSchema();
             }
         }
@@ -276,5 +290,26 @@ export class ClassValidatorBuilder {
         }
 
         return this.schema[SYM_SCHEMA_PROPERTIES] as SchemaProps;
+    }
+
+    private mergeSchema(
+        this: ClassValidatorBuilder,
+        target: SchemaProps,
+        source: SchemaProps,
+    ): ClassValidatorBuilder {
+        const props = [
+            ...Object.getOwnPropertyNames(source),
+            ...Object.getOwnPropertySymbols(source),
+        ] as string[];
+        for (const property of props) {
+            if (target.hasOwnProperty(property)) {
+                const errorMessage = `Cannot merge schemas because property ${property.toString()} already exists in ${
+                    this.constr.name
+                } schema and cannot be overwritten`;
+                throw new Error(errorMessage);
+            }
+            target[property] = source[property];
+        }
+        return this;
     }
 }

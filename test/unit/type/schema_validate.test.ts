@@ -1,8 +1,7 @@
 import { expect } from 'chai';
+import { check, gen, property } from 'testcheck';
 import { PROP_DATA_PATH } from '../../../src/misc/constants';
 import { schemaValidate } from '../../../src/type/schema_validator';
-import { values } from '../../data/mod';
-import { check, property, gen } from 'testcheck';
 
 describe('schemaValidate', (): void => {
     const tName = 'schemaValidate test';
@@ -174,7 +173,20 @@ describe('schemaValidate', (): void => {
     describe('arrayOfPropertyNames', (): void => {
         const fn = schemaValidate.arrayOfPropertyNames(tName, mName);
         it('it should throw on non-array or empty array', (): void => {
-            for (const val of values.non.array) expect((): void => fn(val)).to.throw();
+            const nonArray = gen.oneOf<unknown>([
+                gen.JSONPrimitive,
+                gen.null,
+                gen.undefined,
+                gen.object({}),
+            ]);
+            check(
+                property(
+                    nonArray,
+                    (value): void => {
+                        expect((): void => fn(value)).to.throw();
+                    },
+                ),
+            );
             expect((): void => fn([])).to.throw();
         });
         it('it should throw on invalid array element types', (): void => {

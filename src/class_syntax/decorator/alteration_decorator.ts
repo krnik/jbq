@@ -1,7 +1,9 @@
-import { ClassValidatorBuilder } from './class_validator_builder';
+import { ClassValidatorBuilder } from '../class_validator_builder';
 
 /**
- * *Property decorator.*
+ *  **Property decorator.**
+ *
+ * **Does not change the schema.**
  *
  * Defines default value or default value factory for a property.
  * Executed after validation and before transformations.
@@ -51,15 +53,16 @@ import { ClassValidatorBuilder } from './class_validator_builder';
  * If a function will return the promise then the promise will not be awaited during
  * setting the defaul values.
  */
-export const withDefault = <T>(buildDefault: (data: unknown) => T): PropertyDecorator => (
-    prototype: object,
-    property: string | symbol,
-): void => {
+export const withDefault = <T = unknown, R = unknown>(
+    buildDefault: (data: T) => R,
+): PropertyDecorator => (prototype: object, property: string | symbol): void => {
     ClassValidatorBuilder.extract(prototype.constructor).addDefault(property, buildDefault);
 };
 
 /**
- *  *Property decorator.*
+ *  **Property decorator.**
+ *
+ * **Does not change the schema.**
  *
  * Defines the transformation function for a property.
  *
@@ -103,7 +106,7 @@ export const withDefault = <T>(buildDefault: (data: unknown) => T): PropertyDeco
  * Unfortunately, if class extends `Validator<true>` and none of transform functions
  * will return Promise then `.bulid` method will not resolve to a Promise.
  */
-export const transform = <T extends CallableFunction>(callback: T): PropertyDecorator => (
+export const transform = <P, D, R>(callback: (property: P, data: D) => R): PropertyDecorator => (
     prototype: object,
     property: string | symbol,
 ): void => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { withDefault, transform } from '../../../src/class_syntax';
+import { withDefault, transform } from '../../../src/class_syntax/decorator/alteration_decorator';
 import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
 
 describe('Alteration Decorators', (): void => {

@@ -21,8 +21,7 @@ import {
 import { TypeReflect } from '../util/type_reflect';
 import { schemaValidate } from './schema_validator';
 
-// TODO: maybe pass $DATA[i], i, $DATA instead of $DATA[i]
-// check perf
+// TODO: check performance: pass $DATA[i], i, $DATA instead of $DATA[i]
 
 export const TypeArray = {
     [TYPE](_schemaValue: string, $DATA: unknown): string | void {

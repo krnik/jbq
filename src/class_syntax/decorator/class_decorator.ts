@@ -1,5 +1,5 @@
-import { Constructor } from '../misc/typings';
-import { ClassValidatorBuilder } from './class_validator_builder';
+import { Constructor } from '../../misc/typings';
+import { ClassValidatorBuilder } from '../class_validator_builder';
 
 /**
  * *Constructor decorator.*

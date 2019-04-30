@@ -1,6 +1,7 @@
-export * from './class_syntax/alteration_decorator';
-export * from './class_syntax/class_decorator';
-export * from './class_syntax/validation_decorator';
+export * from './class_syntax/decorator/alteration_decorator';
+export * from './class_syntax/decorator/class_decorator';
+export * from './class_syntax/decorator/validation_decorator';
+export * from './class_syntax/build_method_compile';
 
 export class Validator<HasAsyncTransforms extends boolean = false> {
     public build(data: unknown): HasAsyncTransforms extends true ? Promise<this> : this {
@@ -15,3 +16,8 @@ export class Validator<HasAsyncTransforms extends boolean = false> {
         throw new Error(errorMessage);
     }
 }
+
+export type Shape<S extends object, M extends keyof S = never> = Pick<
+    S,
+    { [K in keyof S]: K extends M ? K : S[K] extends Function ? never : K }[keyof S]
+>;

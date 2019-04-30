@@ -33,7 +33,7 @@ enum Param {
     Validator = '$VALIDATOR',
 }
 
-export function gottaGoFast(constructor: Constructor, options: CompileOptions = {}): void {
+export function compileClass(constructor: Constructor, options: CompileOptions = {}): void {
     const builder = ClassValidatorBuilder.extract(constructor);
 
     const Types = options.types === undefined ? TYPES : options.types;
