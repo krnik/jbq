@@ -70,7 +70,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('simple with defaults', (): void => {
         class Address extends Validator {
@@ -116,7 +116,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('simple with transforms', (): void => {
         @number
@@ -164,7 +164,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('composed', (): void => {
         class Address extends Validator {
@@ -233,7 +233,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('composed with defaults', (): void => {
         class Address extends Validator {
@@ -300,7 +300,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('composed with transforms', (): void => {
         @number
@@ -362,7 +362,7 @@ describe('Class Syntax', (): void => {
                 },
             ),
         );
-    });
+    }).timeout(5000);
 
     it('composed async', async (): Promise<void> => {
         @string
@@ -477,5 +477,5 @@ describe('Class Syntax', (): void => {
             .that.have.property('zip', '1234');
         expect(instance.names).to.be.an('array');
         for (const name of instance.names) expect(name).to.be.instanceOf(SmartName);
-    });
+    }).timeout(5000);
 });
