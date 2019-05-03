@@ -250,7 +250,7 @@ equal(typeof ArrayIncludes([false, 1, {}]), 'string');
 #### *len*
 > Checks the length of an array.
 
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 ```typescript
 const schemasLen = {
@@ -331,7 +331,7 @@ equal(typeof NumberType('10'), 'string');
 
 
 #### *value*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 ```typescript
 const schemas = {
@@ -450,7 +450,7 @@ equal(typeof ObjectProperties({ world: 'hello' }), 'string');
 
 
 #### *keyCount*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 > Checks count of all enumerable properties of data.
 
@@ -490,7 +490,7 @@ equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'string
 
 
 #### *propCount*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 > Checks count of all properties of data.
 
@@ -562,7 +562,7 @@ equal(typeof StringOneOf('admin'), 'string');
 
 
 #### *len*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 ```typescript
 const schemasLen = {

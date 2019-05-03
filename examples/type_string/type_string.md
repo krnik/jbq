@@ -13,5 +13,5 @@
 {{example('type_string', 2)}}
 
 #### *{{LEN}}*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 {{example('type_string', 3)}}

@@ -23,5 +23,5 @@
 #### *{{LEN}}*
 > Checks the length of an array.
 
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 {{example('type_array', 4)}}

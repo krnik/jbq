@@ -5,7 +5,7 @@
 {{example('type_number', 0)}}
 
 #### *{{VALUE}}*
-> Accepts [MinMaxSchema](#minmaxschema) schema value.
+> Accepts [SchemaMinMax](#schemaminmax) schema value.
 {{example('type_number', 1)}}
 
 #### *{{MULTIPLE_OF}}*
