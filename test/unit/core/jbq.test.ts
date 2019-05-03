@@ -6,7 +6,7 @@ import {
     TYPE,
 } from '../../../src/misc/constants';
 import { jbq } from '../../../src/core/jbq';
-import { jbqTypes } from '../../../src/main';
+import { jbqTypes } from '../../../src/lib';
 import { createTypes } from '../../../src/type/mod';
 import { createData } from '../../data/mod';
 import { suitesAny } from '../../data/suites/any_suite';

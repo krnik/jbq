@@ -166,6 +166,31 @@ export const constructorName = decoratorFactory<string>(CONSTRUCTOR_NAME);
 /**
  * Assigns received schemaObject to the target schema.
  * Always succeeds (does not check if properties exists or not).
+ *
+ * Use with caution.
+ *
+ * # Examples
+ *
+ *      class Name {
+ *          \@string
+ *          public firstName!: string;
+ *      }
+ *
+ *      class Person {
+ *
+ *          \@schema({
+ *              type: 'string',     // conflicts with `@object` decorator
+ *              [Symbol.for('schema_properties')]: {
+ *                  firstName: { type: 'boolean' }, // conflicts with Name.firstName
+ *              },
+ *          })
+ *          \@object
+ *          \@shape(Name)
+ *          public name!: Shape<Name>; // Not really `Shape<Name>` anymore.
+ *      }
+ *
+ * The outcome of using schema property depends purely on order of execution of decorators.
+ * If `@shape` is executed as last decorator then it will overwrite any common schema properties.
  */
 export const schema = (schemaObject: Schema): Decorator => (...args: DecoratorParams): void => {
     const schemaProperties = [
@@ -208,6 +233,63 @@ const decoratorSubSchemaFactory = (schemaSymbol: SchemaSymbol): ConstructorFacto
     }
 };
 
+/**
+ * Extends schema with provided class' schema.
+ *
+ * If provided class is decorated with `@instantiate` decorator then schema is not extended.
+ * Instead provided class instance will be created.
+ *
+ * When `@shape` is used on a class it will always extend schema.
+ *
+ *      \@instantiate
+ *      class ID {
+ *          \@number
+ *          public no!: number;
+ *      }
+ *
+ *      \@shape(ID)
+ *      class Resource {}
+ *
+ * Schema of `Resource` class will inherit all sub properties of `ID` class' schema.
+ * This means that a valid class signature for `Resource` is the following.
+ *
+ *      \@shape(ID)
+ *      class Resource implements Shape<ID> {}
+ */
 export const shape = decoratorSubSchemaFactory(SYM_SCHEMA_PROPERTIES);
 
+/**
+ * Appends `Symbol.for('schema_collection')` to the schema.
+ *
+ * When used on a class the provided class' schema will be always used to extend base
+ * schema.
+ *
+ * When used on a property and a provided class `C` is decorated with `@instantiate` then
+ * the base schema will not be extended. Instead, `C` class will be used to create instances
+ * in the iterable elements.
+ *
+ * Currently only array-like (integer indexed with `length` property) objects support creating instances since they're easily
+ * mutated.
+ *
+ * # Examples
+ *
+ *      \@number
+ *      \@value({ min: 100 })
+ *      class NumGte100 {}
+ *
+ *      class Poll extends Validator {
+ *          \@array
+ *          \@collection(NumGte100)
+ *          public votes!: number[];
+ *
+ *          \@array
+ *          \@shape(HighestVotes)
+ *          public votes2!: number[];
+ *      }
+ *
+ *      compile(Poll);
+ *
+ *      const poll = new Poll().build({ votes: [100, 112] });
+ *      poll.votes; // [100, 112]
+ */
 export const collection = decoratorSubSchemaFactory(SYM_SCHEMA_COLLECTION);

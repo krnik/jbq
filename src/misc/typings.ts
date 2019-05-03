@@ -10,7 +10,7 @@ export interface SchemaMin {
 export interface SchemaMax {
     max: number | DataPath;
 }
-export type SchemaMinMax = SchemaMax | SchemaMin | number;
+export type SchemaMinMax = SchemaMax | SchemaMin | number | DataPath;
 
 export interface DataPath {
     [PROP_DATA_PATH]: string | string[];
@@ -25,7 +25,7 @@ export interface ParseValues {
 }
 
 export interface ParseValuesMinMax extends ParseValues {
-    schemaValue: SchemaMinMax | DataPath;
+    schemaValue: SchemaMinMax;
 }
 
 export type DataPathResolver = (schemaValue: DataPath) => string;

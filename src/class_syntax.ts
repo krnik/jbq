@@ -3,8 +3,11 @@ export * from './class_syntax/decorator/class_decorator';
 export * from './class_syntax/decorator/validation_decorator';
 export * from './class_syntax/build_method_compile';
 
+/**
+ * Dummy class used to hint TypeScript that a class was compiled and has `build` method.
+ */
 export class Validator<HasAsyncTransforms extends boolean = false> {
-    public build(data: unknown): HasAsyncTransforms extends true ? Promise<this> : this {
+    public build(data?: unknown): HasAsyncTransforms extends true ? Promise<this> : this {
         let dataJSON = '';
         try {
             dataJSON = JSON.stringify(data);
@@ -17,6 +20,10 @@ export class Validator<HasAsyncTransforms extends boolean = false> {
     }
 }
 
+/**
+ * Mapped type used to extract properties of a class.
+ * Also just a hint for TypeScript.
+ */
 export type Shape<S extends object, M extends keyof S = never> = Pick<
     S,
     { [K in keyof S]: K extends M ? K : S[K] extends Function ? never : K }[keyof S]

@@ -3,7 +3,7 @@
     "eslint.workingDirectories": [
         "./src",
         "./test",
-        "./md"
+        "./examples"
     ],
     "editor.formatOnPaste": false,
     "editor.formatOnSave": false,

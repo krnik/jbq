@@ -2,7 +2,7 @@
   "include": [
     "./src",
     "./test",
-    "./md"
+    "./examples"
   ],
   "compilerOptions": {
     /* Basic Options */

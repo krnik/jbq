@@ -30,22 +30,25 @@ export const TypeArray = {
     },
     [EVERY]<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
-        for (let i = 0; i < len; i++)
-            // @ts-ignore
-            if (!schemaValue($DATA[i]))
-                return '{"message": "Every element of data should satisfy test function.", "path": "{{schemaPath}}"}';
+        if (len !== 0)
+            for (let i = 0; i < len; i++)
+                // @ts-ignore
+                if (!schemaValue($DATA[i]))
+                    return '{"message": "Every element of data should satisfy test function.", "path": "{{schemaPath}}"}';
     },
     [SOME]<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: unknown[]): string | void {
         const len = $DATA.length;
-        let pass = false;
-        for (let i = 0; i < len; i++)
-            // @ts-ignore
-            if (schemaValue($DATA[i])) {
-                pass = true;
-                break;
-            }
-        if (!pass)
-            return '{"message": "At least one element of data should satisfy test function.", "path": "{{schemaPath}}"}';
+        if (len !== 0) {
+            let pass = false;
+            for (let i = 0; i < len; i++)
+                // @ts-ignore
+                if (schemaValue($DATA[i])) {
+                    pass = true;
+                    break;
+                }
+            if (!pass)
+                return '{"message": "At least one element of data should satisfy test function.", "path": "{{schemaPath}}"}';
+        }
     },
     [INCLUDES](schemaValue: unknown, $DATA: unknown[]): string | void {
         let found = false;

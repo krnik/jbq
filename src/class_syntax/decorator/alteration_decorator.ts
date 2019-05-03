@@ -1,57 +1,51 @@
 import { ClassValidatorBuilder } from '../class_validator_builder';
 
 /**
- *  **Property decorator.**
+ * **Property decorator.**
  *
- * **Does not change the schema.**
+ * **Applies only to instances.**
  *
- * Defines default value or default value factory for a property.
- * Executed after validation and before transformations.
+ * Defines default value factory for a property.
  *
- * Evaluated only if property is decorated by the `optional` decorator
- * and/or property value of an object is equal to `undefined`.
+ * Evaluated only if property instances' property resolves to undefined.
  *
- * If provided value is a function then the return value of the function will be
- * assigned to a property value and additionally a `this` (valid instance) value
- * will be passed as a first argument to the functions.
+ * The return value of provided function will be
+ * assigned to a property. As a first argument default factory will receive
+ * data that is received during building instance.
  *
  * # Examples
  *
- *      \@compile()
  *      class Person extends Validator {
- *          \@optional
  *          \@string
+ *          \@optional
  *          \@withDefault(() => 'John Snow')
  *          name!: string;
  *
- *          \@withDefault((person: Person) => {
- *              // there is no guarantee that person object will
- *              // have its `name` property set to default before
- *              // this function evaluates
- *              return true;
+ *          \@withDefault((data: { name?: string }) => {
+ *              return data.name === undefined;
  *          })
- *          notValidated!: boolean;
+ *          usesDefaultName!: boolean;
  *
  *          \@withDefault(async () => true)
  *          holdsPromise!: Promise<true>;
- *
- *          ohMy!: string;
  *      }
+ *
+ *      compile(Person);
  *
  *      const data = {};
  *      const person = new Person().build(data);
- *      person.name; // 'John Snow'
- *      person.notValidated; // true
- *      person.holdsPromise; // Promise<true>
- *      person.ohMy; // undefined
  *
- * Since `notValidated` property does not exist in schema because it was not
- * decorated with any of the validation decorators it is not validated.
- * If `notValidated` value from source object will not be equal to `undefined` then
- * the default factory will not be evaluated.
+ *      person.name;            // 'John Snow'
+ *      person.usesDefaultUname;// true
+ *      person.holdsPromise;    // Promise<true>
  *
- * If a function will return the promise then the promise will not be awaited during
- * setting the defaul values.
+ * Since `usesDefaultName` was not decorated by decorators that extend schema
+ * it does not exists in schema thus it will not be validated but if data
+ * contains `usesDefaultName` property then this value will be used to assign
+ * to this property.
+ *
+ * If a default factory returns the promise then the promise will not be awaited during
+ * building Person instance.
  */
 export const withDefault = <T = unknown, R = unknown>(
     buildDefault: (data: T) => R,
@@ -60,45 +54,45 @@ export const withDefault = <T = unknown, R = unknown>(
 };
 
 /**
- *  **Property decorator.**
+ * **Property decorator.**
  *
- * **Does not change the schema.**
+ * **Applies only to instances.**
  *
  * Defines the transformation function for a property.
  *
- * Transformations are evaluated after validation and after setting default
- * values.
+ * Transformations are evaluated at the end of building instance.
  *
  * Transformation function will set property value to a return value of a
  * callback provided to the decorator function.
  *
  * If transformation function returns Promise then the `.build` method of a
  * class will also return Promise that eventually will resolve to the class
- * instance. Since TypeScript does not support change of class signature
- * via decorators this behaviour needs to be manually `noted` by setting
+ * instance. Since TypeScript does not support changing the class signature
+ * via decorators this behaviour needs to be manually `hinted` by setting
  * `true` value in a generic parameter of `Validator` class.
  *
  * # Examples
  *
- *      \@compile()
  *      class IAmLate extends Validator<true> {
  *          \@transform(async () => true)
  *          veryLate!: boolean;
  *      }
  *
- *      const latePerson = new IAmLate().build({});
- *      latePerson; // Promise<IAmLate>
- *      await latePerson; // IAmLate
+ *      compile(IAmLate);
  *
- *      \@compile()
+ *      const latePerson = new IAmLate().build();
+ *      latePerson;         // Promise<IAmLate>
+ *      await latePerson;   // IAmLate
+ *
  *      class TotallySync extends Validator<true> {
  *          \@transform(() => true)
  *          isSync!: boolean;
  *      }
+ *      compile(TotallySync);
  *
- *      const syncInstance = new TotallySync().build({});
+ *      const syncInstance = new TotallySync().build();
  *      syncInstance; // TotallySync
- *      // TypeScript will infer that this method returns Promise
+ *      // TypeScript will hint that this method returns Promise
  *      // because of `Validator<HasAsyncTransforms = true>`
  *
  *
