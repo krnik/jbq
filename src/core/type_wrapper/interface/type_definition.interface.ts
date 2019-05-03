@@ -13,7 +13,7 @@ import { TypeMethod, TypeValidationMethod } from './type_method.interface';
  * value from schema can be accepted as an argument in TypeDefinition respective
  * method.
  *
- * # Example
+ * # Examples
  *
  *     const certainType = jbqTypes.get('any');
  *     // certain type shape

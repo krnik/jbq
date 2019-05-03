@@ -82,17 +82,17 @@ export enum TYPE_NAME {
  * Schema property used to indicate that the follownig schema expects data
  * to have some properties to validate. Used to describe nested schemas.
  *
- * # Example
+ * # Examples
  * Following schema defines an `object` type with two properties `name` and `email`
  * of type `string`
  *
- *    const schema = {
- *       type: "object",
- *       [SYM_SCHEMA_PROPERTIES]: {
- *          name: { type: "string" },
- *          email: { type: "string" },
- *       }
- *    };
+ *      const schema = {
+ *          type: "object",
+ *          [SYM_SCHEMA_PROPERTIES]: {
+ *              name: { type: "string" },
+ *              email: { type: "string" },
+ *          }
+ *      };
  */
 export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
 
@@ -103,15 +103,15 @@ export const SYM_SCHEMA_PROPERTIES = Symbol.for('schema_properties');
  *
  * Schema from this property is applied to all elements of a collection.
  *
- * # Example
+ * # Examples
  * Following schema defines an `array` type that have all its elements of `number` type.
  *
- *    const schema = {
- *       type: "array",
- *       [SYM_SCHEMA_COLLECTION]: {
- *          type: "number",
- *       }
- *    };
+ *      const schema = {
+ *          type: "array",
+ *          [SYM_SCHEMA_COLLECTION]: {
+ *              type: "number",
+ *          }
+ *      };
  */
 export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
 
@@ -155,18 +155,18 @@ export enum PathResolutionStrategy {
     /**
      * Validate resolved `$dataPath` is validated by schema.
      *
-     * # Example
+     * # Examples
      *
      * If the value from path `/age` resolves to a value that is not a `number`
      * the validation function will return an error.
      *
-     *    const schema = {
-     *      type: "number",
-     *      min: {
-     *          $dataPath: "/age",
+     *      const schema = {
      *          type: "number",
-     *      }
-     *    };
+     *          min: {
+     *              $dataPath: "/age",
+     *              type: "number",
+     *          }
+     *      };
      */
     Schema = 'schema',
     /**
