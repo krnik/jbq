@@ -1,4 +1,4 @@
-[jbq](../README.md) > [Compilation](../classes/compilation.md)
+[JBQDocs](../README.md) > [Compilation](../classes/compilation.md)
 
 # Class: Compilation
 
@@ -20,7 +20,6 @@ New instance is created for every schema.
 
 * [log](compilation.md#log)
 * [macroHelpers](compilation.md#macrohelpers)
-* [options](compilation.md#options)
 * [resolvedPaths](compilation.md#resolvedpaths)
 * [schema](compilation.md#schema)
 * [sourceBuilder](compilation.md#sourcebuilder)
@@ -49,9 +48,9 @@ New instance is created for every schema.
 
 ###  constructor
 
-⊕ **new Compilation**(types: *[TypeWrapper](typewrapper.md)*, schema: *[Schema](../interfaces/schema.md)*, schemaName: *`string`*, options?: *[CompilationOptions](../interfaces/compilationoptions.md)*): [Compilation](compilation.md)
+⊕ **new Compilation**(types: *[TypeWrapper](typewrapper.md)*, schema: *[Schema](../interfaces/schema.md)*, schemaName: *`string`*, options?: *[JBQOptions](../interfaces/jbqoptions.md)*): [Compilation](compilation.md)
 
-*Defined in [core/compilation.ts:45](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L45)*
+*Defined in [core/compilation.ts:43](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L43)*
 
 **Parameters:**
 
@@ -60,7 +59,7 @@ New instance is created for every schema.
 | types | [TypeWrapper](typewrapper.md) | - |
 | schema | [Schema](../interfaces/schema.md) | - |
 | schemaName | `string` | - |
-| `Default value` options | [CompilationOptions](../interfaces/compilationoptions.md) |  {} |
+| `Default value` options | [JBQOptions](../interfaces/jbqoptions.md) |  {} |
 
 **Returns:** [Compilation](compilation.md)
 
@@ -74,7 +73,7 @@ ___
 
 **● log**: *[LogService](logservice.md)*
 
-*Defined in [core/compilation.ts:36](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L36)*
+*Defined in [core/compilation.ts:35](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L35)*
 
 ___
 <a id="macrohelpers"></a>
@@ -86,16 +85,7 @@ ___
         (value: DataPath): string => this.sourceBuilder.resolveDataPath(value),
     ]
 
-*Defined in [core/compilation.ts:42](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L42)*
-
-___
-<a id="options"></a>
-
-### `<Private>` options
-
-**● options**: *[CompilationOptions](../interfaces/compilationoptions.md)*
-
-*Defined in [core/compilation.ts:41](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L41)*
+*Defined in [core/compilation.ts:40](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L40)*
 
 ___
 <a id="resolvedpaths"></a>
@@ -104,7 +94,7 @@ ___
 
 **● resolvedPaths**: *[ResolvedPathStore](resolvedpathstore.md)*
 
-*Defined in [core/compilation.ts:40](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L40)*
+*Defined in [core/compilation.ts:39](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L39)*
 
 ___
 <a id="schema"></a>
@@ -113,7 +103,7 @@ ___
 
 **● schema**: *[Schema](../interfaces/schema.md)*
 
-*Defined in [core/compilation.ts:38](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L38)*
+*Defined in [core/compilation.ts:37](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L37)*
 
 ___
 <a id="sourcebuilder"></a>
@@ -122,7 +112,7 @@ ___
 
 **● sourceBuilder**: *[SourceBuilder](sourcebuilder.md)*
 
-*Defined in [core/compilation.ts:39](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L39)*
+*Defined in [core/compilation.ts:38](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L38)*
 
 ___
 <a id="types"></a>
@@ -131,7 +121,7 @@ ___
 
 **● types**: *[TypeWrapper](typewrapper.md)*
 
-*Defined in [core/compilation.ts:37](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L37)*
+*Defined in [core/compilation.ts:36](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L36)*
 
 ___
 <a id="error"></a>
@@ -140,7 +130,7 @@ ___
 
 **● Error**: *[CompilationError](compilationerror.md)* =  CompilationError
 
-*Defined in [core/compilation.ts:35](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L35)*
+*Defined in [core/compilation.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L34)*
 
 ___
 
@@ -152,7 +142,17 @@ ___
 
 ▸ **evaluateExpressions**(this: *[Compilation](compilation.md)*, sourceString: *`string`*, values: *[ParseValues](../interfaces/parsevalues.md)*): `string`
 
-*Defined in [core/compilation.ts:250](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L250)*
+*Defined in [core/compilation.ts:253](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L253)*
+
+Evaluate `{{}}` expressions.
+
+Currently provided values are `schemaValue`, `schemaPath` and `resolvedValue`.
+
+`schemaValue` - is a value from schema
+
+`schemaPath` - is a path from schema root to currently processed part of schema
+
+`resolvedValue` - is a variable name assigned to a resolved `$dataPath` value
 
 **Parameters:**
 
@@ -171,7 +171,7 @@ ___
 
 ▸ **execSync**(this: *[Compilation](compilation.md)*): [SourceBuilderProduct](../interfaces/sourcebuilderproduct.md)
 
-*Defined in [core/compilation.ts:66](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L66)*
+*Defined in [core/compilation.ts:58](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L58)*
 
 **Parameters:**
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **getType**(this: *[Compilation](compilation.md)*, typeName: *`string`*): [TypeDefinition](../interfaces/typedefinition.md) \| `never`
 
-*Defined in [core/compilation.ts:161](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L161)*
+*Defined in [core/compilation.ts:149](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L149)*
 
 Attempt to retry a `typeName` from `TypeWrapper`. If type does not exists this function will throw.
 
@@ -208,7 +208,9 @@ ___
 
 ▸ **parseMethodClosure**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:288](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L288)*
+*Defined in [core/compilation.ts:293](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L293)*
+
+Calls type method marked as closure.
 
 **Parameters:**
 
@@ -227,7 +229,9 @@ ___
 
 ▸ **parseMethodExtractBody**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:213](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L213)*
+*Defined in [core/compilation.ts:205](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L205)*
+
+Stringify function, evaluate expressions, add break token if needed and also replace `schemaValue` and `$DATA` parameters with current context variables.
 
 **Parameters:**
 
@@ -246,7 +250,9 @@ ___
 
 ▸ **parseMethodMacro**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:312](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L312)*
+*Defined in [core/compilation.ts:318](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L318)*
+
+Calls type method marked as macro and appends its result to the validation function source code.
 
 **Parameters:**
 
@@ -265,7 +271,7 @@ ___
 
 ▸ **parseProperty**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, schemaValue: *`unknown`*): `void`
 
-*Defined in [core/compilation.ts:194](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L194)*
+*Defined in [core/compilation.ts:182](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L182)*
 
 Attempt to parse schema property and respective `TypeMethod` into a validation function block.
 
@@ -286,7 +292,7 @@ ___
 
 ▸ **parseSchemaSync**(this: *[Compilation](compilation.md)*, schema: *[Schema](../interfaces/schema.md)*): `void`
 
-*Defined in [core/compilation.ts:71](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L71)*
+*Defined in [core/compilation.ts:63](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L63)*
 
 **Parameters:**
 
@@ -304,7 +310,9 @@ ___
 
 ▸ **replaceToken**(this: *[Compilation](compilation.md)*, sourceString: *`string`*, token: *`string`*, replaceTo: *`string`*): `string`
 
-*Defined in [core/compilation.ts:272](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L272)*
+*Defined in [core/compilation.ts:276](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L276)*
+
+Replaces every `token` in the `sourceString` with `replaceTo`.
 
 **Parameters:**
 
@@ -324,7 +332,7 @@ ___
 
 ▸ **sortSchemaEntries**(this: *[Compilation](compilation.md)*, schema: *[Schema](../interfaces/schema.md)*, type: *[TypeDefinition](../interfaces/typedefinition.md)*): [`string`, `unknown`][]
 
-*Defined in [core/compilation.ts:170](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L170)*
+*Defined in [core/compilation.ts:158](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L158)*
 
 Rearranges the order of object entries to match the order defined in the TypeDefinition `Symbol.for('type_key_order')` property.
 
@@ -345,7 +353,7 @@ ___
 
 ▸ **toLiteral**(this: *[Compilation](compilation.md)*, schemaValue: *`unknown`*): `string`
 
-*Defined in [core/compilation.ts:283](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation.ts#L283)*
+*Defined in [core/compilation.ts:287](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L287)*
 
 **Parameters:**
 

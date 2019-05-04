@@ -5,20 +5,6 @@
 ![LOGO](https://raw.githubusercontent.com/krnik/jbq/master/jbq.png)
 *Logo created with [Picas](https://github.com/djyde/Picas).*
 
-- [Introduction](#introduction)
-- [Usage Example](#usage-example)
-- [Type Keywords](#type-keywords)
-  - [Any](#any)
-  - [Array](#array)
-  - [Boolean](#boolean)
-  - [Number](#number)
-  - [Object](#object)
-  - [String](#string)
-  - [DataPath](#datapath)
-    - [SchemaMinMax](#schemaminmax)
-- [Class Syntax](#class-syntax)
-- [Logging](#logging)
-
 ***
 ## Introduction
 ***
@@ -47,20 +33,72 @@ Every schema has only one required keywords which is `{{TYPE}}`. This keyword al
 - *possibility to define own types*
 - *possibility to extend types with new keywords*
 - *prototypal inheritance of types*
+- *class validation*
+- *async validation function execution*
 
 **ROADMAP:**
-- [ ] *custom error messages*
-- [ ] *validator function execution async iterable check*
+- [ ] *custom error messages / revisit error type*
 - [ ] *support Joi/Yup schema translation*
 - [ ] *support JSONSchema translation*
 - [ ] *asynchronous validator function compliation*
 
+***
+## Table of Contents
+***
 
-JBQ lib exports:
-- `jbq`: a function that will create validation functions
-- `jbqTypes`: [TypeWrapper](#typewrapper) instance, a set of defined types used during schema parsing.
-- `createTypes`: creates new instance of [TypeWrapper](#typewrapper)
+- [Introduction](#introduction)
+- [Table of Contents](#table-of-contents)
+- [Library structure](#library-structure)
+- [Usage Example](#usage-example)
+- [Type Keywords](#type-keywords)
+  - [Any](#any)
+  - [Array](#array)
+  - [Boolean](#boolean)
+  - [Number](#number)
+  - [Object](#object)
+  - [String](#string)
+  - [DataPath](#datapath)
+    - [SchemaMinMax](#schemaminmax)
+- [Type Wrapper](#type-wrapper)
+- [Class Syntax](#class-syntax)
+- [Logging](#logging)
+
+
+***
+## Library structure
+***
+By default importing `jbq` will import ECMAScript module. So you can import it like:
+```javascript
+import { jbq } from 'jbq'; // Node
+import { jbq } from '<path_to_jbq>/lib.js'; // Browser etc...
+```
+
+To import `CommonJS` modules use `jbq/cjs/lib.js` path instead.
+```javascript
+const { jbq } = require('jbq/cjs/lib.js');
+```
+
+> Folder structure:
+- jbq
+    - /class_syntax/
+    - /core/
+    - /misc/
+    - /type/
+    - /util/
+    - /cjs/ - CommonJS equivalent of root
+    - /class_syntax.js
+    - /lib.js
+
+**lib.js exports:**
+- `jbq(types, schemas[, options])`: a function that will create validation functions
+- `jbqTypes`: [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
+- `createTypes`: creates new instance of [Type Wrapper](#type-wrapper)
 - `setLogger`: sets the logger used for debug
+
+**class_syntax.js exports:**
+- `compileClass(constructor)`: appends a class-specific `build` method to the `constructor` prototype
+- `decoratorFactory`: used to create decorators that set custom schema properties (useful when creating new type)
+- schema/class decorators (more about them in [Class Syntax](#class-syntax))
 
 ***
 ## Usage Example
@@ -117,6 +155,10 @@ const v2: SchemaMinMax = path;
 const v3: SchemaMinMax = { min: 10, max: path };
 const v4: SchemaMinMax = { max: 15 };
 ```
+***
+## Type Wrapper
+***
+{{include('type_wrapper')}}
 
 ***
 ## Class Syntax

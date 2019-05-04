@@ -1,4 +1,4 @@
-[jbq](../README.md) > [DataPath](../interfaces/datapath.md)
+[JBQDocs](../README.md) > [DataPath](../interfaces/datapath.md)
 
 # Interface: DataPath
 
@@ -25,7 +25,7 @@
 
 **● __computed**: *`string` \| `string`[]*
 
-*Defined in [misc/typings.ts:16](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L16)*
+*Defined in [misc/typings.ts:16](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L16)*
 
 ___
 

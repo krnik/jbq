@@ -1,4 +1,4 @@
-[jbq](../README.md) > [SchemaMax](../interfaces/schemamax.md)
+[JBQDocs](../README.md) > [SchemaMax](../interfaces/schemamax.md)
 
 # Interface: SchemaMax
 
@@ -22,7 +22,7 @@
 
 **● max**: *`number` \| [DataPath](datapath.md)*
 
-*Defined in [misc/typings.ts:11](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L11)*
+*Defined in [misc/typings.ts:11](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L11)*
 
 ___
 

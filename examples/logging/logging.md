@@ -1,5 +1,5 @@
 You can set the logging function/library using `setLogger` function.
-Currently the logging functionality of JBQ is lacking but will be expanded in the future so it gives more diagnostic information.
+Currently the JBQ logs only schema compilation progress but most probably it will be expanded in the future so it gives more information.
 
 Provided argument should match the following interface.
 ```typescript

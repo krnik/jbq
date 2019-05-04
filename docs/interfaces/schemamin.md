@@ -1,4 +1,4 @@
-[jbq](../README.md) > [SchemaMin](../interfaces/schemamin.md)
+[JBQDocs](../README.md) > [SchemaMin](../interfaces/schemamin.md)
 
 # Interface: SchemaMin
 
@@ -22,7 +22,7 @@
 
 **● min**: *`number` \| [DataPath](datapath.md)*
 
-*Defined in [misc/typings.ts:8](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L8)*
+*Defined in [misc/typings.ts:8](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L8)*
 
 ___
 

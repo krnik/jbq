@@ -1,4 +1,4 @@
-[jbq](../README.md) > [SourceBuilderSnapshot](../interfaces/sourcebuildersnapshot.md)
+[JBQDocs](../README.md) > [SourceBuilderSnapshot](../interfaces/sourcebuildersnapshot.md)
 
 # Interface: SourceBuilderSnapshot
 
@@ -32,7 +32,7 @@
 
 *Inherited from [SourceBuilderContext](sourcebuildercontext.md).[currentProperty](sourcebuildercontext.md#currentproperty)*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:20](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/source_builder_context.interface.ts#L20)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:20](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L20)*
 
 Represents `Schema` property that is currently processed. It's used to create `schemaPath` by adding the property name after `#` at the end of the `schemaPath`
 
@@ -45,7 +45,7 @@ ___
 
 *Inherited from [SourceBuilderContext](sourcebuildercontext.md).[schemaPath](sourcebuildercontext.md#schemapath)*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:24](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/source_builder_context.interface.ts#L24)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L24)*
 
 Represents path from `Schema` root to currently processed part of it.
 
@@ -58,7 +58,7 @@ ___
 
 *Inherited from [SourceBuilderContext](sourcebuildercontext.md).[variableName](sourcebuildercontext.md#variablename)*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:14](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/source_builder_context.interface.ts#L14)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:14](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L14)*
 
 Represents variable name that is a source of data for currently processed part of the schema.
 
@@ -74,7 +74,7 @@ ___
 
 ▸ **restore**(): `void`
 
-*Defined in [core/compilation/interface/source_builder_snapshot.interface.ts:4](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/source_builder_snapshot.interface.ts#L4)*
+*Defined in [core/compilation/interface/source_builder_snapshot.interface.ts:4](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_snapshot.interface.ts#L4)*
 
 **Returns:** `void`
 

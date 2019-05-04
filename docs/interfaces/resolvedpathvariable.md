@@ -1,4 +1,4 @@
-[jbq](../README.md) > [ResolvedPathVariable](../interfaces/resolvedpathvariable.md)
+[JBQDocs](../README.md) > [ResolvedPathVariable](../interfaces/resolvedpathvariable.md)
 
 # Interface: ResolvedPathVariable
 
@@ -23,7 +23,7 @@
 
 **● schemaValue**: *[DataPath](datapath.md)*
 
-*Defined in [core/compilation/resolved_path_store.ts:5](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L5)*
+*Defined in [core/compilation/resolved_path_store.ts:5](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L5)*
 
 ___
 <a id="variablename"></a>
@@ -32,7 +32,7 @@ ___
 
 **● variableName**: *`string`*
 
-*Defined in [core/compilation/resolved_path_store.ts:4](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L4)*
+*Defined in [core/compilation/resolved_path_store.ts:4](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L4)*
 
 ___
 

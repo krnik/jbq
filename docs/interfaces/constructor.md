@@ -1,4 +1,4 @@
-[jbq](../README.md) > [Constructor](../interfaces/constructor.md)
+[JBQDocs](../README.md) > [Constructor](../interfaces/constructor.md)
 
 # Interface: Constructor
 
@@ -26,7 +26,7 @@
 
 ⊕ **new Constructor**(...args: *`any`[]*): `T`
 
-*Defined in [misc/typings.ts:41](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L41)*
+*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L55)*
 
 **Parameters:**
 

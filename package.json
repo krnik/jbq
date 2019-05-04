@@ -6,7 +6,7 @@
   "scripts": {
     "readme": "node --require ts-node/register ./examples/_build_readme.ts",
     "examples": "node --require ts-node/register ./examples/main.ts",
-    "docs": "typedoc --theme markdown --mode file --readme none --out ./docs ./src",
+    "docs": "typedoc --theme markdown --mode file --readme none --name JBQDocs --out ./docs ./src",
     "build": "npm run tsc:esm && npm run tsc:cjs && node --require ts-node/register ./build.ts",
     "tsc:cjs": "node_modules/.bin/tsc -p ./tsconfig.build_cjs.json",
     "tsc:esm": "node_modules/.bin/tsc -p ./tsconfig.build_esm.json",

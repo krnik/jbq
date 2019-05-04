@@ -150,7 +150,7 @@ export class CodeGenerator {
      *      // renders stringified version of
      *      if (!(Symbol.iterator in arrayOfNumbers))
      *          return `{"message": "Data requires...", "path": "Numbers"}`;
-     *      for (const item of arrayOfNumbers)
+     *      for (const item of arrayOfNumbers) {
      */
     public static renderForOfLoop(variableName: string, iterable: string, path: string): string {
         const ifCondition = {
@@ -164,7 +164,7 @@ export class CodeGenerator {
                     `Data requires to have ${Symbol.iterator.toString()} method implemented in order to use for..of loop`,
                     path,
                 )}
-            ${Keyword.For} (${Keyword.Const} ${variableName} ${Keyword.Of} ${iterable})`;
+            ${Keyword.For} (${Keyword.Const} ${variableName} ${Keyword.Of} ${iterable}) {`;
     }
 
     /**

@@ -1,4 +1,4 @@
-[jbq](../README.md) > [PathResolutionStrategy](../enums/pathresolutionstrategy.md)
+[JBQDocs](../README.md) > [PathResolutionStrategy](../enums/pathresolutionstrategy.md)
 
 # Enumeration: PathResolutionStrategy
 
@@ -23,7 +23,7 @@ Enum representing a ways of dealing with `$dataPath` resolution. Each of the var
 
 **Ignore**:  = "ignore"
 
-*Defined in [misc/constants.ts:179](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/constants.ts#L179)*
+*Defined in [misc/constants.ts:180](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L180)*
 
 Ignores the fact that the `$dataPath` resolved to undefined.
 
@@ -34,7 +34,7 @@ ___
 
 **Return**:  = "return"
 
-*Defined in [misc/constants.ts:175](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/constants.ts#L175)*
+*Defined in [misc/constants.ts:176](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L176)*
 
 Returns an error from validation function.
 
@@ -45,7 +45,7 @@ ___
 
 **Schema**:  = "schema"
 
-*Defined in [misc/constants.ts:171](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/constants.ts#L171)*
+*Defined in [misc/constants.ts:172](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L172)*
 
 Validate resolved `$dataPath` is validated by schema.
 
@@ -71,7 +71,7 @@ ___
 
 **Skip**:  = "skip"
 
-*Defined in [misc/constants.ts:154](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/constants.ts#L154)*
+*Defined in [misc/constants.ts:155](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L155)*
 
 If `$dataPath` resolves to `undefined` - skip the check of a property that expected value.
 

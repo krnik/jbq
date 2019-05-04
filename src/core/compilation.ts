@@ -11,19 +11,18 @@ import {
     TOKEN_EXPR_REGEX,
     TYPE,
 } from '../misc/constants';
+import { DataPath, JBQOptions, Option, ParseValues } from '../misc/typings';
 import { schemaValidate } from '../type/schema_validator';
-import { DataPath, ParseValues, Option } from '../misc/typings';
 import { LogService } from '../util/log_service';
 import { TypeReflect } from '../util/type_reflect';
-import { TypeDefinition } from './type_wrapper/interface/type_definition.interface';
-import { TypeMethod } from './type_wrapper/interface/type_method.interface';
-import { TypeWrapper } from './type_wrapper';
 import { CompilationError } from './compilation/compilation_error';
-import { CompilationOptions } from './compilation/interface/compilation_options.interface';
 import { Schema } from './compilation/interface/schema.interface';
 import { SourceBuilderProduct } from './compilation/interface/source_builder_product.interface';
 import { ResolvedPathStore } from './compilation/resolved_path_store';
 import { SourceBuilder } from './compilation/source_builder';
+import { TypeWrapper } from './type_wrapper';
+import { TypeDefinition } from './type_wrapper/interface/type_definition.interface';
+import { TypeMethod } from './type_wrapper/interface/type_method.interface';
 
 /**
  * Compilation class responsible for coordination of other subclasses
@@ -38,7 +37,6 @@ export class Compilation {
     private schema: Schema;
     private sourceBuilder: SourceBuilder;
     private resolvedPaths: ResolvedPathStore;
-    private options: CompilationOptions;
     private macroHelpers = [
         (value: unknown): value is DataPath => schemaValidate.dataPath(value),
         (value: DataPath): string => this.sourceBuilder.resolveDataPath(value),
@@ -48,19 +46,13 @@ export class Compilation {
         types: TypeWrapper,
         schema: Schema,
         schemaName: string,
-        options: CompilationOptions = {},
+        options: JBQOptions = {},
     ) {
         this.schema = schema;
         this.types = types;
         this.log = new LogService(Boolean(options.debug));
         this.resolvedPaths = new ResolvedPathStore();
-        this.sourceBuilder = new SourceBuilder(
-            this,
-            schemaName,
-            this.resolvedPaths,
-            options.handleResolvedPaths,
-        );
-        this.options = options;
+        this.sourceBuilder = new SourceBuilder(this, schemaName, this.resolvedPaths, options);
     }
 
     public execSync(this: Compilation): SourceBuilderProduct {
@@ -98,9 +90,6 @@ export class Compilation {
             this.parseProperty(type[property], schemaValue);
 
             sourceSnapshot.restore();
-
-            // TODO: refactor when async will take care of large collections
-            if (this.options.async) this.sourceBuilder.append('\nyield;\n');
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
@@ -115,13 +104,13 @@ export class Compilation {
 
             for (const property of properties) {
                 if (!TypeReflect.string(property)) {
-                    const parameter = this.sourceBuilder.createParameter(property);
-                    this.sourceBuilder.defineVariable(sourceSnapshot.variableName, parameter);
+                    const parameter = sourceBuilder.createParameter(property);
+                    sourceBuilder.defineVariable(sourceSnapshot.variableName, parameter);
                 } else {
-                    this.sourceBuilder.updateBuilderContext(property, true);
-                    this.sourceBuilder.defineVariable(
+                    sourceBuilder.updateBuilderContext(property, true);
+                    sourceBuilder.defineVariable(
                         sourceSnapshot.variableName,
-                        this.sourceBuilder.propertyAccessor(property),
+                        sourceBuilder.propertyAccessor(property),
                     );
                 }
 
@@ -136,16 +125,15 @@ export class Compilation {
                 Schema[typeof SYM_SCHEMA_COLLECTION],
                 undefined
             >;
-            this.sourceBuilder.updateBuilderContext('[]', true);
+            sourceBuilder.updateBuilderContext('[]', true);
 
-            if (type[SYM_TYPE_FOR_LOOP]) {
-                this.sourceBuilder.forLoop(sourceSnapshot.variableName, false);
-                this.parseSchemaSync(elementSchema);
-                this.sourceBuilder.closeBlock();
-            } else {
-                this.sourceBuilder.forLoop(sourceSnapshot.variableName, true);
-                this.parseSchemaSync(elementSchema);
-            }
+            const useForOfLoop = type[SYM_TYPE_FOR_LOOP] !== true;
+
+            sourceBuilder.forLoop(sourceSnapshot.variableName, useForOfLoop);
+
+            this.parseSchemaSync(elementSchema);
+
+            sourceBuilder.closeBlock();
 
             sourceSnapshot.restore();
         }
@@ -210,6 +198,10 @@ export class Compilation {
         }
     }
 
+    /**
+     * Stringify function, evaluate expressions, add break token if needed and also
+     * replace `schemaValue` and `$DATA` parameters with current context variables.
+     */
     private parseMethodExtractBody(
         this: Compilation,
         method: TypeMethod,
@@ -247,6 +239,17 @@ export class Compilation {
         this.sourceBuilder.append(body + suffix);
     }
 
+    /**
+     * Evaluate `{{}}` expressions.
+     *
+     * Currently provided values are `schemaValue`, `schemaPath` and `resolvedValue`.
+     *
+     * `schemaValue` - is a value from schema
+     *
+     * `schemaPath` - is a path from schema root to currently processed part of schema
+     *
+     * `resolvedValue` - is a variable name assigned to a resolved `$dataPath` value
+     */
     private evaluateExpressions(
         this: Compilation,
         sourceString: string,
@@ -269,6 +272,7 @@ export class Compilation {
         );
     }
 
+    /** Replaces every `token` in the `sourceString` with `replaceTo`. */
     private replaceToken(
         this: Compilation,
         sourceString: string,
@@ -285,6 +289,7 @@ export class Compilation {
         return `${schemaValue}`;
     }
 
+    /** Calls type method marked as closure. */
     private parseMethodClosure(this: Compilation, method: TypeMethod, values: ParseValues): void {
         this.resolvedPaths.open();
         const snapshot = this.sourceBuilder.getContextSnapshot();
@@ -309,6 +314,7 @@ export class Compilation {
         this.sourceBuilder.append(suffix);
     }
 
+    /** Calls type method marked as macro and appends its result to the validation function source code. */
     private parseMethodMacro(this: Compilation, method: TypeMethod, values: ParseValues): void {
         this.resolvedPaths.open();
         const code = method(values, ...this.macroHelpers) as string;

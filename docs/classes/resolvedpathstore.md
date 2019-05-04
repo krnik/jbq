@@ -1,6 +1,8 @@
-[jbq](../README.md) > [ResolvedPathStore](../classes/resolvedpathstore.md)
+[JBQDocs](../README.md) > [ResolvedPathStore](../classes/resolvedpathstore.md)
 
 # Class: ResolvedPathStore
+
+Stores collection of variables resolved from `$dataPath`. Instance of this class is shared between `Compilation` and `SourceBuilder` instances.
 
 ## Hierarchy
 
@@ -14,8 +16,8 @@
 
 ### Properties
 
+* [isOpen](resolvedpathstore.md#isopen)
 * [resolvedVariables](resolvedpathstore.md#resolvedvariables)
-* [state](resolvedpathstore.md#state)
 
 ### Methods
 
@@ -34,7 +36,7 @@
 
 ⊕ **new ResolvedPathStore**(): [ResolvedPathStore](resolvedpathstore.md)
 
-*Defined in [core/compilation/resolved_path_store.ts:10](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L10)*
+*Defined in [core/compilation/resolved_path_store.ts:15](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L15)*
 
 **Returns:** [ResolvedPathStore](resolvedpathstore.md)
 
@@ -42,22 +44,22 @@ ___
 
 ## Properties
 
+<a id="isopen"></a>
+
+### `<Private>` isOpen
+
+**● isOpen**: *`boolean`*
+
+*Defined in [core/compilation/resolved_path_store.ts:15](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L15)*
+
+___
 <a id="resolvedvariables"></a>
 
 ### `<Private>` resolvedVariables
 
 **● resolvedVariables**: *[ResolvedPathVariable](../interfaces/resolvedpathvariable.md)[]*
 
-*Defined in [core/compilation/resolved_path_store.ts:9](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L9)*
-
-___
-<a id="state"></a>
-
-### `<Private>` state
-
-**● state**: *`boolean`*
-
-*Defined in [core/compilation/resolved_path_store.ts:10](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L10)*
+*Defined in [core/compilation/resolved_path_store.ts:14](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L14)*
 
 ___
 
@@ -69,7 +71,7 @@ ___
 
 ▸ **add**(this: *[ResolvedPathStore](resolvedpathstore.md)*, variableName: *`string`*, schemaValue: *[DataPath](../interfaces/datapath.md)*): `void`
 
-*Defined in [core/compilation/resolved_path_store.ts:26](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L26)*
+*Defined in [core/compilation/resolved_path_store.ts:31](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L31)*
 
 **Parameters:**
 
@@ -88,7 +90,7 @@ ___
 
 ▸ **close**(this: *[ResolvedPathStore](resolvedpathstore.md)*): `void`
 
-*Defined in [core/compilation/resolved_path_store.ts:21](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L21)*
+*Defined in [core/compilation/resolved_path_store.ts:26](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L26)*
 
 **Parameters:**
 
@@ -105,7 +107,7 @@ ___
 
 ▸ **consume**(this: *[ResolvedPathStore](resolvedpathstore.md)*): [ResolvedPathVariable](../interfaces/resolvedpathvariable.md)[]
 
-*Defined in [core/compilation/resolved_path_store.ts:30](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L30)*
+*Defined in [core/compilation/resolved_path_store.ts:35](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L35)*
 
 **Parameters:**
 
@@ -122,7 +124,7 @@ ___
 
 ▸ **open**(this: *[ResolvedPathStore](resolvedpathstore.md)*): `void`
 
-*Defined in [core/compilation/resolved_path_store.ts:17](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/resolved_path_store.ts#L17)*
+*Defined in [core/compilation/resolved_path_store.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/resolved_path_store.ts#L22)*
 
 **Parameters:**
 

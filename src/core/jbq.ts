@@ -6,8 +6,9 @@ import { TypeWrapper } from './type_wrapper';
 
 const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {}).constructor;
 
-type SyncValidationFunction = (data: unknown) => string | undefined;
-type AsyncValidationFunction = (data: unknown) => Promise<string | undefined>;
+type SyncValidationFunction = <T>(data: T) => string | undefined;
+
+type AsyncValidationFunction = <T>(data: T) => Promise<string | undefined>;
 
 type ValidationFn<T> = T extends { async: infer A }
     ? A extends true
@@ -17,12 +18,14 @@ type ValidationFn<T> = T extends { async: infer A }
 
 type Validators<T, O> = { [P in keyof OmitSymbols<T>]: ValidationFn<O> };
 
+/** Compiles `schemas` using `types` instance as source of validation code. */
 export function jbq<T, K extends keyof OmitSymbols<T>, O extends JBQOptions>(
     types: TypeWrapper,
     schemas: T,
     options?: O,
 ): Validators<T, O> {
-    const patterns = Object.create(null) as Validators<T, O>;
+    const validationFunctions = Object.create(null) as Validators<T, O>;
+
     for (const [name, schema] of Object.entries(schemas) as [K, Schema][]) {
         const src = new Compilation(types, schema, name as string, options).execSync();
 
@@ -35,7 +38,7 @@ export function jbq<T, K extends keyof OmitSymbols<T>, O extends JBQOptions>(
 
             const bound = validate.bind(undefined, src.arguments);
 
-            patterns[name] = (async function asyncValidationFunction(
+            validationFunctions[name] = (async function asyncValidationFunction(
                 $DATA: unknown,
             ): Promise<string | undefined> {
                 const generator = bound($DATA);
@@ -48,8 +51,8 @@ export function jbq<T, K extends keyof OmitSymbols<T>, O extends JBQOptions>(
             } as unknown) as ValidationFn<O>;
         } else {
             const validate = new Function(ParameterName.Arguments, ParameterName.Data, src.code);
-            patterns[name as K] = validate.bind(undefined, src.arguments);
+            validationFunctions[name as K] = validate.bind(undefined, src.arguments);
         }
     }
-    return patterns;
+    return validationFunctions;
 }

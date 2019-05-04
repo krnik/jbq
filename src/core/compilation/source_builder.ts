@@ -4,10 +4,13 @@ import {
     PROP_DATA_PATH,
     SCHEMA_PATH_SEPARATOR,
     TYPE,
+    DEFAULT_ASYNC_INTERVAL,
 } from '../../misc/constants';
+import { DataPath, JBQOptions } from '../../misc/typings';
 import { schemaValidate } from '../../type/schema_validator';
-import { DataPath } from '../../misc/typings';
 import { CodeGenerator } from '../code_gen';
+import { IfCondition } from '../code_gen/interface/if_condition.interface';
+import { Keyword } from '../code_gen/token/keyword';
 import { ComparisonOperator } from '../code_gen/token/operator';
 import { Compilation } from '../compilation';
 import { Schema } from './interface/schema.interface';
@@ -16,7 +19,6 @@ import { SourceBuilderCounter } from './interface/source_builder_counter.interfa
 import { SourceBuilderProduct } from './interface/source_builder_product.interface';
 import { SourceBuilderSnapshot } from './interface/source_builder_snapshot.interface';
 import { ResolvedPathStore } from './resolved_path_store';
-import { IfCondition } from '../code_gen/interface/if_condition.interface';
 
 /**
  * Class responsible for main validation function composition logic.
@@ -27,19 +29,23 @@ export class SourceBuilder {
     private product: SourceBuilderProduct;
     private counter: SourceBuilderCounter;
     private context: SourceBuilderContext;
-    private pathResolutionStrategy: PathResolutionStrategy;
     private resolvedPaths: ResolvedPathStore;
     private Compilation: Compilation;
+    private options: Required<Pick<JBQOptions, Exclude<keyof JBQOptions, 'debug'>>>;
 
     public constructor(
         compilation: Compilation,
         schemaName: string,
         resolvedPaths: ResolvedPathStore,
-        pathResolutionStrategy: PathResolutionStrategy = PathResolutionStrategy.Ignore,
+        options: JBQOptions = {},
     ) {
         this.Compilation = compilation;
         this.resolvedPaths = resolvedPaths;
-        this.pathResolutionStrategy = pathResolutionStrategy;
+        this.options = {
+            handleResolvedPaths: options.handleResolvedPaths || PathResolutionStrategy.Ignore,
+            async: options.async || false,
+            asyncInterval: options.asyncInterval || DEFAULT_ASYNC_INTERVAL,
+        };
         this.context = this.createInitialContext(schemaName);
         this.counter = this.createInitialCounter();
         this.product = this.createInitialProduct();
@@ -158,7 +164,7 @@ export class SourceBuilder {
         let code = '';
         let suffix = '';
 
-        switch (this.pathResolutionStrategy) {
+        switch (this.options.handleResolvedPaths) {
             case PathResolutionStrategy.Return: {
                 const paths = variables.map(
                     ({ schemaValue }): string =>
@@ -264,6 +270,31 @@ export class SourceBuilder {
     }
 
     public forLoop(this: SourceBuilder, variableName: string, useForOfLoop: boolean): void {
+        let asyncPrefix = '';
+        let asyncSuffix = '';
+
+        if (this.options.async) {
+            const yieldCounterName = `${this.context.variableName}_yield_count`;
+
+            asyncPrefix = CodeGenerator.renderVariableInitialization(
+                yieldCounterName,
+                '0',
+                undefined,
+                Keyword.Let,
+            );
+
+            asyncSuffix += CodeGenerator.renderIfStatement([
+                {
+                    operator: ComparisonOperator.EqualStrict,
+                    variableName: `${yieldCounterName} % ${this.options.asyncInterval}`,
+                    value: '0',
+                },
+            ]);
+            asyncSuffix += `${Keyword.Yield};`;
+            asyncSuffix += `${yieldCounterName} += 1;`;
+        }
+
+        this.product.code += asyncPrefix;
         this.product.code += useForOfLoop
             ? CodeGenerator.renderForOfLoop(
                   this.context.variableName,
@@ -275,6 +306,7 @@ export class SourceBuilder {
                   variableName,
                   `${variableName}_accessor`,
               );
+        this.product.code += asyncSuffix;
     }
 
     public propertyAccessor(this: SourceBuilder, property: string): string {

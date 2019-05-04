@@ -119,6 +119,7 @@ export const SYM_SCHEMA_COLLECTION = Symbol.for('schema_collection');
  * Token that is replaced by labeled break statement during compilation.
  */
 export const TOKEN_BREAK = '//{break}';
+
 /**
  * Regular expression used to find templte expressions during compilation.
  * They're executed during compile time and should return values that are
@@ -182,3 +183,6 @@ export enum PathResolutionStrategy {
 export const SCHEMA_PATH_SEPARATOR = '/';
 
 export const PROP_DATA_PATH = '$dataPath';
+
+/** Default value for the `JBQOptions.asyncInterval` property. */
+export const DEFAULT_ASYNC_INTERVAL = 50;

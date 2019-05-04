@@ -1,4 +1,4 @@
-[jbq](../README.md) > [ParseValues](../interfaces/parsevalues.md)
+[JBQDocs](../README.md) > [ParseValues](../interfaces/parsevalues.md)
 
 # Interface: ParseValues
 
@@ -27,7 +27,7 @@
 
 **● resolvedValue**: *`undefined` \| `string`*
 
-*Defined in [misc/typings.ts:24](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L24)*
+*Defined in [misc/typings.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L24)*
 
 ___
 <a id="schemapath"></a>
@@ -36,7 +36,7 @@ ___
 
 **● schemaPath**: *`string`*
 
-*Defined in [misc/typings.ts:22](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L22)*
+*Defined in [misc/typings.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L22)*
 
 ___
 <a id="schemavalue"></a>
@@ -45,7 +45,7 @@ ___
 
 **● schemaValue**: *`unknown`*
 
-*Defined in [misc/typings.ts:21](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L21)*
+*Defined in [misc/typings.ts:21](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L21)*
 
 ___
 <a id="variablename"></a>
@@ -54,7 +54,7 @@ ___
 
 **● variableName**: *`string`*
 
-*Defined in [misc/typings.ts:23](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L23)*
+*Defined in [misc/typings.ts:23](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L23)*
 
 ___
 

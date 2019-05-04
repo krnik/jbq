@@ -1,10 +1,14 @@
 import { expect } from 'chai';
+import { Compilation } from '../../../src/core/compilation';
+import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
 import {
     LEN,
+    ParameterName,
     PathResolutionStrategy,
     PROP_DATA_PATH,
     REQUIRED,
     SYM_METHOD_CLOSURE,
+    SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
     SYM_TYPE_KEY_ORDER,
     SYM_TYPE_VALIDATE,
@@ -12,12 +16,9 @@ import {
     TYPE_NAME,
     VALUE,
 } from '../../../src/misc/constants';
-import { Compilation } from '../../../src/core/compilation';
-import { CompilationOptions } from '../../../src/core/compilation/interface/compilation_options.interface';
-import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
+import { JBQOptions, ParseValues } from '../../../src/misc/typings';
 import { createTypes } from '../../../src/type/mod';
 import { schemaValidate } from '../../../src/type/schema_validator';
-import { JBQOptions, ParseValues } from '../../../src/misc/typings';
 import { suitesAny } from '../../data/suites/any_suite';
 import { suitesArray } from '../../data/suites/array_suite';
 import { suitesBoolean } from '../../data/suites/boolean_suite';
@@ -40,6 +41,7 @@ describe('Compilation', (): void => {
             new Compilation(createTypes(), schema, name, { async: true }).execSync();
         }
     });
+
     describe('Compilation.prototype.evaluateExpressions', (): void => {
         it('it should eval expressions', (): void => {
             const tests = [
@@ -70,6 +72,7 @@ describe('Compilation', (): void => {
             }
         });
     });
+
     describe('Compilation.prototype.sortSchemaEntries', (): void => {
         it('it should sort object entries by given order', (): void => {
             const obj = {
@@ -96,6 +99,7 @@ describe('Compilation', (): void => {
             expect(entries[3][1]).to.be.equal(obj.second);
         });
     });
+
     describe(`${PROP_DATA_PATH} - with regular methods`, (): void => {
         it(`it should correctly resolve ${PROP_DATA_PATH}`, (): void => {
             {
@@ -178,7 +182,7 @@ describe('Compilation', (): void => {
             }
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: CompilationOptions = {
+            const options: JBQOptions = {
                 handleResolvedPaths: PathResolutionStrategy.Skip,
             };
             {
@@ -341,6 +345,7 @@ describe('Compilation', (): void => {
             }
         });
     });
+
     describe(`functions with closures`, (): void => {
         const nullabeStringType = {
             [TYPE](_schemaValue: ParseValues, path: string, $DATA: unknown): string | undefined {
@@ -521,6 +526,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).be.a('string');
         });
     });
+
     describe(`${PROP_DATA_PATH} - with macros`, (): void => {
         it(`it should resolve ${PROP_DATA_PATH} for macro methods`, (): void => {
             const Schema = {
@@ -749,6 +755,47 @@ describe('Compilation', (): void => {
                 },
             ];
             for (const data of invalidData) expect(validator(data)).to.be.a('string');
+        });
+    });
+
+    describe('Compiling async - collection yield statements interval', (): void => {
+        it('it should yield every N iterations', async (): Promise<void> => {
+            const testSchema = {
+                [TYPE]: 'array',
+                [SYM_SCHEMA_COLLECTION]: {
+                    [TYPE]: 'number',
+                },
+            };
+
+            const compiled = new Compilation(createTypes(), testSchema, 'Async', {
+                async: true,
+                asyncInterval: 10,
+            }).execSync();
+
+            const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {})
+                .constructor;
+
+            const validator = new AsyncFnConstructor(
+                ParameterName.Arguments,
+                ParameterName.Data,
+                compiled.code,
+            ).bind(undefined, compiled.arguments);
+
+            let yieldCount = 0;
+
+            const asyncValidator = async ($DATA: unknown): Promise<void> => {
+                const generator = validator($DATA);
+
+                while (true) {
+                    const result = await generator.next();
+
+                    if (result.done) return;
+                    yieldCount += 1;
+                }
+            };
+
+            await asyncValidator(new Array(10).fill(0));
+            expect(yieldCount).to.be.equal(1);
         });
     });
 });

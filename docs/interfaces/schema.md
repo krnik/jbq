@@ -1,4 +1,4 @@
-[jbq](../README.md) > [Schema](../interfaces/schema.md)
+[JBQDocs](../README.md) > [Schema](../interfaces/schema.md)
 
 # Interface: Schema
 
@@ -59,8 +59,8 @@ Examples
 
 **● __computed**: *[Schema](../enums/pathresolutionstrategy.md#schema)*
 
-*Defined in [core/compilation/interface/schema.interface.ts:19](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/schema.interface.ts#L19)*
-*Defined in [core/compilation/interface/schema.interface.ts:22](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/interface/schema.interface.ts#L22)*
+*Defined in [core/compilation/interface/schema.interface.ts:19](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/schema.interface.ts#L19)*
+*Defined in [core/compilation/interface/schema.interface.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/schema.interface.ts#L22)*
 
 ___
 

@@ -1,4 +1,4 @@
-[jbq](../README.md) > [SourceBuilder](../classes/sourcebuilder.md)
+[JBQDocs](../README.md) > [SourceBuilder](../classes/sourcebuilder.md)
 
 # Class: SourceBuilder
 
@@ -19,7 +19,7 @@ Class responsible for main validation function composition logic. It keeps track
 * [Compilation](sourcebuilder.md#compilation)
 * [context](sourcebuilder.md#context)
 * [counter](sourcebuilder.md#counter)
-* [pathResolutionStrategy](sourcebuilder.md#pathresolutionstrategy)
+* [options](sourcebuilder.md#options)
 * [product](sourcebuilder.md#product)
 * [resolvedPaths](sourcebuilder.md#resolvedpaths)
 
@@ -54,9 +54,9 @@ Class responsible for main validation function composition logic. It keeps track
 
 ###  constructor
 
-⊕ **new SourceBuilder**(compilation: *[Compilation](compilation.md)*, schemaName: *`string`*, resolvedPaths: *[ResolvedPathStore](resolvedpathstore.md)*, pathResolutionStrategy?: *[PathResolutionStrategy](../enums/pathresolutionstrategy.md)*): [SourceBuilder](sourcebuilder.md)
+⊕ **new SourceBuilder**(compilation: *[Compilation](compilation.md)*, schemaName: *`string`*, resolvedPaths: *[ResolvedPathStore](resolvedpathstore.md)*, options?: *[JBQOptions](../interfaces/jbqoptions.md)*): [SourceBuilder](sourcebuilder.md)
 
-*Defined in [core/compilation/source_builder.ts:32](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L32)*
+*Defined in [core/compilation/source_builder.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L34)*
 
 **Parameters:**
 
@@ -65,7 +65,7 @@ Class responsible for main validation function composition logic. It keeps track
 | compilation | [Compilation](compilation.md) | - |
 | schemaName | `string` | - |
 | resolvedPaths | [ResolvedPathStore](resolvedpathstore.md) | - |
-| `Default value` pathResolutionStrategy | [PathResolutionStrategy](../enums/pathresolutionstrategy.md) |  PathResolutionStrategy.Ignore |
+| `Default value` options | [JBQOptions](../interfaces/jbqoptions.md) |  {} |
 
 **Returns:** [SourceBuilder](sourcebuilder.md)
 
@@ -79,7 +79,7 @@ ___
 
 **● Compilation**: *[Compilation](compilation.md)*
 
-*Defined in [core/compilation/source_builder.ts:32](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L32)*
+*Defined in [core/compilation/source_builder.ts:33](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L33)*
 
 ___
 <a id="context"></a>
@@ -88,7 +88,7 @@ ___
 
 **● context**: *[SourceBuilderContext](../interfaces/sourcebuildercontext.md)*
 
-*Defined in [core/compilation/source_builder.ts:29](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L29)*
+*Defined in [core/compilation/source_builder.ts:31](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L31)*
 
 ___
 <a id="counter"></a>
@@ -97,16 +97,16 @@ ___
 
 **● counter**: *[SourceBuilderCounter](../interfaces/sourcebuildercounter.md)*
 
-*Defined in [core/compilation/source_builder.ts:28](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L28)*
+*Defined in [core/compilation/source_builder.ts:30](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L30)*
 
 ___
-<a id="pathresolutionstrategy"></a>
+<a id="options"></a>
 
-### `<Private>` pathResolutionStrategy
+### `<Private>` options
 
-**● pathResolutionStrategy**: *[PathResolutionStrategy](../enums/pathresolutionstrategy.md)*
+**● options**: *`Required`<`Pick`<[JBQOptions](../interfaces/jbqoptions.md), `Exclude`<`keyof JBQOptions`, "debug">>>*
 
-*Defined in [core/compilation/source_builder.ts:30](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L30)*
+*Defined in [core/compilation/source_builder.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L34)*
 
 ___
 <a id="product"></a>
@@ -115,7 +115,7 @@ ___
 
 **● product**: *[SourceBuilderProduct](../interfaces/sourcebuilderproduct.md)*
 
-*Defined in [core/compilation/source_builder.ts:27](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L27)*
+*Defined in [core/compilation/source_builder.ts:29](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L29)*
 
 ___
 <a id="resolvedpaths"></a>
@@ -124,7 +124,7 @@ ___
 
 **● resolvedPaths**: *[ResolvedPathStore](resolvedpathstore.md)*
 
-*Defined in [core/compilation/source_builder.ts:31](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L31)*
+*Defined in [core/compilation/source_builder.ts:32](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L32)*
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 ▸ **append**(this: *[SourceBuilder](sourcebuilder.md)*, code: *`string`*): `void`
 
-*Defined in [core/compilation/source_builder.ts:238](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L238)*
+*Defined in [core/compilation/source_builder.ts:244](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L244)*
 
 Appends a string to the end of the product source code.
 
@@ -156,7 +156,7 @@ ___
 
 ▸ **breakStatement**(this: *[SourceBuilder](sourcebuilder.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:245](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L245)*
+*Defined in [core/compilation/source_builder.ts:251](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L251)*
 
 Returns a break statement chunk for currently processed block.
 
@@ -175,7 +175,7 @@ ___
 
 ▸ **callClosure**(this: *[SourceBuilder](sourcebuilder.md)*, functionParam: *`string`*, schemaParam: *`string`*): `void`
 
-*Defined in [core/compilation/source_builder.ts:249](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L249)*
+*Defined in [core/compilation/source_builder.ts:255](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L255)*
 
 **Parameters:**
 
@@ -194,7 +194,7 @@ ___
 
 ▸ **closeBlock**(this: *[SourceBuilder](sourcebuilder.md)*): `void`
 
-*Defined in [core/compilation/source_builder.ts:132](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L132)*
+*Defined in [core/compilation/source_builder.ts:138](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L138)*
 
 Appends `}` to the product source code.
 
@@ -213,7 +213,7 @@ ___
 
 ▸ **createInitialContext**(this: *[SourceBuilder](sourcebuilder.md)*, schemaName: *`string`*): [SourceBuilderContext](../interfaces/sourcebuildercontext.md)
 
-*Defined in [core/compilation/source_builder.ts:293](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L293)*
+*Defined in [core/compilation/source_builder.ts:325](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L325)*
 
 **Parameters:**
 
@@ -231,7 +231,7 @@ ___
 
 ▸ **createInitialCounter**(this: *[SourceBuilder](sourcebuilder.md)*): [SourceBuilderCounter](../interfaces/sourcebuildercounter.md)
 
-*Defined in [core/compilation/source_builder.ts:301](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L301)*
+*Defined in [core/compilation/source_builder.ts:333](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L333)*
 
 **Parameters:**
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **createInitialProduct**(this: *[SourceBuilder](sourcebuilder.md)*): [SourceBuilderProduct](../interfaces/sourcebuilderproduct.md)
 
-*Defined in [core/compilation/source_builder.ts:284](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L284)*
+*Defined in [core/compilation/source_builder.ts:316](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L316)*
 
 **Parameters:**
 
@@ -265,7 +265,7 @@ ___
 
 ▸ **createParameter**(this: *[SourceBuilder](sourcebuilder.md)*, value: *`unknown`*): `string`
 
-*Defined in [core/compilation/source_builder.ts:116](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L116)*
+*Defined in [core/compilation/source_builder.ts:122](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L122)*
 
 Increases the created parameter counter, pushes new argument value to the argument array and returns a string that will resolve to pushed value.
 
@@ -285,7 +285,7 @@ ___
 
 ▸ **defineVariable**(this: *[SourceBuilder](sourcebuilder.md)*, variableName: *`string`*, accessor: *`string`*): `void`
 
-*Defined in [core/compilation/source_builder.ts:258](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L258)*
+*Defined in [core/compilation/source_builder.ts:264](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L264)*
 
 **Parameters:**
 
@@ -304,7 +304,7 @@ ___
 
 ▸ **forLoop**(this: *[SourceBuilder](sourcebuilder.md)*, variableName: *`string`*, useForOfLoop: *`boolean`*): `void`
 
-*Defined in [core/compilation/source_builder.ts:266](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L266)*
+*Defined in [core/compilation/source_builder.ts:272](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L272)*
 
 **Parameters:**
 
@@ -323,7 +323,7 @@ ___
 
 ▸ **getContextSnapshot**(this: *[SourceBuilder](sourcebuilder.md)*): [SourceBuilderSnapshot](../interfaces/sourcebuildersnapshot.md)
 
-*Defined in [core/compilation/source_builder.ts:70](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L70)*
+*Defined in [core/compilation/source_builder.ts:76](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L76)*
 
 Returns a Snapshot of `SourceBuilder` context so it can be restored later as if the compilation wouldn't went deeper into the schema tree.
 
@@ -342,7 +342,7 @@ ___
 
 ▸ **getProduct**(this: *[SourceBuilder](sourcebuilder.md)*): [SourceBuilderProduct](../interfaces/sourcebuilderproduct.md)
 
-*Defined in [core/compilation/source_builder.ts:48](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L48)*
+*Defined in [core/compilation/source_builder.ts:54](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L54)*
 
 **Parameters:**
 
@@ -359,7 +359,7 @@ ___
 
 ▸ **getSchemaPath**(this: *[SourceBuilder](sourcebuilder.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:55](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L55)*
+*Defined in [core/compilation/source_builder.ts:61](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L61)*
 
 Returns path from root of the `Schema` to currently processed part of it.
 
@@ -378,7 +378,7 @@ ___
 
 ▸ **getVariableName**(this: *[SourceBuilder](sourcebuilder.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:62](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L62)*
+*Defined in [core/compilation/source_builder.ts:68](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L68)*
 
 Returns name of currently used data variable.
 
@@ -397,7 +397,7 @@ ___
 
 ▸ **openLabeledBlock**(this: *[SourceBuilder](sourcebuilder.md)*): `void`
 
-*Defined in [core/compilation/source_builder.ts:125](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L125)*
+*Defined in [core/compilation/source_builder.ts:131](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L131)*
 
 Appends labeled block opening to the product source code.
 
@@ -416,7 +416,7 @@ ___
 
 ▸ **propertyAccessor**(this: *[SourceBuilder](sourcebuilder.md)*, property: *`string`*): `string`
 
-*Defined in [core/compilation/source_builder.ts:280](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L280)*
+*Defined in [core/compilation/source_builder.ts:312](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L312)*
 
 **Parameters:**
 
@@ -434,7 +434,7 @@ ___
 
 ▸ **resolveDataPath**(schemaValue: *[DataPath](../interfaces/datapath.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:140](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L140)*
+*Defined in [core/compilation/source_builder.ts:146](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L146)*
 
 Appends `$dataPath` resolution to the product source code. Then, returns the variable name to which resolved value is assigned to.
 
@@ -453,7 +453,7 @@ ___
 
 ▸ **updateBuilderContext**(this: *[SourceBuilder](sourcebuilder.md)*, currentProperty: *`string`*, updateVariableName?: *`boolean`*): `void`
 
-*Defined in [core/compilation/source_builder.ts:89](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L89)*
+*Defined in [core/compilation/source_builder.ts:95](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L95)*
 
 Update the context of `SourceBuilder` so it's context is up to date to currently processed property of schema and the path to currently processed part of schema is also up to date.
 
@@ -474,7 +474,7 @@ ___
 
 ▸ **updateVariableName**(this: *[SourceBuilder](sourcebuilder.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:104](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L104)*
+*Defined in [core/compilation/source_builder.ts:110](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L110)*
 
 Increases the counter of `$DATA` related variables. Updates the context of `SourceBuilder` and then return newly updated variable name of soon to be currently processed data value.
 
@@ -493,7 +493,7 @@ ___
 
 ▸ **validateResolvedVariables**(this: *[SourceBuilder](sourcebuilder.md)*): `string`
 
-*Defined in [core/compilation/source_builder.ts:153](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/compilation/source_builder.ts#L153)*
+*Defined in [core/compilation/source_builder.ts:159](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/source_builder.ts#L159)*
 
 Perform handling of `$dataPath` resolution results.
 

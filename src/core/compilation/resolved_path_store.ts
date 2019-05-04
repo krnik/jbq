@@ -5,26 +5,31 @@ interface ResolvedPathVariable {
     schemaValue: DataPath;
 }
 
+/**
+ * Stores collection of variables resolved from `$dataPath`.
+ * Instance of this class is shared between `Compilation` and `SourceBuilder`
+ * instances.
+ */
 export class ResolvedPathStore {
     private resolvedVariables: ResolvedPathVariable[];
-    private state: boolean;
+    private isOpen: boolean;
 
     public constructor() {
-        this.state = false;
+        this.isOpen = false;
         this.resolvedVariables = [];
     }
 
     public open(this: ResolvedPathStore): void {
-        this.state = true;
+        this.isOpen = true;
     }
 
     public close(this: ResolvedPathStore): void {
         this.resolvedVariables = [];
-        this.state = false;
+        this.isOpen = false;
     }
 
     public add(this: ResolvedPathStore, variableName: string, schemaValue: DataPath): void {
-        if (this.state) this.resolvedVariables.push({ variableName, schemaValue });
+        if (this.isOpen) this.resolvedVariables.push({ variableName, schemaValue });
     }
 
     public consume(this: ResolvedPathStore): ResolvedPathVariable[] {

@@ -1,4 +1,4 @@
-[jbq](../README.md) > [Logger](../interfaces/logger.md)
+[JBQDocs](../README.md) > [Logger](../interfaces/logger.md)
 
 # Interface: Logger
 
@@ -22,7 +22,7 @@
 
 ▸ **debug**(message: *`string`*, ...args: *`unknown`[]*): `void`
 
-*Defined in [util/log_service.ts:4](https://github.com/krnik/vjs-validator/blob/15e769b/src/util/log_service.ts#L4)*
+*Defined in [util/log_service.ts:4](https://github.com/krnik/vjs-validator/blob/6195eeb/src/util/log_service.ts#L4)*
 
 **Parameters:**
 

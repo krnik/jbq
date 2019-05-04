@@ -1,4 +1,4 @@
-[jbq](../README.md) > [TypeWrapper](../classes/typewrapper.md)
+[JBQDocs](../README.md) > [TypeWrapper](../classes/typewrapper.md)
 
 # Class: TypeWrapper
 
@@ -35,7 +35,7 @@ Class responsible for storing all TypeDefinitions and supply them to the code ge
 
 **● types**: *`Map`<`string`, [TypeDefinition](../interfaces/typedefinition.md)>* =  new Map()
 
-*Defined in [core/type_wrapper.ts:21](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L21)*
+*Defined in [core/type_wrapper.ts:21](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L21)*
 
 ___
 <a id="error"></a>
@@ -44,7 +44,7 @@ ___
 
 **● Error**: *[TypeWrapperErorr](typewrappererorr.md)* =  TypeWrapperErorr
 
-*Defined in [core/type_wrapper.ts:19](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L19)*
+*Defined in [core/type_wrapper.ts:19](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L19)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 ▸ **addMethod**(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*, methodName: *`string`*, method: *[TypeMethod](../interfaces/typemethod.md)*, schemaValidationMethod: *[TypeValidationMethod](../#typevalidationmethod)*): [TypeWrapper](typewrapper.md)
 
-*Defined in [core/type_wrapper.ts:82](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L82)*
+*Defined in [core/type_wrapper.ts:82](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L82)*
 
 Adds method to the TypeDefinition.
 
@@ -79,7 +79,7 @@ ___
 
 ▸ **ensureTypeNameIsAvailable**(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*, typeToExtendWith?: *`undefined` \| `string`*): `void`
 
-*Defined in [core/type_wrapper.ts:102](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L102)*
+*Defined in [core/type_wrapper.ts:102](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L102)*
 
 **Parameters:**
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **ensureTypePrototypeIsValid**<`T`,`K`>(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*, typePrototype: *`T`*): `void`
 
-*Defined in [core/type_wrapper.ts:113](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L113)*
+*Defined in [core/type_wrapper.ts:113](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L113)*
 
 **Type parameters:**
 
@@ -121,7 +121,7 @@ ___
 
 ▸ **get**(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*): [TypeDefinition](../interfaces/typedefinition.md) \| `undefined`
 
-*Defined in [core/type_wrapper.ts:34](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L34)*
+*Defined in [core/type_wrapper.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L34)*
 
 Returns a TypeDefinition if exists. Otherwise returns undefined.
 
@@ -141,7 +141,7 @@ ___
 
 ▸ **has**(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*): `boolean`
 
-*Defined in [core/type_wrapper.ts:26](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L26)*
+*Defined in [core/type_wrapper.ts:26](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L26)*
 
 Returns `true` if type exists.
 
@@ -161,7 +161,7 @@ ___
 
 ▸ **mergeTypeKeyOrder**(this: *[TypeWrapper](typewrapper.md)*, primaryKeys: *`string`[]*, secondaryKeys: *`string`[]*): `string`[]
 
-*Defined in [core/type_wrapper.ts:142](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L142)*
+*Defined in [core/type_wrapper.ts:142](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L142)*
 
 **Parameters:**
 
@@ -180,7 +180,7 @@ ___
 
 ▸ **set**<`T`>(this: *[TypeWrapper](typewrapper.md)*, typeName: *`string`*, typePrototype: *`T`*, extendTypeWith?: *`object`*): [TypeWrapper](typewrapper.md)
 
-*Defined in [core/type_wrapper.ts:42](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/type_wrapper.ts#L42)*
+*Defined in [core/type_wrapper.ts:42](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper.ts#L42)*
 
 Add new TypePrototype to the set of TypeDefinitions. TypeDefinition is a name for a valid TypePrototype.
 

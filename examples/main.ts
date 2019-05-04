@@ -8,3 +8,4 @@ import './type_boolean/type_boolean';
 import './type_number/type_number';
 import './type_object/type_object';
 import './type_string/type_string';
+import './type_wrapper/type_wrapper';

@@ -1,4 +1,4 @@
-[jbq](../README.md) > [ParseValuesMinMax](../interfaces/parsevaluesminmax.md)
+[JBQDocs](../README.md) > [ParseValuesMinMax](../interfaces/parsevaluesminmax.md)
 
 # Interface: ParseValuesMinMax
 
@@ -29,7 +29,7 @@
 
 *Inherited from [ParseValues](parsevalues.md).[resolvedValue](parsevalues.md#resolvedvalue)*
 
-*Defined in [misc/typings.ts:24](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L24)*
+*Defined in [misc/typings.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L24)*
 
 ___
 <a id="schemapath"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from [ParseValues](parsevalues.md).[schemaPath](parsevalues.md#schemapath)*
 
-*Defined in [misc/typings.ts:22](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L22)*
+*Defined in [misc/typings.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L22)*
 
 ___
 <a id="schemavalue"></a>
@@ -51,7 +51,7 @@ ___
 
 *Overrides [ParseValues](parsevalues.md).[schemaValue](parsevalues.md#schemavalue)*
 
-*Defined in [misc/typings.ts:28](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L28)*
+*Defined in [misc/typings.ts:28](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L28)*
 
 ___
 <a id="variablename"></a>
@@ -62,7 +62,7 @@ ___
 
 *Inherited from [ParseValues](parsevalues.md).[variableName](parsevalues.md#variablename)*
 
-*Defined in [misc/typings.ts:23](https://github.com/krnik/vjs-validator/blob/15e769b/src/misc/typings.ts#L23)*
+*Defined in [misc/typings.ts:23](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L23)*
 
 ___
 

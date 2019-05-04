@@ -1,4 +1,4 @@
-[jbq](../README.md) > [CodeGeneratorError](../classes/codegeneratorerror.md)
+[JBQDocs](../README.md) > [CodeGeneratorError](../classes/codegeneratorerror.md)
 
 # Class: CodeGeneratorError
 
@@ -23,7 +23,7 @@
 
 ▸ **emptyIfConditionArray**(): `Error`
 
-*Defined in [core/code_gen/code_gen_error.ts:2](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/code_gen_error.ts#L2)*
+*Defined in [core/code_gen/code_gen_error.ts:2](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/code_gen_error.ts#L2)*
 
 **Returns:** `Error`
 
@@ -34,7 +34,7 @@ ___
 
 ▸ **invalidDataPath**(dataPath: *`string` \| `string`[]*): `Error`
 
-*Defined in [core/code_gen/code_gen_error.ts:8](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/code_gen_error.ts#L8)*
+*Defined in [core/code_gen/code_gen_error.ts:8](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/code_gen_error.ts#L8)*
 
 **Parameters:**
 

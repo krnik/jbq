@@ -1,4 +1,4 @@
-[jbq](../README.md) > [Keyword](../enums/keyword.md)
+[JBQDocs](../README.md) > [Keyword](../enums/keyword.md)
 
 # Enumeration: Keyword
 
@@ -53,7 +53,7 @@
 
 **Await**:  = "await"
 
-*Defined in [core/code_gen/token/keyword.ts:2](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L2)*
+*Defined in [core/code_gen/token/keyword.ts:2](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L2)*
 
 ___
 <a id="break"></a>
@@ -62,7 +62,7 @@ ___
 
 **Break**:  = "break"
 
-*Defined in [core/code_gen/token/keyword.ts:3](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L3)*
+*Defined in [core/code_gen/token/keyword.ts:3](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L3)*
 
 ___
 <a id="case"></a>
@@ -71,7 +71,7 @@ ___
 
 **Case**:  = "case"
 
-*Defined in [core/code_gen/token/keyword.ts:4](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L4)*
+*Defined in [core/code_gen/token/keyword.ts:4](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L4)*
 
 ___
 <a id="catch"></a>
@@ -80,7 +80,7 @@ ___
 
 **Catch**:  = "catch"
 
-*Defined in [core/code_gen/token/keyword.ts:5](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L5)*
+*Defined in [core/code_gen/token/keyword.ts:5](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L5)*
 
 ___
 <a id="class"></a>
@@ -89,7 +89,7 @@ ___
 
 **Class**:  = "class"
 
-*Defined in [core/code_gen/token/keyword.ts:6](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L6)*
+*Defined in [core/code_gen/token/keyword.ts:6](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L6)*
 
 ___
 <a id="const"></a>
@@ -98,7 +98,7 @@ ___
 
 **Const**:  = "const"
 
-*Defined in [core/code_gen/token/keyword.ts:7](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L7)*
+*Defined in [core/code_gen/token/keyword.ts:7](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L7)*
 
 ___
 <a id="continue"></a>
@@ -107,7 +107,7 @@ ___
 
 **Continue**:  = "continue"
 
-*Defined in [core/code_gen/token/keyword.ts:8](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L8)*
+*Defined in [core/code_gen/token/keyword.ts:8](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L8)*
 
 ___
 <a id="debugger"></a>
@@ -116,7 +116,7 @@ ___
 
 **Debugger**:  = "debugger"
 
-*Defined in [core/code_gen/token/keyword.ts:9](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L9)*
+*Defined in [core/code_gen/token/keyword.ts:9](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L9)*
 
 ___
 <a id="default"></a>
@@ -125,7 +125,7 @@ ___
 
 **Default**:  = "default"
 
-*Defined in [core/code_gen/token/keyword.ts:10](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L10)*
+*Defined in [core/code_gen/token/keyword.ts:10](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L10)*
 
 ___
 <a id="delete"></a>
@@ -134,7 +134,7 @@ ___
 
 **Delete**:  = "delete"
 
-*Defined in [core/code_gen/token/keyword.ts:11](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L11)*
+*Defined in [core/code_gen/token/keyword.ts:11](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L11)*
 
 ___
 <a id="do"></a>
@@ -143,7 +143,7 @@ ___
 
 **Do**:  = "do"
 
-*Defined in [core/code_gen/token/keyword.ts:12](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L12)*
+*Defined in [core/code_gen/token/keyword.ts:12](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L12)*
 
 ___
 <a id="else"></a>
@@ -152,7 +152,7 @@ ___
 
 **Else**:  = "else"
 
-*Defined in [core/code_gen/token/keyword.ts:13](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L13)*
+*Defined in [core/code_gen/token/keyword.ts:13](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L13)*
 
 ___
 <a id="export"></a>
@@ -161,7 +161,7 @@ ___
 
 **Export**:  = "export"
 
-*Defined in [core/code_gen/token/keyword.ts:14](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L14)*
+*Defined in [core/code_gen/token/keyword.ts:14](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L14)*
 
 ___
 <a id="extends"></a>
@@ -170,7 +170,7 @@ ___
 
 **Extends**:  = "extends"
 
-*Defined in [core/code_gen/token/keyword.ts:15](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L15)*
+*Defined in [core/code_gen/token/keyword.ts:15](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L15)*
 
 ___
 <a id="finally"></a>
@@ -179,7 +179,7 @@ ___
 
 **Finally**:  = "finally"
 
-*Defined in [core/code_gen/token/keyword.ts:16](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L16)*
+*Defined in [core/code_gen/token/keyword.ts:16](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L16)*
 
 ___
 <a id="for"></a>
@@ -188,7 +188,7 @@ ___
 
 **For**:  = "for"
 
-*Defined in [core/code_gen/token/keyword.ts:17](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L17)*
+*Defined in [core/code_gen/token/keyword.ts:17](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L17)*
 
 ___
 <a id="function"></a>
@@ -197,7 +197,7 @@ ___
 
 **Function**:  = "function"
 
-*Defined in [core/code_gen/token/keyword.ts:18](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L18)*
+*Defined in [core/code_gen/token/keyword.ts:18](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L18)*
 
 ___
 <a id="if"></a>
@@ -206,7 +206,7 @@ ___
 
 **If**:  = "if"
 
-*Defined in [core/code_gen/token/keyword.ts:19](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L19)*
+*Defined in [core/code_gen/token/keyword.ts:19](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L19)*
 
 ___
 <a id="import"></a>
@@ -215,7 +215,7 @@ ___
 
 **Import**:  = "import"
 
-*Defined in [core/code_gen/token/keyword.ts:20](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L20)*
+*Defined in [core/code_gen/token/keyword.ts:20](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L20)*
 
 ___
 <a id="in"></a>
@@ -224,7 +224,7 @@ ___
 
 **In**:  = "in"
 
-*Defined in [core/code_gen/token/keyword.ts:21](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L21)*
+*Defined in [core/code_gen/token/keyword.ts:21](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L21)*
 
 ___
 <a id="instanceof"></a>
@@ -233,7 +233,7 @@ ___
 
 **Instanceof**:  = "instanceof"
 
-*Defined in [core/code_gen/token/keyword.ts:22](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L22)*
+*Defined in [core/code_gen/token/keyword.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L22)*
 
 ___
 <a id="let"></a>
@@ -242,7 +242,7 @@ ___
 
 **Let**:  = "let"
 
-*Defined in [core/code_gen/token/keyword.ts:23](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L23)*
+*Defined in [core/code_gen/token/keyword.ts:23](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L23)*
 
 ___
 <a id="new"></a>
@@ -251,7 +251,7 @@ ___
 
 **New**:  = "new"
 
-*Defined in [core/code_gen/token/keyword.ts:24](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L24)*
+*Defined in [core/code_gen/token/keyword.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L24)*
 
 ___
 <a id="of"></a>
@@ -260,7 +260,7 @@ ___
 
 **Of**:  = "of"
 
-*Defined in [core/code_gen/token/keyword.ts:25](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L25)*
+*Defined in [core/code_gen/token/keyword.ts:25](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L25)*
 
 ___
 <a id="return"></a>
@@ -269,7 +269,7 @@ ___
 
 **Return**:  = "return"
 
-*Defined in [core/code_gen/token/keyword.ts:26](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L26)*
+*Defined in [core/code_gen/token/keyword.ts:26](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L26)*
 
 ___
 <a id="super"></a>
@@ -278,7 +278,7 @@ ___
 
 **Super**:  = "super"
 
-*Defined in [core/code_gen/token/keyword.ts:27](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L27)*
+*Defined in [core/code_gen/token/keyword.ts:27](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L27)*
 
 ___
 <a id="switch"></a>
@@ -287,7 +287,7 @@ ___
 
 **Switch**:  = "switch"
 
-*Defined in [core/code_gen/token/keyword.ts:28](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L28)*
+*Defined in [core/code_gen/token/keyword.ts:28](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L28)*
 
 ___
 <a id="this"></a>
@@ -296,7 +296,7 @@ ___
 
 **This**:  = "this"
 
-*Defined in [core/code_gen/token/keyword.ts:29](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L29)*
+*Defined in [core/code_gen/token/keyword.ts:29](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L29)*
 
 ___
 <a id="throw"></a>
@@ -305,7 +305,7 @@ ___
 
 **Throw**:  = "throw"
 
-*Defined in [core/code_gen/token/keyword.ts:30](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L30)*
+*Defined in [core/code_gen/token/keyword.ts:30](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L30)*
 
 ___
 <a id="try"></a>
@@ -314,7 +314,7 @@ ___
 
 **Try**:  = "try"
 
-*Defined in [core/code_gen/token/keyword.ts:31](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L31)*
+*Defined in [core/code_gen/token/keyword.ts:31](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L31)*
 
 ___
 <a id="typeof"></a>
@@ -323,7 +323,7 @@ ___
 
 **Typeof**:  = "typeof"
 
-*Defined in [core/code_gen/token/keyword.ts:32](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L32)*
+*Defined in [core/code_gen/token/keyword.ts:32](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L32)*
 
 ___
 <a id="var"></a>
@@ -332,7 +332,7 @@ ___
 
 **Var**:  = "var"
 
-*Defined in [core/code_gen/token/keyword.ts:33](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L33)*
+*Defined in [core/code_gen/token/keyword.ts:33](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L33)*
 
 ___
 <a id="void"></a>
@@ -341,7 +341,7 @@ ___
 
 **Void**:  = "void"
 
-*Defined in [core/code_gen/token/keyword.ts:34](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L34)*
+*Defined in [core/code_gen/token/keyword.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L34)*
 
 ___
 <a id="while"></a>
@@ -350,7 +350,7 @@ ___
 
 **While**:  = "while"
 
-*Defined in [core/code_gen/token/keyword.ts:35](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L35)*
+*Defined in [core/code_gen/token/keyword.ts:35](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L35)*
 
 ___
 <a id="with"></a>
@@ -359,7 +359,7 @@ ___
 
 **With**:  = "with"
 
-*Defined in [core/code_gen/token/keyword.ts:36](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L36)*
+*Defined in [core/code_gen/token/keyword.ts:36](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L36)*
 
 ___
 <a id="yield"></a>
@@ -368,7 +368,7 @@ ___
 
 **Yield**:  = "yield"
 
-*Defined in [core/code_gen/token/keyword.ts:37](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen/token/keyword.ts#L37)*
+*Defined in [core/code_gen/token/keyword.ts:37](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen/token/keyword.ts#L37)*
 
 ___
 

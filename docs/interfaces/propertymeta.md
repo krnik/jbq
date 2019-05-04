@@ -1,4 +1,4 @@
-[jbq](../README.md) > [PropertyMeta](../interfaces/propertymeta.md)
+[JBQDocs](../README.md) > [PropertyMeta](../interfaces/propertymeta.md)
 
 # Interface: PropertyMeta
 
@@ -25,7 +25,7 @@
 
 **● Constructor**: *[Option](../#option)<[Constructor](constructor.md)>*
 
-*Defined in [class_syntax/class_validator_builder.ts:24](https://github.com/krnik/vjs-validator/blob/15e769b/src/class_syntax/class_validator_builder.ts#L24)*
+*Defined in [class_syntax/class_validator_builder.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/class_syntax/class_validator_builder.ts#L24)*
 
 ___
 <a id="default"></a>
@@ -34,7 +34,7 @@ ___
 
 **● default**: *[Option](../#option)<[DefaultCallback](../#defaultcallback)>*
 
-*Defined in [class_syntax/class_validator_builder.ts:22](https://github.com/krnik/vjs-validator/blob/15e769b/src/class_syntax/class_validator_builder.ts#L22)*
+*Defined in [class_syntax/class_validator_builder.ts:22](https://github.com/krnik/vjs-validator/blob/6195eeb/src/class_syntax/class_validator_builder.ts#L22)*
 
 ___
 <a id="iterateoverdata"></a>
@@ -43,7 +43,7 @@ ___
 
 **● iterateOverData**: *`boolean`*
 
-*Defined in [class_syntax/class_validator_builder.ts:25](https://github.com/krnik/vjs-validator/blob/15e769b/src/class_syntax/class_validator_builder.ts#L25)*
+*Defined in [class_syntax/class_validator_builder.ts:25](https://github.com/krnik/vjs-validator/blob/6195eeb/src/class_syntax/class_validator_builder.ts#L25)*
 
 ___
 <a id="transform"></a>
@@ -52,7 +52,7 @@ ___
 
 **● transform**: *[Option](../#option)<[TransformCallback](../#transformcallback)>*
 
-*Defined in [class_syntax/class_validator_builder.ts:23](https://github.com/krnik/vjs-validator/blob/15e769b/src/class_syntax/class_validator_builder.ts#L23)*
+*Defined in [class_syntax/class_validator_builder.ts:23](https://github.com/krnik/vjs-validator/blob/6195eeb/src/class_syntax/class_validator_builder.ts#L23)*
 
 ___
 

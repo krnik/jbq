@@ -1,4 +1,4 @@
-[jbq](../README.md) > [CodeGenerator](../classes/codegenerator.md)
+[JBQDocs](../README.md) > [CodeGenerator](../classes/codegenerator.md)
 
 # Class: CodeGenerator
 
@@ -39,7 +39,7 @@ Utility class that provides functionality to help building validation function c
 
 **● Error**: *[CodeGeneratorError](codegeneratorerror.md)* =  CodeGeneratorError
 
-*Defined in [core/code_gen.ts:279](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L279)*
+*Defined in [core/code_gen.ts:279](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L279)*
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 ▸ **renderCloseBlock**(): `string`
 
-*Defined in [core/code_gen.ts:61](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L61)*
+*Defined in [core/code_gen.ts:61](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L61)*
 
 Returns single `}` character.
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **renderDataPath**(dataPath: *`string` \| `string`[]*): `string`
 
-*Defined in [core/code_gen.ts:275](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L275)*
+*Defined in [core/code_gen.ts:275](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L275)*
 
 Renders `$dataPath` as string.
 
@@ -83,7 +83,7 @@ ___
 
 ▸ **renderDataPathResolution**(dataPath: *`string` \| `string`[]*, variableName: *`string`*, baseVariable?: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:243](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L243)*
+*Defined in [core/code_gen.ts:243](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L243)*
 
 Renders $dataPath resolution.
 
@@ -113,7 +113,7 @@ ___
 
 ▸ **renderForLoop**(variableName: *`string`*, collection: *`string`*, accessor: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:185](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L185)*
+*Defined in [core/code_gen.ts:185](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L185)*
 
 Renders for loop.
 
@@ -149,7 +149,7 @@ ___
 
 ▸ **renderForOfLoop**(variableName: *`string`*, iterable: *`string`*, path: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:155](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L155)*
+*Defined in [core/code_gen.ts:155](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L155)*
 
 Renders for..of loop.
 
@@ -161,7 +161,7 @@ Examples
  // renders stringified version of
  if (!(Symbol.iterator in arrayOfNumbers))
      return `{"message": "Data requires...", "path": "Numbers"}`;
- for (const item of arrayOfNumbers)
+ for (const item of arrayOfNumbers) {
 ```
 
 **Parameters:**
@@ -181,7 +181,7 @@ ___
 
 ▸ **renderFunctionCall**(fnParam: *`string`*, schemaValue: *`string`*, schemaPath: *`string`*, variableName: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:219](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L219)*
+*Defined in [core/code_gen.ts:219](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L219)*
 
 Renders function call, checks if it returned truthy value, if so then return from validation function.
 
@@ -213,7 +213,7 @@ ___
 
 ▸ **renderIfStatement**(conditions: *[IfCondition](../interfaces/ifcondition.md)[]*, condLogicOperator?: *[LogicalOperator](../enums/logicaloperator.md)*): `string`
 
-*Defined in [core/code_gen.ts:97](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L97)*
+*Defined in [core/code_gen.ts:97](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L97)*
 
 Renders "if statement".
 
@@ -265,7 +265,7 @@ ___
 
 ▸ **renderLabeledBreakStatement**(blockLabel: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:42](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L42)*
+*Defined in [core/code_gen.ts:42](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L42)*
 
 Renders labeled break statement, expects current block label name as an argument.
 
@@ -292,7 +292,7 @@ ___
 
 ▸ **renderOpenLabeledBlock**(blockLabel: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:54](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L54)*
+*Defined in [core/code_gen.ts:54](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L54)*
 
 Renders labeled block opening.
 
@@ -319,7 +319,7 @@ ___
 
 ▸ **renderPropertyAccessor**(accessor: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:27](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L27)*
+*Defined in [core/code_gen.ts:27](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L27)*
 
 Renders provided `accessor` string as a object property accessor.
 
@@ -352,7 +352,7 @@ ___
 
 ▸ **renderReturnJSONMessage**(message: *`string`*, path: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:120](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L120)*
+*Defined in [core/code_gen.ts:120](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L120)*
 
 Renders return statement that returns with JSON value.
 
@@ -380,7 +380,7 @@ ___
 
 ▸ **renderVariableInitialization**(variableName: *`string`*, value: *`string`*, accessor?: *`string`*, keyword?: *[Const](../enums/keyword.md#const) \| [Let](../enums/keyword.md#let) \| [Var](../enums/keyword.md#var)*): `string`
 
-*Defined in [core/code_gen.ts:135](https://github.com/krnik/vjs-validator/blob/15e769b/src/core/code_gen.ts#L135)*
+*Defined in [core/code_gen.ts:135](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/code_gen.ts#L135)*
 
 Renders `const` variable initialization.
 
