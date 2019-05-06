@@ -32,9 +32,9 @@ Symbol.for('type_for_loop')
 
 **● __computed**: *`string`[]*
 
-*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:19](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper/interface/type_prototype.interface.ts#L19)*
-*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:20](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper/interface/type_prototype.interface.ts#L20)*
-*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:21](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/type_wrapper/interface/type_prototype.interface.ts#L21)*
+*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:19](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_prototype.interface.ts#L19)*
+*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:20](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_prototype.interface.ts#L20)*
+*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:21](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_prototype.interface.ts#L21)*
 
 ___
 

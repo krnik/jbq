@@ -25,7 +25,7 @@
 
 **● async**: *`undefined` \| `false` \| `true`*
 
-*Defined in [misc/typings.ts:47](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L47)*
+*Defined in [misc/typings.ts:47](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L47)*
 
 Defines if validation function should be asyncronous.
 
@@ -36,7 +36,7 @@ ___
 
 **● asyncInterval**: *`undefined` \| `number`*
 
-*Defined in [misc/typings.ts:52](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L52)*
+*Defined in [misc/typings.ts:52](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L52)*
 
 Defines how often the validation of collection should be suspended in asyncronous validation functions.
 
@@ -47,7 +47,7 @@ ___
 
 **● debug**: *`undefined` \| `false` \| `true`*
 
-*Defined in [misc/typings.ts:39](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L39)*
+*Defined in [misc/typings.ts:39](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L39)*
 
 Defines if schema compilation progress should be logged.
 
@@ -58,7 +58,7 @@ ___
 
 **● handleResolvedPaths**: *[PathResolutionStrategy](../enums/pathresolutionstrategy.md)*
 
-*Defined in [misc/typings.ts:43](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/typings.ts#L43)*
+*Defined in [misc/typings.ts:43](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L43)*
 
 Defines what to do in case when $dataPath resolves to undefined.
 

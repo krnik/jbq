@@ -23,7 +23,7 @@
 
 **ANY**:  = "any"
 
-*Defined in [misc/constants.ts:78](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L78)*
+*Defined in [misc/constants.ts:78](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L78)*
 
 ___
 <a id="array"></a>
@@ -32,7 +32,7 @@ ___
 
 **ARRAY**:  = "array"
 
-*Defined in [misc/constants.ts:77](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L77)*
+*Defined in [misc/constants.ts:77](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L77)*
 
 ___
 <a id="boolean"></a>
@@ -41,7 +41,7 @@ ___
 
 **BOOLEAN**:  = "boolean"
 
-*Defined in [misc/constants.ts:73](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L73)*
+*Defined in [misc/constants.ts:73](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L73)*
 
 ___
 <a id="number"></a>
@@ -50,7 +50,7 @@ ___
 
 **NUMBER**:  = "number"
 
-*Defined in [misc/constants.ts:75](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L75)*
+*Defined in [misc/constants.ts:75](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L75)*
 
 ___
 <a id="object"></a>
@@ -59,7 +59,7 @@ ___
 
 **OBJECT**:  = "object"
 
-*Defined in [misc/constants.ts:76](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L76)*
+*Defined in [misc/constants.ts:76](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L76)*
 
 ___
 <a id="string"></a>
@@ -68,7 +68,7 @@ ___
 
 **STRING**:  = "string"
 
-*Defined in [misc/constants.ts:74](https://github.com/krnik/vjs-validator/blob/6195eeb/src/misc/constants.ts#L74)*
+*Defined in [misc/constants.ts:74](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L74)*
 
 ___
 

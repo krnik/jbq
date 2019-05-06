@@ -50,7 +50,7 @@ New instance is created for every schema.
 
 ⊕ **new Compilation**(types: *[TypeWrapper](typewrapper.md)*, schema: *[Schema](../interfaces/schema.md)*, schemaName: *`string`*, options?: *[JBQOptions](../interfaces/jbqoptions.md)*): [Compilation](compilation.md)
 
-*Defined in [core/compilation.ts:43](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L43)*
+*Defined in [core/compilation.ts:43](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L43)*
 
 **Parameters:**
 
@@ -73,7 +73,7 @@ ___
 
 **● log**: *[LogService](logservice.md)*
 
-*Defined in [core/compilation.ts:35](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L35)*
+*Defined in [core/compilation.ts:35](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L35)*
 
 ___
 <a id="macrohelpers"></a>
@@ -85,7 +85,7 @@ ___
         (value: DataPath): string => this.sourceBuilder.resolveDataPath(value),
     ]
 
-*Defined in [core/compilation.ts:40](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L40)*
+*Defined in [core/compilation.ts:40](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L40)*
 
 ___
 <a id="resolvedpaths"></a>
@@ -94,7 +94,7 @@ ___
 
 **● resolvedPaths**: *[ResolvedPathStore](resolvedpathstore.md)*
 
-*Defined in [core/compilation.ts:39](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L39)*
+*Defined in [core/compilation.ts:39](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L39)*
 
 ___
 <a id="schema"></a>
@@ -103,7 +103,7 @@ ___
 
 **● schema**: *[Schema](../interfaces/schema.md)*
 
-*Defined in [core/compilation.ts:37](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L37)*
+*Defined in [core/compilation.ts:37](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L37)*
 
 ___
 <a id="sourcebuilder"></a>
@@ -112,7 +112,7 @@ ___
 
 **● sourceBuilder**: *[SourceBuilder](sourcebuilder.md)*
 
-*Defined in [core/compilation.ts:38](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L38)*
+*Defined in [core/compilation.ts:38](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L38)*
 
 ___
 <a id="types"></a>
@@ -121,7 +121,7 @@ ___
 
 **● types**: *[TypeWrapper](typewrapper.md)*
 
-*Defined in [core/compilation.ts:36](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L36)*
+*Defined in [core/compilation.ts:36](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L36)*
 
 ___
 <a id="error"></a>
@@ -130,7 +130,7 @@ ___
 
 **● Error**: *[CompilationError](compilationerror.md)* =  CompilationError
 
-*Defined in [core/compilation.ts:34](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L34)*
+*Defined in [core/compilation.ts:34](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L34)*
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 ▸ **evaluateExpressions**(this: *[Compilation](compilation.md)*, sourceString: *`string`*, values: *[ParseValues](../interfaces/parsevalues.md)*): `string`
 
-*Defined in [core/compilation.ts:253](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L253)*
+*Defined in [core/compilation.ts:253](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L253)*
 
 Evaluate `{{}}` expressions.
 
@@ -171,7 +171,7 @@ ___
 
 ▸ **execSync**(this: *[Compilation](compilation.md)*): [SourceBuilderProduct](../interfaces/sourcebuilderproduct.md)
 
-*Defined in [core/compilation.ts:58](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L58)*
+*Defined in [core/compilation.ts:58](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L58)*
 
 **Parameters:**
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **getType**(this: *[Compilation](compilation.md)*, typeName: *`string`*): [TypeDefinition](../interfaces/typedefinition.md) \| `never`
 
-*Defined in [core/compilation.ts:149](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L149)*
+*Defined in [core/compilation.ts:149](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L149)*
 
 Attempt to retry a `typeName` from `TypeWrapper`. If type does not exists this function will throw.
 
@@ -208,7 +208,7 @@ ___
 
 ▸ **parseMethodClosure**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:293](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L293)*
+*Defined in [core/compilation.ts:293](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L293)*
 
 Calls type method marked as closure.
 
@@ -229,7 +229,7 @@ ___
 
 ▸ **parseMethodExtractBody**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:205](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L205)*
+*Defined in [core/compilation.ts:205](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L205)*
 
 Stringify function, evaluate expressions, add break token if needed and also replace `schemaValue` and `$DATA` parameters with current context variables.
 
@@ -250,7 +250,7 @@ ___
 
 ▸ **parseMethodMacro**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, values: *[ParseValues](../interfaces/parsevalues.md)*): `void`
 
-*Defined in [core/compilation.ts:318](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L318)*
+*Defined in [core/compilation.ts:318](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L318)*
 
 Calls type method marked as macro and appends its result to the validation function source code.
 
@@ -271,7 +271,7 @@ ___
 
 ▸ **parseProperty**(this: *[Compilation](compilation.md)*, method: *[TypeMethod](../interfaces/typemethod.md)*, schemaValue: *`unknown`*): `void`
 
-*Defined in [core/compilation.ts:182](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L182)*
+*Defined in [core/compilation.ts:182](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L182)*
 
 Attempt to parse schema property and respective `TypeMethod` into a validation function block.
 
@@ -292,7 +292,7 @@ ___
 
 ▸ **parseSchemaSync**(this: *[Compilation](compilation.md)*, schema: *[Schema](../interfaces/schema.md)*): `void`
 
-*Defined in [core/compilation.ts:63](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L63)*
+*Defined in [core/compilation.ts:63](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L63)*
 
 **Parameters:**
 
@@ -310,7 +310,7 @@ ___
 
 ▸ **replaceToken**(this: *[Compilation](compilation.md)*, sourceString: *`string`*, token: *`string`*, replaceTo: *`string`*): `string`
 
-*Defined in [core/compilation.ts:276](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L276)*
+*Defined in [core/compilation.ts:276](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L276)*
 
 Replaces every `token` in the `sourceString` with `replaceTo`.
 
@@ -332,7 +332,7 @@ ___
 
 ▸ **sortSchemaEntries**(this: *[Compilation](compilation.md)*, schema: *[Schema](../interfaces/schema.md)*, type: *[TypeDefinition](../interfaces/typedefinition.md)*): [`string`, `unknown`][]
 
-*Defined in [core/compilation.ts:158](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L158)*
+*Defined in [core/compilation.ts:158](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L158)*
 
 Rearranges the order of object entries to match the order defined in the TypeDefinition `Symbol.for('type_key_order')` property.
 
@@ -353,7 +353,7 @@ ___
 
 ▸ **toLiteral**(this: *[Compilation](compilation.md)*, schemaValue: *`unknown`*): `string`
 
-*Defined in [core/compilation.ts:287](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation.ts#L287)*
+*Defined in [core/compilation.ts:287](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation.ts#L287)*
 
 **Parameters:**
 

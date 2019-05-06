@@ -28,7 +28,7 @@ Interface representing internal context of `SourceBuider` instance. It's used to
 
 **● currentProperty**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:20](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L20)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:20](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation/interface/source_builder_context.interface.ts#L20)*
 
 Represents `Schema` property that is currently processed. It's used to create `schemaPath` by adding the property name after `#` at the end of the `schemaPath`
 
@@ -39,7 +39,7 @@ ___
 
 **● schemaPath**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:24](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L24)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:24](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation/interface/source_builder_context.interface.ts#L24)*
 
 Represents path from `Schema` root to currently processed part of it.
 
@@ -50,7 +50,7 @@ ___
 
 **● variableName**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_context.interface.ts:14](https://github.com/krnik/vjs-validator/blob/6195eeb/src/core/compilation/interface/source_builder_context.interface.ts#L14)*
+*Defined in [core/compilation/interface/source_builder_context.interface.ts:14](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/compilation/interface/source_builder_context.interface.ts#L14)*
 
 Represents variable name that is a source of data for currently processed part of the schema.
 

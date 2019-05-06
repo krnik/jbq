@@ -14,21 +14,6 @@ Hi! Welcome to JBQ validation library repository.
 - *fast data validation* - validator returns error message on first error
 - *based on schemas*
 
-Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
-
-**Types and Keywords:**
-- *any*: `required`, `type`
-- *array*: `required`, `type`, `every`, `some`, `includes`, `len`
-- *number*: `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *object*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *string*: `required`, `type`, `regex`, `len`, `oneOf`
-
-
-**Schema Symbol Keywords:**
-- *`Symbol.for('schema_properties')`*: defines the shape of current schema
-- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
-
-
 **Other Features:**
 - *possibility to define own types*
 - *possibility to extend types with new keywords*
@@ -90,15 +75,29 @@ const { jbq } = require('jbq/cjs/lib.js');
     - /lib.js
 
 **lib.js exports:**
-- `jbq(types, schemas[, options])`: a function that will create validation functions
-- `jbqTypes`: [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
+- [jbq](https://github.com/krnik/jbq/tree/master/docs#jbq): a function that will create validation functions.
+- [jbqTypes](https://github.com/krnik/jbq/tree/master/docs#jbqtypes): [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
 - `createTypes`: creates new instance of [Type Wrapper](#type-wrapper)
 - `setLogger`: sets the logger used for debug
 
 **class_syntax.js exports:**
-- `compileClass(constructor)`: appends a class-specific `build` method to the `constructor` prototype
+- `compileClass`: appends a class-specific `build` method to the `constructor` prototype
 - `decoratorFactory`: used to create decorators that set custom schema properties (useful when creating new type)
 - schema/class decorators (more about them in [Class Syntax](#class-syntax))
+
+**Schemas**
+Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
+
+**Types and Keywords:**
+- *any*: `required`, `type`
+- *array*: `required`, `type`, `every`, `some`, `includes`, `len`
+- *number*: `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *object*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *string*: `required`, `type`, `regex`, `len`, `oneOf`
+
+**Schema Symbol Keywords:**
+- *`Symbol.for('schema_properties')`*: defines the shape of current schema
+- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
 
 ***
 ## Usage Example
