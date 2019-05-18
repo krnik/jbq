@@ -1,7 +1,6 @@
-import { SYM_TYPE_VALIDATE } from '../../src/misc/constants';
+import { equal } from 'assert';
 import { TypeWrapper } from '../../src/core/type_wrapper';
 import { TypeAny } from '../../src/type/any';
-import { equal } from 'assert';
 
 const hexReg = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
 const HexColor = {
@@ -13,7 +12,7 @@ const HexColor = {
             return `"{ "message": "Received string is not a hex color value.", "path": "{{schemaPath}}" }"`;
         }
     },
-    [SYM_TYPE_VALIDATE]: {
+    [Symbol.for('type_validate')]: {
         type(schemaValue: unknown): void {
             if (schemaValue !== 'string') throw new Error('Type can be a string only!');
         },

@@ -15,8 +15,8 @@ Hi! Welcome to JBQ validation library repository.
 - *based on schemas*
 
 **Other Features:**
-- *possibility to define own types*
-- *possibility to extend types with new keywords*
+- *ability to define own types*
+- *ability to extend types with new keywords*
 - *prototypal inheritance of types*
 - *class validation*
 - *async validation function execution*
@@ -89,11 +89,11 @@ const { jbq } = require('jbq/cjs/lib.js');
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *any*: `required`, `type`
-- *array*: `required`, `type`, `every`, `some`, `includes`, `len`
-- *number*: `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *object*: `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *string*: `required`, `type`, `regex`, `len`, `oneOf`
+- *[any](#any)*: `required`, `type`
+- *[array](#array)* `required`, `type`, `every`, `some`, `includes`, `len`
+- *[number](#number)* `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[object](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[string](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
 
 **Schema Symbol Keywords:**
 - *`Symbol.for('schema_properties')`*: defines the shape of current schema
@@ -739,7 +739,7 @@ const HexColor = {
             return `"{ "message": "Received string is not a hex color value.", "path": "{{schemaPath}}" }"`;
         }
     },
-    [SYM_TYPE_VALIDATE]: {
+    [Symbol.for('type_validate')]: {
         type(schemaValue: unknown): void {
             if (schemaValue !== 'string') throw new Error('Type can be a string only!');
         },
@@ -753,7 +753,7 @@ equal(types.has('hexcolor'), false);
 ```
 
 
-Curious about the  ` *expression* ` syntax? Check out the `Compilation.prototype.evaluateExpressions` method in the docs.
+Curious about the  &#123;&#123; *expression* &#125;&#125; syntax? Check out the `Compilation.prototype.evaluateExpressions` method in the docs.
 
 
 ***
@@ -763,8 +763,6 @@ You can also use class decorators to create classes with schemas attached to the
 Every keyword has its decorator. You can read more in the docs.
 
 Of course you need to use `compileClass` function to build the custom `build` method due to performance reasons. The `build` method could be compiled on first evaluation of the `build` method but that's one of the possibilities for the future.
-
-The reason behind using `build` method is that it's more flexible to change a method than change a constructor of a class.
 
 
 ```typescript

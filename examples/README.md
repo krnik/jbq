@@ -15,8 +15,8 @@ Hi! Welcome to JBQ validation library repository.
 - *based on schemas*
 
 **Other Features:**
-- *possibility to define own types*
-- *possibility to extend types with new keywords*
+- *ability to define own types*
+- *ability to extend types with new keywords*
 - *prototypal inheritance of types*
 - *class validation*
 - *async validation function execution*
@@ -89,11 +89,11 @@ const { jbq } = require('jbq/cjs/lib.js');
 Every schema has only one required keywords which is `{{TYPE}}`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *{{TYPE_NAME.ANY}}*: `{{REQUIRED}}`, `{{TYPE}}`
-- *{{TYPE_NAME.ARRAY}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
-- *{{TYPE_NAME.NUMBER}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
-- *{{TYPE_NAME.OBJECT}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
-- *{{TYPE_NAME.STRING}}*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`
+- *[{{TYPE_NAME.ANY}}](#any)*: `{{REQUIRED}}`, `{{TYPE}}`
+- *[{{TYPE_NAME.ARRAY}}](#array)* `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
+- *[{{TYPE_NAME.NUMBER}}](#number)* `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
+- *[{{TYPE_NAME.OBJECT}}](#object)* `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *[{{TYPE_NAME.STRING}}](#string)*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`
 
 **Schema Symbol Keywords:**
 - *`Symbol.for('schema_properties')`*: defines the shape of current schema

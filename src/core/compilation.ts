@@ -114,7 +114,7 @@ export class Compilation {
                     );
                 }
 
-                this.parseSchemaSync(subSchemas[property as keyof typeof properties]);
+                this.parseSchemaSync(subSchemas[property as string]);
 
                 sourceSnapshot.restore();
             }

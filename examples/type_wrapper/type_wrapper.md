@@ -9,4 +9,4 @@ A type object is valid when all of its keys have corresponding schema value vali
 Example custom type definition.
 {{example('type_wrapper')}}
 
-Curious about the  `{{` *expression* `}}` syntax? Check out the `Compilation.prototype.evaluateExpressions` method in the docs.
+Curious about the  &#123;&#123; *expression* &#125;&#125; syntax? Check out the `Compilation.prototype.evaluateExpressions` method in the docs.

@@ -22,7 +22,7 @@ export interface PropertyMeta {
     default: Option<DefaultCallback>;
     transform: Option<TransformCallback>;
     Constructor: Option<Constructor>;
-    iterateOverData: boolean;
+    iterateOverData: Option<true>;
 }
 
 /** Utility class used to build schema for a class. */
@@ -88,7 +88,7 @@ export class ClassValidatorBuilder {
                 default: undefined,
                 transform: undefined,
                 Constructor: undefined,
-                iterateOverData: false,
+                iterateOverData: undefined,
             };
             this.propertyMeta.set(property, propertyMeta);
             meta = propertyMeta;
