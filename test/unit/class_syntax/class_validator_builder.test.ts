@@ -15,7 +15,7 @@ interface TestClass extends Constructor {
 }
 
 function createClass(): TestClass {
-    return class Test {};
+    return class Test {} as TestClass;
 }
 
 describe('ClassValidatorBuilder', (): void => {

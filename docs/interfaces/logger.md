@@ -22,7 +22,7 @@
 
 ▸ **debug**(message: *`string`*, ...args: *`unknown`[]*): `void`
 
-*Defined in [util/log_service.ts:4](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/log_service.ts#L4)*
+*Defined in [util/log_service.ts:4](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L4)*
 
 **Parameters:**
 

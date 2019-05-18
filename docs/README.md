@@ -189,7 +189,7 @@
 
 **Ƭ ArrIterCallback**: *`function`*
 
-*Defined in [misc/typings.ts:60](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L60)*
+*Defined in [misc/typings.ts:60](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L60)*
 
 #### Type declaration
 ▸(elem: *`T`*, index: *`number`*, arr: *`T`[]*): `R`
@@ -211,7 +211,7 @@ ___
 
 **Ƭ AsyncValidationFunction**: *`function`*
 
-*Defined in [core/jbq.ts:11](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L11)*
+*Defined in [core/jbq.ts:11](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L11)*
 
 #### Type declaration
 ▸<`T`>(data: *`T`*): `Promise`<`string` \| `undefined`>
@@ -234,7 +234,7 @@ ___
 
 **Ƭ CallbackFactory**: *`function`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:41](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L41)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:41](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L41)*
 
 Decorator factory that expects function that returns boolean as an argument.
 
@@ -259,7 +259,7 @@ ___
 
 **Ƭ ClassDecoratorParams**: *[`Function`]*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:26](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L26)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:26](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L26)*
 
 ___
 <a id="constructorfactory"></a>
@@ -268,7 +268,7 @@ ___
 
 **Ƭ ConstructorFactory**: *`function`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:39](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L39)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:39](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L39)*
 
 Decorator factory that expects Constructor as an argument.
 
@@ -293,7 +293,7 @@ ___
 
 **Ƭ DataPathChecker**: *`function`*
 
-*Defined in [misc/typings.ts:33](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L33)*
+*Defined in [misc/typings.ts:33](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L33)*
 
 #### Type declaration
 ▸(schemaValue: *`unknown`*): `boolean`
@@ -313,7 +313,7 @@ ___
 
 **Ƭ DataPathResolver**: *`function`*
 
-*Defined in [misc/typings.ts:31](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L31)*
+*Defined in [misc/typings.ts:31](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L31)*
 
 #### Type declaration
 ▸(schemaValue: *[DataPath](interfaces/datapath.md)*): `string`
@@ -333,7 +333,7 @@ ___
 
 **Ƭ Decorator**: *`function`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:32](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L32)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:32](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L32)*
 
 #### Type declaration
 ▸(...args: *[DecoratorParams](#decoratorparams)*): `void`
@@ -353,7 +353,7 @@ ___
 
 **Ƭ DecoratorFactoryB**: *`DecoratorFactoryB<B, T>`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:43](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L43)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:43](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L43)*
 
 ___
 <a id="decoratorparams"></a>
@@ -362,7 +362,7 @@ ___
 
 **Ƭ DecoratorParams**: *[`Function`] \| [PropertyDecoratorParams](#propertydecoratorparams)*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:30](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L30)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:30](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L30)*
 
 ___
 <a id="decoratortypes"></a>
@@ -371,7 +371,7 @@ ___
 
 **Ƭ DecoratorTypes**: *"value" \| "constructor" \| "callback"*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:34](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L34)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:34](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L34)*
 
 ___
 <a id="defaultcallback"></a>
@@ -380,7 +380,7 @@ ___
 
 **Ƭ DefaultCallback**: *`function`*
 
-*Defined in [class_syntax/class_validator_builder.ts:18](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L18)*
+*Defined in [class_syntax/class_validator_builder.ts:18](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L18)*
 
 #### Type declaration
 ▸(data: *`unknown`*): `unknown`
@@ -400,7 +400,7 @@ ___
 
 **Ƭ Macro**: *`function`*
 
-*Defined in [type/object.ts:19](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L19)*
+*Defined in [type/object.ts:19](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L19)*
 
 #### Type declaration
 ▸(p: *[ParseValuesMinMax](interfaces/parsevaluesminmax.md)*, c: *[DataPathChecker](#datapathchecker)*, r: *[DataPathResolver](#datapathresolver)*): `string` \| `undefined`
@@ -422,7 +422,7 @@ ___
 
 **Ƭ ObjWithKeys**: *`object`*
 
-*Defined in [util/type_reflect.ts:3](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/type_reflect.ts#L3)*
+*Defined in [util/type_reflect.ts:3](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L3)*
 
 #### Type declaration
 
@@ -433,7 +433,7 @@ ___
 
 **Ƭ OmitSymbols**: *`Pick`<`T`, `{ [K in keyof T]: K extends symbol ? never : K; }[keyof T]`>*
 
-*Defined in [misc/typings.ts:5](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L5)*
+*Defined in [misc/typings.ts:5](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L5)*
 
 ___
 <a id="option"></a>
@@ -442,7 +442,7 @@ ___
 
 **Ƭ Option**: *`T` \| `undefined`*
 
-*Defined in [misc/typings.ts:3](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L3)*
+*Defined in [misc/typings.ts:3](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L3)*
 
 ___
 <a id="property"></a>
@@ -451,7 +451,7 @@ ___
 
 **Ƭ Property**: *`string` \| `symbol`*
 
-*Defined in [class_syntax/class_validator_builder.ts:16](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L16)*
+*Defined in [class_syntax/class_validator_builder.ts:16](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L16)*
 
 ___
 <a id="propertydecoratorparams"></a>
@@ -460,7 +460,7 @@ ___
 
 **Ƭ PropertyDecoratorParams**: *[`object`, `string` \| `symbol`, `unknown`]*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:28](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L28)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:28](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L28)*
 
 ___
 <a id="schemaminmax"></a>
@@ -469,7 +469,7 @@ ___
 
 **Ƭ SchemaMinMax**: *[SchemaMax](interfaces/schemamax.md) \| [SchemaMin](interfaces/schemamin.md) \| `number` \| [DataPath](interfaces/datapath.md)*
 
-*Defined in [misc/typings.ts:13](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L13)*
+*Defined in [misc/typings.ts:13](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L13)*
 
 ___
 <a id="schemaprops"></a>
@@ -478,7 +478,7 @@ ___
 
 **Ƭ SchemaProps**: *`Exclude`<`undefined` \| `object`, `undefined`>*
 
-*Defined in [class_syntax/class_validator_builder.ts:14](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L14)*
+*Defined in [class_syntax/class_validator_builder.ts:14](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L14)*
 
 ___
 <a id="schemasymbol"></a>
@@ -487,7 +487,7 @@ ___
 
 **Ƭ SchemaSymbol**: *`unique symbol` \| `unique symbol`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:220](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L220)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:220](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L220)*
 
 ___
 <a id="schemavalidator"></a>
@@ -496,7 +496,7 @@ ___
 
 **Ƭ SchemaValidator**: *`function`*
 
-*Defined in [type/schema_validator.ts:41](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L41)*
+*Defined in [type/schema_validator.ts:41](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L41)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -516,7 +516,7 @@ ___
 
 **Ƭ Shape**: *`Pick`<`S`, `{ [K in keyof S]: K extends M ? K : S[K] extends Function ? never : K; }[keyof S]`>*
 
-*Defined in [class_syntax.ts:27](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax.ts#L27)*
+*Defined in [class_syntax.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax.ts#L27)*
 
 Mapped type used to extract properties of a class. Also just a hint for TypeScript.
 
@@ -527,7 +527,7 @@ ___
 
 **Ƭ SyncValidationFunction**: *`function`*
 
-*Defined in [core/jbq.ts:9](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L9)*
+*Defined in [core/jbq.ts:9](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L9)*
 
 #### Type declaration
 ▸<`T`>(data: *`T`*): `string` \| `undefined`
@@ -550,7 +550,7 @@ ___
 
 **Ƭ TransformCallback**: *`function`*
 
-*Defined in [class_syntax/class_validator_builder.ts:19](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L19)*
+*Defined in [class_syntax/class_validator_builder.ts:19](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L19)*
 
 #### Type declaration
 ▸(propertyValue: *`unknown`*, data: *`unknown`*): `unknown`
@@ -571,7 +571,7 @@ ___
 
 **Ƭ TypePrototype**: *[TypePrototypeMethods](#typeprototypemethods)<[OmitSymbols](#omitsymbols)<`T`>> & [TypePrototypeSymbols](interfaces/typeprototypesymbols.md)<[OmitSymbols](#omitsymbols)<`T`>>*
 
-*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:24](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_prototype.interface.ts#L24)*
+*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:24](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_prototype.interface.ts#L24)*
 
 ___
 <a id="typeprototypemethods"></a>
@@ -580,7 +580,7 @@ ___
 
 **Ƭ TypePrototypeMethods**: *`object`*
 
-*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:9](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_prototype.interface.ts#L9)*
+*Defined in [core/type_wrapper/interface/type_prototype.interface.ts:9](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_prototype.interface.ts#L9)*
 
 Type that represents all regular methods of TypePrototype that are used during creation of validation function.
 
@@ -593,7 +593,7 @@ ___
 
 **Ƭ TypeValidationMethod**: *`function`*
 
-*Defined in [core/type_wrapper/interface/type_method.interface.ts:34](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_method.interface.ts#L34)*
+*Defined in [core/type_wrapper/interface/type_method.interface.ts:34](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_method.interface.ts#L34)*
 
 Alias to any function that is used to validate schema input.
 
@@ -615,7 +615,7 @@ ___
 
 **Ƭ ValidationFn**: *`ValidationFn<T>`*
 
-*Defined in [core/jbq.ts:13](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L13)*
+*Defined in [core/jbq.ts:13](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L13)*
 
 ___
 <a id="validators"></a>
@@ -624,7 +624,7 @@ ___
 
 **Ƭ Validators**: *`object`*
 
-*Defined in [core/jbq.ts:19](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L19)*
+*Defined in [core/jbq.ts:19](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L19)*
 
 #### Type declaration
 
@@ -635,7 +635,7 @@ ___
 
 **Ƭ ValueFactory**: *`function`*
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:37](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L37)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:37](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L37)*
 
 Decorator factory that expects value of type T as an argument.
 
@@ -660,7 +660,7 @@ ___
 
 **● AsyncFnConstructor**: *`any`* =  Object.getPrototypeOf(async function*(): unknown {}).constructor
 
-*Defined in [core/jbq.ts:7](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L7)*
+*Defined in [core/jbq.ts:7](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L7)*
 
 ___
 <a id="constructor_name"></a>
@@ -669,7 +669,7 @@ ___
 
 **● CONSTRUCTOR_NAME**: *"constructorName"* = "constructorName"
 
-*Defined in [misc/constants.ts:56](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L56)*
+*Defined in [misc/constants.ts:56](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L56)*
 
 ___
 <a id="create_instance"></a>
@@ -678,7 +678,7 @@ ___
 
 **● CREATE_INSTANCE**: *`unique symbol`* =  Symbol('create_instance')
 
-*Defined in [class_syntax/class_validator_builder.ts:7](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L7)*
+*Defined in [class_syntax/class_validator_builder.ts:7](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L7)*
 
 ___
 <a id="default_async_interval"></a>
@@ -687,7 +687,7 @@ ___
 
 **● DEFAULT_ASYNC_INTERVAL**: *`50`* = 50
 
-*Defined in [misc/constants.ts:188](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L188)*
+*Defined in [misc/constants.ts:188](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L188)*
 
 Default value for the `JBQOptions.asyncInterval` property.
 
@@ -698,7 +698,7 @@ ___
 
 **● EVERY**: *"every"* = "every"
 
-*Defined in [misc/constants.ts:66](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L66)*
+*Defined in [misc/constants.ts:66](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L66)*
 
 ___
 <a id="includes"></a>
@@ -707,7 +707,7 @@ ___
 
 **● INCLUDES**: *"includes"* = "includes"
 
-*Defined in [misc/constants.ts:63](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L63)*
+*Defined in [misc/constants.ts:63](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L63)*
 
 ___
 <a id="instance_of"></a>
@@ -716,7 +716,7 @@ ___
 
 **● INSTANCE_OF**: *"instanceOf"* = "instanceOf"
 
-*Defined in [misc/constants.ts:57](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L57)*
+*Defined in [misc/constants.ts:57](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L57)*
 
 ___
 <a id="key_count"></a>
@@ -725,7 +725,7 @@ ___
 
 **● KEY_COUNT**: *"keyCount"* = "keyCount"
 
-*Defined in [misc/constants.ts:61](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L61)*
+*Defined in [misc/constants.ts:61](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L61)*
 
 ___
 <a id="len"></a>
@@ -734,7 +734,7 @@ ___
 
 **● LEN**: *"len"* = "len"
 
-*Defined in [misc/constants.ts:70](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L70)*
+*Defined in [misc/constants.ts:70](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L70)*
 
 ___
 <a id="multiple_of"></a>
@@ -743,7 +743,7 @@ ___
 
 **● MULTIPLE_OF**: *"multipleOf"* = "multipleOf"
 
-*Defined in [misc/constants.ts:58](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L58)*
+*Defined in [misc/constants.ts:58](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L58)*
 
 ___
 <a id="one_of"></a>
@@ -752,7 +752,7 @@ ___
 
 **● ONE_OF**: *"oneOf"* = "oneOf"
 
-*Defined in [misc/constants.ts:64](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L64)*
+*Defined in [misc/constants.ts:64](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L64)*
 
 ___
 <a id="properties"></a>
@@ -761,7 +761,7 @@ ___
 
 **● PROPERTIES**: *"properties"* = "properties"
 
-*Defined in [misc/constants.ts:59](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L59)*
+*Defined in [misc/constants.ts:59](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L59)*
 
 ___
 <a id="prop_count"></a>
@@ -770,7 +770,7 @@ ___
 
 **● PROP_COUNT**: *"propCount"* = "propCount"
 
-*Defined in [misc/constants.ts:60](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L60)*
+*Defined in [misc/constants.ts:60](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L60)*
 
 ___
 <a id="prop_data_path"></a>
@@ -779,7 +779,7 @@ ___
 
 **● PROP_DATA_PATH**: *"$dataPath"* = "$dataPath"
 
-*Defined in [misc/constants.ts:185](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L185)*
+*Defined in [misc/constants.ts:185](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L185)*
 
 ___
 <a id="regex"></a>
@@ -788,7 +788,7 @@ ___
 
 **● REGEX**: *"regex"* = "regex"
 
-*Defined in [misc/constants.ts:65](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L65)*
+*Defined in [misc/constants.ts:65](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L65)*
 
 ___
 <a id="required"></a>
@@ -797,7 +797,7 @@ ___
 
 **● REQUIRED**: *"required"* = "required"
 
-*Defined in [misc/constants.ts:62](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L62)*
+*Defined in [misc/constants.ts:62](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L62)*
 
 ___
 <a id="schema"></a>
@@ -806,7 +806,7 @@ ___
 
 **● SCHEMA**: *`unique symbol`* =  Symbol('schema')
 
-*Defined in [class_syntax/class_validator_builder.ts:6](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L6)*
+*Defined in [class_syntax/class_validator_builder.ts:6](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L6)*
 
 ___
 <a id="schema_path_separator"></a>
@@ -815,7 +815,7 @@ ___
 
 **● SCHEMA_PATH_SEPARATOR**: *"/"* = "/"
 
-*Defined in [misc/constants.ts:183](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L183)*
+*Defined in [misc/constants.ts:183](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L183)*
 
 ___
 <a id="some"></a>
@@ -824,7 +824,7 @@ ___
 
 **● SOME**: *"some"* = "some"
 
-*Defined in [misc/constants.ts:69](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L69)*
+*Defined in [misc/constants.ts:69](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L69)*
 
 ___
 <a id="sym_method_closure"></a>
@@ -833,7 +833,7 @@ ___
 
 **● SYM_METHOD_CLOSURE**: *`unique symbol`* =  Symbol.for('type_method_closure')
 
-*Defined in [misc/constants.ts:10](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L10)*
+*Defined in [misc/constants.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L10)*
 
 If TypeMethod function have this property set to true then code generator will use a reference to this function in validation function instead of extracting its body. This allows to use external variables during validation what would not be possible in some cases if the function body would be stringified.
 
@@ -846,7 +846,7 @@ ___
 
 **● SYM_METHOD_MACRO**: *`unique symbol`* =  Symbol.for('type_method_macro')
 
-*Defined in [misc/constants.ts:20](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L20)*
+*Defined in [misc/constants.ts:20](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L20)*
 
 If set to true defines type of TypeMethod function that will return a chunk of validation function. So instead of being parsed this function is simply invoked with some Code Generator helper functions passed as arguments. See [VALUE](https://github.com/krnik/jbq/blob/master/src/types/Number.ts) method example.
 
@@ -859,7 +859,7 @@ ___
 
 **● SYM_SCHEMA_COLLECTION**: *`unique symbol`* =  Symbol.for('schema_collection')
 
-*Defined in [misc/constants.ts:116](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L116)*
+*Defined in [misc/constants.ts:116](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L116)*
 
 Similar to _SYM\_SCHEMA\_PROPERTIES_. _SYM\_SCHEMA\_COLLECTION_ expects schema object as a value while _SYM\_SCHEMA\_PROPERTIES_ expects object which properties are different subschemas.
 
@@ -886,7 +886,7 @@ ___
 
 **● SYM_SCHEMA_PROPERTIES**: *`unique symbol`* =  Symbol.for('schema_properties')
 
-*Defined in [misc/constants.ts:97](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L97)*
+*Defined in [misc/constants.ts:97](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L97)*
 
 Schema property used to indicate that the follownig schema expects data to have some properties to validate. Used to describe nested schemas.
 
@@ -912,7 +912,7 @@ ___
 
 **● SYM_TYPE_FOR_LOOP**: *`unique symbol`* =  Symbol.for('type_for_loop')
 
-*Defined in [misc/constants.ts:54](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L54)*
+*Defined in [misc/constants.ts:54](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L54)*
 
 Used to indicate if collection can be indexed by number indices.
 
@@ -927,7 +927,7 @@ ___
 
 **● SYM_TYPE_KEY_ORDER**: *`unique symbol`* =  Symbol.for('type_key_order')
 
-*Defined in [misc/constants.ts:33](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L33)*
+*Defined in [misc/constants.ts:33](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L33)*
 
 Determines order in which the type methods are used during creation of validation function. If not defined, the order will depend on ECMASCript implementation.
 
@@ -942,7 +942,7 @@ ___
 
 **● SYM_TYPE_VALIDATE**: *`unique symbol`* =  Symbol.for('type_validate')
 
-*Defined in [misc/constants.ts:42](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L42)*
+*Defined in [misc/constants.ts:42](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L42)*
 
 Part of the TypePrototype/TypeDefinition. Contains methods that are used to validate schema input. Should throw on incorrect schema input value.
 
@@ -955,7 +955,7 @@ ___
 
 **● TOKEN_BREAK**: *"//{break}"* = "//{break}"
 
-*Defined in [misc/constants.ts:121](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L121)*
+*Defined in [misc/constants.ts:121](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L121)*
 
 Token that is replaced by labeled break statement during compilation.
 
@@ -966,7 +966,7 @@ ___
 
 **● TOKEN_EXPR_REGEX**: *`RegExp`* =  /{{(.*?)}}/g
 
-*Defined in [misc/constants.ts:132](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L132)*
+*Defined in [misc/constants.ts:132](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L132)*
 
 Regular expression used to find templte expressions during compilation. They're executed during compile time and should return values that are possible to represent as a literal.
 
@@ -979,7 +979,7 @@ ___
 
 **● TYPE**: *"type"* = "type"
 
-*Defined in [misc/constants.ts:68](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L68)*
+*Defined in [misc/constants.ts:68](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L68)*
 
 ___
 <a id="types"></a>
@@ -988,7 +988,7 @@ ___
 
 **● TYPES**: *[TypeWrapper](classes/typewrapper.md)* =  jbqTypes
 
-*Defined in [class_syntax/build_method_compile.ts:9](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/build_method_compile.ts#L9)*
+*Defined in [class_syntax/build_method_compile.ts:9](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/build_method_compile.ts#L9)*
 
 ___
 <a id="value"></a>
@@ -997,7 +997,7 @@ ___
 
 **● VALUE**: *"value"* = "value"
 
-*Defined in [misc/constants.ts:67](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L67)*
+*Defined in [misc/constants.ts:67](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L67)*
 
 ___
 <a id="array"></a>
@@ -1006,7 +1006,7 @@ ___
 
 **● array**: *`function`* =  decoratorFactory(TYPE)(TYPE_NAME.ARRAY)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:110](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L110)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:110](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L110)*
 
 Shorthand `@type` decorator that assigns schema `type` property to `array`
 
@@ -1028,7 +1028,7 @@ ___
 
 **● boolean**: *`function`* =  decoratorFactory(TYPE)(TYPE_NAME.BOOLEAN)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:113](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L113)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:113](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L113)*
 
 Shorthand `@type` decorator that assigns schema `type` property to `boolean`
 
@@ -1050,7 +1050,7 @@ ___
 
 **● collection**: *`function`* =  decoratorSubSchemaFactory(SYM_SCHEMA_COLLECTION)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:295](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L295)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:295](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L295)*
 
 Appends `Symbol.for('schema_collection')` to the schema.
 
@@ -1078,7 +1078,7 @@ Examples
      public votes2!: number[];
  }
 
- compile(Poll);
+ compileClass(Poll);
 
  const poll = new Poll().build({ votes: [100, 112] });
  poll.votes; // [100, 112]
@@ -1105,7 +1105,7 @@ ___
 
 **● constructorName**: *`function`* =  decoratorFactory<string>(CONSTRUCTOR_NAME)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:164](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L164)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:164](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L164)*
 
 Assigns schema `constructorName` property to provided value
 
@@ -1127,7 +1127,7 @@ ___
 
 **● every**: *`function`* =  decoratorFactory<never, 'callback'>(EVERY)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:128](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L128)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:128](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L128)*
 
 Assigns schema `every` property to provided callback
 
@@ -1152,7 +1152,7 @@ ___
 
 **● includes**: *`function`* =  decoratorFactory(INCLUDES)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:134](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L134)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:134](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L134)*
 
 Assigns schema `includes` property to provided value
 
@@ -1174,7 +1174,7 @@ ___
 
 **● instanceOf**: *`function`* =  decoratorFactory<never, 'constructor'>(INSTANCE_OF)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:161](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L161)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:161](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L161)*
 
 Assigns schema `instanceOf` property to provided value
 
@@ -1199,7 +1199,7 @@ ___
 
 **● jbqTypes**: *[TypeWrapper](classes/typewrapper.md)* =  createTypes()
 
-*Defined in [type/mod.ts:20](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/mod.ts#L20)*
+*Defined in [type/mod.ts:20](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/mod.ts#L20)*
 
 ___
 <a id="keycount"></a>
@@ -1208,7 +1208,7 @@ ___
 
 **● keyCount**: *`function`* =  decoratorFactory<ParseValuesMinMax['schemaValue']>(KEY_COUNT)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:152](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L152)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:152](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L152)*
 
 Assigns schema `keyCount` property to provided value
 
@@ -1230,7 +1230,7 @@ ___
 
 **● len**: *`function`* =  decoratorFactory<ParseValuesMinMax['schemaValue']>(LEN)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:137](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L137)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:137](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L137)*
 
 Assigns schema `len` property to provided value
 
@@ -1252,7 +1252,7 @@ ___
 
 **● multipleOf**: *`function`* =  decoratorFactory<number>(MULTIPLE_OF)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:143](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L143)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:143](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L143)*
 
 Assigns schema `multipleOf` property to provided number
 
@@ -1274,7 +1274,7 @@ ___
 
 **● number**: *`function`* =  decoratorFactory(TYPE)(TYPE_NAME.NUMBER)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:116](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L116)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:116](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L116)*
 
 Shorthand `@type` decorator that assigns schema `type` property to `number`
 
@@ -1296,7 +1296,7 @@ ___
 
 **● object**: *`function`* =  decoratorFactory(TYPE)(TYPE_NAME.OBJECT)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:119](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L119)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:119](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L119)*
 
 Shorthand `@type` decorator that assigns schema `type` property to `object`
 
@@ -1318,7 +1318,7 @@ ___
 
 **● oneOf**: *`function`* =  decoratorFactory<string[] | number[]>(ONE_OF)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:149](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L149)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:149](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L149)*
 
 Assigns schema `oneOf` property to provided value
 
@@ -1340,7 +1340,7 @@ ___
 
 **● optional**: *`function`* =  decoratorFactory(REQUIRED)(false)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:125](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L125)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:125](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L125)*
 
 Assigns schema `required` property to `false`
 
@@ -1362,7 +1362,7 @@ ___
 
 **● propCount**: *`function`* =  decoratorFactory<ParseValuesMinMax['schemaValue']>(PROP_COUNT)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:155](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L155)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:155](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L155)*
 
 Assigns schema `propCount` property to provided value
 
@@ -1384,7 +1384,7 @@ ___
 
 **● properties**: *`function`* =  decoratorFactory<(string | symbol | number)[]>(PROPERTIES)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:158](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L158)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:158](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L158)*
 
 Assigns schema `properties` property to provided value
 
@@ -1406,7 +1406,7 @@ ___
 
 **● regex**: *`function`* =  decoratorFactory<RegExp>(REGEX)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:146](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L146)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:146](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L146)*
 
 Assigns schema `regex` property to provided RegExp instance
 
@@ -1428,7 +1428,7 @@ ___
 
 **● setLogger**: *[setLogger](classes/logservice.md#setlogger)* =  LogService.setLogger
 
-*Defined in [lib.ts:5](https://github.com/krnik/vjs-validator/blob/ac18222/src/lib.ts#L5)*
+*Defined in [lib.ts:5](https://github.com/krnik/vjs-validator/blob/08b1300/src/lib.ts#L5)*
 
 ___
 <a id="shape"></a>
@@ -1437,7 +1437,7 @@ ___
 
 **● shape**: *`function`* =  decoratorSubSchemaFactory(SYM_SCHEMA_PROPERTIES)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:259](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L259)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:259](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L259)*
 
 Extends schema with provided class' schema.
 
@@ -1484,7 +1484,7 @@ ___
 
 **● some**: *`function`* =  decoratorFactory<never, 'callback'>(SOME)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:131](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L131)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:131](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L131)*
 
 Assigns schema `some` property to provided callback
 
@@ -1509,7 +1509,7 @@ ___
 
 **● string**: *`function`* =  decoratorFactory(TYPE)(TYPE_NAME.STRING)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:122](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L122)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:122](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L122)*
 
 Shorthand `@type` decorator that assigns schema `type` property to `string`
 
@@ -1531,7 +1531,7 @@ ___
 
 **● type**: *`function`* =  decoratorFactory<string>(TYPE)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:104](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L104)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:104](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L104)*
 
 _Constructor / Property Decorator_
 
@@ -1585,7 +1585,7 @@ ___
 
 **● value**: *`function`* =  decoratorFactory<ParseValuesMinMax['schemaValue'] | boolean>(VALUE)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:140](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L140)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:140](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L140)*
 
 Assigns schema `value` property to provided value
 
@@ -1610,7 +1610,7 @@ ___
 
 ▸ **any**(typeName: *`string`*, methodName: *`string`*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:197](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L197)*
+*Defined in [type/schema_validator.ts:197](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L197)*
 
 **Parameters:**
 
@@ -1628,7 +1628,7 @@ ___
 
 ▸ **arrayOf**<`T`>(typeName: *`string`*, methodName: *`string`*, elementType: *`T`*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:171](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L171)*
+*Defined in [type/schema_validator.ts:171](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L171)*
 
 **Type parameters:**
 
@@ -1650,7 +1650,7 @@ ___
 
 ▸ **arrayOfPropertyNames**(typeName: *`string`*, methodName: *`string`*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:142](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L142)*
+*Defined in [type/schema_validator.ts:142](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L142)*
 
 **Parameters:**
 
@@ -1668,7 +1668,7 @@ ___
 
 ▸ **compileClass**(constructor: *[Constructor](interfaces/constructor.md)*, options?: *[CompileOptions](interfaces/compileoptions.md)*): `void`
 
-*Defined in [class_syntax/build_method_compile.ts:36](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/build_method_compile.ts#L36)*
+*Defined in [class_syntax/build_method_compile.ts:36](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/build_method_compile.ts#L36)*
 
 **Parameters:**
 
@@ -1686,7 +1686,7 @@ ___
 
 ▸ **createPropKeyCountMacro**(resolveDataVarCmp: *`function`*): [Macro](#macro)
 
-*Defined in [type/object.ts:21](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L21)*
+*Defined in [type/object.ts:21](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L21)*
 
 **Parameters:**
 
@@ -1703,7 +1703,7 @@ ___
 
 ▸ **createTypes**(): [TypeWrapper](classes/typewrapper.md)
 
-*Defined in [type/mod.ts:10](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/mod.ts#L10)*
+*Defined in [type/mod.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/mod.ts#L10)*
 
 **Returns:** [TypeWrapper](classes/typewrapper.md)
 
@@ -1714,7 +1714,7 @@ ___
 
 ▸ **dataPath**(schemaValue: *`unknown`*): `boolean`
 
-*Defined in [type/schema_validator.ts:32](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L32)*
+*Defined in [type/schema_validator.ts:32](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L32)*
 
 **Parameters:**
 
@@ -1731,7 +1731,7 @@ ___
 
 ▸ **decoratorFactory**<`T`,`BASE`>(schemaProperty: *`string` \| `symbol`*): [DecoratorFactoryB](#decoratorfactoryb)<`BASE`, `T`>
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:55](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L55)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:55](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L55)*
 
 **Type parameters:**
 
@@ -1752,7 +1752,7 @@ ___
 
 ▸ **decoratorSubSchemaFactory**(schemaSymbol: *[SchemaSymbol](#schemasymbol)*): [ConstructorFactory](#constructorfactory)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:222](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L222)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:222](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L222)*
 
 **Parameters:**
 
@@ -1769,7 +1769,7 @@ ___
 
 ▸ **instantiate**(constructor: *[Constructor](interfaces/constructor.md)*): `void`
 
-*Defined in [class_syntax/decorator/class_decorator.ts:44](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/class_decorator.ts#L44)*
+*Defined in [class_syntax/decorator/class_decorator.ts:46](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/class_decorator.ts#L46)*
 
 _Constructor decorator._
 
@@ -1798,6 +1798,8 @@ Examples
      public name!: Shape<Name>;
  }
 
+ compileClass(User);
+
  new User().build({});   // throws -> no `name` is not an object
  new User().build()      // throws -> data is not an object
 
@@ -1825,7 +1827,7 @@ ___
 
 ▸ **isClassDecorator**(args: *[DecoratorParams](#decoratorparams)*): `boolean`
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:51](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L51)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:51](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L51)*
 
 **Parameters:**
 
@@ -1842,7 +1844,7 @@ ___
 
 ▸ **isInstance**(typeName: *`string`*, methodName: *`string`*, constructor: *[Constructor](interfaces/constructor.md)*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:64](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L64)*
+*Defined in [type/schema_validator.ts:64](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L64)*
 
 **Parameters:**
 
@@ -1861,7 +1863,7 @@ ___
 
 ▸ **jbq**<`T`,`K`,`O`>(types: *[TypeWrapper](classes/typewrapper.md)*, schemas: *`T`*, options?: *[O]()*): [Validators](#validators)<`T`, `O`>
 
-*Defined in [core/jbq.ts:22](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/jbq.ts#L22)*
+*Defined in [core/jbq.ts:22](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/jbq.ts#L22)*
 
 Compiles `schemas` using `types` instance as source of validation code.
 
@@ -1887,7 +1889,7 @@ ___
 
 ▸ **minMaxOrNumber**(typeName: *`string`*, methodName: *`string`*, acceptDataPath?: *`undefined` \| `false` \| `true`*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:82](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L82)*
+*Defined in [type/schema_validator.ts:82](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L82)*
 
 **Parameters:**
 
@@ -1906,7 +1908,7 @@ ___
 
 ▸ **primitive**<`T`>(typeName: *`string`*, methodName: *`string`*, type: *`T`*, acceptDataPath?: *`undefined` \| `false` \| `true`*): [SchemaValidator](#schemavalidator)
 
-*Defined in [type/schema_validator.ts:43](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L43)*
+*Defined in [type/schema_validator.ts:43](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L43)*
 
 **Type parameters:**
 
@@ -1929,7 +1931,7 @@ ___
 
 ▸ **schema**(schemaObject: *[Schema](interfaces/schema.md)*): [Decorator](#decorator)
 
-*Defined in [class_syntax/decorator/validation_decorator.ts:195](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/validation_decorator.ts#L195)*
+*Defined in [class_syntax/decorator/validation_decorator.ts:195](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/validation_decorator.ts#L195)*
 
 Assigns received schemaObject to the target schema. Always succeeds (does not check if properties exists or not).
 
@@ -1975,7 +1977,7 @@ ___
 
 ▸ **setDefaultTypes**(types: *[TypeWrapper](classes/typewrapper.md)*): `void`
 
-*Defined in [class_syntax/build_method_compile.ts:20](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/build_method_compile.ts#L20)*
+*Defined in [class_syntax/build_method_compile.ts:20](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/build_method_compile.ts#L20)*
 
 Permanently changes the types used provided to the JBQ compilation function by `@compile()` decorator.
 
@@ -1998,7 +2000,7 @@ ___
 
 ▸ **transform**<`P`,`D`,`R`>(callback: *`function`*): `PropertyDecorator`
 
-*Defined in [class_syntax/decorator/alteration_decorator.ts:103](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/alteration_decorator.ts#L103)*
+*Defined in [class_syntax/decorator/alteration_decorator.ts:103](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/alteration_decorator.ts#L103)*
 
 **Property decorator.**
 
@@ -2021,7 +2023,7 @@ Examples
      veryLate!: boolean;
  }
 
- compile(IAmLate);
+ compileClass(IAmLate);
 
  const latePerson = new IAmLate().build();
  latePerson;         // Promise<IAmLate>
@@ -2031,7 +2033,7 @@ Examples
      \@transform(() => true)
      isSync!: boolean;
  }
- compile(TotallySync);
+ compileClass(TotallySync);
 
  const syncInstance = new TotallySync().build();
  syncInstance; // TotallySync
@@ -2061,7 +2063,7 @@ ___
 
 ▸ **withDefault**<`T`,`R`>(buildDefault: *`function`*): `PropertyDecorator`
 
-*Defined in [class_syntax/decorator/alteration_decorator.ts:50](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/decorator/alteration_decorator.ts#L50)*
+*Defined in [class_syntax/decorator/alteration_decorator.ts:50](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/decorator/alteration_decorator.ts#L50)*
 
 **Property decorator.**
 
@@ -2092,7 +2094,7 @@ Examples
      holdsPromise!: Promise<true>;
  }
 
- compile(Person);
+ compileClass(Person);
 
  const data = {};
  const person = new Person().build(data);
@@ -2128,7 +2130,7 @@ ___
 
 **LOGGER**: *`object`*
 
-*Defined in [util/log_service.ts:7](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/log_service.ts#L7)*
+*Defined in [util/log_service.ts:7](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L7)*
 
 <a id="logger.debug"></a>
 
@@ -2136,7 +2138,7 @@ ___
 
 ▸ **debug**(): `void`
 
-*Defined in [util/log_service.ts:7](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/log_service.ts#L7)*
+*Defined in [util/log_service.ts:7](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L7)*
 
 **Returns:** `void`
 
@@ -2149,7 +2151,7 @@ ___
 
 **SchemaValidationError**: *`object`*
 
-*Defined in [type/schema_validator.ts:6](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L6)*
+*Defined in [type/schema_validator.ts:6](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L6)*
 
 <a id="schemavalidationerror.invalidschematype"></a>
 
@@ -2157,7 +2159,7 @@ ___
 
 ▸ **invalidSchemaType**(typeName: *`string`*, methodName: *`string`*, expectedType: *`string`*, type: *`string`*): `Error`
 
-*Defined in [type/schema_validator.ts:15](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L15)*
+*Defined in [type/schema_validator.ts:15](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L15)*
 
 **Parameters:**
 
@@ -2177,7 +2179,7 @@ ___
 
 ▸ **missingArgument**(typeName: *`string`*, methodName: *`string`*): `Error`
 
-*Defined in [type/schema_validator.ts:7](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L7)*
+*Defined in [type/schema_validator.ts:7](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L7)*
 
 **Parameters:**
 
@@ -2197,7 +2199,7 @@ ___
 
 **TypeAny**: *`object`*
 
-*Defined in [type/any.ts:12](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/any.ts#L12)*
+*Defined in [type/any.ts:12](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/any.ts#L12)*
 
 <a id="typeany.__computed"></a>
 
@@ -2205,7 +2207,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, _$DATA: *`unknown`*): `void`
 
-*Defined in [type/any.ts:14](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/any.ts#L14)*
+*Defined in [type/any.ts:14](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/any.ts#L14)*
 
 **Parameters:**
 
@@ -2222,8 +2224,8 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.primitive(TYPE_NAME.ANY, REQUIRED, 'boolean')
 
-*Defined in [type/any.ts:26](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/any.ts#L26)*
-*Defined in [type/any.ts:27](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/any.ts#L27)*
+*Defined in [type/any.ts:26](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/any.ts#L26)*
+*Defined in [type/any.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/any.ts#L27)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2247,7 +2249,7 @@ ___
 
 **TypeArray**: *`object`*
 
-*Defined in [type/array.ts:26](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L26)*
+*Defined in [type/array.ts:26](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L26)*
 
 <a id="typearray.__computed"></a>
 
@@ -2255,7 +2257,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, $DATA: *`unknown`*): `string` \| `void`
 
-*Defined in [type/array.ts:27](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L27)*
+*Defined in [type/array.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L27)*
 
 **Parameters:**
 
@@ -2272,11 +2274,11 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.any(TYPE_NAME.ARRAY, INCLUDES)
 
-*Defined in [type/array.ts:156](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L156)*
-*Defined in [type/array.ts:157](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L157)*
-*Defined in [type/array.ts:158](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L158)*
-*Defined in [type/array.ts:159](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L159)*
-*Defined in [type/array.ts:160](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/array.ts#L160)*
+*Defined in [type/array.ts:156](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L156)*
+*Defined in [type/array.ts:157](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L157)*
+*Defined in [type/array.ts:158](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L158)*
+*Defined in [type/array.ts:159](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L159)*
+*Defined in [type/array.ts:160](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/array.ts#L160)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2300,7 +2302,7 @@ ___
 
 **TypeBoolean**: *`object`*
 
-*Defined in [type/boolean.ts:4](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/boolean.ts#L4)*
+*Defined in [type/boolean.ts:4](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/boolean.ts#L4)*
 
 <a id="typeboolean.__computed"></a>
 
@@ -2308,7 +2310,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, $DATA: *`unknown`*): `string` \| `void`
 
-*Defined in [type/boolean.ts:5](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/boolean.ts#L5)*
+*Defined in [type/boolean.ts:5](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/boolean.ts#L5)*
 
 **Parameters:**
 
@@ -2325,8 +2327,8 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.primitive(TYPE_NAME.BOOLEAN, VALUE, 'boolean', true)
 
-*Defined in [type/boolean.ts:14](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/boolean.ts#L14)*
-*Defined in [type/boolean.ts:15](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/boolean.ts#L15)*
+*Defined in [type/boolean.ts:14](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/boolean.ts#L14)*
+*Defined in [type/boolean.ts:15](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/boolean.ts#L15)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2350,7 +2352,7 @@ ___
 
 **TypeNumber**: *`object`*
 
-*Defined in [type/number.ts:17](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L17)*
+*Defined in [type/number.ts:17](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L17)*
 
 <a id="typenumber.__computed"></a>
 
@@ -2358,7 +2360,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, $DATA: *`unknown`*): `string` \| `void`
 
-*Defined in [type/number.ts:18](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L18)*
+*Defined in [type/number.ts:18](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L18)*
 
 **Parameters:**
 
@@ -2375,10 +2377,10 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.arrayOf(TYPE_NAME.NUMBER, ONE_OF, 'number')
 
-*Defined in [type/number.ts:120](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L120)*
-*Defined in [type/number.ts:121](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L121)*
-*Defined in [type/number.ts:122](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L122)*
-*Defined in [type/number.ts:123](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/number.ts#L123)*
+*Defined in [type/number.ts:120](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L120)*
+*Defined in [type/number.ts:121](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L121)*
+*Defined in [type/number.ts:122](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L122)*
+*Defined in [type/number.ts:123](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/number.ts#L123)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2402,7 +2404,7 @@ ___
 
 **TypeObject**: *`object`*
 
-*Defined in [type/object.ts:113](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L113)*
+*Defined in [type/object.ts:113](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L113)*
 
 <a id="typeobject.__computed"></a>
 
@@ -2410,7 +2412,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, $DATA: *`unknown`*): `string` \| `void`
 
-*Defined in [type/object.ts:114](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L114)*
+*Defined in [type/object.ts:114](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L114)*
 
 **Parameters:**
 
@@ -2427,12 +2429,12 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true)
 
-*Defined in [type/object.ts:137](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L137)*
-*Defined in [type/object.ts:138](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L138)*
-*Defined in [type/object.ts:139](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L139)*
-*Defined in [type/object.ts:140](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L140)*
-*Defined in [type/object.ts:141](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L141)*
-*Defined in [type/object.ts:142](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/object.ts#L142)*
+*Defined in [type/object.ts:137](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L137)*
+*Defined in [type/object.ts:138](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L138)*
+*Defined in [type/object.ts:139](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L139)*
+*Defined in [type/object.ts:140](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L140)*
+*Defined in [type/object.ts:141](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L141)*
+*Defined in [type/object.ts:142](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/object.ts#L142)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2456,7 +2458,7 @@ ___
 
 **TypeString**: *`object`*
 
-*Defined in [type/string.ts:17](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L17)*
+*Defined in [type/string.ts:17](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L17)*
 
 <a id="typestring.__computed"></a>
 
@@ -2464,7 +2466,7 @@ ___
 
 ▸ **__computed**(_schemaValue: *`string`*, $DATA: *`unknown`*): `string` \| `void`
 
-*Defined in [type/string.ts:18](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L18)*
+*Defined in [type/string.ts:18](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L18)*
 
 **Parameters:**
 
@@ -2481,10 +2483,10 @@ ___
 
 **● __computed**: *`function`* =  schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string')
 
-*Defined in [type/string.ts:123](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L123)*
-*Defined in [type/string.ts:124](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L124)*
-*Defined in [type/string.ts:125](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L125)*
-*Defined in [type/string.ts:126](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/string.ts#L126)*
+*Defined in [type/string.ts:123](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L123)*
+*Defined in [type/string.ts:124](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L124)*
+*Defined in [type/string.ts:125](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L125)*
+*Defined in [type/string.ts:126](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/string.ts#L126)*
 
 #### Type declaration
 ▸(v: *`unknown`*): `void`
@@ -2508,7 +2510,7 @@ ___
 
 **schemaValidate**: *`object`*
 
-*Defined in [type/schema_validator.ts:205](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L205)*
+*Defined in [type/schema_validator.ts:205](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L205)*
 
 <a id="schemavalidate.any"></a>
 
@@ -2516,7 +2518,7 @@ ___
 
 **● any**: *[any](#any)*
 
-*Defined in [type/schema_validator.ts:206](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L206)*
+*Defined in [type/schema_validator.ts:206](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L206)*
 
 ___
 <a id="schemavalidate.arrayof"></a>
@@ -2525,7 +2527,7 @@ ___
 
 **● arrayOf**: *[arrayOf](#arrayof)*
 
-*Defined in [type/schema_validator.ts:207](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L207)*
+*Defined in [type/schema_validator.ts:207](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L207)*
 
 ___
 <a id="schemavalidate.arrayofpropertynames"></a>
@@ -2534,7 +2536,7 @@ ___
 
 **● arrayOfPropertyNames**: *[arrayOfPropertyNames](#arrayofpropertynames)*
 
-*Defined in [type/schema_validator.ts:212](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L212)*
+*Defined in [type/schema_validator.ts:212](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L212)*
 
 ___
 <a id="schemavalidate.datapath"></a>
@@ -2543,7 +2545,7 @@ ___
 
 **● dataPath**: *[dataPath](#datapath)*
 
-*Defined in [type/schema_validator.ts:208](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L208)*
+*Defined in [type/schema_validator.ts:208](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L208)*
 
 ___
 <a id="schemavalidate.isinstance"></a>
@@ -2552,7 +2554,7 @@ ___
 
 **● isInstance**: *[isInstance](#isinstance)*
 
-*Defined in [type/schema_validator.ts:210](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L210)*
+*Defined in [type/schema_validator.ts:210](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L210)*
 
 ___
 <a id="schemavalidate.minmaxornumber"></a>
@@ -2561,7 +2563,7 @@ ___
 
 **● minMaxOrNumber**: *[minMaxOrNumber](#minmaxornumber)*
 
-*Defined in [type/schema_validator.ts:211](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L211)*
+*Defined in [type/schema_validator.ts:211](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L211)*
 
 ___
 <a id="schemavalidate.primitive"></a>
@@ -2570,7 +2572,7 @@ ___
 
 **● primitive**: *[primitive](#primitive)*
 
-*Defined in [type/schema_validator.ts:209](https://github.com/krnik/vjs-validator/blob/ac18222/src/type/schema_validator.ts#L209)*
+*Defined in [type/schema_validator.ts:209](https://github.com/krnik/vjs-validator/blob/08b1300/src/type/schema_validator.ts#L209)*
 
 ___
 

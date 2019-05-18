@@ -28,7 +28,7 @@
 
 ▸ **invalidMethodSymbols**(typeName: *`string`*, methodName: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:28](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L28)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:28](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L28)*
 
 **Parameters:**
 
@@ -46,7 +46,7 @@ ___
 
 ▸ **invalidProperty**(typeName: *`string`*, propertyName: *`string`*, desired: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:19](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L19)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:19](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L19)*
 
 **Parameters:**
 
@@ -65,7 +65,7 @@ ___
 
 ▸ **missingSchemaValueValidaor**(typeName: *`string`*, property: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:37](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L37)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:37](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L37)*
 
 **Parameters:**
 
@@ -83,7 +83,7 @@ ___
 
 ▸ **missingTypeToAddMethod**(typeName: *`string`*, methodName: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:46](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L46)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:46](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L46)*
 
 **Parameters:**
 
@@ -101,7 +101,7 @@ ___
 
 ▸ **typeAddMethodAlreadyExists**(typeName: *`string`*, methodName: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:53](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L53)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:53](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L53)*
 
 **Parameters:**
 
@@ -119,7 +119,7 @@ ___
 
 ▸ **typeAlreadyExists**(typeName: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:5](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L5)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:5](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L5)*
 
 **Parameters:**
 
@@ -136,7 +136,7 @@ ___
 
 ▸ **typeToExtendWithDoesntExists**(typeName: *`string`*, protoName: *`string`*): `Error`
 
-*Defined in [core/type_wrapper/type_wrapper_error.ts:12](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/type_wrapper_error.ts#L12)*
+*Defined in [core/type_wrapper/type_wrapper_error.ts:12](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/type_wrapper_error.ts#L12)*
 
 **Parameters:**
 

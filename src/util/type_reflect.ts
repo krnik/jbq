@@ -101,3 +101,24 @@ export class TypeReflect {
         return `\`${str.replace(/`/g, '\\`')}\``;
     }
 }
+/**
+ * Utility class that reduces the boilerplate code.
+ * It enables easy `if` statement assessments.
+ *
+ * # Examples
+ *
+ *     const array: unkown = [10, 20, 30];
+ *     if (TypeReflect.arrayOf(array, TypeReflect.string)) {
+ *         // inside this block TypeScript will infer
+ *         // that the array is of type string[]
+ *     }
+ *
+ *     const checkIfUser = (v: unknown): v is User => {
+ *         // if v is a User object return true
+ *     }
+ *     const responseBody: unknown = {};
+ *     if (TypeReflect.objectShape(responseBody, checkIfUser)) {
+ *         // inside this block TypeScript will infer
+ *         // that the responseBody is User object
+ *     }
+ */

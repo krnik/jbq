@@ -83,9 +83,9 @@ const certainType = jbqTypes.get('any');
 
 **● __computed**: *`undefined` \| `false` \| `true`*
 
-*Defined in [core/type_wrapper/interface/type_definition.interface.ts:38](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_definition.interface.ts#L38)*
-*Defined in [core/type_wrapper/interface/type_definition.interface.ts:41](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_definition.interface.ts#L41)*
-*Defined in [core/type_wrapper/interface/type_definition.interface.ts:42](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_definition.interface.ts#L42)*
+*Defined in [core/type_wrapper/interface/type_definition.interface.ts:38](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_definition.interface.ts#L38)*
+*Defined in [core/type_wrapper/interface/type_definition.interface.ts:41](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_definition.interface.ts#L41)*
+*Defined in [core/type_wrapper/interface/type_definition.interface.ts:42](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_definition.interface.ts#L42)*
 
 ___
 

@@ -19,7 +19,7 @@ There are two exceptions. Symbols defined below determine behavior of code gener
 ## Callable
 ▸ **__call**(...args: *`any`[]*): `string` \| `undefined` \| `void`
 
-*Defined in [core/type_wrapper/interface/type_method.interface.ts:24](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_method.interface.ts#L24)*
+*Defined in [core/type_wrapper/interface/type_method.interface.ts:24](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_method.interface.ts#L24)*
 
 Interface representing a function that is a TypeDefinition validation method. This function is used to build final validation function.
 
@@ -55,8 +55,8 @@ There are two exceptions. Symbols defined below determine behavior of code gener
 
 **● __computed**: *`undefined` \| `false` \| `true`*
 
-*Defined in [core/type_wrapper/interface/type_method.interface.ts:27](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_method.interface.ts#L27)*
-*Defined in [core/type_wrapper/interface/type_method.interface.ts:28](https://github.com/krnik/vjs-validator/blob/ac18222/src/core/type_wrapper/interface/type_method.interface.ts#L28)*
+*Defined in [core/type_wrapper/interface/type_method.interface.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_method.interface.ts#L27)*
+*Defined in [core/type_wrapper/interface/type_method.interface.ts:28](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/type_wrapper/interface/type_method.interface.ts#L28)*
 
 ___
 

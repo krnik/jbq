@@ -24,7 +24,7 @@
 
 ▸ **property**(propertyName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:6](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/print_token.ts#L6)*
+*Defined in [util/print_token.ts:6](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/print_token.ts#L6)*
 
 **Parameters:**
 
@@ -41,7 +41,7 @@ ___
 
 ▸ **type**(typeName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:10](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/print_token.ts#L10)*
+*Defined in [util/print_token.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/print_token.ts#L10)*
 
 **Parameters:**
 
@@ -58,7 +58,7 @@ ___
 
 ▸ **typePrototype**(typeName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:2](https://github.com/krnik/vjs-validator/blob/ac18222/src/util/print_token.ts#L2)*
+*Defined in [util/print_token.ts:2](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/print_token.ts#L2)*
 
 **Parameters:**
 

@@ -30,7 +30,7 @@ import { ClassValidatorBuilder } from '../class_validator_builder';
  *          holdsPromise!: Promise<true>;
  *      }
  *
- *      compile(Person);
+ *      compileClass(Person);
  *
  *      const data = {};
  *      const person = new Person().build(data);
@@ -78,7 +78,7 @@ export const withDefault = <T = unknown, R = unknown>(
  *          veryLate!: boolean;
  *      }
  *
- *      compile(IAmLate);
+ *      compileClass(IAmLate);
  *
  *      const latePerson = new IAmLate().build();
  *      latePerson;         // Promise<IAmLate>
@@ -88,7 +88,7 @@ export const withDefault = <T = unknown, R = unknown>(
  *          \@transform(() => true)
  *          isSync!: boolean;
  *      }
- *      compile(TotallySync);
+ *      compileClass(TotallySync);
  *
  *      const syncInstance = new TotallySync().build();
  *      syncInstance; // TotallySync

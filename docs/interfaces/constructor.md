@@ -26,7 +26,7 @@
 
 ⊕ **new Constructor**(...args: *`any`[]*): `T`
 
-*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L55)*
+*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L55)*
 
 **Parameters:**
 

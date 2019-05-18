@@ -287,7 +287,7 @@ export const shape = decoratorSubSchemaFactory(SYM_SCHEMA_PROPERTIES);
  *          public votes2!: number[];
  *      }
  *
- *      compile(Poll);
+ *      compileClass(Poll);
  *
  *      const poll = new Poll().build({ votes: [100, 112] });
  *      poll.votes; // [100, 112]

@@ -31,10 +31,6 @@ export class LogService {
         if (this.active) this.log(`\x1b[36m${''.padStart(this.indent, ' ')}${propertyName}\x1b[0m`);
     }
 
-    public code(this: LogService, code: string): void {
-        if (this.active) this.log(code);
-    }
-
     private log(this: LogService, message: string): void {
         LOGGER.debug(message);
     }

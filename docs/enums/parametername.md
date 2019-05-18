@@ -24,7 +24,7 @@ Enum representing parameter names of validation function.
 
 **Arguments**:  = "$ARGS"
 
-*Defined in [misc/constants.ts:139](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L139)*
+*Defined in [misc/constants.ts:139](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L139)*
 
 ___
 <a id="data"></a>
@@ -33,7 +33,7 @@ ___
 
 **Data**:  = "$DATA"
 
-*Defined in [misc/constants.ts:138](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L138)*
+*Defined in [misc/constants.ts:138](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L138)*
 
 ___
 <a id="resolvedvalue"></a>
@@ -42,7 +42,7 @@ ___
 
 **ResolvedValue**:  = "resolvedValue"
 
-*Defined in [misc/constants.ts:142](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L142)*
+*Defined in [misc/constants.ts:142](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L142)*
 
 ___
 <a id="schemapath"></a>
@@ -51,7 +51,7 @@ ___
 
 **SchemaPath**:  = "schemaPath"
 
-*Defined in [misc/constants.ts:141](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L141)*
+*Defined in [misc/constants.ts:141](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L141)*
 
 ___
 <a id="schemavalue"></a>
@@ -60,7 +60,7 @@ ___
 
 **SchemaValue**:  = "schemaValue"
 
-*Defined in [misc/constants.ts:140](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/constants.ts#L140)*
+*Defined in [misc/constants.ts:140](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/constants.ts#L140)*
 
 ___
 

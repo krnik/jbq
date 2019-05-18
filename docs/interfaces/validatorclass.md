@@ -32,7 +32,7 @@
 
 *Inherited from [Constructor](constructor.md).[constructor](constructor.md#constructor-1)*
 
-*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/ac18222/src/misc/typings.ts#L55)*
+*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L55)*
 
 **Parameters:**
 
@@ -52,8 +52,8 @@ ___
 
 **● __computed**: *`undefined` \| `true`*
 
-*Defined in [class_syntax/class_validator_builder.ts:10](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L10)*
-*Defined in [class_syntax/class_validator_builder.ts:11](https://github.com/krnik/vjs-validator/blob/ac18222/src/class_syntax/class_validator_builder.ts#L11)*
+*Defined in [class_syntax/class_validator_builder.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L10)*
+*Defined in [class_syntax/class_validator_builder.ts:11](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L11)*
 
 ___
 

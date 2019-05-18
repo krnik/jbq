@@ -30,6 +30,8 @@ import { ClassValidatorBuilder } from '../class_validator_builder';
  *          public name!: Shape<Name>;
  *      }
  *
+ *      compileClass(User);
+ *
  *      new User().build({});   // throws -> no `name` is not an object
  *      new User().build()      // throws -> data is not an object
  *
