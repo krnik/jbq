@@ -1,5 +1,5 @@
-export class PrintToken {
-    public static typePrototype(typeName: string): string {
+export class Print {
+    public static typeDef(typeName: string): string {
         return `<${typeName}>`;
     }
 
@@ -9,5 +9,9 @@ export class PrintToken {
 
     public static type(typeName: string): string {
         return `"${typeName}"`;
+    }
+
+    public static array(arr: string[]): string {
+        return `[${arr.join(', ')}]`;
     }
 }

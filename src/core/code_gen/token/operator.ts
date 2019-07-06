@@ -5,8 +5,8 @@ export enum LogicalOperator {
 }
 
 export enum ComparisonOperator {
-    Equal = '==',
-    EqualStrict = '===',
+    EqualAbstract = '==',
+    Equal = '===',
     NotEqual = '!=',
     NotEqualStrict = '!==',
     GreaterThan = '>',

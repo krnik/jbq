@@ -3,10 +3,8 @@ import prettier from 'prettier';
 
 export const SYM_FAKER = Symbol.for('faker');
 
-export function isErrJSON(str: string | undefined): void {
-    expect(str).to.be.a('string');
-    const obj = JSON.parse(str as string);
-    expect(obj)
+export function isValidationError(err: unknown): void {
+    expect(err)
         .to.be.an('object')
         .that.have.all.keys(['message', 'path']);
 }

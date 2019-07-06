@@ -1,22 +1,15 @@
 import { expect } from 'chai';
 import { Compilation } from '../../../src/core/compilation';
-import { TypeDefinition } from '../../../src/core/type_wrapper/interface/type_definition.interface';
 import {
     LEN,
-    ParameterName,
-    PathResolutionStrategy,
     PROP_DATA_PATH,
     REQUIRED,
-    SYM_METHOD_CLOSURE,
     SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
-    SYM_TYPE_KEY_ORDER,
-    SYM_TYPE_VALIDATE,
     TYPE,
     TYPE_NAME,
     VALUE,
 } from '../../../src/misc/constants';
-import { JBQOptions, ParseValues } from '../../../src/misc/typings';
 import { createTypes } from '../../../src/type/mod';
 import { schemaValidate } from '../../../src/type/schema_validator';
 import { suitesAny } from '../../data/suites/any_suite';
@@ -25,6 +18,11 @@ import { suitesBoolean } from '../../data/suites/boolean_suite';
 import { suitesNumber } from '../../data/suites/number_suite';
 import { suitesObject } from '../../data/suites/object_suite';
 import { suitesString } from '../../data/suites/string_suite';
+import { ParseValues, ParameterName } from '../../../src/core/compilation/compilation_typings';
+import { TypeInstance } from '../../../src/core/type_store/type_instance';
+import { PathResolutionStrategy, Options } from '../../../src/core/jbq/jbq_typings';
+import { Option } from '../../../src/misc/typings';
+import { KeywordValidationFunctionKind } from '../../../src/core/type_store/type_instance/type_instance_typings';
 
 describe('Compilation', (): void => {
     it('Compiling test schemas', (): void => {
@@ -84,11 +82,9 @@ describe('Compilation', (): void => {
                 last: 10,
             };
             const keyOrder = ['first', 'third', 'last'];
-            const type = {
-                [SYM_TYPE_KEY_ORDER]: ['first', 'third', 'last'],
-            };
+            const type = new TypeInstance('TestType').setKeywordOrder(['first', 'third', 'last']);
 
-            const entries = Compilation.prototype['sortSchemaEntries'](obj, type as TypeDefinition);
+            const entries = Compilation.prototype['sortSchemaEntries'](obj, type);
             expect(entries[0][0]).to.be.equal(keyOrder[0]);
             expect(entries[0][1]).to.be.equal(obj.first);
             expect(entries[1][0]).to.be.equal(keyOrder[1]);
@@ -182,7 +178,7 @@ describe('Compilation', (): void => {
             }
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = {
+            const options: Options = {
                 handleResolvedPaths: PathResolutionStrategy.Skip,
             };
             {
@@ -239,7 +235,7 @@ describe('Compilation', (): void => {
             }
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Schema };
             {
                 const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
@@ -290,7 +286,7 @@ describe('Compilation', (): void => {
             }
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Return };
             {
                 const Schema = {
                     [TYPE]: TYPE_NAME.OBJECT,
@@ -347,39 +343,40 @@ describe('Compilation', (): void => {
     });
 
     describe(`functions with closures`, (): void => {
-        const nullabeStringType = {
-            [TYPE](_schemaValue: ParseValues, path: string, $DATA: unknown): string | undefined {
-                if ($DATA !== null && typeof $DATA !== 'string')
-                    return `{"message": "${$DATA}", "path": "${path}"}`;
-            },
-            logValue(): void {
-                // console.log({ schemaValue, path, $DATA });
-            },
-            value(schemaValue: unknown, path: string, $DATA: unknown): string | undefined {
-                if (schemaValue !== $DATA)
-                    return `{"message": "Data expected to be equal ${schemaValue}, got ${$DATA}", "path": "${path}"}`;
-            },
-            [SYM_TYPE_VALIDATE]: {
-                [TYPE](value: unknown): void {
-                    if (typeof value !== 'string')
-                        throw new Error('expected string as type schema value');
+        const nullableStringType = new TypeInstance('NullableString')
+            .setKeyword(TYPE, {
+                schemaValidator(schemaValue: unknown): void {
+                    if (typeof schemaValue !== 'string')
+                        throw new Error('Expected string as schemaValue.');
                 },
-                logValue(): void {},
-                value(value: unknown): void {
+                validator(_schemaValue: ParseValues, path: string, $DATA: unknown): Option<string> {
+                    if ($DATA !== null && typeof $DATA !== 'string')
+                        return `{"message": "${$DATA}", "path": "${path}"}`;
+                },
+                kind: KeywordValidationFunctionKind.Closure,
+            })
+            .setKeyword('logValue', {
+                schemaValidator(): void {},
+                validator(): void {},
+                kind: KeywordValidationFunctionKind.Closure,
+            })
+            .setKeyword('value', {
+                schemaValidator(schemaValue: unknown): void {
                     if (
-                        value !== null &&
-                        typeof value !== 'string' &&
-                        !schemaValidate.dataPath(value)
+                        schemaValue !== null &&
+                        typeof schemaValue !== 'string' &&
+                        !schemaValidate.dataPath(schemaValue)
                     )
                         throw new Error('expected string, datapath or null');
                 },
-            },
-        };
-        const types = createTypes();
-        Object.defineProperty(nullabeStringType[TYPE], SYM_METHOD_CLOSURE, { value: true });
-        Object.defineProperty(nullabeStringType.logValue, SYM_METHOD_CLOSURE, { value: true });
-        Object.defineProperty(nullabeStringType.value, SYM_METHOD_CLOSURE, { value: true });
-        types.set('nullableString', nullabeStringType, { type: 'string' });
+                validator(schemaValue: unknown, path: string, $DATA: unknown): string | undefined {
+                    if (schemaValue !== $DATA)
+                        return `{"message": "Data expected to be equal ${schemaValue}, got ${$DATA}", "path": "${path}"}`;
+                },
+                kind: KeywordValidationFunctionKind.Closure,
+            });
+
+        const typeStore = createTypes().addType(nullableStringType);
 
         it(`it should resolve ${PROP_DATA_PATH} in closure methods`, (): void => {
             const testSchemas = {
@@ -399,7 +396,7 @@ describe('Compilation', (): void => {
             };
             {
                 const schema = testSchemas.Closure;
-                const source = new Compilation(types, schema, 'Closure').execSync();
+                const source = new Compilation(typeStore, schema, 'Closure').execSync();
                 const validator = new Function(
                     source.argsParameter,
                     source.dataParameter,
@@ -412,7 +409,7 @@ describe('Compilation', (): void => {
             }
             {
                 const schema = testSchemas.WithPath;
-                const source = new Compilation(types, schema, 'WithPath').execSync();
+                const source = new Compilation(typeStore, schema, 'WithPath').execSync();
                 const validator = new Function(
                     source.argsParameter,
                     source.dataParameter,
@@ -428,7 +425,7 @@ describe('Compilation', (): void => {
             }
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Skip };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Skip };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -443,7 +440,7 @@ describe('Compilation', (): void => {
                     },
                 },
             };
-            const source = new Compilation(types, Schema, 'Simple', options).execSync();
+            const source = new Compilation(typeStore, Schema, 'Simple', options).execSync();
             const validator = new Function(
                 source.argsParameter,
                 source.dataParameter,
@@ -464,7 +461,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).be.a('string');
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Schema };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -478,7 +475,7 @@ describe('Compilation', (): void => {
                     },
                 },
             };
-            const source = new Compilation(types, Schema, 'Simple', options).execSync();
+            const source = new Compilation(typeStore, Schema, 'Simple', options).execSync();
             const validator = new Function(
                 source.argsParameter,
                 source.dataParameter,
@@ -496,7 +493,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).be.a('string');
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Return };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -508,7 +505,7 @@ describe('Compilation', (): void => {
                     },
                 },
             };
-            const source = new Compilation(types, Schema, 'Simple', options).execSync();
+            const source = new Compilation(typeStore, Schema, 'Simple', options).execSync();
             const validator = new Function(
                 source.argsParameter,
                 source.dataParameter,
@@ -593,7 +590,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).to.be.a('string');
         });
         it(`it should skip checks if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Skip };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Skip };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -643,7 +640,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).to.be.a('string');
         });
         it(`it should parse ${PROP_DATA_PATH} schema`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Schema };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Schema };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {
@@ -703,7 +700,7 @@ describe('Compilation', (): void => {
             for (const data of invalidData) expect(validator(data)).to.be.a('string');
         });
         it(`it should return message if ${PROP_DATA_PATH} resolves to undefined`, (): void => {
-            const options: JBQOptions = { handleResolvedPaths: PathResolutionStrategy.Return };
+            const options: Options = { handleResolvedPaths: PathResolutionStrategy.Return };
             const Schema = {
                 [TYPE]: TYPE_NAME.OBJECT,
                 [SYM_SCHEMA_PROPERTIES]: {

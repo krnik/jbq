@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { SYM_SCHEMA_PROPERTIES } from '../../src/misc/constants';
-import { Schema } from '../../src/core/compilation/interface/schema.interface';
 import { SYM_FAKER } from '../utils';
+import { Schema } from '../../src/core/compilation/compilation_typings';
 
 export function callFaker(fakerArgs: [string, unknown[]]): unknown {
     const [path, args] = fakerArgs;

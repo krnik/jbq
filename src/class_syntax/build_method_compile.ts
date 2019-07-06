@@ -1,29 +1,30 @@
 import { jbq } from '../core/jbq';
-import { TypeWrapper } from '../core/type_wrapper';
-import { Constructor, JBQOptions } from '../misc/typings';
-import { jbqTypes } from '../type/mod';
+import { Constructor, Any } from '../misc/typings';
+import { types } from '../type/mod';
 import { ClassValidatorBuilder } from './class_validator_builder';
 import { TypeReflect } from '../util/type_reflect';
 import { CodeGenerator } from '../core/code_gen';
+import { TypeStore } from '../core/type_store';
+import { Options } from 'benchmark';
 
-let TYPES = jbqTypes;
+let TYPES: TypeStore<Any> = types;
 
 /**
  * Permanently changes the types used provided to the JBQ compilation
  * function by `@compile()` decorator.
  *
- * By default the `jbqTypes` `TypeWrapper` instance from `/core/type/mod` module is used.
+ * By default the `types` `TypeStore` instance from `/core/type/mod` module is used.
  *
- * Changing default value will not affect the `jbqTypes`.
- * But changing the `jbqTypes` value affect this modules' default types.
+ * Changing default value will not affect the `types`.
+ * But changing the `types` value affect this modules' default types.
  */
-export function setDefaultTypes(types: TypeWrapper): void {
+export function setDefaultTypes(types: TypeStore): void {
     TYPES = types;
 }
 
 interface CompileOptions {
-    types?: TypeWrapper;
-    options?: JBQOptions;
+    types?: TypeStore;
+    options?: Options;
 }
 
 enum Param {

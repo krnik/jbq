@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { check, gen, property } from 'testcheck';
+import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME, LEN } from '../../../src/misc/constants';
 import { TypeArray } from '../../../src/type/array';
-import { check, property, gen } from 'testcheck';
+import { isValidationError } from '../../utils';
 
 describe(
     TYPE_NAME.ARRAY,
@@ -9,71 +10,89 @@ describe(
         describe(
             TYPE,
             (): void => {
-                const base = 'array';
+                const schemaValue = TYPE_NAME.ARRAY;
+                const { validator } = TypeArray.getKeyword(TYPE);
+
                 it('valid value', (): void => {
                     check(
                         property(
                             gen.array(gen.number, { size: 5 }),
                             (value): void => {
-                                expect(TypeArray[TYPE](base, value)).to.be.equal(undefined);
+                                expect(validator(schemaValue, value)).to.be.equal(undefined);
                             },
                         ),
                     );
                 });
+
                 it('invalid value', (): void => {
                     const nonArray = gen.oneOf([gen.JSONPrimitive, gen.object({ x: gen.null })]);
                     check(
                         property(
                             nonArray,
                             (value): void => {
-                                expect(TypeArray[TYPE](base, value)).to.be.a('string');
+                                isValidationError(validator(schemaValue, value));
                             },
                         ),
                     );
                 });
             },
         );
+
         describe(
             INCLUDES,
             (): void => {
-                const base = 10;
+                const schemaValue = 10;
+                const { validator } = TypeArray.getKeyword(INCLUDES);
+
                 it('valid value', (): void => {
                     const value = [10, 20, 30];
-                    expect(TypeArray[INCLUDES](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = [0, 20, 30];
-                    expect(TypeArray[INCLUDES](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
+
         describe(
             EVERY,
             (): void => {
-                const base = (el: number): boolean => typeof el === 'number';
+                const schemaValue = (el: number): boolean => typeof el === 'number';
+                const { validator } = TypeArray.getKeyword(EVERY);
+
                 it('valid value', (): void => {
                     const value = [10, 20, 30];
-                    expect(TypeArray[EVERY](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = [10, 20, '30'];
-                    expect(TypeArray[EVERY](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
+
         describe(
             SOME,
             (): void => {
-                const base = (el: number): boolean => typeof el === 'number';
+                const schemaValue = (el: number): boolean => typeof el === 'number';
+                const { validator } = TypeArray.getKeyword(SOME);
+
                 it('valid value', (): void => {
                     const value = [10, 20, 30];
-                    expect(TypeArray[SOME](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = ['10', '20', '30'];
-                    expect(TypeArray[SOME](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
+
+        // TODO: Test macro
+        describe.skip(LEN, (): void => {});
     },
 );

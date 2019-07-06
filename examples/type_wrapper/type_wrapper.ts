@@ -1,5 +1,5 @@
 import { equal } from 'assert';
-import { TypeWrapper } from '../../src/core/type_wrapper';
+import { TypeWrapper } from '../../src/core/type_store';
 import { TypeAny } from '../../src/type/any';
 import { SYM_TYPE_VALIDATE } from '../../src/misc/constants';
 

@@ -1,4 +1,4 @@
-import { DataPath } from '../../misc/typings';
+import { DataPath } from './compilation_typings';
 
 interface ResolvedPathVariable {
     variableName: string;

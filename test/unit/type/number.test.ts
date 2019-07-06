@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { check, gen, property } from 'testcheck';
+import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
 import { TypeNumber } from '../../../src/type/number';
-import { check, property, gen } from 'testcheck';
+import { isValidationError } from '../../utils';
 
 describe(
     TYPE_NAME.NUMBER,
@@ -9,17 +10,20 @@ describe(
         describe(
             TYPE,
             (): void => {
-                const base = 'number';
+                const schemaValue = 'number';
+                const { validator } = TypeNumber.getKeyword(TYPE);
+
                 it('valid value', (): void => {
                     check(
                         property(
                             gen.number,
                             (value): void => {
-                                expect(TypeNumber[TYPE](base, value)).to.be.equal(undefined);
+                                expect(validator(schemaValue, value)).to.be.equal(undefined);
                             },
                         ),
                     );
                 });
+
                 it('invalid value', (): void => {
                     const nonNumber = gen.oneOf<unknown>([
                         gen.NaN,
@@ -33,38 +37,49 @@ describe(
                         property(
                             nonNumber,
                             (value): void => {
-                                expect(TypeNumber[TYPE](base, value)).to.be.a('string');
+                                isValidationError(validator(schemaValue, value));
                             },
                         ),
                     );
                 });
             },
         );
+
         describe(
             MULTIPLE_OF,
             (): void => {
-                const base = 10;
+                const schemaValue = 10;
+                const { validator } = TypeNumber.getKeyword(MULTIPLE_OF);
+
                 it('valid value', (): void => {
                     const value = 20;
-                    expect(TypeNumber[MULTIPLE_OF](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = 12;
-                    expect(TypeNumber[MULTIPLE_OF](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
+
         describe(
             ONE_OF,
             (): void => {
-                const base = [2, 4, 6, 8];
+                const schemaValue = [2, 4, 6, 8];
+                const { validator } = TypeNumber.getKeyword(ONE_OF);
+
                 it('valid value', (): void => {
-                    expect(TypeNumber[ONE_OF](base, 2)).to.be.equal(undefined);
+                    expect(validator(schemaValue, 2)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
-                    expect(TypeNumber[ONE_OF](base, 0)).to.be.a('string');
+                    isValidationError(validator(schemaValue, 0));
                 });
             },
         );
+
+        // TODO: Test macro.
+        describe.skip(VALUE, (): void => {});
     },
 );

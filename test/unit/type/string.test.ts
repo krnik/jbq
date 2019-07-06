@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { ONE_OF, REGEX, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { check, gen, property } from 'testcheck';
+import { LEN, ONE_OF, REGEX, TYPE, TYPE_NAME } from '../../../src/misc/constants';
 import { TypeString } from '../../../src/type/string';
-import { check, property, gen } from 'testcheck';
+import { isValidationError } from '../../utils';
 
 describe(
     TYPE_NAME.STRING,
@@ -9,17 +10,20 @@ describe(
         describe(
             TYPE,
             (): void => {
-                const base = 'string';
+                const schemaValue = 'string';
+                const { validator } = TypeString.getKeyword(TYPE);
+
                 it('valid value', (): void => {
                     check(
                         property(
                             gen.string,
                             (value): void => {
-                                expect(TypeString[TYPE](base, value)).to.be.equal(undefined);
+                                expect(validator(schemaValue, value)).to.be.equal(undefined);
                             },
                         ),
                     );
                 });
+
                 it('invalid value', (): void => {
                     const nonString = gen.oneOf<unknown>([
                         gen.number,
@@ -32,38 +36,49 @@ describe(
                         property(
                             nonString,
                             (value): void => {
-                                expect(TypeString[TYPE](base, value)).to.be.a('string');
+                                isValidationError(validator(schemaValue, value));
                             },
                         ),
                     );
                 });
             },
         );
+
         describe(
             REGEX,
             (): void => {
-                const base = /^Sho/i;
+                const schemaValue = /^Sho/i;
+                const { validator } = TypeString.getKeyword(REGEX);
+
                 it('valid value', (): void => {
                     const value = 'Short.';
-                    expect(TypeString[REGEX](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = 'Long string with at least 10 characters.';
-                    expect(TypeString[REGEX](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
+
         describe(
             ONE_OF,
             (): void => {
-                const base = ['Admin', 'Manager', 'User', 'Guest'];
+                const schemaValue = ['Admin', 'Manager', 'User', 'Guest'];
+                const { validator } = TypeString.getKeyword(ONE_OF);
+
                 it('valid value', (): void => {
-                    expect(TypeString[ONE_OF](base, 'Admin')).to.be.equal(undefined);
+                    expect(validator(schemaValue, 'Admin')).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
-                    expect(TypeString[ONE_OF](base, '')).to.be.a('string');
+                    isValidationError(validator(schemaValue, ''));
                 });
             },
         );
+
+        // TODO: Test macro.
+        describe.skip(LEN, (): void => {});
     },
 );

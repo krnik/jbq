@@ -1,5 +1,5 @@
-import { Keyword } from '../token/keyword';
-import { ComparisonOperator, LogicalOperator } from '../token/operator';
+import { Keyword } from './token/keyword';
+import { ComparisonOperator, LogicalOperator } from './token/operator';
 
 /**
  * Interface representing an object used to build if statement condition.

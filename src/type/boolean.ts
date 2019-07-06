@@ -1,17 +1,28 @@
-import { SYM_TYPE_VALIDATE, TYPE, TYPE_NAME, VALUE } from '../misc/constants';
+import { ValidationResult } from '../core/jbq/jbq_typings';
+import { TypeInstance } from '../core/type_store/type_instance';
+import { TYPE, TYPE_NAME, VALUE } from '../misc/constants';
+import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
 
-export const TypeBoolean = {
-    [TYPE](_schemaValue: string, $DATA: unknown): string | void {
-        if ($DATA !== true && $DATA !== false)
-            return `{"message": "Data should be {{schemaValue}} type. Got ${typeof $DATA}.", "path": "{{schemaPath}}"}`;
-    },
-    [VALUE](schemaValue: boolean, $DATA: boolean): string | void {
-        if (schemaValue !== $DATA)
-            return `{"message": "Data should be equal to {{resolvedValue || schemaValue}}. Got ${$DATA}.", "path": "{{schemaPath}}"}`;
-    },
-    [SYM_TYPE_VALIDATE]: {
-        [TYPE]: schemaValidate.primitive(TYPE_NAME.BOOLEAN, TYPE, 'string'),
-        [VALUE]: schemaValidate.primitive(TYPE_NAME.BOOLEAN, VALUE, 'boolean', true),
-    },
-};
+export const TypeBoolean = new TypeInstance(TYPE_NAME.BOOLEAN)
+    .derive(TypeAny)
+    .setKeyword(TYPE, {
+        validator(_schemaValue: string, $DATA: unknown): ValidationResult {
+            if ($DATA !== true && $DATA !== false)
+                return {
+                    message: 'Data should be {{schemaValue}} type. Got ${typeof $DATA}.',
+                    path: '{{schemaPath}}',
+                };
+        },
+        schemaValidator: schemaValidate.primitive(TYPE_NAME.BOOLEAN, TYPE, 'string'),
+    })
+    .setKeyword(VALUE, {
+        validator(schemaValue: boolean, $DATA: boolean): ValidationResult {
+            if (schemaValue !== $DATA)
+                return {
+                    message: `Data should be equal to {{resolvedValue || schemaValue}}. Got ${$DATA}.`,
+                    path: '{{schemaPath}}',
+                };
+        },
+        schemaValidator: schemaValidate.primitive(TYPE_NAME.BOOLEAN, VALUE, 'boolean', true),
+    });

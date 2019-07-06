@@ -1,28 +1,26 @@
 import {
-    ParameterName,
-    SYM_METHOD_CLOSURE,
-    SYM_METHOD_MACRO,
     SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
-    SYM_TYPE_FOR_LOOP,
-    SYM_TYPE_KEY_ORDER,
-    SYM_TYPE_VALIDATE,
     TOKEN_BREAK,
-    TOKEN_EXPR_REGEX,
+    EXPRESSION_REGEX,
     TYPE,
 } from '../misc/constants';
-import { DataPath, JBQOptions, Option, ParseValues } from '../misc/typings';
+import { Option, Any } from '../misc/typings';
 import { schemaValidate } from '../type/schema_validator';
 import { LogService } from '../util/log_service';
 import { TypeReflect } from '../util/type_reflect';
 import { CompilationError } from './compilation/compilation_error';
-import { Schema } from './compilation/interface/schema.interface';
-import { SourceBuilderProduct } from './compilation/interface/source_builder_product.interface';
 import { ResolvedPathStore } from './compilation/resolved_path_store';
 import { SourceBuilder } from './compilation/source_builder';
-import { TypeWrapper } from './type_wrapper';
-import { TypeDefinition } from './type_wrapper/interface/type_definition.interface';
-import { TypeMethod } from './type_wrapper/interface/type_method.interface';
+import { DataPath, Schema, ParseValues, ParameterName } from './compilation/compilation_typings';
+import { Options } from './jbq/jbq_typings';
+import { TypeStore } from './type_store';
+import { TypeInstance } from './type_store/type_instance';
+import {
+    KeywordDescriptor,
+    KeywordValidationFunctionKind,
+} from './type_store/type_instance/type_instance_typings';
+import { SourceBuilderProduct } from './compilation/source_builder/source_builder_typings';
 
 /**
  * Compilation class responsible for coordination of other subclasses
@@ -33,7 +31,7 @@ import { TypeMethod } from './type_wrapper/interface/type_method.interface';
 export class Compilation {
     private static Error = CompilationError;
     private log: LogService;
-    private types: TypeWrapper;
+    private types: TypeStore;
     private schema: Schema;
     private sourceBuilder: SourceBuilder;
     private resolvedPaths: ResolvedPathStore;
@@ -43,10 +41,10 @@ export class Compilation {
     ];
 
     public constructor(
-        types: TypeWrapper,
+        types: TypeStore<Any>,
         schema: Schema,
         schemaName: string,
-        options: JBQOptions = {},
+        options: Options = {},
     ) {
         this.schema = schema;
         this.types = types;
@@ -80,14 +78,15 @@ export class Compilation {
 
         const schemaEntries = this.sortSchemaEntries(schema, type);
         for (const [property, schemaValue] of schemaEntries) {
-            if (!type[property]) throw Compilation.Error.missingTypeMethod(typeName, property);
+            if (!type.hasKeyword(property))
+                throw Compilation.Error.missingTypeMethod(typeName, property);
 
-            type[SYM_TYPE_VALIDATE][property](schemaValue);
+            const keywordDescriptor = type.getKeyword(property);
+            keywordDescriptor.schemaValidator(schemaValue);
             log.property(property);
 
             sourceBuilder.updateBuilderContext(property);
-
-            this.parseProperty(type[property], schemaValue);
+            this.parseProperty(keywordDescriptor, schemaValue);
 
             sourceSnapshot.restore();
         }
@@ -126,15 +125,12 @@ export class Compilation {
                 undefined
             >;
             sourceBuilder.updateBuilderContext('[]', true);
-
-            const useForOfLoop = type[SYM_TYPE_FOR_LOOP] !== true;
+            const useForOfLoop = type.getUseForOfLoop();
 
             sourceBuilder.forLoop(sourceSnapshot.variableName, useForOfLoop);
-
             this.parseSchemaSync(elementSchema);
 
             sourceBuilder.closeBlock();
-
             sourceSnapshot.restore();
         }
 
@@ -146,9 +142,9 @@ export class Compilation {
      * Attempt to retry a `typeName` from `TypeWrapper`.
      * If type does not exists this function will throw.
      */
-    private getType(this: Compilation, typeName: string): TypeDefinition | never {
-        if (!this.types.has(typeName)) throw CompilationError.missingType(typeName);
-        return this.types.get(typeName) as TypeDefinition;
+    private getType(this: Compilation, typeName: string): TypeInstance<Any, Any, Any> | never {
+        if (!this.types.hasType(typeName)) throw CompilationError.missingType(typeName);
+        return this.types.getType(typeName as Any) as TypeInstance<Any, Any, Any>;
     }
 
     /**
@@ -158,12 +154,12 @@ export class Compilation {
     private sortSchemaEntries(
         this: Compilation,
         schema: Schema,
-        type: TypeDefinition,
+        type: TypeInstance<Any, Any>,
     ): [string, unknown][] {
         type Entry = [string, unknown];
         type EntryFilter = (entry: Option<Entry>) => entry is Entry;
 
-        const sortOrder = type[SYM_TYPE_KEY_ORDER];
+        const sortOrder = type.getKeywordOrder() || [];
         const entries = Object.entries(schema);
 
         const headEntries = sortOrder
@@ -179,22 +175,26 @@ export class Compilation {
      * Attempt to parse schema property and respective `TypeMethod` into a validation
      * function block.
      */
-    private parseProperty(this: Compilation, method: TypeMethod, schemaValue: unknown): void {
+    private parseProperty(
+        this: Compilation,
+        keywordDescriptor: KeywordDescriptor,
+        schemaValue: unknown,
+    ): void {
         const parseValues: ParseValues = {
             schemaValue,
             schemaPath: this.sourceBuilder.getSchemaPath(),
             variableName: this.sourceBuilder.getVariableName(),
         };
 
-        switch (true) {
-            case method.hasOwnProperty(SYM_METHOD_CLOSURE):
-                this.parseMethodClosure(method, parseValues);
-                break;
-            case method.hasOwnProperty(SYM_METHOD_MACRO):
-                this.parseMethodMacro(method, parseValues);
-                break;
-            default:
-                this.parseMethodExtractBody(method, parseValues);
+        switch (keywordDescriptor.kind) {
+            case KeywordValidationFunctionKind.Function:
+                return this.parseMethodExtractBody(keywordDescriptor, parseValues);
+
+            case KeywordValidationFunctionKind.Closure:
+                return this.parseMethodClosure(keywordDescriptor, parseValues);
+
+            case KeywordValidationFunctionKind.Macro:
+                return this.parseMethodMacro(keywordDescriptor, parseValues);
         }
     }
 
@@ -204,7 +204,7 @@ export class Compilation {
      */
     private parseMethodExtractBody(
         this: Compilation,
-        method: TypeMethod,
+        keywordDescriptor: KeywordDescriptor,
         values: ParseValues,
     ): void {
         const { schemaValue, variableName } = values;
@@ -220,7 +220,8 @@ export class Compilation {
             suffix = this.sourceBuilder.validateResolvedVariables();
         }
 
-        let body = method.toString();
+        // TODO: Revisit `toString` method in Function prototype.
+        let body = keywordDescriptor.validator.toString();
         const start = body.indexOf('{');
         const end = body.lastIndexOf('}');
 
@@ -258,7 +259,7 @@ export class Compilation {
         const { schemaPath, schemaValue, resolvedValue } = values;
 
         return sourceString.replace(
-            TOKEN_EXPR_REGEX,
+            EXPRESSION_REGEX,
             (_match, expr): string => {
                 const fn = new Function(
                     ParameterName.SchemaPath,
@@ -290,7 +291,11 @@ export class Compilation {
     }
 
     /** Calls type method marked as closure. */
-    private parseMethodClosure(this: Compilation, method: TypeMethod, values: ParseValues): void {
+    private parseMethodClosure(
+        this: Compilation,
+        keywordDescriptor: KeywordDescriptor,
+        values: ParseValues,
+    ): void {
         this.resolvedPaths.open();
         const snapshot = this.sourceBuilder.getContextSnapshot();
 
@@ -300,7 +305,7 @@ export class Compilation {
             ? this.sourceBuilder.resolveDataPath(schemaValue)
             : undefined;
 
-        const functionParameter = this.sourceBuilder.createParameter(method);
+        const functionParameter = this.sourceBuilder.createParameter(keywordDescriptor.validator);
 
         const schemaParameter =
             resolvedValue ||
@@ -315,9 +320,13 @@ export class Compilation {
     }
 
     /** Calls type method marked as macro and appends its result to the validation function source code. */
-    private parseMethodMacro(this: Compilation, method: TypeMethod, values: ParseValues): void {
+    private parseMethodMacro(
+        this: Compilation,
+        keywordDescriptor: KeywordDescriptor,
+        values: ParseValues,
+    ): void {
         this.resolvedPaths.open();
-        const code = method(values, ...this.macroHelpers) as string;
+        const code = keywordDescriptor.validator(values, ...this.macroHelpers) as string;
         const suffix = this.sourceBuilder.validateResolvedVariables();
         this.sourceBuilder.append(code + suffix);
     }

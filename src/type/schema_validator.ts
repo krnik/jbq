@@ -1,13 +1,15 @@
+import { DataPath } from '../core/compilation/compilation_typings';
 import { PROP_DATA_PATH } from '../misc/constants';
-import { DataPath, Constructor } from '../misc/typings';
-import { PrintToken } from '../util/print_token';
+import { Constructor } from '../misc/typings';
+import { Print } from '../util/print_token';
 import { TypeReflect } from '../util/type_reflect';
 
+// TODO: Grant access to current schema object for debugging purposes.
 const SchemaValidationError = {
     missingArgument(typeName: string, methodName: string): Error {
-        const errorMessage = `Schema validation method ${PrintToken.typePrototype(
+        const errorMessage = `Schema validation method ${Print.typeDef(
             typeName,
-        )} in ${PrintToken.property(
+        )} in ${Print.property(
             methodName,
         )} type expects 'schemaValue' parameter to not be undefined.`;
         throw new Error(errorMessage);
@@ -18,13 +20,11 @@ const SchemaValidationError = {
         expectedType: string,
         type: string,
     ): Error {
-        const errorMessage = `${PrintToken.property(
-            methodName,
-        )} property in ${PrintToken.typePrototype(
+        const errorMessage = `${Print.property(methodName)} property in ${Print.typeDef(
             typeName,
-        )} type requires schema value to be a ${PrintToken.type(
-            expectedType,
-        )}. Got ${PrintToken.type(type)} type instead.`;
+        )} type requires schema value to be a ${Print.type(expectedType)}. Got ${Print.type(
+            type,
+        )} type instead.`;
         return new Error(errorMessage);
     },
 };

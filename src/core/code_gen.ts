@@ -1,9 +1,9 @@
-import { ParameterName, SCHEMA_PATH_SEPARATOR } from '../misc/constants';
-import { TypeReflect } from '../util/type_reflect';
+import { SCHEMA_PATH_SEPARATOR } from '../misc/constants';
 import { CodeGeneratorError } from './code_gen/code_gen_error';
-import { IfCondition } from './code_gen/interface/if_condition.interface';
+import { IfCondition } from './code_gen/code_gen_typings';
 import { Keyword } from './code_gen/token/keyword';
 import { ComparisonOperator, LogicalOperator } from './code_gen/token/operator';
+import { ParameterName } from './compilation/compilation_typings';
 
 /**
  * Utility class that provides functionality to help building validation
@@ -27,7 +27,7 @@ export class CodeGenerator {
     public static renderPropertyAccessor(accessor: string): string {
         if (/^[a-zA-Z_$][\w$]*$/.test(accessor)) return `.${accessor}`;
         if (/^\d+$/.test(accessor)) return `[${accessor}]`;
-        return `[${TypeReflect.asString(accessor)}]`;
+        return `[${CodeGenerator.asString(accessor)}]`;
     }
 
     /**
@@ -110,15 +110,15 @@ export class CodeGenerator {
     }
 
     /**
-     * Renders return statement that returns with JSON value.
+     * Renders return statement that returns object value.
      *
      * # Examples
      *
      *      .renderReturnJSONMessage('Oopsie', 'User#type');
-     *      'return `{ "message": "Oopsie", "path": "User#type" }`;';
+     *      'return { "message": "Oopsie", "path": "User#type" };';
      */
-    public static renderReturnJSONMessage(message: string, path: string): string {
-        return `${Keyword.Return} \`{ "message": "${message}", "path": "${path}" }\`;`;
+    public static renderReturnObject(message: string, path: string): string {
+        return `${Keyword.Return} { "message": "${message}", "path": "${path}" };`;
     }
 
     /**
@@ -160,7 +160,7 @@ export class CodeGenerator {
             negate: true,
         };
         return `${CodeGenerator.renderIfStatement([ifCondition])}
-                ${CodeGenerator.renderReturnJSONMessage(
+                ${CodeGenerator.renderReturnObject(
                     `Data requires to have ${Symbol.iterator.toString()} method implemented in order to use for..of loop`,
                     path,
                 )}
@@ -225,7 +225,7 @@ export class CodeGenerator {
         const resultVariableName = `${fnParam.replace(/[\[\]]/g, '')}_res`;
         return `${
             Keyword.Const
-        } ${resultVariableName} = ${fnParam}(${schemaValue}, ${TypeReflect.asString(
+        } ${resultVariableName} = ${fnParam}(${schemaValue}, ${CodeGenerator.asString(
             schemaPath,
         )}, ${variableName});
         ${Keyword.If} (${resultVariableName}) return ${resultVariableName};`;
@@ -274,6 +274,13 @@ export class CodeGenerator {
      */
     public static renderDataPath(dataPath: string | string[]): string {
         return `(${Array.isArray(dataPath) ? dataPath.join(SCHEMA_PATH_SEPARATOR) : dataPath})`;
+    }
+
+    /**
+     * Renders `str` as string.
+     */
+    public static asString(str: string): string {
+        return `\`${str.replace(/`/g, '\\`')}\``;
     }
 
     private static Error = CodeGeneratorError;

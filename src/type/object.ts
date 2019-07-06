@@ -1,20 +1,23 @@
+import { CodeGenerator } from '../core/code_gen';
+import { ComparisonOperator } from '../core/code_gen/token/operator';
+import { DataPathChecker, DataPathResolver } from '../core/compilation/compilation_typings';
+import { TypeInstance } from '../core/type_store/type_instance';
 import {
     CONSTRUCTOR_NAME,
     INSTANCE_OF,
     KEY_COUNT,
+    PROPERTIES,
     PROP_COUNT,
     PROP_DATA_PATH,
-    PROPERTIES,
-    SYM_METHOD_MACRO,
-    SYM_TYPE_VALIDATE,
     TYPE,
     TYPE_NAME,
 } from '../misc/constants';
-import { CodeGenerator } from '../core/code_gen';
-import { ComparisonOperator } from '../core/code_gen/token/operator';
-import { DataPathChecker, DataPathResolver, ParseValuesMinMax } from '../misc/typings';
 import { TypeReflect } from '../util/type_reflect';
+import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
+import { ParseValuesMinMax } from './type_definition_typings';
+import { ValidationResult } from '../core/jbq/jbq_typings';
+import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
 
 type Macro = (p: ParseValuesMinMax, c: DataPathChecker, r: DataPathResolver) => string | undefined;
 
@@ -33,7 +36,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
                     variableName: dataVar,
                     operator: ComparisonOperator.NotEqualStrict,
                 },
-            ])}\n${CodeGenerator.renderReturnJSONMessage(
+            ])}\n${CodeGenerator.renderReturnObject(
                 `Data should have exactly ${schemaValue} keys.`,
                 schemaPath,
             )}`;
@@ -46,7 +49,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
                     variableName: dataVar,
                     operator: ComparisonOperator.NotEqualStrict,
                 },
-            ])}\n${CodeGenerator.renderReturnJSONMessage(
+            ])}\n${CodeGenerator.renderReturnObject(
                 `Data should have exactly \${${varName}} ${CodeGenerator.renderDataPath(
                     schemaValue[PROP_DATA_PATH],
                 )} keys.`,
@@ -75,7 +78,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
                     value: max,
                     variableName: dataVar,
                 },
-            ])}\n${CodeGenerator.renderReturnJSONMessage(
+            ])}\n${CodeGenerator.renderReturnObject(
                 `Data should have number of keys in range ${minVal}..${maxVal}.`,
                 schemaPath,
             )}`;
@@ -89,7 +92,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
                     value: min,
                     variableName: dataVar,
                 },
-            ])}\n${CodeGenerator.renderReturnJSONMessage(
+            ])}\n${CodeGenerator.renderReturnObject(
                 `Data should have more than ${minVal} keys.`,
                 schemaPath,
             )}`;
@@ -102,7 +105,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
                     value: max,
                     variableName: dataVar,
                 },
-            ])}\n${CodeGenerator.renderReturnJSONMessage(
+            ])}\n${CodeGenerator.renderReturnObject(
                 `Data should have less than ${maxVal} keys.`,
                 schemaPath,
             )}`;
@@ -110,38 +113,59 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
     };
 }
 
-export const TypeObject = {
-    [TYPE](_schemaValue: string, $DATA: unknown): string | void {
-        if (!($DATA && typeof $DATA === 'object' && !Array.isArray($DATA)))
-            return `{"message": "Data should be {{schemaValue}} type.", "path": "{{schemaPath}}"}`;
-    },
-    [CONSTRUCTOR_NAME](schemaValue: string, $DATA: object): string | void {
-        if (Object.getPrototypeOf($DATA).constructor.name !== schemaValue)
-            return `{"message": "Data should be direct instance of {{schemaValue}}.", "path": "{{schemaPath}}"}`;
-    },
-    [INSTANCE_OF](schemaValue: () => void, $DATA: object): string | void {
-        if (!($DATA instanceof schemaValue))
-            return `{"message": "Data should be instance of {{schemaValue.name}}.", "path": "{{schemaPath}}"}`;
-    },
-    [PROPERTIES](schemaValue: (string | number | symbol)[], $DATA: object): string | void {
-        for (const key of schemaValue)
-            if (!$DATA.hasOwnProperty(key))
-                return `{"message": "Data should have ${key.toString()} property.", "path": "{{schemaPath}}"}`;
-    },
-    [KEY_COUNT]: createPropKeyCountMacro((d): string => `Object.keys(${d}).length`),
-    [PROP_COUNT]: createPropKeyCountMacro(
-        (d): string =>
-            `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}).length)`,
-    ),
-    [SYM_TYPE_VALIDATE]: {
-        [TYPE]: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
-        [CONSTRUCTOR_NAME]: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
-        [INSTANCE_OF]: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, Function),
-        [PROPERTIES]: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
-        [KEY_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
-        [PROP_COUNT]: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),
-    },
-};
-
-Object.defineProperty(TypeObject[KEY_COUNT], SYM_METHOD_MACRO, { value: true });
-Object.defineProperty(TypeObject[PROP_COUNT], SYM_METHOD_MACRO, { value: true });
+export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
+    .derive(TypeAny)
+    .setKeyword(TYPE, {
+        validator(_schemaValue: string, $DATA: unknown): ValidationResult {
+            if (!($DATA && typeof $DATA === 'object' && !Array.isArray($DATA)))
+                return {
+                    message: 'Data should be {{schemaValue}} type.',
+                    path: '{{schemaPath}}',
+                };
+        },
+        schemaValidator: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
+    })
+    .setKeyword(CONSTRUCTOR_NAME, {
+        validator(schemaValue: string, $DATA: object): ValidationResult {
+            if (Object.getPrototypeOf($DATA).constructor.name !== schemaValue)
+                return {
+                    message: 'Data should be direct instance of {{schemaValue}}.',
+                    path: '{{schemaPath}}',
+                };
+        },
+        schemaValidator: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
+    })
+    .setKeyword(INSTANCE_OF, {
+        validator(schemaValue: () => void, $DATA: object): ValidationResult {
+            if (!($DATA instanceof schemaValue))
+                return {
+                    message: 'Data should be instance of {{schemaValue.name}}.',
+                    path: '{{schemaPath}}',
+                };
+        },
+        schemaValidator: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, Function),
+    })
+    .setKeyword(PROPERTIES, {
+        validator(schemaValue: (string | number | symbol)[], $DATA: object): ValidationResult {
+            for (const key of schemaValue)
+                if (!$DATA.hasOwnProperty(key))
+                    return {
+                        message: `Data should have ${key.toString()} property.`,
+                        path: '{{schemaPath}}',
+                    };
+        },
+        schemaValidator: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
+    })
+    .setKeyword(KEY_COUNT, {
+        validator: createPropKeyCountMacro((d): string => `Object.keys(${d}).length`),
+        kind: KeywordValidationFunctionKind.Macro,
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
+    })
+    .setKeyword(PROP_COUNT, {
+        validator: createPropKeyCountMacro(
+            (d): string =>
+                `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}).length)`,
+        ),
+        kind: KeywordValidationFunctionKind.Macro,
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),
+    });

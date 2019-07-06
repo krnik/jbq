@@ -3,8 +3,8 @@ import { check, gen, property } from 'testcheck';
 import { PROP_DATA_PATH } from '../../../src/misc/constants';
 import { schemaValidate } from '../../../src/type/schema_validator';
 
-describe('schemaValidate', (): void => {
-    const tName = 'schemaValidate test';
+describe('schemaValidator', (): void => {
+    const tName = 'schemaValidator test';
     const mName = tName;
 
     describe('any', (): void => {

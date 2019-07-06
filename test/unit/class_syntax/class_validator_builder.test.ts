@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { check, gen, property } from 'testcheck';
 import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
+import { Schema } from '../../../src/core/compilation/compilation_typings';
 import {
     SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
@@ -8,7 +9,6 @@ import {
     TYPE_NAME,
 } from '../../../src/misc/constants';
 import { Constructor } from '../../../src/misc/typings';
-import { Schema } from '../../../src/core/compilation/interface/schema.interface';
 
 interface TestClass extends Constructor {
     [k: string]: unknown;

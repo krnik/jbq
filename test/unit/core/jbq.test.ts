@@ -1,13 +1,7 @@
 import { expect } from 'chai';
-import {
-    SYM_SCHEMA_COLLECTION,
-    SYM_TYPE_VALIDATE,
-    TOKEN_BREAK,
-    TYPE,
-} from '../../../src/misc/constants';
+import { SYM_SCHEMA_COLLECTION, TOKEN_BREAK, TYPE } from '../../../src/misc/constants';
 import { jbq } from '../../../src/core/jbq';
-import { jbqTypes } from '../../../src/lib';
-import { createTypes } from '../../../src/type/mod';
+import { createTypes, types } from '../../../src/type/mod';
 import { createData } from '../../data/mod';
 import { suitesAny } from '../../data/suites/any_suite';
 import { suitesArray } from '../../data/suites/array_suite';
@@ -15,7 +9,8 @@ import { suitesBoolean } from '../../data/suites/boolean_suite';
 import { suitesNumber } from '../../data/suites/number_suite';
 import { suitesObject } from '../../data/suites/object_suite';
 import { suitesString } from '../../data/suites/string_suite';
-import { isErrJSON } from '../../utils';
+import { isValidationError } from '../../utils';
+import { TypeInstance } from '../../../src/core/type_store/type_instance';
 
 const suites = {
     Any: suitesAny,
@@ -33,8 +28,8 @@ describe('Validator', (): void => {
             type,
             (): void => {
                 for (const { name, valid, schema } of suites[type as key]) {
-                    const { Test } = jbq(jbqTypes, { Test: schema });
-                    const { TestAsync } = jbq(jbqTypes, { TestAsync: schema }, { async: true });
+                    const { Test } = jbq(types, { Test: schema });
+                    const { TestAsync } = jbq(types, { TestAsync: schema }, { async: true });
                     const data = createData(schema);
                     if (valid) {
                         it(`VALID: ${name}`, (): void => {
@@ -45,10 +40,10 @@ describe('Validator', (): void => {
                         });
                     } else {
                         it(`INVALID: ${name}`, (): void => {
-                            isErrJSON(Test(data));
+                            isValidationError(Test(data));
                         });
                         it(`INVALID: ${name} - async`, async (): Promise<void> => {
-                            isErrJSON(await TestAsync(data));
+                            isValidationError(await TestAsync(data));
                         });
                     }
                 }
@@ -59,22 +54,20 @@ describe('Validator', (): void => {
         TOKEN_BREAK,
         (): void => {
             it('simple', (): void => {
-                const stringNullable = {
-                    [TYPE](_base: string, $DATA: unknown): undefined | string {
+                const nullableString = new TypeInstance('NullableString').setKeyword(TYPE, {
+                    schemaValidator(value: unknown): void {
+                        if (typeof value !== 'string') throw new TypeError();
+                    },
+                    validator(_base: string, $DATA: unknown): undefined | string {
                         if ($DATA === null) {
                             //{break}
                         }
                         if (typeof $DATA !== 'string') return 'Expected string type!';
                     },
-                    [SYM_TYPE_VALIDATE]: {
-                        [TYPE](value: unknown): void {
-                            if (typeof value !== 'string') throw new TypeError();
-                        },
-                    },
-                };
-                const types = createTypes();
-                types.set('stringNullable', stringNullable, { type: 'any' });
-                const validator = jbq(types, {
+                });
+
+                const typeStore = createTypes().addType(nullableString);
+                const validator = jbq(typeStore, {
                     OptionalName: {
                         [TYPE]: 'stringNullable',
                     },
@@ -87,23 +80,22 @@ describe('Validator', (): void => {
             });
 
             it('collection', (): void => {
-                const numericOrString = {
-                    [TYPE](_base: string, $DATA: unknown): undefined | string {
+                const numericOrString = new TypeInstance('NumericOrString').setKeyword(TYPE, {
+                    schemaValidator(value: unknown): void {
+                        if (typeof value !== 'string') throw new TypeError();
+                    },
+                    validator(_base: string, $DATA: unknown): undefined | string {
                         if (typeof $DATA !== 'number') {
                             if (typeof $DATA !== 'string')
                                 return 'Expected numeric at: {{schemaPath}}.';
                             //{break}
                         }
                     },
-                    [SYM_TYPE_VALIDATE]: {
-                        [TYPE](value: unknown): void {
-                            if (typeof value !== 'string') throw new TypeError();
-                        },
-                    },
-                };
-                const types = createTypes();
-                types.set('numeric', numericOrString, { type: 'number' });
-                const validator = jbq(types, {
+                });
+
+                const typeStore = createTypes().addType(numericOrString);
+
+                const validator = jbq(typeStore, {
                     ArrayOfNumerics: {
                         type: 'array',
                         [SYM_SCHEMA_COLLECTION]: {

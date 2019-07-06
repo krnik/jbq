@@ -18,10 +18,11 @@ import {
     SYM_SCHEMA_PROPERTIES,
     SYM_SCHEMA_COLLECTION,
 } from '../../misc/constants';
-import { Schema } from '../../core/compilation/interface/schema.interface';
-import { ParseValuesMinMax, Constructor, ArrIterCallback } from '../../misc/typings';
+import { Constructor, ArrIterCallback } from '../../misc/typings';
 import { TypeReflect } from '../../util/type_reflect';
 import { ClassValidatorBuilder } from '../class_validator_builder';
+import { ParseValuesMinMax } from '../../type/type_definition_typings';
+import { Schema } from '../../core/compilation/compilation_typings';
 
 type ClassDecoratorParams = [Function];
 

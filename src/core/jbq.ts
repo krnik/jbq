@@ -1,58 +1,74 @@
-import { ParameterName } from '../misc/constants';
-import { JBQOptions, OmitSymbols } from '../misc/typings';
+import { OmitSymbols, Any } from '../misc/typings';
 import { Compilation } from './compilation';
-import { Schema } from './compilation/interface/schema.interface';
-import { TypeWrapper } from './type_wrapper';
+import { ParameterName, Schema } from './compilation/compilation_typings';
+import { Options, ValidationResult } from './jbq/jbq_typings';
+import { TypeStore } from './type_store';
 
-const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {}).constructor;
+type SyncValidationFunction = <T>(data: T) => ValidationResult;
+type AsyncValidationFunction = <T>(data: T) => Promise<ValidationResult>;
 
-type SyncValidationFunction = <T>(data: T) => string | undefined;
-
-type AsyncValidationFunction = <T>(data: T) => Promise<string | undefined>;
-
-type ValidationFn<T> = T extends { async: infer A }
-    ? A extends true
+type ResolvedValidationFunction<Opt extends Partial<Options>> = Opt extends {
+    async: infer Async;
+}
+    ? Async extends true
         ? AsyncValidationFunction
         : SyncValidationFunction
     : SyncValidationFunction;
 
-type Validators<T, O> = { [P in keyof OmitSymbols<T>]: ValidationFn<O> };
+type JBQValidators<Schemas, Opt extends Partial<Options>> = {
+    [P in keyof OmitSymbols<Schemas>]: ResolvedValidationFunction<Opt>
+};
+
+const AsyncFnConstructor = Object.getPrototypeOf(async function*(): unknown {}).constructor;
+
+function AsyncFnFactory(fn: GeneratorFunction): AsyncValidationFunction {
+    return async function asyncValidationFunction($DATA: unknown): Promise<ValidationResult> {
+        const generator = fn($DATA);
+        while (true) {
+            const result = await generator.next();
+
+            if (result.value !== undefined) return result.value;
+            if (result.done) return;
+        }
+    };
+}
 
 /** Compiles `schemas` using `types` instance as source of validation code. */
-export function jbq<T, K extends keyof OmitSymbols<T>, O extends JBQOptions>(
-    types: TypeWrapper,
-    schemas: T,
-    options?: O,
-): Validators<T, O> {
-    const validationFunctions = Object.create(null) as Validators<T, O>;
+export function jbq<Schemas, SchemaKeys extends keyof OmitSymbols<Schemas>, Opt extends Options>(
+    types: TypeStore<Any>,
+    schemas: Schemas,
+    options?: Opt,
+): JBQValidators<Schemas, Opt> {
+    const validationFunctions = Object.create(null) as JBQValidators<Schemas, Opt>;
 
-    for (const [name, schema] of Object.entries(schemas) as [K, Schema][]) {
+    for (const [name, schema] of Object.entries(schemas) as [SchemaKeys, Schema][]) {
         const src = new Compilation(types, schema, name as string, options).execSync();
 
-        if (options && typeof options.async === 'boolean') {
-            const validate = new AsyncFnConstructor(
+        try {
+            if (!options || !options.async) {
+                const validationFunction = new Function(
+                    ParameterName.Arguments,
+                    ParameterName.Data,
+                    src.code,
+                );
+                validationFunctions[name] = validationFunction.bind(undefined, src.arguments);
+                continue;
+            }
+
+            const validationFunction = new AsyncFnConstructor(
                 ParameterName.Arguments,
                 ParameterName.Data,
                 src.code,
-            );
+            ).bind(undefined, src.arguments);
 
-            const bound = validate.bind(undefined, src.arguments);
-
-            validationFunctions[name] = (async function asyncValidationFunction(
-                $DATA: unknown,
-            ): Promise<string | undefined> {
-                const generator = bound($DATA);
-                while (true) {
-                    const result = await generator.next();
-
-                    if (result.value !== undefined) return result.value;
-                    if (result.done) return;
-                }
-            } as unknown) as ValidationFn<O>;
-        } else {
-            const validate = new Function(ParameterName.Arguments, ParameterName.Data, src.code);
-            validationFunctions[name as K] = validate.bind(undefined, src.arguments);
+            validationFunctions[name] = (AsyncFnFactory(
+                validationFunction,
+            ) as unknown) as ResolvedValidationFunction<Opt>;
+        } catch (err) {
+            console.log(src.code);
+            throw err;
         }
     }
+
     return validationFunctions;
 }

@@ -1,7 +1,7 @@
 import { TYPE, TYPE_NAME, SYM_SCHEMA_PROPERTIES, SYM_SCHEMA_COLLECTION } from '../misc/constants';
-import { Schema } from '../core/compilation/interface/schema.interface';
 import { Constructor, Option } from '../misc/typings';
 import { Validator } from '../class_syntax';
+import { Schema } from '../core/compilation/compilation_typings';
 
 const SCHEMA = Symbol('schema');
 const CREATE_INSTANCE = Symbol('create_instance');

@@ -1,24 +1,24 @@
 import {
-    ParameterName,
-    PathResolutionStrategy,
+    DEFAULT_ASYNC_INTERVAL,
     PROP_DATA_PATH,
     SCHEMA_PATH_SEPARATOR,
     TYPE,
-    DEFAULT_ASYNC_INTERVAL,
 } from '../../misc/constants';
-import { DataPath, JBQOptions } from '../../misc/typings';
 import { schemaValidate } from '../../type/schema_validator';
 import { CodeGenerator } from '../code_gen';
-import { IfCondition } from '../code_gen/interface/if_condition.interface';
+import { IfCondition } from '../code_gen/code_gen_typings';
 import { Keyword } from '../code_gen/token/keyword';
 import { ComparisonOperator } from '../code_gen/token/operator';
 import { Compilation } from '../compilation';
-import { Schema } from './interface/schema.interface';
-import { SourceBuilderContext } from './interface/source_builder_context.interface';
-import { SourceBuilderCounter } from './interface/source_builder_counter.interface';
-import { SourceBuilderProduct } from './interface/source_builder_product.interface';
-import { SourceBuilderSnapshot } from './interface/source_builder_snapshot.interface';
+import { Options, PathResolutionStrategy } from '../jbq/jbq_typings';
+import { DataPath, ParameterName, Schema } from './compilation_typings';
 import { ResolvedPathStore } from './resolved_path_store';
+import {
+    SourceBuilderContext,
+    SourceBuilderCounter,
+    SourceBuilderProduct,
+    SourceBuilderSnapshot,
+} from './source_builder/source_builder_typings';
 
 /**
  * Class responsible for main validation function composition logic.
@@ -31,13 +31,13 @@ export class SourceBuilder {
     private context: SourceBuilderContext;
     private resolvedPaths: ResolvedPathStore;
     private Compilation: Compilation;
-    private options: Required<Pick<JBQOptions, Exclude<keyof JBQOptions, 'debug'>>>;
+    private options: Required<Pick<Options, Exclude<keyof Options, 'debug'>>>;
 
     public constructor(
         compilation: Compilation,
         schemaName: string,
         resolvedPaths: ResolvedPathStore,
-        options: JBQOptions = {},
+        options: Options = {},
     ) {
         this.Compilation = compilation;
         this.resolvedPaths = resolvedPaths;
@@ -176,11 +176,11 @@ export class SourceBuilder {
                         ({ variableName }): IfCondition => ({
                             variableName,
                             value: 'undefined',
-                            operator: ComparisonOperator.EqualStrict,
+                            operator: ComparisonOperator.Equal,
                         }),
                     ),
                 );
-                code += CodeGenerator.renderReturnJSONMessage(
+                code += CodeGenerator.renderReturnObject(
                     `One of ${PROP_DATA_PATH} values (${paths}) resolved to undefined.`,
                     this.getSchemaPath(),
                 );
@@ -285,7 +285,7 @@ export class SourceBuilder {
 
             asyncSuffix += CodeGenerator.renderIfStatement([
                 {
-                    operator: ComparisonOperator.EqualStrict,
+                    operator: ComparisonOperator.Equal,
                     variableName: `${yieldCounterName} % ${this.options.asyncInterval}`,
                     value: '0',
                 },

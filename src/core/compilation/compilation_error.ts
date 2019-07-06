@@ -1,11 +1,9 @@
 import { TYPE } from '../../misc/constants';
-import { PrintToken } from '../../util/print_token';
+import { Print } from '../../util/print_token';
 
 export class CompilationError {
     public static missingType(typeName: string): Error {
-        const errorMessage = `Could not find defintion of ${PrintToken.typePrototype(
-            typeName,
-        )} type.`;
+        const errorMessage = `Could not find defintion of ${Print.typeDef(typeName)} type.`;
         return new Error(errorMessage);
     }
 
@@ -25,9 +23,9 @@ export class CompilationError {
     }
 
     public static missingTypeMethod(typeName: string, methodName: string): Error {
-        const errorMessage = `Could not find method ${PrintToken.property(
+        const errorMessage = `Could not find method ${Print.property(
             methodName,
-        )} in ${PrintToken.typePrototype(typeName)} type.`;
+        )} in ${Print.typeDef(typeName)} type.`;
         return new Error(errorMessage);
     }
 }

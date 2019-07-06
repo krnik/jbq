@@ -1,7 +1,8 @@
 import { expect } from 'chai';
+import { check, gen, property } from 'testcheck';
 import { TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
 import { TypeBoolean } from '../../../src/type/boolean';
-import { check, property, gen } from 'testcheck';
+import { isValidationError } from '../../utils';
 
 describe(
     TYPE_NAME.BOOLEAN,
@@ -9,17 +10,20 @@ describe(
         describe(
             TYPE,
             (): void => {
-                const base = 'boolean';
+                const schemaValue = 'boolean';
+                const { validator } = TypeBoolean.getKeyword(TYPE);
+
                 it('valid value', (): void => {
                     check(
                         property(
                             gen.boolean,
                             (value): void => {
-                                expect(TypeBoolean[TYPE](base, value)).to.be.equal(undefined);
+                                expect(validator(schemaValue, value)).to.be.equal(undefined);
                             },
                         ),
                     );
                 });
+
                 it('invalid value', (): void => {
                     const nonBool = gen.oneOf<unknown>([
                         gen.number,
@@ -33,24 +37,28 @@ describe(
                         property(
                             nonBool,
                             (value): void => {
-                                expect(TypeBoolean[TYPE](base, value)).to.be.a('string');
+                                isValidationError(validator(schemaValue, value));
                             },
                         ),
                     );
                 });
             },
         );
+
         describe(
             VALUE,
             (): void => {
-                const base = false;
+                const schemaValue = false;
+                const { validator } = TypeBoolean.getKeyword(VALUE);
+
                 it('valid value', (): void => {
                     const value = false;
-                    expect(TypeBoolean[VALUE](base, value)).to.be.equal(undefined);
+                    expect(validator(schemaValue, value)).to.be.equal(undefined);
                 });
+
                 it('invalid value', (): void => {
                     const value = true;
-                    expect(TypeBoolean[VALUE](base, value)).to.be.a('string');
+                    isValidationError(validator(schemaValue, value));
                 });
             },
         );
