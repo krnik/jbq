@@ -76,8 +76,7 @@ const { jbq } = require('jbq/cjs/lib.js');
 
 **lib.js exports:**
 - [jbq](https://github.com/krnik/jbq/tree/master/docs#jbq): a function that will create validation functions.
-- [jbqTypes](https://github.com/krnik/jbq/tree/master/docs#jbqtypes): [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
-- `createTypes`: creates new instance of [Type Wrapper](#type-wrapper)
+- [types](https://github.com/krnik/jbq/tree/master/docs#types): [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
 - `setLogger`: sets the logger used for debug
 
 **class_syntax.js exports:**

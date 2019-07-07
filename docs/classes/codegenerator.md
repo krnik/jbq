@@ -16,6 +16,7 @@ Utility class that provides functionality to help building validation function c
 
 ### Methods
 
+* [asString](codegenerator.md#asstring)
 * [renderCloseBlock](codegenerator.md#rendercloseblock)
 * [renderDataPath](codegenerator.md#renderdatapath)
 * [renderDataPathResolution](codegenerator.md#renderdatapathresolution)
@@ -26,7 +27,7 @@ Utility class that provides functionality to help building validation function c
 * [renderLabeledBreakStatement](codegenerator.md#renderlabeledbreakstatement)
 * [renderOpenLabeledBlock](codegenerator.md#renderopenlabeledblock)
 * [renderPropertyAccessor](codegenerator.md#renderpropertyaccessor)
-* [renderReturnJSONMessage](codegenerator.md#renderreturnjsonmessage)
+* [renderReturnObject](codegenerator.md#renderreturnobject)
 * [renderVariableInitialization](codegenerator.md#rendervariableinitialization)
 
 ---
@@ -39,19 +40,38 @@ Utility class that provides functionality to help building validation function c
 
 **● Error**: *[CodeGeneratorError](codegeneratorerror.md)* =  CodeGeneratorError
 
-*Defined in [core/code_gen.ts:279](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L279)*
+*Defined in [core/code_gen.ts:190](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L190)*
 
 ___
 
 ## Methods
 
+<a id="asstring"></a>
+
+### `<Static>` asString
+
+▸ **asString**(str: *`string`*): `string`
+
+*Defined in [core/code_gen.ts:186](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L186)*
+
+Renders `str` as string.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| str | `string` |
+
+**Returns:** `string`
+
+___
 <a id="rendercloseblock"></a>
 
 ### `<Static>` renderCloseBlock
 
 ▸ **renderCloseBlock**(): `string`
 
-*Defined in [core/code_gen.ts:61](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L61)*
+*Defined in [core/code_gen.ts:40](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L40)*
 
 Returns single `}` character.
 
@@ -64,7 +84,7 @@ ___
 
 ▸ **renderDataPath**(dataPath: *`string` \| `string`[]*): `string`
 
-*Defined in [core/code_gen.ts:275](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L275)*
+*Defined in [core/code_gen.ts:179](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L179)*
 
 Renders `$dataPath` as string.
 
@@ -83,18 +103,9 @@ ___
 
 ▸ **renderDataPathResolution**(dataPath: *`string` \| `string`[]*, variableName: *`string`*, baseVariable?: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:243](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L243)*
+*Defined in [core/code_gen.ts:147](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L147)*
 
 Renders $dataPath resolution.
-
-Examples
-========
-
-```
- .renderDataPathResolution('/user/name', 'userName');
- // renders stringified version of
- const userName = $DATA && $DATA.user && $DATA.user.name;
-```
 
 **Parameters:**
 
@@ -113,24 +124,9 @@ ___
 
 ▸ **renderForLoop**(variableName: *`string`*, collection: *`string`*, accessor: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:185](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L185)*
+*Defined in [core/code_gen.ts:102](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L102)*
 
 Renders for loop.
-
-Examples
-========
-
-```
- .renderForLoop('myVar', 'arrayOfNumbers', 'a_index');
- // renders stringified version of
- const myVar_len = arrayOfNumbers.length;
- for (
-     let a_index = 0;
-     a_index < myVar_len;
-     a_inex++
- ) {
-     const myVar = arrayOfNumbers[a_index];
-```
 
 **Parameters:**
 
@@ -149,20 +145,9 @@ ___
 
 ▸ **renderForOfLoop**(variableName: *`string`*, iterable: *`string`*, path: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:155](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L155)*
+*Defined in [core/code_gen.ts:84](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L84)*
 
 Renders for..of loop.
-
-Examples
-========
-
-```
- .renderForOfLoop('item', 'arrayOfNumbers', 'Numbers');
- // renders stringified version of
- if (!(Symbol.iterator in arrayOfNumbers))
-     return `{"message": "Data requires...", "path": "Numbers"}`;
- for (const item of arrayOfNumbers) {
-```
 
 **Parameters:**
 
@@ -181,19 +166,9 @@ ___
 
 ▸ **renderFunctionCall**(fnParam: *`string`*, schemaValue: *`string`*, schemaPath: *`string`*, variableName: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:219](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L219)*
+*Defined in [core/code_gen.ts:129](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L129)*
 
 Renders function call, checks if it returned truthy value, if so then return from validation function.
-
-Examples
-========
-
-```
- .renderFunctionCall('isValidUser', '{}', 'User', '$data');
- // returns stringified version of
- const isValidUser_res = isValidUser({}, 'User', $data);
- if (isValidUser_res) return isValidUser_res;
-```
 
 **Parameters:**
 
@@ -213,41 +188,9 @@ ___
 
 ▸ **renderIfStatement**(conditions: *[IfCondition](../interfaces/ifcondition.md)[]*, condLogicOperator?: *[LogicalOperator](../enums/logicaloperator.md)*): `string`
 
-*Defined in [core/code_gen.ts:97](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L97)*
+*Defined in [core/code_gen.ts:47](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L47)*
 
 Renders "if statement".
-
-Examples
-========
-
-```
- const conditions = [
-     {
-         operator: ComparisonOperator.EqualStrict,
-         value: '100',
-         variableName: 'resolved_0', // some variable from the scope
-     },
- ];
-
- .renderIfStatement(conditions);
- 'if (resolved_0 === 100)';
-
- const conds = [
-     {
-         operator: ComparisonOperator.GreaterThan,
-         value: 0,
-         variableName: 'a'
-     },
-     {
-         operator: ComparisonOperator.GreaterThan,
-         value: 0,
-         variableName: 'b'
-     },
- ];
-
- .renderIfStatement(conditions, LogicalOperator.Or);
- 'if (a > 0 \|\| b > 0)';
-```
 
 **Parameters:**
 
@@ -265,17 +208,9 @@ ___
 
 ▸ **renderLabeledBreakStatement**(blockLabel: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:42](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L42)*
+*Defined in [core/code_gen.ts:26](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L26)*
 
 Renders labeled break statement, expects current block label name as an argument.
-
-Examples
-========
-
-```
- .renderLabeledBreakStatement('data_0');
- 'break label_data_0;'
-```
 
 **Parameters:**
 
@@ -292,17 +227,9 @@ ___
 
 ▸ **renderOpenLabeledBlock**(blockLabel: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:54](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L54)*
+*Defined in [core/code_gen.ts:33](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L33)*
 
 Renders labeled block opening.
-
-Examples
-========
-
-```
- .renderOpenLabeledBlock('myBlock');
- 'label_myBlock: {';
-```
 
 **Parameters:**
 
@@ -319,23 +246,9 @@ ___
 
 ▸ **renderPropertyAccessor**(accessor: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L27)*
+*Defined in [core/code_gen.ts:16](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L16)*
 
 Renders provided `accessor` string as a object property accessor.
-
-Examples
-========
-
-```
- .renderPropertyAccessor('0');
- '[0]'
-
- .renderPropertyAccessor('_prop_name');
- '._prop_name'
-
- .renderPropertyAccessor('??_not_so_valid_variable_name');
- '["??_not_so_valid_variable_name"]'
-```
 
 **Parameters:**
 
@@ -346,23 +259,15 @@ Examples
 **Returns:** `string`
 
 ___
-<a id="renderreturnjsonmessage"></a>
+<a id="renderreturnobject"></a>
 
-### `<Static>` renderReturnJSONMessage
+### `<Static>` renderReturnObject
 
-▸ **renderReturnJSONMessage**(message: *`string`*, path: *`string`*): `string`
+▸ **renderReturnObject**(message: *`string`*, path: *`string`*): `string`
 
-*Defined in [core/code_gen.ts:120](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L120)*
+*Defined in [core/code_gen.ts:65](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L65)*
 
-Renders return statement that returns with JSON value.
-
-Examples
-========
-
-```
- .renderReturnJSONMessage('Oopsie', 'User#type');
- 'return `{ "message": "Oopsie", "path": "User#type" }`;';
-```
+Renders return statement that returns object value.
 
 **Parameters:**
 
@@ -380,20 +285,9 @@ ___
 
 ▸ **renderVariableInitialization**(variableName: *`string`*, value: *`string`*, accessor?: *`string`*, keyword?: *[Const](../enums/keyword.md#const) \| [Let](../enums/keyword.md#let) \| [Var](../enums/keyword.md#var)*): `string`
 
-*Defined in [core/code_gen.ts:135](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen.ts#L135)*
+*Defined in [core/code_gen.ts:72](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen.ts#L72)*
 
 Renders `const` variable initialization.
-
-Examples
-========
-
-```
- .renderVariableInitialization('myVar', 'window', '.fetch');
- 'const myVar = window.fetch;';
-
- .renderVariableInitialization('myVar', '100');
- 'const myVar = 100;';
-```
 
 **Parameters:**
 

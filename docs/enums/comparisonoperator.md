@@ -7,7 +7,7 @@
 ### Enumeration members
 
 * [Equal](comparisonoperator.md#equal)
-* [EqualStrict](comparisonoperator.md#equalstrict)
+* [EqualAbstract](comparisonoperator.md#equalabstract)
 * [GreaterOrEqual](comparisonoperator.md#greaterorequal)
 * [GreaterThan](comparisonoperator.md#greaterthan)
 * [LessOrEqual](comparisonoperator.md#lessorequal)
@@ -23,18 +23,18 @@
 
 ###  Equal
 
-**Equal**:  = "=="
+**Equal**:  = "==="
 
-*Defined in [core/code_gen/token/operator.ts:8](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L8)*
+*Defined in [core/code_gen/token/operator.ts:9](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L9)*
 
 ___
-<a id="equalstrict"></a>
+<a id="equalabstract"></a>
 
-###  EqualStrict
+###  EqualAbstract
 
-**EqualStrict**:  = "==="
+**EqualAbstract**:  = "=="
 
-*Defined in [core/code_gen/token/operator.ts:9](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L9)*
+*Defined in [core/code_gen/token/operator.ts:8](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L8)*
 
 ___
 <a id="greaterorequal"></a>
@@ -43,7 +43,7 @@ ___
 
 **GreaterOrEqual**:  = ">="
 
-*Defined in [core/code_gen/token/operator.ts:14](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L14)*
+*Defined in [core/code_gen/token/operator.ts:14](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L14)*
 
 ___
 <a id="greaterthan"></a>
@@ -52,7 +52,7 @@ ___
 
 **GreaterThan**:  = ">"
 
-*Defined in [core/code_gen/token/operator.ts:12](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L12)*
+*Defined in [core/code_gen/token/operator.ts:12](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L12)*
 
 ___
 <a id="lessorequal"></a>
@@ -61,7 +61,7 @@ ___
 
 **LessOrEqual**:  = "<="
 
-*Defined in [core/code_gen/token/operator.ts:15](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L15)*
+*Defined in [core/code_gen/token/operator.ts:15](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L15)*
 
 ___
 <a id="lessthan"></a>
@@ -70,7 +70,7 @@ ___
 
 **LessThan**:  = "<"
 
-*Defined in [core/code_gen/token/operator.ts:13](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L13)*
+*Defined in [core/code_gen/token/operator.ts:13](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L13)*
 
 ___
 <a id="notequal"></a>
@@ -79,7 +79,7 @@ ___
 
 **NotEqual**:  = "!="
 
-*Defined in [core/code_gen/token/operator.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L10)*
+*Defined in [core/code_gen/token/operator.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L10)*
 
 ___
 <a id="notequalstrict"></a>
@@ -88,7 +88,7 @@ ___
 
 **NotEqualStrict**:  = "!=="
 
-*Defined in [core/code_gen/token/operator.ts:11](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/code_gen/token/operator.ts#L11)*
+*Defined in [core/code_gen/token/operator.ts:11](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/token/operator.ts#L11)*
 
 ___
 

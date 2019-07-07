@@ -4,21 +4,6 @@
 
 Interface representing a Schema passed down to compilation functions.
 
-Examples
-========
-
-```
- const schema1 = { type: 'any', required: false };
-
- const schema2 = {
-     type: 'object',
-     [Symbol.for('schema_properties')]: {
-         firstName: { type: 'string', len: { min: 4 } },
-         zip_code: { type: 'string', regex: /\d{3}-\d{2}/ },
-     }
- };
-```
-
 ## Hierarchy
 
 **Schema**
@@ -27,21 +12,6 @@ Examples
 
 \[property: `string`\]:&nbsp;`unknown`
 Interface representing a Schema passed down to compilation functions.
-
-Examples
-========
-
-```
- const schema1 = { type: 'any', required: false };
-
- const schema2 = {
-     type: 'object',
-     [Symbol.for('schema_properties')]: {
-         firstName: { type: 'string', len: { min: 4 } },
-         zip_code: { type: 'string', regex: /\d{3}-\d{2}/ },
-     }
- };
-```
 
 ## Index
 
@@ -57,10 +27,10 @@ Examples
 
 ### `<Optional>` __computed
 
-**● __computed**: *[Schema](../enums/pathresolutionstrategy.md#schema)*
+**● __computed**: *[Schema](schema.md)*
 
-*Defined in [core/compilation/interface/schema.interface.ts:19](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/schema.interface.ts#L19)*
-*Defined in [core/compilation/interface/schema.interface.ts:22](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/schema.interface.ts#L22)*
+*Defined in [core/compilation/compilation_typings.ts:7](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/compilation_typings.ts#L7)*
+*Defined in [core/compilation/compilation_typings.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/compilation_typings.ts#L10)*
 
 ___
 

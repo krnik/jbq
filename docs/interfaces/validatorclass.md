@@ -28,17 +28,17 @@
 
 ###  constructor
 
-⊕ **new ValidatorClass**(...args: *`any`[]*): [Validator](../classes/validator.md)<`T`>
+⊕ **new ValidatorClass**(...args: *[RestParams](../#restparams)*): [Validator](../classes/validator.md)<`T`>
 
 *Inherited from [Constructor](constructor.md).[constructor](constructor.md#constructor-1)*
 
-*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L55)*
+*Defined in [misc/typings.ts:12](https://github.com/krnik/vjs-validator/blob/4b489fe/src/misc/typings.ts#L12)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| `Rest` args | `any`[] |
+| `Rest` args | [RestParams](../#restparams) |
 
 **Returns:** [Validator](../classes/validator.md)<`T`>
 
@@ -52,8 +52,8 @@ ___
 
 **● __computed**: *`undefined` \| `true`*
 
-*Defined in [class_syntax/class_validator_builder.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L10)*
-*Defined in [class_syntax/class_validator_builder.ts:11](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L11)*
+*Defined in [class_syntax/class_validator_builder.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L10)*
+*Defined in [class_syntax/class_validator_builder.ts:11](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L11)*
 
 ___
 

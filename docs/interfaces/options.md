@@ -1,19 +1,19 @@
-[JBQDocs](../README.md) > [JBQOptions](../interfaces/jbqoptions.md)
+[JBQDocs](../README.md) > [Options](../interfaces/options.md)
 
-# Interface: JBQOptions
+# Interface: Options
 
 ## Hierarchy
 
-**JBQOptions**
+**Options**
 
 ## Index
 
 ### Properties
 
-* [async](jbqoptions.md#async)
-* [asyncInterval](jbqoptions.md#asyncinterval)
-* [debug](jbqoptions.md#debug)
-* [handleResolvedPaths](jbqoptions.md#handleresolvedpaths)
+* [async](options.md#async)
+* [asyncInterval](options.md#asyncinterval)
+* [debug](options.md#debug)
+* [handleResolvedPaths](options.md#handleresolvedpaths)
 
 ---
 
@@ -25,7 +25,7 @@
 
 **● async**: *`undefined` \| `false` \| `true`*
 
-*Defined in [misc/typings.ts:47](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L47)*
+*Defined in [core/jbq/jbq_typings.ts:53](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L53)*
 
 Defines if validation function should be asyncronous.
 
@@ -36,7 +36,7 @@ ___
 
 **● asyncInterval**: *`undefined` \| `number`*
 
-*Defined in [misc/typings.ts:52](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L52)*
+*Defined in [core/jbq/jbq_typings.ts:58](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L58)*
 
 Defines how often the validation of collection should be suspended in asyncronous validation functions.
 
@@ -47,7 +47,7 @@ ___
 
 **● debug**: *`undefined` \| `false` \| `true`*
 
-*Defined in [misc/typings.ts:39](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L39)*
+*Defined in [core/jbq/jbq_typings.ts:45](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L45)*
 
 Defines if schema compilation progress should be logged.
 
@@ -58,7 +58,7 @@ ___
 
 **● handleResolvedPaths**: *[PathResolutionStrategy](../enums/pathresolutionstrategy.md)*
 
-*Defined in [misc/typings.ts:43](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L43)*
+*Defined in [core/jbq/jbq_typings.ts:49](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L49)*
 
 Defines what to do in case when $dataPath resolves to undefined.
 

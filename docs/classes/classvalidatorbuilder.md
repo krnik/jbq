@@ -47,7 +47,7 @@ Utility class used to build schema for a class.
 
 ⊕ **new ClassValidatorBuilder**(constructor: *[Constructor](../interfaces/constructor.md)*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:56](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L56)*
+*Defined in [class_syntax/class_validator_builder.ts:56](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L56)*
 
 **Parameters:**
 
@@ -67,7 +67,7 @@ ___
 
 **● constr**: *[Constructor](../interfaces/constructor.md)*
 
-*Defined in [class_syntax/class_validator_builder.ts:56](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L56)*
+*Defined in [class_syntax/class_validator_builder.ts:56](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L56)*
 
 Reference to the Constructor function
 
@@ -78,7 +78,7 @@ ___
 
 **● propertyMeta**: *`Map`<[Property](../#property), [PropertyMeta](../interfaces/propertymeta.md)>* =  new Map()
 
-*Defined in [class_syntax/class_validator_builder.ts:53](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L53)*
+*Defined in [class_syntax/class_validator_builder.ts:53](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L53)*
 
 Set of all decorated properties.
 
@@ -89,7 +89,7 @@ ___
 
 **● schema**: *[Schema](../interfaces/schema.md)*
 
-*Defined in [class_syntax/class_validator_builder.ts:48](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L48)*
+*Defined in [class_syntax/class_validator_builder.ts:48](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L48)*
 
 Object storing schema definition.
 
@@ -103,7 +103,7 @@ ___
 
 ▸ **addDefault**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, property: *[Property](../#property)*, fn: *`CallableFunction`*): `void`
 
-*Defined in [class_syntax/class_validator_builder.ts:264](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L264)*
+*Defined in [class_syntax/class_validator_builder.ts:232](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L232)*
 
 Add function that will produce default value for a `property`.
 
@@ -124,7 +124,7 @@ ___
 
 ▸ **addTransform**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, property: *[Property](../#property)*, fn: *`CallableFunction`*): `void`
 
-*Defined in [class_syntax/class_validator_builder.ts:269](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L269)*
+*Defined in [class_syntax/class_validator_builder.ts:237](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L237)*
 
 Add function that will transform value of a `property`.
 
@@ -145,27 +145,9 @@ ___
 
 ▸ **append**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, schemaProperty: *[Property](../#property)*, schemaValue: *`unknown`*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:127](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L127)*
+*Defined in [class_syntax/class_validator_builder.ts:111](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L111)*
 
 Adds a property to a schema at the root level.
-
-Examples
-========
-
-```
- const builder = ClassValidatorBuilder.extract(SomeClass);
- Object.getOwnPropertyNames(builder.schema); // ['type']
- // schema
- { type: 'object' };
-
- builder.append('volume', '100m3');
- Object.getOwnPropertyNames(builder.schema); // ['type', 'volume']
- // schema
- {
-     type: 'object',
-     volume: '100m3',
- };
-```
 
 **Parameters:**
 
@@ -184,27 +166,9 @@ ___
 
 ▸ **appendToSubSchema**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, schemaProperty: *[Property](../#property)*, schemaValue: *`unknown`*, property: *[Property](../#property)*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:155](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L155)*
+*Defined in [class_syntax/class_validator_builder.ts:124](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L124)*
 
 Works similarly to `.append` method but it will append the schema property to one of properties of `Symbol.for('schema_properties')` property builder' schema.
-
-Examples
-========
-
-```
- const builder = ClassValidatorBuilder.extract(SomeClass);
- // schema
- { type: 'object' };
-
- builder.appendToSchema('type', 'string', 'name');
- // schema
- {
-     type: 'object',
-     [Symbol.for('schema_properties')]: {
-         name: { type: 'string' },
-     },
- };
-```
 
 **Parameters:**
 
@@ -224,7 +188,7 @@ ___
 
 ▸ **ensureProperty**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, schema: *[SchemaProps](../#schemaprops) \| [Schema](../interfaces/schema.md)*, property: *[Property](../#property)*): `void`
 
-*Defined in [class_syntax/class_validator_builder.ts:170](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L170)*
+*Defined in [class_syntax/class_validator_builder.ts:139](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L139)*
 
 **Parameters:**
 
@@ -243,7 +207,7 @@ ___
 
 ▸ **getMeta**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*): `Map`<[Property](../#property), [PropertyMeta](../interfaces/propertymeta.md)>
 
-*Defined in [class_syntax/class_validator_builder.ts:75](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L75)*
+*Defined in [class_syntax/class_validator_builder.ts:75](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L75)*
 
 Returns properties property of builder instance.
 
@@ -262,7 +226,7 @@ ___
 
 ▸ **getSchema**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*): [Schema](../interfaces/schema.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:70](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L70)*
+*Defined in [class_syntax/class_validator_builder.ts:70](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L70)*
 
 Returns schema property of builder instance.
 
@@ -281,7 +245,7 @@ ___
 
 ▸ **getSubSchemas**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, property?: *[Property](../#property)*): [SchemaProps](../#schemaprops)
 
-*Defined in [class_syntax/class_validator_builder.ts:283](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L283)*
+*Defined in [class_syntax/class_validator_builder.ts:251](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L251)*
 
 Ensures that root schema has `Symbol.for('schema_properties')` property and returns it.
 
@@ -303,7 +267,7 @@ ___
 
 ▸ **mergeSchema**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, target: *[SchemaProps](../#schemaprops)*, source: *[SchemaProps](../#schemaprops)*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:295](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L295)*
+*Defined in [class_syntax/class_validator_builder.ts:263](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L263)*
 
 **Parameters:**
 
@@ -322,7 +286,7 @@ ___
 
 ▸ **setSymbolSchemaProperty**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, symbol: *`unique symbol` \| `unique symbol`*, sourceConstructor: *[Constructor](../interfaces/constructor.md)*, property?: *[Property](../#property)*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:186](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L186)*
+*Defined in [class_syntax/class_validator_builder.ts:154](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L154)*
 
 This method is used to set either `Symbol.for('schema_properties')` or `Symbol.for('schema_collection')` properties of the builder' schema.
 
@@ -346,7 +310,7 @@ ___
 
 ▸ **shouldCreateInstance**(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*): `boolean`
 
-*Defined in [class_syntax/class_validator_builder.ts:65](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L65)*
+*Defined in [class_syntax/class_validator_builder.ts:65](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L65)*
 
 Returns true if Class is supposed to return instance instead of supplying schema.
 
@@ -365,7 +329,7 @@ ___
 
 ▸ **updateMeta**<`K`,`V`>(this: *[ClassValidatorBuilder](classvalidatorbuilder.md)*, property: *[Property](../#property)*, kind?: *[K]()*, value?: *[V]()*): `void`
 
-*Defined in [class_syntax/class_validator_builder.ts:79](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L79)*
+*Defined in [class_syntax/class_validator_builder.ts:79](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L79)*
 
 **Type parameters:**
 
@@ -389,7 +353,7 @@ ___
 
 ▸ **extract**(constructor: *`Function`*): [ClassValidatorBuilder](classvalidatorbuilder.md)
 
-*Defined in [class_syntax/class_validator_builder.ts:34](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L34)*
+*Defined in [class_syntax/class_validator_builder.ts:34](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L34)*
 
 Ensures that constructor has a property which is an instance of ClassValidatorBuilder.
 
@@ -408,7 +372,7 @@ ___
 
 ▸ **shouldInstantiate**(constructor: *`Function`*): `void`
 
-*Defined in [class_syntax/class_validator_builder.ts:43](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/class_validator_builder.ts#L43)*
+*Defined in [class_syntax/class_validator_builder.ts:43](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/class_validator_builder.ts#L43)*
 
 **Parameters:**
 

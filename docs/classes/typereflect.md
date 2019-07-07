@@ -4,26 +4,6 @@
 
 Utility class that reduces the boilerplate code. It enables easy `if` statement assessments.
 
-Examples
-========
-
-```
-const array: unkown = [10, 20, 30];
-if (TypeReflect.arrayOf(array, TypeReflect.string)) {
-    // inside this block TypeScript will infer
-    // that the array is of type string[]
-}
-
-const checkIfUser = (v: unknown): v is User => {
-    // if v is a User object return true
-}
-const responseBody: unknown = {};
-if (TypeReflect.objectShape(responseBody, checkIfUser)) {
-    // inside this block TypeScript will infer
-    // that the responseBody is User object
-}
-```
-
 ## Hierarchy
 
 **TypeReflect**
@@ -34,7 +14,6 @@ if (TypeReflect.objectShape(responseBody, checkIfUser)) {
 
 * [array](typereflect.md#array)
 * [arrayOf](typereflect.md#arrayof)
-* [asString](typereflect.md#asstring)
 * [bigInt](typereflect.md#bigint)
 * [boolean](typereflect.md#boolean)
 * [instance](typereflect.md#instance)
@@ -55,7 +34,7 @@ if (TypeReflect.objectShape(responseBody, checkIfUser)) {
 
 ▸ **array**<`T`>(value: *`unknown`*, allowEmpty?: *`undefined` \| `false` \| `true`*): `boolean`
 
-*Defined in [util/type_reflect.ts:60](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L60)*
+*Defined in [util/type_reflect.ts:43](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L43)*
 
 **Type parameters:**
 
@@ -76,7 +55,7 @@ ___
 
 ▸ **arrayOf**<`T`>(value: *`unknown`*, elemCheck: *`function`*, allowEmpty?: *`undefined` \| `false` \| `true`*): `boolean`
 
-*Defined in [util/type_reflect.ts:64](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L64)*
+*Defined in [util/type_reflect.ts:47](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L47)*
 
 **Type parameters:**
 
@@ -92,30 +71,13 @@ ___
 **Returns:** `boolean`
 
 ___
-<a id="asstring"></a>
-
-### `<Static>` asString
-
-▸ **asString**(str: *`string`*): `string`
-
-*Defined in [util/type_reflect.ts:100](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L100)*
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| str | `string` |
-
-**Returns:** `string`
-
-___
 <a id="bigint"></a>
 
 ### `<Static>` bigInt
 
 ▸ **bigInt**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:35](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L35)*
+*Defined in [util/type_reflect.ts:18](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L18)*
 
 **Parameters:**
 
@@ -132,7 +94,7 @@ ___
 
 ▸ **boolean**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L27)*
+*Defined in [util/type_reflect.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L10)*
 
 **Parameters:**
 
@@ -149,7 +111,7 @@ ___
 
 ▸ **instance**<`T`>(value: *`unknown`*, constructor: *`T`*): `boolean`
 
-*Defined in [util/type_reflect.ts:74](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L74)*
+*Defined in [util/type_reflect.ts:57](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L57)*
 
 **Type parameters:**
 
@@ -170,7 +132,7 @@ ___
 
 ▸ **number**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:31](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L31)*
+*Defined in [util/type_reflect.ts:14](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L14)*
 
 **Parameters:**
 
@@ -187,7 +149,7 @@ ___
 
 ▸ **object**<`T`>(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:47](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L47)*
+*Defined in [util/type_reflect.ts:30](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L30)*
 
 **Type parameters:**
 
@@ -207,7 +169,7 @@ ___
 
 ▸ **objectProps**<`P`,`V`>(value: *`unknown`*, keys: *`P`[]*): `boolean`
 
-*Defined in [util/type_reflect.ts:51](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L51)*
+*Defined in [util/type_reflect.ts:34](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L34)*
 
 **Type parameters:**
 
@@ -229,7 +191,7 @@ ___
 
 ▸ **primitiveLiteral**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:87](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L87)*
+*Defined in [util/type_reflect.ts:70](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L70)*
 
 This function will return true if it's possible to represent `value` argument as a literal.
 
@@ -248,7 +210,7 @@ ___
 
 ▸ **string**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:39](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L39)*
+*Defined in [util/type_reflect.ts:22](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L22)*
 
 **Parameters:**
 
@@ -265,7 +227,7 @@ ___
 
 ▸ **symbol**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:43](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/type_reflect.ts#L43)*
+*Defined in [util/type_reflect.ts:26](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/type_reflect.ts#L26)*
 
 **Parameters:**
 

@@ -21,18 +21,18 @@
 
 ### `<Optional>` options
 
-**● options**: *[JBQOptions](jbqoptions.md)*
+**● options**: *[Options](options.md)*
 
-*Defined in [class_syntax/build_method_compile.ts:26](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/build_method_compile.ts#L26)*
+*Defined in [class_syntax/build_method_compile.ts:27](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/build_method_compile.ts#L27)*
 
 ___
 <a id="types"></a>
 
 ### `<Optional>` types
 
-**● types**: *[TypeWrapper](../classes/typewrapper.md)*
+**● types**: *[TypeStore](../classes/typestore.md)*
 
-*Defined in [class_syntax/build_method_compile.ts:25](https://github.com/krnik/vjs-validator/blob/08b1300/src/class_syntax/build_method_compile.ts#L25)*
+*Defined in [class_syntax/build_method_compile.ts:26](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax/build_method_compile.ts#L26)*
 
 ___
 

@@ -27,7 +27,7 @@ An interface that is used to create end-product of the `SourceBuilder` that is a
 
 **● argsParameter**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_product.interface.ts:27](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/source_builder_product.interface.ts#L27)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:79](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L79)*
 
 Name of the parameter that represents an array of arguments that validation function expects.
 
@@ -38,7 +38,7 @@ ___
 
 **● arguments**: *`unknown`[]*
 
-*Defined in [core/compilation/interface/source_builder_product.interface.ts:18](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/source_builder_product.interface.ts#L18)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:70](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L70)*
 
 An array that contains all the values that will be passed as an `argumentsParameter` to the validation function.
 
@@ -51,7 +51,7 @@ ___
 
 **● code**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_product.interface.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/source_builder_product.interface.ts#L10)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:62](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L62)*
 
 Property that contains string content of validation function.
 
@@ -62,7 +62,7 @@ ___
 
 **● dataParameter**: *`string`*
 
-*Defined in [core/compilation/interface/source_builder_product.interface.ts:22](https://github.com/krnik/vjs-validator/blob/08b1300/src/core/compilation/interface/source_builder_product.interface.ts#L22)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:74](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L74)*
 
 Name of the parameter that represents input value.
 

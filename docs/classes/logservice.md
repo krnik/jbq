@@ -35,7 +35,7 @@
 
 ⊕ **new LogService**(active: *`boolean`*): [LogService](logservice.md)
 
-*Defined in [util/log_service.ts:15](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L15)*
+*Defined in [util/log_service.ts:15](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L15)*
 
 **Parameters:**
 
@@ -55,7 +55,7 @@ ___
 
 **● active**: *`boolean`* = false
 
-*Defined in [util/log_service.ts:14](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L14)*
+*Defined in [util/log_service.ts:14](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L14)*
 
 ___
 <a id="indent"></a>
@@ -64,7 +64,7 @@ ___
 
 **● indent**: *`number`* = 0
 
-*Defined in [util/log_service.ts:15](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L15)*
+*Defined in [util/log_service.ts:15](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L15)*
 
 ___
 
@@ -74,15 +74,14 @@ ___
 
 ###  incIndent
 
-▸ **incIndent**(this: *[LogService](logservice.md)*, v: *`number`*): `void`
+▸ **incIndent**(v: *`number`*): `void`
 
-*Defined in [util/log_service.ts:21](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L21)*
+*Defined in [util/log_service.ts:21](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L21)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| this | [LogService](logservice.md) |
 | v | `number` |
 
 **Returns:** `void`
@@ -92,15 +91,14 @@ ___
 
 ### `<Private>` log
 
-▸ **log**(this: *[LogService](logservice.md)*, message: *`string`*): `void`
+▸ **log**(message: *`string`*): `void`
 
-*Defined in [util/log_service.ts:34](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L34)*
+*Defined in [util/log_service.ts:34](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L34)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| this | [LogService](logservice.md) |
 | message | `string` |
 
 **Returns:** `void`
@@ -110,15 +108,14 @@ ___
 
 ###  property
 
-▸ **property**(this: *[LogService](logservice.md)*, propertyName: *`string`*): `void`
+▸ **property**(propertyName: *`string`*): `void`
 
-*Defined in [util/log_service.ts:30](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L30)*
+*Defined in [util/log_service.ts:30](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L30)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| this | [LogService](logservice.md) |
 | propertyName | `string` |
 
 **Returns:** `void`
@@ -128,15 +125,14 @@ ___
 
 ###  schema
 
-▸ **schema**(this: *[LogService](logservice.md)*, schemaName: *`string`*): `void`
+▸ **schema**(schemaName: *`string`*): `void`
 
-*Defined in [util/log_service.ts:25](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L25)*
+*Defined in [util/log_service.ts:25](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L25)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| this | [LogService](logservice.md) |
 | schemaName | `string` |
 
 **Returns:** `void`
@@ -148,7 +144,7 @@ ___
 
 ▸ **setLogger**(logger: *[Logger](../interfaces/logger.md)*): `void`
 
-*Defined in [util/log_service.ts:10](https://github.com/krnik/vjs-validator/blob/08b1300/src/util/log_service.ts#L10)*
+*Defined in [util/log_service.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/util/log_service.ts#L10)*
 
 **Parameters:**
 

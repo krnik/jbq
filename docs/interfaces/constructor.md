@@ -24,15 +24,15 @@
 
 ###  constructor
 
-⊕ **new Constructor**(...args: *`any`[]*): `T`
+⊕ **new Constructor**(...args: *[RestParams](../#restparams)*): `T`
 
-*Defined in [misc/typings.ts:55](https://github.com/krnik/vjs-validator/blob/08b1300/src/misc/typings.ts#L55)*
+*Defined in [misc/typings.ts:12](https://github.com/krnik/vjs-validator/blob/4b489fe/src/misc/typings.ts#L12)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| `Rest` args | `any`[] |
+| `Rest` args | [RestParams](../#restparams) |
 
 **Returns:** `T`
 
