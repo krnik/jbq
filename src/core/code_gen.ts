@@ -12,17 +12,6 @@ import { ParameterName } from './compilation/compilation_typings';
 export class CodeGenerator {
     /**
      * Renders provided `accessor` string as a object property accessor.
-     *
-     * # Examples
-     *
-     *      .renderPropertyAccessor('0');
-     *      '[0]'
-     *
-     *      .renderPropertyAccessor('_prop_name');
-     *      '._prop_name'
-     *
-     *      .renderPropertyAccessor('??_not_so_valid_variable_name');
-     *      '["??_not_so_valid_variable_name"]'
      */
     public static renderPropertyAccessor(accessor: string): string {
         if (/^[a-zA-Z_$][\w$]*$/.test(accessor)) return `.${accessor}`;
@@ -33,11 +22,6 @@ export class CodeGenerator {
     /**
      * Renders labeled break statement, expects current block label name as an
      * argument.
-     *
-     * # Examples
-     *
-     *      .renderLabeledBreakStatement('data_0');
-     *      'break label_data_0;'
      */
     public static renderLabeledBreakStatement(blockLabel: string): string {
         return `${Keyword.Break} label_${blockLabel};`;
@@ -45,11 +29,6 @@ export class CodeGenerator {
 
     /**
      * Renders labeled block opening.
-     *
-     * # Examples
-     *
-     *      .renderOpenLabeledBlock('myBlock');
-     *      'label_myBlock: {';
      */
     public static renderOpenLabeledBlock(blockLabel: string): string {
         return `label_${blockLabel}: {`;
@@ -64,35 +43,6 @@ export class CodeGenerator {
 
     /**
      * Renders "if statement".
-     *
-     * # Examples
-     *
-     *      const conditions = [
-     *          {
-     *              operator: ComparisonOperator.EqualStrict,
-     *              value: '100',
-     *              variableName: 'resolved_0', // some variable from the scope
-     *          },
-     *      ];
-     *
-     *      .renderIfStatement(conditions);
-     *      'if (resolved_0 === 100)';
-     *
-     *      const conds = [
-     *          {
-     *              operator: ComparisonOperator.GreaterThan,
-     *              value: 0,
-     *              variableName: 'a'
-     *          },
-     *          {
-     *              operator: ComparisonOperator.GreaterThan,
-     *              value: 0,
-     *              variableName: 'b'
-     *          },
-     *      ];
-     *
-     *      .renderIfStatement(conditions, LogicalOperator.Or);
-     *      'if (a > 0 || b > 0)';
      */
     public static renderIfStatement(
         conditions: IfCondition[],
@@ -111,11 +61,6 @@ export class CodeGenerator {
 
     /**
      * Renders return statement that returns object value.
-     *
-     * # Examples
-     *
-     *      .renderReturnJSONMessage('Oopsie', 'User#type');
-     *      'return { "message": "Oopsie", "path": "User#type" };';
      */
     public static renderReturnObject(message: string, path: string): string {
         return `${Keyword.Return} { "message": "${message}", "path": "${path}" };`;
@@ -123,14 +68,6 @@ export class CodeGenerator {
 
     /**
      * Renders `const` variable initialization.
-     *
-     * # Examples
-     *
-     *      .renderVariableInitialization('myVar', 'window', '.fetch');
-     *      'const myVar = window.fetch;';
-     *
-     *      .renderVariableInitialization('myVar', '100');
-     *      'const myVar = 100;';
      */
     public static renderVariableInitialization(
         variableName: string,
@@ -143,14 +80,6 @@ export class CodeGenerator {
 
     /**
      * Renders for..of loop.
-     *
-     * # Examples
-     *
-     *      .renderForOfLoop('item', 'arrayOfNumbers', 'Numbers');
-     *      // renders stringified version of
-     *      if (!(Symbol.iterator in arrayOfNumbers))
-     *          return `{"message": "Data requires...", "path": "Numbers"}`;
-     *      for (const item of arrayOfNumbers) {
      */
     public static renderForOfLoop(variableName: string, iterable: string, path: string): string {
         const ifCondition = {
@@ -169,18 +98,6 @@ export class CodeGenerator {
 
     /**
      * Renders for loop.
-     *
-     * # Examples
-     *
-     *      .renderForLoop('myVar', 'arrayOfNumbers', 'a_index');
-     *      // renders stringified version of
-     *      const myVar_len = arrayOfNumbers.length;
-     *      for (
-     *          let a_index = 0;
-     *          a_index < myVar_len;
-     *          a_inex++
-     *      ) {
-     *          const myVar = arrayOfNumbers[a_index];
      */
     public static renderForLoop(
         variableName: string,
@@ -208,13 +125,6 @@ export class CodeGenerator {
     /**
      * Renders function call, checks if it returned truthy value, if so then return
      * from validation function.
-     *
-     * # Examples
-     *
-     *      .renderFunctionCall('isValidUser', '{}', 'User', '$data');
-     *      // returns stringified version of
-     *      const isValidUser_res = isValidUser({}, 'User', $data);
-     *      if (isValidUser_res) return isValidUser_res;
      */
     public static renderFunctionCall(
         fnParam: string,
@@ -233,12 +143,6 @@ export class CodeGenerator {
 
     /**
      * Renders $dataPath resolution.
-     *
-     * # Examples
-     *
-     *      .renderDataPathResolution('/user/name', 'userName');
-     *      // renders stringified version of
-     *      const userName = $DATA && $DATA.user && $DATA.user.name;
      */
     public static renderDataPathResolution(
         dataPath: string | string[],

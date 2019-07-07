@@ -1,26 +1,30 @@
 import { equal } from 'assert';
-import { TypeWrapper } from '../../src/core/type_store';
-import { TypeAny } from '../../src/type/any';
-import { SYM_TYPE_VALIDATE } from '../../src/misc/constants';
+import { TypeInstance } from '../../src/core/type_store/type_instance';
+import { ValidationResult } from '../../src/core/jbq/jbq_typings';
+import { TypeStore } from '../../src/core/type_store';
 
 const hexReg = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
-const HexColor = {
-    type(_schemaValue: string, $DATA: unknown): string | undefined {
+const HexColor = new TypeInstance('hex-color').setKeyword('type', {
+    validator(_schemaValue: string, $DATA: unknown): ValidationResult {
         if (typeof $DATA !== 'string') {
-            return `"{ "message": "Only string values can be hex colors.", "path": "{{schemaPath}}" }"`;
+            return {
+                message: 'Only string values can be hex colors;].',
+                path: '{{schemaPath}}',
+            };
         }
         if (!hexReg.test($DATA)) {
-            return `"{ "message": "Received string is not a hex color value.", "path": "{{schemaPath}}" }"`;
+            return {
+                message: 'Received string is not a hex color value.',
+                path: '{{schemaPath}}',
+            };
         }
     },
-    [SYM_TYPE_VALIDATE]: {
-        type(schemaValue: unknown): void {
-            if (schemaValue !== 'string') throw new Error('Type can be a string only!');
-        },
+    schemaValidator(schemaValue: unknown): void {
+        if (schemaValue !== 'string') throw new Error('Type can be a string only!');
     },
-};
+});
 
-const types = new TypeWrapper().set('any', TypeAny).set('hex_color', HexColor, { type: 'any' });
+const types = new TypeStore().addType(HexColor);
 
-equal(types.get('hex_color'), HexColor);
-equal(types.has('hexcolor'), false);
+equal(types.getType('hex-color'), HexColor);
+equal(types.hasType('hexcolor'), false);

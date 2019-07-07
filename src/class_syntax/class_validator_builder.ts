@@ -107,22 +107,6 @@ export class ClassValidatorBuilder {
 
     /**
      * Adds a property to a schema at the root level.
-     *
-     * # Examples
-     *
-     *      const builder = ClassValidatorBuilder.extract(SomeClass);
-     *      Object.getOwnPropertyNames(builder.schema); // ['type']
-     *      // schema
-     *      { type: 'object' };
-     *
-     *
-     *      builder.append('volume', '100m3');
-     *      Object.getOwnPropertyNames(builder.schema); // ['type', 'volume']
-     *      // schema
-     *      {
-     *          type: 'object',
-     *          volume: '100m3',
-     *      };
      */
     public append(
         this: ClassValidatorBuilder,
@@ -136,21 +120,6 @@ export class ClassValidatorBuilder {
     /**
      * Works similarly to `.append` method but it will append the schema property
      * to one of properties of `Symbol.for('schema_properties')` property builder' schema.
-     *
-     * # Examples
-     *
-     *      const builder = ClassValidatorBuilder.extract(SomeClass);
-     *      // schema
-     *      { type: 'object' };
-     *
-     *      builder.appendToSchema('type', 'string', 'name');
-     *      // schema
-     *      {
-     *          type: 'object',
-     *          [Symbol.for('schema_properties')]: {
-     *              name: { type: 'string' },
-     *          },
-     *      };
      */
     public appendToSubSchema(
         this: ClassValidatorBuilder,
@@ -181,7 +150,6 @@ export class ClassValidatorBuilder {
      *
      * If `property` argument is provided then `Symbol.for('schema_properties')` property
      * will be extended. Otherwise `schema_collection` property will be extended.
-     *
      */
     public setSymbolSchemaProperty(
         this: ClassValidatorBuilder,

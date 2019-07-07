@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { TypeInstance } from '../../../../src/core/type_store/type_instance';
 import { check, property, gen } from 'testcheck';
+import { catchError } from '../../../utils';
 
 describe('TypeInstance', (): void => {
     describe('.constructor', (): void => {
@@ -133,11 +134,14 @@ describe('TypeInstance', (): void => {
             expect(descriptor1).to.be.deep.equal(descriptor2);
         });
 
-        it('it should return undefined if keyword does not exist', (): void => {
+        it('it should throw an error if keyword does not exist', (): void => {
             const name = 'Test';
             const type = new TypeInstance(name);
-
-            expect(type.getKeyword(name)).to.be.equal(undefined);
+            catchError(
+                (): void => {
+                    type.getKeyword(name);
+                },
+            );
         });
     });
 
@@ -208,37 +212,53 @@ describe('TypeInstance', (): void => {
             const keywords = type.getKeywords();
             [...keys, ...deriveKeys].forEach(
                 (key): void => {
-                    expect(keywords.includes(key)).should.be.equal(true);
+                    expect(keywords.includes(key)).to.be.equal(true);
                 },
             );
         });
     });
 
-    describe('.setKeyOrder', (): void => {
+    describe('.setKeywordOrder', (): void => {
         it('it should set keyOrder of a type', (): void => {
             const name = 'Test';
-            const type = new TypeInstance(name);
+            const descriptor = { validator(): void {}, schemaValidator(): void {} };
 
+            const type = new TypeInstance(name)
+                .setKeyword('test1', descriptor)
+                .setKeyword('test2', descriptor);
             expect(type['keywordOrder']).to.be.equal(undefined);
 
-            const keyOrder = ['test1', 'test2'];
-            type.setKeywordOrder(keyOrder);
+            const keywordOrder = ['test1', 'test2'];
+            type.setKeywordOrder(keywordOrder);
 
-            expect(type['keywordOrder']).to.be.deep.equal(keyOrder);
+            expect(type['keywordOrder']).to.be.deep.equal(keywordOrder);
+        });
+
+        it('it should throw if keywordOrder array contains keyword that has not been defined', (): void => {
+            const name = 'Test';
+            const type = new TypeInstance(name);
+            catchError(
+                (): void => {
+                    type.setKeywordOrder(['test1', 'test2']);
+                },
+            );
         });
     });
 
-    describe('.getKeyOrder', (): void => {
+    describe('.getKeywordOrder', (): void => {
         it('it should return Option<string[]>', (): void => {
             const name = 'Test';
-            const type = new TypeInstance(name);
+            const descriptor = { validator(): void {}, schemaValidator(): void {} };
 
+            const type = new TypeInstance(name)
+                .setKeyword('test1', descriptor)
+                .setKeyword('test2', descriptor);
             expect(type.getKeywordOrder()).to.be.equal(undefined);
 
-            const keyOrder = ['test1', 'test2'];
-            type.setKeywordOrder(keyOrder);
+            const keywordOrder = ['test1', 'test2'];
+            type.setKeywordOrder(keywordOrder);
 
-            expect(type.getKeywordOrder()).to.be.deep.equal(keyOrder);
+            expect(type.getKeywordOrder()).to.be.deep.equal(keywordOrder);
         });
     });
 

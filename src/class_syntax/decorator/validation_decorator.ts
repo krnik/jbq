@@ -76,31 +76,6 @@ export function decoratorFactory<T = unknown, BASE extends DecoratorTypes = 'val
  * decorated property of the subSchemas.
  *
  * By default decorated classes have `type` property set to `object`.
- *
- * # Examples
- *
- *      \@type('string')
- *      class FullName {}
- *      // schema of FullName
- *      { type: 'string' };
- *
- *      class Names {
- *          \@type('array')
- *          \@collection(FullName)
- *          public names!: string[];
- *      }
- *      // schema of Names
- *      {
- *          type: 'object',
- *          [Symbol.for('schema_properties')]: {
- *              names: {
- *                  type: 'array',
- *                  [Symbol.for('schema_collection')]: {
- *                      type: 'string',
- *                  },
- *              },
- *          },
- *      }
  */
 export const type = decoratorFactory<string>(TYPE);
 
@@ -169,29 +144,6 @@ export const constructorName = decoratorFactory<string>(CONSTRUCTOR_NAME);
  * Always succeeds (does not check if properties exists or not).
  *
  * Use with caution.
- *
- * # Examples
- *
- *      class Name {
- *          \@string
- *          public firstName!: string;
- *      }
- *
- *      class Person {
- *
- *          \@schema({
- *              type: 'string',     // conflicts with `@object` decorator
- *              [Symbol.for('schema_properties')]: {
- *                  firstName: { type: 'boolean' }, // conflicts with Name.firstName
- *              },
- *          })
- *          \@object
- *          \@shape(Name)
- *          public name!: Shape<Name>; // Not really `Shape<Name>` anymore.
- *      }
- *
- * The outcome of using schema property depends purely on order of execution of decorators.
- * If `@shape` is executed as last decorator then it will overwrite any common schema properties.
  */
 export const schema = (schemaObject: Schema): Decorator => (...args: DecoratorParams): void => {
     const schemaProperties = [
@@ -239,23 +191,6 @@ const decoratorSubSchemaFactory = (schemaSymbol: SchemaSymbol): ConstructorFacto
  *
  * If provided class is decorated with `@instantiate` decorator then schema is not extended.
  * Instead provided class instance will be created.
- *
- * When `@shape` is used on a class it will always extend schema.
- *
- *      \@instantiate
- *      class ID {
- *          \@number
- *          public no!: number;
- *      }
- *
- *      \@shape(ID)
- *      class Resource {}
- *
- * Schema of `Resource` class will inherit all sub properties of `ID` class' schema.
- * This means that a valid class signature for `Resource` is the following.
- *
- *      \@shape(ID)
- *      class Resource implements Shape<ID> {}
  */
 export const shape = decoratorSubSchemaFactory(SYM_SCHEMA_PROPERTIES);
 
@@ -271,26 +206,5 @@ export const shape = decoratorSubSchemaFactory(SYM_SCHEMA_PROPERTIES);
  *
  * Currently only array-like (integer indexed with `length` property) objects support creating instances since they're easily
  * mutated.
- *
- * # Examples
- *
- *      \@number
- *      \@value({ min: 100 })
- *      class NumGte100 {}
- *
- *      class Poll extends Validator {
- *          \@array
- *          \@collection(NumGte100)
- *          public votes!: number[];
- *
- *          \@array
- *          \@shape(HighestVotes)
- *          public votes2!: number[];
- *      }
- *
- *      compileClass(Poll);
- *
- *      const poll = new Poll().build({ votes: [100, 112] });
- *      poll.votes; // [100, 112]
  */
 export const collection = decoratorSubSchemaFactory(SYM_SCHEMA_COLLECTION);

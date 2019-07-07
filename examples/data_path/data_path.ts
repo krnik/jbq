@@ -1,4 +1,4 @@
-import { jbq, jbqTypes } from '../../src/lib';
+import { jbq, types } from '../../src/lib';
 import { equal } from 'assert';
 
 //example_region
@@ -47,7 +47,7 @@ const settingsSchema = {
     },
 };
 
-const { Settings } = jbq(jbqTypes, { Settings: settingsSchema });
+const { Settings } = jbq(types, { Settings: settingsSchema });
 
 equal(Settings(settings), undefined);
 equal(
@@ -66,5 +66,5 @@ equal(
         premiumRequestRateLimit: 60,
         regularRequestRateLimit: 70,
     }),
-    'string',
+    'object',
 );

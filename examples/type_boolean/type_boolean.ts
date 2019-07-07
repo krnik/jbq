@@ -1,16 +1,16 @@
-import { jbq, jbqTypes } from '../../src/lib';
+import { jbq, types } from '../../src/lib';
 import { equal } from 'assert';
 
 const schemaType = { type: 'boolean' };
-const { BooleanType } = jbq(jbqTypes, { BooleanType: schemaType });
+const { BooleanType } = jbq(types, { BooleanType: schemaType });
 
 equal(BooleanType(true), undefined);
-equal(typeof BooleanType(0), 'string');
+equal(typeof BooleanType(0), 'object');
 
 //example_region
 
 const schemaValue = { type: 'boolean', value: true };
-const { BooleanValue } = jbq(jbqTypes, { BooleanValue: schemaValue });
+const { BooleanValue } = jbq(types, { BooleanValue: schemaValue });
 
 equal(BooleanValue(true), undefined);
-equal(typeof BooleanValue(false), 'string');
+equal(typeof BooleanValue(false), 'object');

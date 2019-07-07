@@ -1,37 +1,37 @@
-import { jbq, jbqTypes } from '../../src/lib';
+import { jbq, types } from '../../src/lib';
 import { equal } from 'assert';
 
 const schemaType = { type: 'object' };
-const { ObjectType } = jbq(jbqTypes, { ObjectType: schemaType });
+const { ObjectType } = jbq(types, { ObjectType: schemaType });
 
 equal(ObjectType({}), undefined);
 equal(ObjectType(new Map()), undefined);
-equal(typeof ObjectType(null), 'string');
-equal(typeof ObjectType([]), 'string');
+equal(typeof ObjectType(null), 'object');
+equal(typeof ObjectType([]), 'object');
 
 //example_region
 
 const schema = { type: 'object', constructorName: 'Set' };
-const { ObjectConstrName } = jbq(jbqTypes, { ObjectConstrName: schema });
+const { ObjectConstrName } = jbq(types, { ObjectConstrName: schema });
 
 equal(ObjectConstrName(new Set()), undefined);
-equal(typeof ObjectConstrName({}), 'string');
+equal(typeof ObjectConstrName({}), 'object');
 
 //example_region
 
 const schemaInstanceOf = { type: 'object', instanceOf: Map };
-const { ObjectInstance } = jbq(jbqTypes, { ObjectInstance: schemaInstanceOf });
+const { ObjectInstance } = jbq(types, { ObjectInstance: schemaInstanceOf });
 
 equal(ObjectInstance(new Map()), undefined);
-equal(typeof ObjectInstance(new Set()), 'string');
+equal(typeof ObjectInstance(new Set()), 'object');
 
 //example_region
 
 const schemaProps = { type: 'object', properties: ['hello'] };
-const { ObjectProperties } = jbq(jbqTypes, { ObjectProperties: schemaProps });
+const { ObjectProperties } = jbq(types, { ObjectProperties: schemaProps });
 
 equal(ObjectProperties({ hello: 'World' }), undefined);
-equal(typeof ObjectProperties({ world: 'hello' }), 'string');
+equal(typeof ObjectProperties({ world: 'hello' }), 'object');
 
 //example_region
 
@@ -53,19 +53,19 @@ const schemasKeyCount = {
         keyCount: { min: 1, max: 2 },
     },
 };
-const { SimpleKey, MinKey, MaxKey, MinMaxKey } = jbq(jbqTypes, schemasKeyCount);
+const { SimpleKey, MinKey, MaxKey, MinMaxKey } = jbq(types, schemasKeyCount);
 
 equal(SimpleKey({}), undefined);
-equal(typeof SimpleKey({ key: 'value' }), 'string');
+equal(typeof SimpleKey({ key: 'value' }), 'object');
 
 equal(MinKey({ 1: 1 }), undefined);
-equal(typeof MinKey({}), 'string');
+equal(typeof MinKey({}), 'object');
 
 equal(MaxKey({ hello: 'world' }), undefined);
-equal(typeof MaxKey({ a: 0, b: 0 }), 'string');
+equal(typeof MaxKey({ a: 0, b: 0 }), 'object');
 
 equal(MinMaxKey({ hello: 'world' }), undefined);
-equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'string');
+equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'object');
 
 //example_region
 
@@ -80,7 +80,7 @@ const schemasPropCount = {
     },
     // and so on...
 };
-const { SimpleProp, MinProp } = jbq(jbqTypes, schemasPropCount);
+const { SimpleProp, MinProp } = jbq(types, schemasPropCount);
 
 equal(SimpleProp({ [Symbol()]: true }), undefined);
 equal(
@@ -88,8 +88,8 @@ equal(
         [Symbol('meta_1')]: true,
         [Symbol('meta_2')]: false,
     }),
-    'string',
+    'object',
 );
 
 equal(MinProp({ key: 'value' }), undefined);
-equal(typeof MinProp({}), 'string');
+equal(typeof MinProp({}), 'object');

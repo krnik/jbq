@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { TypeStore } from '../../../../src/core/type_store';
 import { TypeInstance } from '../../../../src/core/type_store/type_instance';
+import { catchError } from '../../../utils';
 
 describe('TypeStore', (): void => {
     describe('.constructor', (): void => {
@@ -24,17 +25,13 @@ describe('TypeStore', (): void => {
             expect(stored === type).to.be.equal(true);
         });
 
-        it('it should overwrite type if type already exists (against TypeScript type checking)', (): void => {
+        it('it should not overwrite type if type already exists', (): void => {
             const name = 'Test';
             const type = new TypeInstance(name);
             const type1 = new TypeInstance(name).setUseForOfLoop(false);
 
             // @ts-ignore
-            const store = new TypeStore().addType(type).addType(type1);
-
-            expect(store['types'].get(name))
-                .to.be.an('object')
-                .that.have.property('useForOfLoop', false);
+            catchError((): never => new TypeStore().addType(type).addType(type1));
         });
     });
 
@@ -71,8 +68,7 @@ describe('TypeStore', (): void => {
             const store = new TypeStore();
 
             // @ts-ignore
-            const extracted = store.getType(name);
-            expect(extracted).to.be.equal(undefined);
+            catchError((): never => store.getType(name));
         });
     });
 

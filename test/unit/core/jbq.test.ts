@@ -11,6 +11,7 @@ import { suitesObject } from '../../data/suites/object_suite';
 import { suitesString } from '../../data/suites/string_suite';
 import { isValidationError } from '../../utils';
 import { TypeInstance } from '../../../src/core/type_store/type_instance';
+import { ValidationResult } from '../../../src/core/jbq/jbq_typings';
 
 const suites = {
     Any: suitesAny,
@@ -21,7 +22,7 @@ const suites = {
     String: suitesString,
 };
 
-describe('Validator', (): void => {
+describe('JBQ', (): void => {
     for (const type of Object.keys(suites)) {
         type key = keyof typeof suites;
         describe(
@@ -54,66 +55,85 @@ describe('Validator', (): void => {
         TOKEN_BREAK,
         (): void => {
             it('simple', (): void => {
-                const nullableString = new TypeInstance('NullableString').setKeyword(TYPE, {
+                const nullableString = new TypeInstance('nullable-string').setKeyword(TYPE, {
                     schemaValidator(value: unknown): void {
                         if (typeof value !== 'string') throw new TypeError();
                     },
-                    validator(_base: string, $DATA: unknown): undefined | string {
+                    validator(_base: string, $DATA: unknown): ValidationResult {
                         if ($DATA === null) {
                             //{break}
                         }
-                        if (typeof $DATA !== 'string') return 'Expected string type!';
+                        if (typeof $DATA !== 'string')
+                            return {
+                                message: 'Expected string type!',
+                                path: '{{schemaPath}}',
+                            };
                     },
                 });
 
                 const typeStore = createTypes().addType(nullableString);
                 const validator = jbq(typeStore, {
                     OptionalName: {
-                        [TYPE]: 'stringNullable',
+                        [TYPE]: 'nullable-string',
                     },
                 });
-                if (validator.OptionalName(null)) throw new Error('Expected undefined');
-                if (validator.OptionalName('Andrew')) throw new Error('Expected undefined');
+
+                expect(validator.OptionalName(null)).to.be.equal(undefined);
+                expect(validator.OptionalName('Andrew')).to.be.equal(undefined);
                 // @ts-ignore
-                const expectUndef = validator.OptionalName();
-                if (expectUndef === undefined) throw new Error('Expected to return error message');
+                isValidationError(validator.OptionalName());
             });
 
             it('collection', (): void => {
-                const numericOrString = new TypeInstance('NumericOrString').setKeyword(TYPE, {
+                const numeric = new TypeInstance('numeric').setKeyword(TYPE, {
                     schemaValidator(value: unknown): void {
                         if (typeof value !== 'string') throw new TypeError();
                     },
-                    validator(_base: string, $DATA: unknown): undefined | string {
+                    validator(_base: string, $DATA: unknown): ValidationResult {
                         if (typeof $DATA !== 'number') {
                             if (typeof $DATA !== 'string')
-                                return 'Expected numeric at: {{schemaPath}}.';
+                                return {
+                                    message: 'Expected numeric at: {{schemaPath}}.',
+                                    path: '{{schemaPath}}',
+                                };
+                            if (!/^\d+$/.test($DATA)) {
+                                return {
+                                    message: 'Value can contain only digits!',
+                                    path: '{{schemaPath}}',
+                                };
+                            }
                             //{break}
                         }
+                        if ($DATA !== $DATA)
+                            return {
+                                message: 'NaN is not valid numeric!',
+                                path: '{{schemaPath}}',
+                            };
                     },
                 });
 
-                const typeStore = createTypes().addType(numericOrString);
+                const typeStore = createTypes().addType(numeric);
 
                 const validator = jbq(typeStore, {
                     ArrayOfNumerics: {
                         type: 'array',
                         [SYM_SCHEMA_COLLECTION]: {
                             type: 'numeric',
-                            value: { min: 0, max: 1 },
                         },
                     },
                 });
 
-                const validValues = [[1, 0, '0', '1', '3', 'Yo'], [1, 0, '0', '1000'], []];
-                const invalidValues = [[2, 0], ['1', true]];
+                const validValues = [
+                    [1, 0, '0', '1', '3', '100'],
+                    [1, 0, '0', '1000'],
+                    ['100000000'],
+                ];
+                const invalidValues = [[2, 0, NaN], ['1', true]];
 
                 for (const val of validValues)
-                    if (validator.ArrayOfNumerics(val)) throw new Error('Expected to pass');
+                    expect(validator.ArrayOfNumerics(val)).to.be.equal(undefined);
 
-                for (const val of invalidValues)
-                    if (validator.ArrayOfNumerics(val) === undefined)
-                        throw new Error('Expected to return error message');
+                for (const val of invalidValues) isValidationError(validator.ArrayOfNumerics(val));
             });
         },
     );

@@ -1,5 +1,6 @@
-import { jbq, jbqTypes } from '../../src/lib';
 import { equal } from 'assert';
+import { ValidationError } from '../../src/core/jbq/jbq_typings';
+import { jbq, types } from '../../src/lib';
 
 const PROPS = Symbol.for('schema_properties');
 const ITEMS = Symbol.for('schema_collection');
@@ -30,20 +31,19 @@ const schemas = {
 };
 /* eslint-enable prettier/prettier */
 //example_region
-const { TwoChars, User } = jbq(jbqTypes, schemas);
+const { TwoChars, User } = jbq(types, schemas);
 
 equal(TwoChars('AA'), undefined);
 equal(TwoChars('  '), undefined);
 
-const error = TwoChars('') as string;
-const errorJSON = JSON.parse(error);
+const error = TwoChars('') as ValidationError;
 
-equal(typeof error, 'string');
-equal(errorJSON.path, 'TwoChars/len');
-equal(errorJSON.message, 'Data length should be equal to 2.');
+equal(typeof error, 'object');
+equal(error.path, 'TwoChars/len');
+equal(error.message, 'Data length should be equal to 2.');
 
 equal(User({ email: 'STRING', names: ['Git', 'Hub'] }), undefined);
-equal(typeof User({ email: false, names: ['A', 'B'] }), 'string');
-equal(typeof User({ email: 'email', names: [] }), 'string');
-equal(typeof User({ email: 'email', names: {} }), 'string');
-equal(typeof User({ email: 'email', names: [true] }), 'string');
+equal(typeof User({ email: false, names: ['A', 'B'] }), 'object');
+equal(typeof User({ email: 'email', names: [] }), 'object');
+equal(typeof User({ email: 'email', names: {} }), 'object');
+equal(typeof User({ email: 'email', names: [true] }), 'object');
