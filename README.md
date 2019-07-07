@@ -137,23 +137,22 @@ const schemas = {
 Next, we need to compile created schemas.
 
 ```typescript
-const { TwoChars, User } = jbq(jbqTypes, schemas);
+const { TwoChars, User } = jbq(types, schemas);
 
 equal(TwoChars('AA'), undefined);
 equal(TwoChars('  '), undefined);
 
-const error = TwoChars('') as string;
-const errorJSON = JSON.parse(error);
+const error = TwoChars('') as ValidationError;
 
-equal(typeof error, 'string');
-equal(errorJSON.path, 'TwoChars/len');
-equal(errorJSON.message, 'Data length should be equal to 2.');
+equal(typeof error, 'object');
+equal(error.path, 'TwoChars/len');
+equal(error.message, 'Data length should be equal to 2.');
 
 equal(User({ email: 'STRING', names: ['Git', 'Hub'] }), undefined);
-equal(typeof User({ email: false, names: ['A', 'B'] }), 'string');
-equal(typeof User({ email: 'email', names: [] }), 'string');
-equal(typeof User({ email: 'email', names: {} }), 'string');
-equal(typeof User({ email: 'email', names: [true] }), 'string');
+equal(typeof User({ email: false, names: ['A', 'B'] }), 'object');
+equal(typeof User({ email: 'email', names: [] }), 'object');
+equal(typeof User({ email: 'email', names: {} }), 'object');
+equal(typeof User({ email: 'email', names: [true] }), 'object');
 ```
 
 
@@ -169,7 +168,7 @@ equal(typeof User({ email: 'email', names: [true] }), 'string');
 
 ```typescript
 const schemaType = { type: 'any' };
-const { AnyType } = jbq(jbqTypes, { AnyType: schemaType });
+const { AnyType } = jbq(types, { AnyType: schemaType });
 
 equal(AnyType({}), undefined);
 equal(AnyType([]), undefined);
@@ -183,11 +182,11 @@ equal(AnyType('string'), undefined);
 
 ```typescript
 const schemaRequired = { type: 'any', required: true };
-const { AnyRequired } = jbq(jbqTypes, { AnyRequired: schemaRequired });
+const { AnyRequired } = jbq(types, { AnyRequired: schemaRequired });
 
 equal(AnyRequired(true), undefined);
 equal(AnyRequired({}), undefined);
-equal(typeof AnyRequired(undefined), 'string');
+equal(typeof AnyRequired(undefined), 'object');
 ```
 
 
@@ -199,11 +198,11 @@ equal(typeof AnyRequired(undefined), 'string');
 
 ```typescript
 const schemaType = { type: 'array' };
-const { ArrayType } = jbq(jbqTypes, { ArrayType: schemaType });
+const { ArrayType } = jbq(types, { ArrayType: schemaType });
 
 equal(ArrayType([]), undefined);
-equal(typeof ArrayType({}), 'string');
-equal(typeof ArrayType(true), 'string');
+equal(typeof ArrayType({}), 'object');
+equal(typeof ArrayType(true), 'object');
 ```
 
 
@@ -217,12 +216,12 @@ const schemaEvery = {
     type: 'array',
     every: (element: unknown): boolean => typeof element === 'number' && element === element,
 };
-const { ArrayEvery } = jbq(jbqTypes, { ArrayEvery: schemaEvery });
+const { ArrayEvery } = jbq(types, { ArrayEvery: schemaEvery });
 
 equal(ArrayEvery([]), undefined);
-equal(typeof ArrayEvery([1, 2, 3, NaN]), 'string');
-equal(typeof ArrayEvery([1, 2, 3, false]), 'string');
-equal(typeof ArrayEvery({}), 'string');
+equal(typeof ArrayEvery([1, 2, 3, NaN]), 'object');
+equal(typeof ArrayEvery([1, 2, 3, false]), 'object');
+equal(typeof ArrayEvery({}), 'object');
 ```
 
 
@@ -236,11 +235,11 @@ const schemaSome = {
     type: 'array',
     some: (element: unknown): boolean => element === 100,
 };
-const { ArraySome } = jbq(jbqTypes, { ArraySome: schemaSome });
+const { ArraySome } = jbq(types, { ArraySome: schemaSome });
 
 equal(ArraySome([1, 10, 100]), undefined);
 equal(ArraySome([]), undefined);
-equal(typeof ArraySome([true, false]), 'string');
+equal(typeof ArraySome([true, false]), 'object');
 ```
 
 
@@ -249,10 +248,10 @@ equal(typeof ArraySome([true, false]), 'string');
 
 ```typescript
 const schemaIncludes = { type: 'array', includes: true };
-const { ArrayIncludes } = jbq(jbqTypes, { ArrayIncludes: schemaIncludes });
+const { ArrayIncludes } = jbq(types, { ArrayIncludes: schemaIncludes });
 
 equal(ArrayIncludes([false, false, true]), undefined);
-equal(typeof ArrayIncludes([false, 1, {}]), 'string');
+equal(typeof ArrayIncludes([false, 1, {}]), 'object');
 ```
 
 
@@ -280,20 +279,20 @@ const schemasLen = {
         len: { min: 1, max: 5 },
     },
 };
-const { SimpleLen, MinLen, MaxLen, MinMaxLen } = jbq(jbqTypes, schemasLen);
+const { SimpleLen, MinLen, MaxLen, MinMaxLen } = jbq(types, schemasLen);
 
 equal(SimpleLen([true, false]), undefined);
-equal(typeof SimpleLen([]), 'string');
+equal(typeof SimpleLen([]), 'object');
 
 equal(MinLen([true]), undefined);
-equal(typeof MinLen([]), 'string');
+equal(typeof MinLen([]), 'object');
 
 equal(MaxLen([true, false]), undefined);
-equal(typeof MaxLen([1, 1, 1]), 'string');
+equal(typeof MaxLen([1, 1, 1]), 'object');
 
 equal(MinMaxLen([1, 2, 3, 4, 5]), undefined);
-equal(typeof MinMaxLen([]), 'string');
-equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'string');
+equal(typeof MinMaxLen([]), 'object');
+equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'object');
 ```
 
 
@@ -305,10 +304,10 @@ equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'string');
 
 ```typescript
 const schemaType = { type: 'boolean' };
-const { BooleanType } = jbq(jbqTypes, { BooleanType: schemaType });
+const { BooleanType } = jbq(types, { BooleanType: schemaType });
 
 equal(BooleanType(true), undefined);
-equal(typeof BooleanType(0), 'string');
+equal(typeof BooleanType(0), 'object');
 ```
 
 
@@ -316,10 +315,10 @@ equal(typeof BooleanType(0), 'string');
 
 ```typescript
 const schemaValue = { type: 'boolean', value: true };
-const { BooleanValue } = jbq(jbqTypes, { BooleanValue: schemaValue });
+const { BooleanValue } = jbq(types, { BooleanValue: schemaValue });
 
 equal(BooleanValue(true), undefined);
-equal(typeof BooleanValue(false), 'string');
+equal(typeof BooleanValue(false), 'object');
 ```
 
 
@@ -331,11 +330,11 @@ equal(typeof BooleanValue(false), 'string');
 
 ```typescript
 const schemaType = { type: 'number' };
-const { NumberType } = jbq(jbqTypes, { NumberType: schemaType });
+const { NumberType } = jbq(types, { NumberType: schemaType });
 
 equal(NumberType(100), undefined);
-equal(typeof NumberType(NaN), 'string');
-equal(typeof NumberType('10'), 'string');
+equal(typeof NumberType(NaN), 'object');
+equal(typeof NumberType('10'), 'object');
 ```
 
 
@@ -361,20 +360,20 @@ const schemas = {
         value: { min: 0, max: 100 },
     },
 };
-const { SimpleValue, MinValue, MaxValue, MinMaxValue } = jbq(jbqTypes, schemas);
+const { SimpleValue, MinValue, MaxValue, MinMaxValue } = jbq(types, schemas);
 
 equal(SimpleValue(10), undefined);
-equal(typeof SimpleValue(9), 'string');
+equal(typeof SimpleValue(9), 'object');
 
 equal(MinValue(0), undefined);
-equal(typeof MinValue(-10), 'string');
+equal(typeof MinValue(-10), 'object');
 
 equal(MaxValue(100), undefined);
-equal(typeof MaxValue(110), 'string');
+equal(typeof MaxValue(110), 'object');
 
 equal(MinMaxValue(0), undefined);
 equal(MinMaxValue(100), undefined);
-equal(typeof MinMaxValue(101), 'string');
+equal(typeof MinMaxValue(101), 'object');
 ```
 
 
@@ -382,12 +381,12 @@ equal(typeof MinMaxValue(101), 'string');
 
 ```typescript
 const schemaMultipleOf = { type: 'number', multipleOf: 1 };
-const { NumberMultipleOf } = jbq(jbqTypes, { NumberMultipleOf: schemaMultipleOf });
+const { NumberMultipleOf } = jbq(types, { NumberMultipleOf: schemaMultipleOf });
 
 equal(NumberMultipleOf(10), undefined);
 equal(NumberMultipleOf(0), undefined);
-equal(typeof NumberMultipleOf(1.1), 'string');
-equal(typeof NumberMultipleOf(Math.PI), 'string');
+equal(typeof NumberMultipleOf(1.1), 'object');
+equal(typeof NumberMultipleOf(Math.PI), 'object');
 ```
 
 
@@ -396,10 +395,10 @@ equal(typeof NumberMultipleOf(Math.PI), 'string');
 
 ```typescript
 const schemaOneOf = { type: 'number', oneOf: [2, 4, 8, 16] };
-const { NumberOneOf } = jbq(jbqTypes, { NumberOneOf: schemaOneOf });
+const { NumberOneOf } = jbq(types, { NumberOneOf: schemaOneOf });
 
 equal(NumberOneOf(2), undefined);
-equal(typeof NumberOneOf(1), 'string');
+equal(typeof NumberOneOf(1), 'object');
 ```
 
 
@@ -411,12 +410,12 @@ equal(typeof NumberOneOf(1), 'string');
 
 ```typescript
 const schemaType = { type: 'object' };
-const { ObjectType } = jbq(jbqTypes, { ObjectType: schemaType });
+const { ObjectType } = jbq(types, { ObjectType: schemaType });
 
 equal(ObjectType({}), undefined);
 equal(ObjectType(new Map()), undefined);
-equal(typeof ObjectType(null), 'string');
-equal(typeof ObjectType([]), 'string');
+equal(typeof ObjectType(null), 'object');
+equal(typeof ObjectType([]), 'object');
 ```
 
 
@@ -425,10 +424,10 @@ equal(typeof ObjectType([]), 'string');
 
 ```typescript
 const schema = { type: 'object', constructorName: 'Set' };
-const { ObjectConstrName } = jbq(jbqTypes, { ObjectConstrName: schema });
+const { ObjectConstrName } = jbq(types, { ObjectConstrName: schema });
 
 equal(ObjectConstrName(new Set()), undefined);
-equal(typeof ObjectConstrName({}), 'string');
+equal(typeof ObjectConstrName({}), 'object');
 ```
 
 
@@ -437,10 +436,10 @@ equal(typeof ObjectConstrName({}), 'string');
 
 ```typescript
 const schemaInstanceOf = { type: 'object', instanceOf: Map };
-const { ObjectInstance } = jbq(jbqTypes, { ObjectInstance: schemaInstanceOf });
+const { ObjectInstance } = jbq(types, { ObjectInstance: schemaInstanceOf });
 
 equal(ObjectInstance(new Map()), undefined);
-equal(typeof ObjectInstance(new Set()), 'string');
+equal(typeof ObjectInstance(new Set()), 'object');
 ```
 
 
@@ -451,10 +450,10 @@ equal(typeof ObjectInstance(new Set()), 'string');
 
 ```typescript
 const schemaProps = { type: 'object', properties: ['hello'] };
-const { ObjectProperties } = jbq(jbqTypes, { ObjectProperties: schemaProps });
+const { ObjectProperties } = jbq(types, { ObjectProperties: schemaProps });
 
 equal(ObjectProperties({ hello: 'World' }), undefined);
-equal(typeof ObjectProperties({ world: 'hello' }), 'string');
+equal(typeof ObjectProperties({ world: 'hello' }), 'object');
 ```
 
 
@@ -482,19 +481,19 @@ const schemasKeyCount = {
         keyCount: { min: 1, max: 2 },
     },
 };
-const { SimpleKey, MinKey, MaxKey, MinMaxKey } = jbq(jbqTypes, schemasKeyCount);
+const { SimpleKey, MinKey, MaxKey, MinMaxKey } = jbq(types, schemasKeyCount);
 
 equal(SimpleKey({}), undefined);
-equal(typeof SimpleKey({ key: 'value' }), 'string');
+equal(typeof SimpleKey({ key: 'value' }), 'object');
 
 equal(MinKey({ 1: 1 }), undefined);
-equal(typeof MinKey({}), 'string');
+equal(typeof MinKey({}), 'object');
 
 equal(MaxKey({ hello: 'world' }), undefined);
-equal(typeof MaxKey({ a: 0, b: 0 }), 'string');
+equal(typeof MaxKey({ a: 0, b: 0 }), 'object');
 
 equal(MinMaxKey({ hello: 'world' }), undefined);
-equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'string');
+equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'object');
 ```
 
 
@@ -515,7 +514,7 @@ const schemasPropCount = {
     },
     // and so on...
 };
-const { SimpleProp, MinProp } = jbq(jbqTypes, schemasPropCount);
+const { SimpleProp, MinProp } = jbq(types, schemasPropCount);
 
 equal(SimpleProp({ [Symbol()]: true }), undefined);
 equal(
@@ -523,11 +522,11 @@ equal(
         [Symbol('meta_1')]: true,
         [Symbol('meta_2')]: false,
     }),
-    'string',
+    'object',
 );
 
 equal(MinProp({ key: 'value' }), undefined);
-equal(typeof MinProp({}), 'string');
+equal(typeof MinProp({}), 'object');
 ```
 
 
@@ -539,10 +538,10 @@ equal(typeof MinProp({}), 'string');
 
 ```typescript
 const schemaType = { type: 'string' };
-const { StringType } = jbq(jbqTypes, { StringType: schemaType });
+const { StringType } = jbq(types, { StringType: schemaType });
 
 equal(StringType(''), undefined);
-equal(typeof StringType(new String('Hello!')), 'string');
+equal(typeof StringType(new String('Hello!')), 'object');
 ```
 
 
@@ -551,10 +550,10 @@ equal(typeof StringType(new String('Hello!')), 'string');
 
 ```typescript
 const schemaRegex = { type: 'string', regex: /@/ };
-const { StringRegex } = jbq(jbqTypes, { StringRegex: schemaRegex });
+const { StringRegex } = jbq(types, { StringRegex: schemaRegex });
 
 equal(StringRegex('my@mail'), undefined);
-equal(typeof StringRegex(''), 'string');
+equal(typeof StringRegex(''), 'object');
 ```
 
 
@@ -563,10 +562,10 @@ equal(typeof StringRegex(''), 'string');
 
 ```typescript
 const schemaOneOf = { type: 'string', oneOf: ['user', 'guest'] };
-const { StringOneOf } = jbq(jbqTypes, { StringOneOf: schemaOneOf });
+const { StringOneOf } = jbq(types, { StringOneOf: schemaOneOf });
 
 equal(StringOneOf('user'), undefined);
-equal(typeof StringOneOf('admin'), 'string');
+equal(typeof StringOneOf('admin'), 'object');
 ```
 
 
@@ -585,13 +584,13 @@ const schemasLen = {
     },
     // and so on...
 };
-const { SimpleLen, MinMaxLen } = jbq(jbqTypes, schemasLen);
+const { SimpleLen, MinMaxLen } = jbq(types, schemasLen);
 
 equal(SimpleLen('12345678'), undefined);
-equal(typeof SimpleLen('1234567890'), 'string');
+equal(typeof SimpleLen('1234567890'), 'object');
 
 equal(MinMaxLen('1 to 16'), undefined);
-equal(typeof MinMaxLen(''), 'string');
+equal(typeof MinMaxLen(''), 'object');
 ```
 
 
@@ -661,7 +660,7 @@ const settingsSchema = {
     },
 };
 
-const { Settings } = jbq(jbqTypes, { Settings: settingsSchema });
+const { Settings } = jbq(types, { Settings: settingsSchema });
 
 equal(Settings(settings), undefined);
 equal(
@@ -680,7 +679,7 @@ equal(
         premiumRequestRateLimit: 60,
         regularRequestRateLimit: 70,
     }),
-    'string',
+    'object',
 );
 ```
 
@@ -730,26 +729,30 @@ Example custom type definition.
 
 ```typescript
 const hexReg = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
-const HexColor = {
-    type(_schemaValue: string, $DATA: unknown): string | undefined {
+const HexColor = new TypeInstance('hex-color').setKeyword('type', {
+    validator(_schemaValue: string, $DATA: unknown): ValidationResult {
         if (typeof $DATA !== 'string') {
-            return `"{ "message": "Only string values can be hex colors.", "path": "{{schemaPath}}" }"`;
+            return {
+                message: 'Only string values can be hex colors;].',
+                path: '{{schemaPath}}',
+            };
         }
         if (!hexReg.test($DATA)) {
-            return `"{ "message": "Received string is not a hex color value.", "path": "{{schemaPath}}" }"`;
+            return {
+                message: 'Received string is not a hex color value.',
+                path: '{{schemaPath}}',
+            };
         }
     },
-    [Symbol.for('type_validate')]: {
-        type(schemaValue: unknown): void {
-            if (schemaValue !== 'string') throw new Error('Type can be a string only!');
-        },
+    schemaValidator(schemaValue: unknown): void {
+        if (schemaValue !== 'string') throw new Error('Type can be a string only!');
     },
-};
+});
 
-const types = new TypeWrapper().set('any', TypeAny).set('hex_color', HexColor, { type: 'any' });
+const types = new TypeStore().addType(HexColor);
 
-equal(types.get('hex_color'), HexColor);
-equal(types.has('hexcolor'), false);
+equal(types.getType('hex-color'), HexColor);
+equal(types.hasType('hexcolor'), false);
 ```
 
 
