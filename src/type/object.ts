@@ -1,7 +1,9 @@
 import { CodeGenerator } from '../core/code_gen';
 import { ComparisonOperator } from '../core/code_gen/token/operator';
 import { DataPathChecker, DataPathResolver } from '../core/compilation/compilation_typings';
+import { ValidationResult } from '../core/jbq/jbq_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
+import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
 import {
     CONSTRUCTOR_NAME,
     INSTANCE_OF,
@@ -10,14 +12,12 @@ import {
     PROP_COUNT,
     PROP_DATA_PATH,
     TYPE,
-    TYPE_NAME,
+    TYPE_OBJECT,
 } from '../misc/constants';
 import { TypeReflect } from '../util/type_reflect';
 import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
 import { ParseValuesMinMax } from './type_definition_typings';
-import { ValidationResult } from '../core/jbq/jbq_typings';
-import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
 
 type Macro = (p: ParseValuesMinMax, c: DataPathChecker, r: DataPathResolver) => string | undefined;
 
@@ -113,7 +113,7 @@ function createPropKeyCountMacro(resolveDataVarCmp: (d: string) => string): Macr
     };
 }
 
-export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
+export const TypeObject = new TypeInstance(TYPE_OBJECT)
     .derive(TypeAny)
     .setKeyword(TYPE, {
         validator(_schemaValue: string, $DATA: unknown): ValidationResult {
@@ -123,7 +123,7 @@ export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.OBJECT, TYPE, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_OBJECT, TYPE, 'string'),
     })
     .setKeyword(CONSTRUCTOR_NAME, {
         validator(schemaValue: string, $DATA: object): ValidationResult {
@@ -133,7 +133,7 @@ export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.OBJECT, CONSTRUCTOR_NAME, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_OBJECT, CONSTRUCTOR_NAME, 'string'),
     })
     .setKeyword(INSTANCE_OF, {
         validator(schemaValue: () => void, $DATA: object): ValidationResult {
@@ -143,7 +143,7 @@ export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.isInstance(TYPE_NAME.OBJECT, INSTANCE_OF, Function),
+        schemaValidator: schemaValidate.isInstance(TYPE_OBJECT, INSTANCE_OF, Function),
     })
     .setKeyword(PROPERTIES, {
         validator(schemaValue: (string | number | symbol)[], $DATA: object): ValidationResult {
@@ -154,12 +154,12 @@ export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
                         path: '{{schemaPath}}',
                     };
         },
-        schemaValidator: schemaValidate.arrayOfPropertyNames(TYPE_NAME.OBJECT, PROPERTIES),
+        schemaValidator: schemaValidate.arrayOfPropertyNames(TYPE_OBJECT, PROPERTIES),
     })
     .setKeyword(KEY_COUNT, {
         validator: createPropKeyCountMacro((d): string => `Object.keys(${d}).length`),
         kind: KeywordValidationFunctionKind.Macro,
-        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, KEY_COUNT, true),
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_OBJECT, KEY_COUNT, true),
     })
     .setKeyword(PROP_COUNT, {
         validator: createPropKeyCountMacro(
@@ -167,5 +167,5 @@ export const TypeObject = new TypeInstance(TYPE_NAME.OBJECT)
                 `(Object.getOwnPropertyNames(${d}).length + Object.getOwnPropertySymbols(${d}).length)`,
         ),
         kind: KeywordValidationFunctionKind.Macro,
-        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.OBJECT, PROP_COUNT, true),
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_OBJECT, PROP_COUNT, true),
     });

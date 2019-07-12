@@ -13,10 +13,15 @@ import {
     REQUIRED,
     SOME,
     TYPE,
-    TYPE_NAME,
     VALUE,
     SYM_SCHEMA_PROPERTIES,
     SYM_SCHEMA_COLLECTION,
+    TYPE_ANY,
+    TYPE_ARRAY,
+    TYPE_BOOLEAN,
+    TYPE_NUMBER,
+    TYPE_OBJECT,
+    TYPE_STRING,
 } from '../../misc/constants';
 import { Constructor, ArrIterCallback } from '../../misc/typings';
 import { TypeReflect } from '../../util/type_reflect';
@@ -80,22 +85,22 @@ export function decoratorFactory<T = unknown, BASE extends DecoratorTypes = 'val
 export const type = decoratorFactory<string>(TYPE);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `any` */
-export const any = decoratorFactory(TYPE)(TYPE_NAME.ANY);
+export const any = decoratorFactory(TYPE)(TYPE_ANY);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `array` */
-export const array = decoratorFactory(TYPE)(TYPE_NAME.ARRAY);
+export const array = decoratorFactory(TYPE)(TYPE_ARRAY);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `boolean` */
-export const boolean = decoratorFactory(TYPE)(TYPE_NAME.BOOLEAN);
+export const boolean = decoratorFactory(TYPE)(TYPE_BOOLEAN);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `number` */
-export const number = decoratorFactory(TYPE)(TYPE_NAME.NUMBER);
+export const number = decoratorFactory(TYPE)(TYPE_NUMBER);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `object` */
-export const object = decoratorFactory(TYPE)(TYPE_NAME.OBJECT);
+export const object = decoratorFactory(TYPE)(TYPE_OBJECT);
 
 /** Shorthand `@type` decorator that assigns schema `type` property to `string` */
-export const string = decoratorFactory(TYPE)(TYPE_NAME.STRING);
+export const string = decoratorFactory(TYPE)(TYPE_STRING);
 
 /** Assigns schema `required` property to `false` */
 export const optional = decoratorFactory(REQUIRED)(false);

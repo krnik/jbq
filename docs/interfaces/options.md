@@ -25,7 +25,7 @@
 
 **● async**: *`undefined` \| `false` \| `true`*
 
-*Defined in [core/jbq/jbq_typings.ts:53](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L53)*
+*Defined in [core/jbq/jbq_typings.ts:53](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L53)*
 
 Defines if validation function should be asyncronous.
 
@@ -36,7 +36,7 @@ ___
 
 **● asyncInterval**: *`undefined` \| `number`*
 
-*Defined in [core/jbq/jbq_typings.ts:58](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L58)*
+*Defined in [core/jbq/jbq_typings.ts:58](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L58)*
 
 Defines how often the validation of collection should be suspended in asyncronous validation functions.
 
@@ -47,7 +47,7 @@ ___
 
 **● debug**: *`undefined` \| `false` \| `true`*
 
-*Defined in [core/jbq/jbq_typings.ts:45](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L45)*
+*Defined in [core/jbq/jbq_typings.ts:45](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L45)*
 
 Defines if schema compilation progress should be logged.
 
@@ -58,7 +58,7 @@ ___
 
 **● handleResolvedPaths**: *[PathResolutionStrategy](../enums/pathresolutionstrategy.md)*
 
-*Defined in [core/jbq/jbq_typings.ts:49](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/jbq/jbq_typings.ts#L49)*
+*Defined in [core/jbq/jbq_typings.ts:49](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L49)*
 
 Defines what to do in case when $dataPath resolves to undefined.
 

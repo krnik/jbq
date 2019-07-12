@@ -3,14 +3,14 @@ import { ComparisonOperator } from '../core/code_gen/token/operator';
 import { DataPathChecker, DataPathResolver } from '../core/compilation/compilation_typings';
 import { ValidationResult } from '../core/jbq/jbq_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
-import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, TYPE, TYPE_NAME } from '../misc/constants';
+import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
+import { LEN, ONE_OF, PROP_DATA_PATH, REGEX, TYPE, TYPE_STRING } from '../misc/constants';
 import { TypeReflect } from '../util/type_reflect';
 import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
 import { ParseValuesMinMax } from './type_definition_typings';
-import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
 
-export const TypeString = new TypeInstance(TYPE_NAME.STRING)
+export const TypeString = new TypeInstance(TYPE_STRING)
     .derive(TypeAny)
     .setKeyword(TYPE, {
         validator(_schemaValue: string, $DATA: unknown): ValidationResult {
@@ -20,7 +20,7 @@ export const TypeString = new TypeInstance(TYPE_NAME.STRING)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.isInstance(TYPE_NAME.STRING, TYPE, String),
+        schemaValidator: schemaValidate.isInstance(TYPE_STRING, TYPE, String),
     })
     .setKeyword(REGEX, {
         validator(schemaValue: RegExp, $DATA: string): ValidationResult {
@@ -30,7 +30,7 @@ export const TypeString = new TypeInstance(TYPE_NAME.STRING)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.isInstance(TYPE_NAME.STRING, REGEX, RegExp),
+        schemaValidator: schemaValidate.isInstance(TYPE_STRING, REGEX, RegExp),
     })
     .setKeyword(LEN, {
         validator(
@@ -124,7 +124,7 @@ export const TypeString = new TypeInstance(TYPE_NAME.STRING)
                 )}`;
             }
         },
-        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.STRING, LEN, true),
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_STRING, LEN, true),
         kind: KeywordValidationFunctionKind.Macro,
     })
     .setKeyword(ONE_OF, {
@@ -135,5 +135,5 @@ export const TypeString = new TypeInstance(TYPE_NAME.STRING)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.arrayOf(TYPE_NAME.STRING, ONE_OF, 'string'),
+        schemaValidator: schemaValidate.arrayOf(TYPE_STRING, ONE_OF, 'string'),
     }); // Prolly rename to ENUM

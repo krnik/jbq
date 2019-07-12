@@ -4,13 +4,13 @@ import { DataPathChecker, DataPathResolver } from '../core/compilation/compilati
 import { ValidationResult } from '../core/jbq/jbq_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
 import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
-import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, TYPE, TYPE_NAME, VALUE } from '../misc/constants';
+import { MULTIPLE_OF, ONE_OF, PROP_DATA_PATH, TYPE, VALUE, TYPE_NUMBER } from '../misc/constants';
 import { TypeReflect } from '../util/type_reflect';
 import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
 import { ParseValuesMinMax } from './type_definition_typings';
 
-export const TypeNumber = new TypeInstance(TYPE_NAME.NUMBER)
+export const TypeNumber = new TypeInstance(TYPE_NUMBER)
     .derive(TypeAny)
     .setKeyword(TYPE, {
         validator(_schemaValue: string, $DATA: unknown): ValidationResult {
@@ -20,7 +20,7 @@ export const TypeNumber = new TypeInstance(TYPE_NAME.NUMBER)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.NUMBER, TYPE, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_NUMBER, TYPE, 'string'),
     })
     .setKeyword(VALUE, {
         validator(
@@ -113,7 +113,7 @@ export const TypeNumber = new TypeInstance(TYPE_NAME.NUMBER)
             }
         },
         kind: KeywordValidationFunctionKind.Macro,
-        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.NUMBER, VALUE, true),
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NUMBER, VALUE, true),
     })
     .setKeyword(ONE_OF, {
         validator(schemaValue: number[], $DATA: number): ValidationResult {
@@ -123,7 +123,7 @@ export const TypeNumber = new TypeInstance(TYPE_NAME.NUMBER)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.arrayOf(TYPE_NAME.NUMBER, ONE_OF, 'number'),
+        schemaValidator: schemaValidate.arrayOf(TYPE_NUMBER, ONE_OF, 'number'),
     })
     .setKeyword(MULTIPLE_OF, {
         validator(schemaValue: number, $DATA: number): ValidationResult {
@@ -134,5 +134,5 @@ export const TypeNumber = new TypeInstance(TYPE_NAME.NUMBER)
                 };
         },
         // Should not accept NaN, Infinity, 0, -Infinity
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.NUMBER, MULTIPLE_OF, 'number', true),
+        schemaValidator: schemaValidate.primitive(TYPE_NUMBER, MULTIPLE_OF, 'number', true),
     });

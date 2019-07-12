@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { check, gen, property } from 'testcheck';
-import { TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
+import { TYPE, VALUE, TYPE_BOOLEAN } from '../../../src/misc/constants';
 import { TypeBoolean } from '../../../src/type/boolean';
 import { isValidationError } from '../../utils';
 
 describe(
-    TYPE_NAME.BOOLEAN,
+    TYPE_BOOLEAN,
     (): void => {
         describe(
             TYPE,

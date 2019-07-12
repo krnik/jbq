@@ -7,13 +7,13 @@ import {
     PROPERTIES,
     PROP_COUNT,
     TYPE,
-    TYPE_NAME,
+    TYPE_OBJECT,
 } from '../../../src/misc/constants';
 import { TypeObject } from '../../../src/type/object';
 import { isValidationError } from '../../utils';
 
 describe(
-    TYPE_NAME.OBJECT,
+    TYPE_OBJECT,
     (): void => {
         describe(
             TYPE,

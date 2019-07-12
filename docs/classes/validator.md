@@ -26,7 +26,7 @@ Dummy class used to hint TypeScript that a class was compiled and has `build` me
 
 ▸ **build**(data?: *`unknown`*): `HasAsyncTransforms extends true ? Promise<this> : this`
 
-*Defined in [class_syntax.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/class_syntax.ts#L10)*
+*Defined in [class_syntax.ts:10](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax.ts#L10)*
 
 **Parameters:**
 

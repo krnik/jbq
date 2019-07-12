@@ -305,6 +305,7 @@ export class SourceBuilder {
                   this.context.variableName,
                   variableName,
                   `${variableName}_accessor`,
+                  this.context.schemaPath,
               );
         this.product.code += asyncSuffix;
     }

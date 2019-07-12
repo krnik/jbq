@@ -10,6 +10,9 @@ import { ClassValidatorBuilder } from '../class_validator_builder';
  * Default behavior for a nested class is a `schema provider`. That means that if
  * class is not decorated with `@instantiate` then it will provide schema
  * when used with `@shape` or `@collection` decorators.
+ *
+ * # Example
+ * #example:class_syntax_instantiate
  */
 export function instantiate(constructor: Constructor): void {
     ClassValidatorBuilder.shouldInstantiate(constructor);

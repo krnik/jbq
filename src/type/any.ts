@@ -1,17 +1,17 @@
 import { CodeGenerator } from '../core/code_gen';
 import { ParseValues } from '../core/compilation/compilation_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
-import { REQUIRED, TYPE, TYPE_NAME } from '../misc/constants';
-import { schemaValidate } from './schema_validator';
 import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
+import { REQUIRED, TYPE, TYPE_ANY } from '../misc/constants';
+import { schemaValidate } from './schema_validator';
 
-export const TypeAny = new TypeInstance(TYPE_NAME.ANY)
+export const TypeAny = new TypeInstance(TYPE_ANY)
     .setKeyword(TYPE, {
         validator({ variableName }: ParseValues): string {
             return CodeGenerator.renderLabeledBreakStatement(variableName);
         },
         kind: KeywordValidationFunctionKind.Macro,
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.ANY, TYPE, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_ANY, TYPE, 'string'),
     })
     .setKeyword(REQUIRED, {
         validator({ variableName, schemaValue, schemaPath }: ParseValues): string {
@@ -22,6 +22,6 @@ export const TypeAny = new TypeInstance(TYPE_NAME.ANY)
             // pass create break function into helpers
         },
         kind: KeywordValidationFunctionKind.Macro,
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.ANY, REQUIRED, 'boolean'),
+        schemaValidator: schemaValidate.primitive(TYPE_ANY, REQUIRED, 'boolean'),
     })
     .setKeywordOrder([REQUIRED, TYPE]);

@@ -1,7 +1,7 @@
-import { REQUIRED, TYPE, TYPE_NAME } from '../../../src/misc/constants';
+import { REQUIRED, TYPE, TYPE_ANY } from '../../../src/misc/constants';
 
 describe(
-    TYPE_NAME.ANY,
+    TYPE_ANY,
     (): void => {
         describe.skip(
             TYPE,

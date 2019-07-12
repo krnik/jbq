@@ -27,7 +27,7 @@ For example if `TypeMethod` is defined as closure via `Symbol.for('type_method_c
 
 **● ofDataVariables**: *`number`*
 
-*Defined in [core/compilation/source_builder/source_builder_typings.ts:44](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L44)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:44](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/source_builder/source_builder_typings.ts#L44)*
 
 `ofDataVariables` represents number of variables created by accessing `$DATA` properties.
 
@@ -38,7 +38,7 @@ ___
 
 **● parameters**: *`number`*
 
-*Defined in [core/compilation/source_builder/source_builder_typings.ts:50](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/compilation/source_builder/source_builder_typings.ts#L50)*
+*Defined in [core/compilation/source_builder/source_builder_typings.ts:50](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/source_builder/source_builder_typings.ts#L50)*
 
 Represents numbers of parameters created for current validation function. It's used during compilation to track which index of parameter should be used when needed.
 

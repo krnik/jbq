@@ -27,7 +27,7 @@ Interface representing an object used to build if statement condition.
 
 **● negate**: *`undefined` \| `false` \| `true`*
 
-*Defined in [core/code_gen/code_gen_typings.ts:11](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/code_gen_typings.ts#L11)*
+*Defined in [core/code_gen/code_gen_typings.ts:11](https://github.com/krnik/vjs-validator/blob/557f235/src/core/code_gen/code_gen_typings.ts#L11)*
 
 ___
 <a id="operator"></a>
@@ -36,7 +36,7 @@ ___
 
 **● operator**: *[LogicalOperator](../enums/logicaloperator.md) \| [ComparisonOperator](../enums/comparisonoperator.md) \| [Keyword](../enums/keyword.md)*
 
-*Defined in [core/code_gen/code_gen_typings.ts:8](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/code_gen_typings.ts#L8)*
+*Defined in [core/code_gen/code_gen_typings.ts:8](https://github.com/krnik/vjs-validator/blob/557f235/src/core/code_gen/code_gen_typings.ts#L8)*
 
 ___
 <a id="value"></a>
@@ -45,7 +45,7 @@ ___
 
 **● value**: *`string`*
 
-*Defined in [core/code_gen/code_gen_typings.ts:9](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/code_gen_typings.ts#L9)*
+*Defined in [core/code_gen/code_gen_typings.ts:9](https://github.com/krnik/vjs-validator/blob/557f235/src/core/code_gen/code_gen_typings.ts#L9)*
 
 ___
 <a id="variablename"></a>
@@ -54,7 +54,7 @@ ___
 
 **● variableName**: *`string`*
 
-*Defined in [core/code_gen/code_gen_typings.ts:10](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/code_gen/code_gen_typings.ts#L10)*
+*Defined in [core/code_gen/code_gen_typings.ts:10](https://github.com/krnik/vjs-validator/blob/557f235/src/core/code_gen/code_gen_typings.ts#L10)*
 
 ___
 

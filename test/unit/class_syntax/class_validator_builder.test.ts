@@ -6,7 +6,9 @@ import {
     SYM_SCHEMA_COLLECTION,
     SYM_SCHEMA_PROPERTIES,
     TYPE,
-    TYPE_NAME,
+    TYPE_ANY,
+    TYPE_BOOLEAN,
+    TYPE_OBJECT,
 } from '../../../src/misc/constants';
 import { Constructor } from '../../../src/misc/typings';
 
@@ -62,7 +64,7 @@ describe('ClassValidatorBuilder', (): void => {
         it('it should return builder schema', (): void => {
             expect(ClassValidatorBuilder.extract(createClass()).getSchema()).to.have.property(
                 TYPE,
-                TYPE_NAME.OBJECT,
+                TYPE_OBJECT,
             );
         });
     });
@@ -166,7 +168,7 @@ describe('ClassValidatorBuilder', (): void => {
                     const builder = ClassValidatorBuilder.extract(createClass());
                     const otherClass = createClass();
                     const other = ClassValidatorBuilder.extract(otherClass);
-                    other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                    other.appendToSubSchema(TYPE, TYPE_BOOLEAN, 'isBool');
 
                     builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass);
                     expect(builder['getSubSchemas']()['isBool']).to.be.deep.eq(
@@ -179,7 +181,7 @@ describe('ClassValidatorBuilder', (): void => {
                     const builder = ClassValidatorBuilder.extract(createClass());
                     const otherClass = createClass();
                     const other = ClassValidatorBuilder.extract(otherClass);
-                    other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                    other.appendToSubSchema(TYPE, TYPE_BOOLEAN, 'isBool');
 
                     builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass, 'prop');
                     expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_PROPERTIES]).to.be.deep.eq(
@@ -204,7 +206,7 @@ describe('ClassValidatorBuilder', (): void => {
                         const other = ClassValidatorBuilder.extract(otherClass);
                         ClassValidatorBuilder.shouldInstantiate(otherClass);
                         expect(other.shouldCreateInstance()).to.be.equal(true);
-                        other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                        other.appendToSubSchema(TYPE, TYPE_BOOLEAN, 'isBool');
 
                         builder.setSymbolSchemaProperty(SYM_SCHEMA_PROPERTIES, otherClass);
                         expect(builder['getSubSchemas']()['isBool']).to.be.deep.eq(
@@ -217,7 +219,7 @@ describe('ClassValidatorBuilder', (): void => {
                         const builder = ClassValidatorBuilder.extract(createClass());
                         const otherClass = createClass();
                         const other = ClassValidatorBuilder.extract(otherClass);
-                        other.appendToSubSchema(TYPE, TYPE_NAME.BOOLEAN, 'isBool');
+                        other.appendToSubSchema(TYPE, TYPE_BOOLEAN, 'isBool');
                         ClassValidatorBuilder.shouldInstantiate(otherClass);
                         expect(other.shouldCreateInstance()).to.be.equal(true);
 
@@ -238,7 +240,7 @@ describe('ClassValidatorBuilder', (): void => {
                     const builder = ClassValidatorBuilder.extract(createClass());
                     const otherClass = createClass();
                     const other = ClassValidatorBuilder.extract(otherClass);
-                    other.append(TYPE, TYPE_NAME.ANY);
+                    other.append(TYPE, TYPE_ANY);
 
                     builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass);
                     expect(builder.getSchema()[SYM_SCHEMA_COLLECTION]).to.be.equal(
@@ -250,7 +252,7 @@ describe('ClassValidatorBuilder', (): void => {
                     const builder = ClassValidatorBuilder.extract(createClass());
                     const otherClass = createClass();
                     const other = ClassValidatorBuilder.extract(otherClass);
-                    other.append(TYPE, TYPE_NAME.ANY);
+                    other.append(TYPE, TYPE_ANY);
 
                     builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass, 'prop');
                     expect(builder['getSubSchemas']()['prop'][SYM_SCHEMA_COLLECTION]).to.be.equal(
@@ -264,7 +266,7 @@ describe('ClassValidatorBuilder', (): void => {
                         const otherClass = createClass();
                         const other = ClassValidatorBuilder.extract(otherClass);
                         ClassValidatorBuilder.shouldInstantiate(otherClass);
-                        other.append(TYPE, TYPE_NAME.ANY);
+                        other.append(TYPE, TYPE_ANY);
 
                         builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass);
                         expect(builder.getSchema()[SYM_SCHEMA_COLLECTION]).to.be.equal(
@@ -277,7 +279,7 @@ describe('ClassValidatorBuilder', (): void => {
                         const otherClass = createClass();
                         const other = ClassValidatorBuilder.extract(otherClass);
                         ClassValidatorBuilder.shouldInstantiate(otherClass);
-                        other.append(TYPE, TYPE_NAME.ANY);
+                        other.append(TYPE, TYPE_ANY);
 
                         builder.setSymbolSchemaProperty(SYM_SCHEMA_COLLECTION, otherClass, 'prop');
                         expect(builder['getSubSchemas']().hasOwnProperty('prop')).to.be.equal(

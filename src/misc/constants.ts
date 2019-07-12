@@ -14,14 +14,12 @@ export const TYPE = 'type';
 export const SOME = 'some';
 export const LEN = 'len';
 
-export enum TYPE_NAME {
-    BOOLEAN = 'boolean',
-    STRING = 'string',
-    NUMBER = 'number',
-    OBJECT = 'object',
-    ARRAY = 'array',
-    ANY = 'any',
-}
+export const TYPE_BOOLEAN = 'boolean';
+export const TYPE_STRING = 'string';
+export const TYPE_NUMBER = 'number';
+export const TYPE_OBJECT = 'object';
+export const TYPE_ARRAY = 'array';
+export const TYPE_ANY = 'any';
 
 /**
  * Schema property used to indicate that the follownig schema expects data

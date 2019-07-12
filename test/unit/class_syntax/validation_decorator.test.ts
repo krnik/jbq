@@ -1,9 +1,13 @@
 import { expect } from 'chai';
 import { check, gen, property } from 'testcheck';
+import { Shape } from '../../../src/class_syntax';
+import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
+import { instantiate } from '../../../src/class_syntax/decorator/class_decorator';
 import {
     any,
     array,
     boolean,
+    collection,
     constructorName,
     decoratorFactory,
     every,
@@ -17,6 +21,7 @@ import {
     oneOf,
     optional,
     propCount,
+    properties,
     regex,
     schema,
     shape,
@@ -24,18 +29,18 @@ import {
     string,
     type,
     value,
-    collection,
-    properties,
 } from '../../../src/class_syntax/decorator/validation_decorator';
-import { ClassValidatorBuilder } from '../../../src/class_syntax/class_validator_builder';
 import {
-    TYPE,
-    TYPE_NAME,
-    SYM_SCHEMA_PROPERTIES,
     SYM_SCHEMA_COLLECTION,
+    SYM_SCHEMA_PROPERTIES,
+    TYPE,
+    TYPE_ANY,
+    TYPE_ARRAY,
+    TYPE_BOOLEAN,
+    TYPE_NUMBER,
+    TYPE_OBJECT,
+    TYPE_STRING,
 } from '../../../src/misc/constants';
-import { instantiate } from '../../../src/class_syntax/decorator/class_decorator';
-import { Shape } from '../../../src/class_syntax';
 
 describe('Validation Decorators', (): void => {
     const callback = (): true => true;
@@ -43,13 +48,13 @@ describe('Validation Decorators', (): void => {
     const arr = [0];
     const props = ['id'];
     const testCases: [string, PropertyDecorator & ClassDecorator, string, unknown][] = [
-        ['@type', type(TYPE_NAME.ANY), TYPE, TYPE_NAME.ANY],
-        ['@any', any, TYPE, TYPE_NAME.ANY],
-        ['@array', array, TYPE, TYPE_NAME.ARRAY],
-        ['@boolean', boolean, TYPE, TYPE_NAME.BOOLEAN],
-        ['@number', number, TYPE, TYPE_NAME.NUMBER],
-        ['@object', object, TYPE, TYPE_NAME.OBJECT],
-        ['@string', string, TYPE, TYPE_NAME.STRING],
+        ['@type', type(TYPE_ANY), TYPE, TYPE_ANY],
+        ['@any', any, TYPE, TYPE_ANY],
+        ['@array', array, TYPE, TYPE_ARRAY],
+        ['@boolean', boolean, TYPE, TYPE_BOOLEAN],
+        ['@number', number, TYPE, TYPE_NUMBER],
+        ['@object', object, TYPE, TYPE_OBJECT],
+        ['@string', string, TYPE, TYPE_STRING],
         ['@optional', optional, 'required', false],
         ['@every', every(callback), 'every', callback],
         ['@some', some(callback), 'some', callback],
@@ -150,7 +155,7 @@ describe('Validation Decorators', (): void => {
 
                 const builder = ClassValidatorBuilder.extract(Extended);
                 const schema = builder.getSchema();
-                expect(schema[TYPE]).to.be.equal(TYPE_NAME.OBJECT);
+                expect(schema[TYPE]).to.be.equal(TYPE_OBJECT);
 
                 const schemaProperties = builder['getSubSchemas']();
                 expect(schemaProperties)
@@ -159,14 +164,14 @@ describe('Validation Decorators', (): void => {
 
                 expect(schemaProperties.propA)
                     .to.be.an('object')
-                    .that.have.property(TYPE, TYPE_NAME.STRING);
+                    .that.have.property(TYPE, TYPE_STRING);
                 expect(schemaProperties.propA).to.be.equal(
                     ClassValidatorBuilder.extract(BaseA)['getSubSchemas']()['propA'],
                 );
 
                 expect(schemaProperties.propB)
                     .to.be.an('object')
-                    .that.have.property(TYPE, TYPE_NAME.NUMBER);
+                    .that.have.property(TYPE, TYPE_NUMBER);
                 expect(schemaProperties.propB).to.be.equal(
                     ClassValidatorBuilder.extract(BaseB)['getSubSchemas']()['propB'],
                 );

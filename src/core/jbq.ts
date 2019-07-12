@@ -33,7 +33,12 @@ function AsyncFnFactory(fn: GeneratorFunction): AsyncValidationFunction {
     };
 }
 
-/** Compiles `schemas` using `types` instance as source of validation code. */
+/**
+ * Compiles `schemas` using `types` instance as source of validation code.
+ *
+ * # Examples
+ * #example:usage
+ */
 export function jbq<Schemas, SchemaKeys extends keyof OmitSymbols<Schemas>, Opt extends Options>(
     types: TypeStore<Any>,
     schemas: Schemas,

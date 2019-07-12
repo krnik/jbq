@@ -4,7 +4,7 @@ import { DataPathChecker, DataPathResolver } from '../core/compilation/compilati
 import { ValidationResult } from '../core/jbq/jbq_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
 import { KeywordValidationFunctionKind } from '../core/type_store/type_instance/type_instance_typings';
-import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, TYPE, TYPE_NAME } from '../misc/constants';
+import { EVERY, INCLUDES, LEN, PROP_DATA_PATH, SOME, TYPE, TYPE_ARRAY } from '../misc/constants';
 import { AnyArray, ArrIterCallback } from '../misc/typings';
 import { TypeReflect } from '../util/type_reflect';
 import { TypeAny } from './any';
@@ -16,7 +16,7 @@ import { ParseValuesMinMax } from './type_definition_typings';
 // TODO: Enable message injection
 // TODO: object shape modification?
 
-export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
+export const TypeArray = new TypeInstance(TYPE_ARRAY)
     .derive(TypeAny)
     .setKeyword(TYPE, {
         validator(_schemaValue: string, $DATA: unknown): ValidationResult {
@@ -26,7 +26,7 @@ export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.ARRAY, TYPE, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_ARRAY, TYPE, 'string'),
     })
     .setKeyword(EVERY, {
         validator<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: AnyArray): ValidationResult {
@@ -39,7 +39,7 @@ export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
                             path: '{{schemaPath}}',
                         };
         },
-        schemaValidator: schemaValidate.isInstance(TYPE_NAME.ARRAY, EVERY, Function),
+        schemaValidator: schemaValidate.isInstance(TYPE_ARRAY, EVERY, Function),
     })
     .setKeyword(SOME, {
         validator<T>(schemaValue: ArrIterCallback<boolean, T>, $DATA: AnyArray): ValidationResult {
@@ -59,7 +59,7 @@ export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
                     };
             }
         },
-        schemaValidator: schemaValidate.isInstance(TYPE_NAME.ARRAY, SOME, Function),
+        schemaValidator: schemaValidate.isInstance(TYPE_ARRAY, SOME, Function),
     })
     .setKeyword(INCLUDES, {
         validator(schemaValue: unknown, $DATA: unknown[]): ValidationResult {
@@ -72,7 +72,7 @@ export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
             if (!found)
                 return { message: 'Data should include {{schemaValue}}.', path: '{{schemaPath}}' };
         },
-        schemaValidator: schemaValidate.any(TYPE_NAME.ARRAY, INCLUDES),
+        schemaValidator: schemaValidate.any(TYPE_ARRAY, INCLUDES),
     })
     .setKeyword(LEN, {
         validator(
@@ -169,6 +169,6 @@ export const TypeArray = new TypeInstance(TYPE_NAME.ARRAY)
         },
         kind: KeywordValidationFunctionKind.Macro,
         // TODO: Ensure LEN is u32
-        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_NAME.ARRAY, LEN, true),
+        schemaValidator: schemaValidate.minMaxOrNumber(TYPE_ARRAY, LEN, true),
     })
     .setUseForOfLoop(false);

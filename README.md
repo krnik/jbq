@@ -22,31 +22,28 @@ Hi! Welcome to JBQ validation library repository.
 - *async validation function execution*
 
 **ROADMAP:**
-- [ ] *custom error messages / revisit error type*
-- [ ] *support Joi/Yup schema translation*
-- [ ] *support JSONSchema translation*
+- [ ] *custom error messages*
+- [ ] *support JSONSchema eventually*
 - [ ] *asynchronous validator function compliation*
 
 ***
 ## Table of Contents
 ***
 
-- [Introduction](#introduction)
-- [Table of Contents](#table-of-contents)
-- [Library structure](#library-structure)
-- [Usage Example](#usage-example)
-- [Type Keywords](#type-keywords)
-  - [Any](#any)
-  - [Array](#array)
-  - [Boolean](#boolean)
-  - [Number](#number)
-  - [Object](#object)
-  - [String](#string)
-  - [DataPath](#datapath)
-    - [SchemaMinMax](#schemaminmax)
-- [Type Wrapper](#type-wrapper)
-- [Class Syntax](#class-syntax)
-- [Logging](#logging)
+- [Introduction](#Introduction)
+- [Table of Contents](#Table-of-Contents)
+- [Library structure](#Library-structure)
+- [Usage Example](#Usage-Example)
+- [Type Keywords](#Type-Keywords)
+  - [Any](#Any)
+  - [Array](#Array)
+  - [Boolean](#Boolean)
+  - [Number](#Number)
+  - [Object](#Object)
+  - [String](#String)
+  - [DataPath](#DataPath)
+- [Type Store](#Type-Store)
+- [Class Syntax](#Class-Syntax)
 
 
 ***
@@ -64,25 +61,17 @@ const { jbq } = require('jbq/cjs/lib.js');
 ```
 
 > Folder structure:
-- jbq
-    - /class_syntax/
-    - /core/
-    - /misc/
-    - /type/
-    - /util/
-    - /cjs/ - CommonJS equivalent of root
-    - /class_syntax.js
+  - /cjs/ - CommonJS module
     - /lib.js
+    - /class_syntax.js
+  - /class_syntax.js
+  - /lib.js
 
 **lib.js exports:**
 - [jbq](https://github.com/krnik/jbq/tree/master/docs#jbq): a function that will create validation functions.
-- [types](https://github.com/krnik/jbq/tree/master/docs#types): [Type Wrapper](#type-wrapper) instance, a set of defined types used during schema parsing.
-- `setLogger`: sets the logger used for debug
-
-**class_syntax.js exports:**
-- `compileClass`: appends a class-specific `build` method to the `constructor` prototype
-- `decoratorFactory`: used to create decorators that set custom schema properties (useful when creating new type)
-- schema/class decorators (more about them in [Class Syntax](#class-syntax))
+- [types](https://github.com/krnik/jbq/tree/master/docs#types): [Type Store](#Type-Store) instance, a set of predefined types used during schema parsing.
+- SYM_PROPERTIES - `Symbol.for('schema_properties')` defines shape of current schema properties
+- SYM_COLLECTION - `Symbol.for('schema_collection')` defines shape of current schema elements
 
 **Schemas**
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
@@ -94,27 +83,21 @@ Every schema has only one required keywords which is `type`. This keyword allows
 - *[object](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
 - *[string](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
 
-**Schema Symbol Keywords:**
-- *`Symbol.for('schema_properties')`*: defines the shape of current schema
-- *`Symbol.for('schema_collection')`*: makes validator iterate over every element of a collection and compare it against schema
-
 ***
 ## Usage Example
 ***
-First we want to define a schema.
+First we want to define a schema. And then we need to compile schemas into validation function.
+<details><summary>Example</summary>
 
 ```typescript
-const PROPS = Symbol.for('schema_properties');
-const ITEMS = Symbol.for('schema_collection');
-
 const userSchema = {                //  Define `userSchema`
     type: 'object',                 //  ▶ that is an object
     properties: ['names', 'email'], //  ▶ that can have only two properies 'names' and 'email'
-    [PROPS]: {                      //  ▶ those properties have following schemas
+    [SYM_PROPERTIES]: {             //  ▶ those properties have following schemas
         names: {                    //  ⯁ `names` property:
             type: 'array',          //      ▷ is an array
             len: 2,                 //      ▷ that have length equal 2
-            [ITEMS]: {              //      ▷ all items in this array
+            [SYM_COLLECTION]: {     //      ▷ all items in this array
                 type: 'string',     //      ▷ are a strings
             },                      //
         },                          //
@@ -131,29 +114,37 @@ const schemas = {
         len: 2,                     //  ▶ that have length equal 2
     },
 };
-```
 
-Next, we need to compile created schemas.
 
-```typescript
 const { TwoChars, User } = jbq(types, schemas);
 
 equal(TwoChars('AA'), undefined);
 equal(TwoChars('  '), undefined);
+equal(typeof TwoChars('Kenobi'), 'object');
 
-const error = TwoChars('') as ValidationError;
+const validUsers = [
+    { email: 'some_string', names: ['Git', 'Hub'] },
+    { email: '', names: ['John', 'Doe'] },
+];
+validUsers.forEach(
+    (userData): void => {
+        equal(User(userData), undefined);
+    },
+);
 
-equal(typeof error, 'object');
-equal(error.path, 'TwoChars/len');
-equal(error.message, 'Data length should be equal to 2.');
-
-equal(User({ email: 'STRING', names: ['Git', 'Hub'] }), undefined);
-equal(typeof User({ email: false, names: ['A', 'B'] }), 'object');
-equal(typeof User({ email: 'email', names: [] }), 'object');
-equal(typeof User({ email: 'email', names: {} }), 'object');
-equal(typeof User({ email: 'email', names: [true] }), 'object');
+const invalidUsers = [
+    { names: ['A', 'B'] },
+    { email: 'test@test.com', names: [] },
+    { email: 'test@test.com', names: ['Boolean', true] },
+];
+invalidUsers.forEach(
+    (userData): void => {
+        equal(typeof User(userData), 'object');
+    },
+);
 ```
 
+</details>
 
 
 ***
@@ -164,6 +155,7 @@ equal(typeof User({ email: 'email', names: [true] }), 'object');
 
 #### *type*
 > Any value will pass the test.
+<details><summary>Example</summary>
 
 ```typescript
 const schemaType = { type: 'any' };
@@ -175,93 +167,112 @@ equal(AnyType(undefined), undefined);
 equal(AnyType('string'), undefined);
 ```
 
+</details>
 
 #### *required*
-> If required is false and data is undefined then break current block.
+> If required is equal to false and data is undefined then break current block.
+> Otherwise proceed with checks.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaRequired = { type: 'any', required: true };
-const { AnyRequired } = jbq(types, { AnyRequired: schemaRequired });
+const schema = { type: 'any', required: true };
+const { Required } = jbq(types, { Required: schema });
 
-equal(AnyRequired(true), undefined);
-equal(AnyRequired({}), undefined);
-equal(typeof AnyRequired(undefined), 'object');
+const validData = [true, {}, null, NaN, 0, -Infinity, 'Sumo!'];
+validData.forEach(
+    (data): void => {
+        equal(Required(data), undefined);
+    },
+);
+
+equal(typeof Required(undefined), 'object');
 ```
 
+</details>
 
 ### Array
 #### *required*
 > Inherited from [any](#any).
 
 #### *type*
+<details><summary>Example</summary>
 
 ```typescript
 const schemaType = { type: 'array' };
-const { ArrayType } = jbq(types, { ArrayType: schemaType });
+const { Type } = jbq(types, { Type: schemaType });
 
-equal(ArrayType([]), undefined);
-equal(typeof ArrayType({}), 'object');
-equal(typeof ArrayType(true), 'object');
+equal(Type([]), undefined);
+equal(typeof Type({}), 'object');
+equal(typeof Type(true), 'object');
 ```
 
+</details>
 
 #### *every*
 > Check if every of array element will satisfy test function.
 
 > Accepts function as schema value - `function (element: unknown): boolean`.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaEvery = {
+const schema = {
     type: 'array',
     every: (element: unknown): boolean => typeof element === 'number' && element === element,
 };
-const { ArrayEvery } = jbq(types, { ArrayEvery: schemaEvery });
 
-equal(ArrayEvery([]), undefined);
-equal(typeof ArrayEvery([1, 2, 3, NaN]), 'object');
-equal(typeof ArrayEvery([1, 2, 3, false]), 'object');
-equal(typeof ArrayEvery({}), 'object');
+const { Every } = jbq(types, { Every: schema });
+
+equal(Every([]), undefined);
+equal(typeof Every([1, 2, 3, NaN]), 'object');
+equal(typeof Every([1, 2, 3, false]), 'object');
+equal(typeof Every({}), 'object');
 ```
 
+</details>
 
 #### *some*
 > Check if any of array elements will satisfy test function.
 
 > Accepts function as schema value - `function (element: unknown): boolean`.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaSome = {
+const schema = {
     type: 'array',
     some: (element: unknown): boolean => element === 100,
 };
-const { ArraySome } = jbq(types, { ArraySome: schemaSome });
+const { Some } = jbq(types, { Some: schema });
 
-equal(ArraySome([1, 10, 100]), undefined);
-equal(ArraySome([]), undefined);
-equal(typeof ArraySome([true, false]), 'object');
+equal(Some([1, 10, 100]), undefined);
+equal(Some([]), undefined);
+equal(typeof Some([true, false]), 'object');
 ```
 
+</details>
 
 #### *includes*
 > Check if array includes given element.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaIncludes = { type: 'array', includes: true };
-const { ArrayIncludes } = jbq(types, { ArrayIncludes: schemaIncludes });
+const schema = { type: 'array', includes: true };
+const { Includes } = jbq(types, { Includes: schema });
 
-equal(ArrayIncludes([false, false, true]), undefined);
-equal(typeof ArrayIncludes([false, 1, {}]), 'object');
+equal(Includes([false, false, true]), undefined);
+equal(typeof Includes([false, 1, {}]), 'object');
 ```
 
+</details>
 
 #### *len*
 > Checks the length of an array.
 
 > Accepts [SchemaMinMax](#schemaminmax) schema value.
+<details><summary>Example</summary>
 
 ```typescript
 const schemasLen = {
-    SimpleLen: {
+    ExactLen: {
         type: 'array',
         len: 2,
     },
@@ -278,10 +289,11 @@ const schemasLen = {
         len: { min: 1, max: 5 },
     },
 };
-const { SimpleLen, MinLen, MaxLen, MinMaxLen } = jbq(types, schemasLen);
 
-equal(SimpleLen([true, false]), undefined);
-equal(typeof SimpleLen([]), 'object');
+const { ExactLen, MinLen, MaxLen, MinMaxLen } = jbq(types, schemasLen);
+
+equal(ExactLen([true, false]), undefined);
+equal(typeof ExactLen([]), 'object');
 
 equal(MinLen([true]), undefined);
 equal(typeof MinLen([]), 'object');
@@ -294,55 +306,63 @@ equal(typeof MinMaxLen([]), 'object');
 equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'object');
 ```
 
+</details>
 
 ### Boolean
 #### *required*
 > Inherited from [any](#any).
 
 #### *type*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaType = { type: 'boolean' };
-const { BooleanType } = jbq(types, { BooleanType: schemaType });
+const schema = { type: 'boolean' };
+const { Type } = jbq(types, { Type: schema });
 
-equal(BooleanType(true), undefined);
-equal(typeof BooleanType(0), 'object');
+equal(Type(true), undefined);
+equal(typeof Type(0), 'object');
 ```
 
+</details>
 
 #### *value*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaValue = { type: 'boolean', value: true };
-const { BooleanValue } = jbq(types, { BooleanValue: schemaValue });
+const schema = { type: 'boolean', value: true };
+const { Value } = jbq(types, { Value: schema });
 
-equal(BooleanValue(true), undefined);
-equal(typeof BooleanValue(false), 'object');
+equal(Value(true), undefined);
+equal(typeof Value(false), 'object');
 ```
 
+</details>
 
 ### Number
 #### *required*
 > Inherited from [any](#any).
 
 #### *type*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaType = { type: 'number' };
-const { NumberType } = jbq(types, { NumberType: schemaType });
+const schema = { type: 'number' };
+const { Type } = jbq(types, { Type: schema });
 
-equal(NumberType(100), undefined);
-equal(typeof NumberType(NaN), 'object');
-equal(typeof NumberType('10'), 'object');
+equal(Type(100), undefined);
+equal(typeof Type(NaN), 'object');
+equal(typeof Type('10'), 'object');
 ```
 
+</details>
 
 #### *value*
 > Accepts [SchemaMinMax](#schemaminmax) schema value.
+<details><summary>Example</summary>
 
 ```typescript
 const schemas = {
-    SimpleValue: {
+    ExactValue: {
         type: 'number',
         value: 10,
     },
@@ -359,10 +379,10 @@ const schemas = {
         value: { min: 0, max: 100 },
     },
 };
-const { SimpleValue, MinValue, MaxValue, MinMaxValue } = jbq(types, schemas);
+const { ExactValue, MinValue, MaxValue, MinMaxValue } = jbq(types, schemas);
 
-equal(SimpleValue(10), undefined);
-equal(typeof SimpleValue(9), 'object');
+equal(ExactValue(10), undefined);
+equal(typeof ExactValue(9), 'object');
 
 equal(MinValue(0), undefined);
 equal(typeof MinValue(-10), 'object');
@@ -375,95 +395,109 @@ equal(MinMaxValue(100), undefined);
 equal(typeof MinMaxValue(101), 'object');
 ```
 
+</details>
 
 #### *multipleOf*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaMultipleOf = { type: 'number', multipleOf: 1 };
-const { NumberMultipleOf } = jbq(types, { NumberMultipleOf: schemaMultipleOf });
+const schema = { type: 'number', multipleOf: 1 };
+const { MultipleOf } = jbq(types, { MultipleOf: schema });
 
-equal(NumberMultipleOf(10), undefined);
-equal(NumberMultipleOf(0), undefined);
-equal(typeof NumberMultipleOf(1.1), 'object');
-equal(typeof NumberMultipleOf(Math.PI), 'object');
+equal(MultipleOf(10), undefined);
+equal(MultipleOf(0), undefined);
+equal(typeof MultipleOf(1.1), 'object');
+equal(typeof MultipleOf(Math.PI), 'object');
 ```
 
+</details>
 
 #### *oneOf*
 > Accepts an array of numbers.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaOneOf = { type: 'number', oneOf: [2, 4, 8, 16] };
-const { NumberOneOf } = jbq(types, { NumberOneOf: schemaOneOf });
+const schema = { type: 'number', oneOf: [2, 4, 8, 16] };
+const { OneOf } = jbq(types, { OneOf: schema });
 
-equal(NumberOneOf(2), undefined);
-equal(typeof NumberOneOf(1), 'object');
+equal(OneOf(2), undefined);
+equal(typeof OneOf(1), 'object');
 ```
 
+</details>
 
 ### Object
 #### *required*
 > Inherited from [any](#any).
 
 #### *type*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaType = { type: 'object' };
-const { ObjectType } = jbq(types, { ObjectType: schemaType });
+const schema = { type: 'object' };
+const { Type } = jbq(types, { Type: schema });
 
-equal(ObjectType({}), undefined);
-equal(ObjectType(new Map()), undefined);
-equal(typeof ObjectType(null), 'object');
-equal(typeof ObjectType([]), 'object');
+equal(Type({}), undefined);
+equal(Type(new Map()), undefined);
+equal(typeof Type(null), 'object');
+equal(typeof Type([]), 'object');
 ```
 
+</details>
 
 #### *constructorName*
 > Accepts string schema value.
+<details><summary>Example</summary>
 
 ```typescript
 const schema = { type: 'object', constructorName: 'Set' };
-const { ObjectConstrName } = jbq(types, { ObjectConstrName: schema });
+const { CtrName } = jbq(types, { CtrName: schema });
 
-equal(ObjectConstrName(new Set()), undefined);
-equal(typeof ObjectConstrName({}), 'object');
+equal(CtrName(new Set()), undefined);
+equal(typeof CtrName({}), 'object');
 ```
 
+</details>
 
 #### *instanceOf*
 > Accepts function schema value.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaInstanceOf = { type: 'object', instanceOf: Map };
-const { ObjectInstance } = jbq(types, { ObjectInstance: schemaInstanceOf });
+const schema = { type: 'object', instanceOf: Map };
+const { InstanceOf } = jbq(types, { InstanceOf: schema });
 
-equal(ObjectInstance(new Map()), undefined);
-equal(typeof ObjectInstance(new Set()), 'object');
+equal(InstanceOf(new Map()), undefined);
+equal(typeof InstanceOf(new Set()), 'object');
 ```
 
+</details>
 
 #### *properties*
 > Accepts array of strings schema value.
 
 > Checks if every property specified in schema value is a property of data.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaProps = { type: 'object', properties: ['hello'] };
-const { ObjectProperties } = jbq(types, { ObjectProperties: schemaProps });
+const schema = { type: 'object', properties: ['hello'] };
+const { Properties } = jbq(types, { Properties: schema });
 
-equal(ObjectProperties({ hello: 'World' }), undefined);
-equal(typeof ObjectProperties({ world: 'hello' }), 'object');
+equal(Properties({ hello: 'World' }), undefined);
+equal(typeof Properties({ world: 'hello' }), 'object');
 ```
 
+</details>
 
 #### *keyCount*
 > Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 > Checks count of all enumerable properties of data.
+<details><summary>Example</summary>
 
 ```typescript
-const schemasKeyCount = {
-    SimpleKey: {
+const schemas = {
+    ExactKey: {
         type: 'object',
         keyCount: 0,
     },
@@ -480,10 +514,10 @@ const schemasKeyCount = {
         keyCount: { min: 1, max: 2 },
     },
 };
-const { SimpleKey, MinKey, MaxKey, MinMaxKey } = jbq(types, schemasKeyCount);
+const { ExactKey, MinKey, MaxKey, MinMaxKey } = jbq(types, schemas);
 
-equal(SimpleKey({}), undefined);
-equal(typeof SimpleKey({ key: 'value' }), 'object');
+equal(ExactKey({}), undefined);
+equal(typeof ExactKey({ key: 'value' }), 'object');
 
 equal(MinKey({ 1: 1 }), undefined);
 equal(typeof MinKey({}), 'object');
@@ -495,15 +529,17 @@ equal(MinMaxKey({ hello: 'world' }), undefined);
 equal(typeof MinMaxKey({ hello: 'there', general: 'Kenobi', bo: true }), 'object');
 ```
 
+</details>
 
 #### *propCount*
 > Accepts [SchemaMinMax](#schemaminmax) schema value.
 
 > Checks count of all properties of data.
+<details><summary>Example</summary>
 
 ```typescript
-const schemasPropCount = {
-    SimpleProp: {
+const schemas = {
+    ExactProp: {
         type: 'object',
         propCount: 1,
     },
@@ -513,11 +549,11 @@ const schemasPropCount = {
     },
     // and so on...
 };
-const { SimpleProp, MinProp } = jbq(types, schemasPropCount);
+const { ExactProp, MinProp } = jbq(types, schemas);
 
-equal(SimpleProp({ [Symbol()]: true }), undefined);
+equal(ExactProp({ [Symbol()]: true }), undefined);
 equal(
-    typeof SimpleProp({
+    typeof ExactProp({
         [Symbol('meta_1')]: true,
         [Symbol('meta_2')]: false,
     }),
@@ -528,52 +564,60 @@ equal(MinProp({ key: 'value' }), undefined);
 equal(typeof MinProp({}), 'object');
 ```
 
+</details>
 
 ### String
 #### *required*
 > Inherited from [any](#any).
 
 #### *type*
+<details><summary>Example</summary>
 
 ```typescript
-const schemaType = { type: 'string' };
-const { StringType } = jbq(types, { StringType: schemaType });
+const schema = { type: 'string' };
+const { Type } = jbq(types, { Type: schema });
 
-equal(StringType(''), undefined);
-equal(typeof StringType(new String('Hello!')), 'object');
+equal(Type(''), undefined);
+equal(typeof Type(new String('Hello!')), 'object');
 ```
 
+</details>
 
 #### *regex*
 > Accepts RegExp schema value.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaRegex = { type: 'string', regex: /@/ };
-const { StringRegex } = jbq(types, { StringRegex: schemaRegex });
+const schema = { type: 'string', regex: /@/ };
+const { Regex } = jbq(types, { Regex: schema });
 
-equal(StringRegex('my@mail'), undefined);
-equal(typeof StringRegex(''), 'object');
+equal(Regex('my@mail'), undefined);
+equal(typeof Regex(''), 'object');
 ```
 
+</details>
 
 #### *oneOf*
 > Accepts array of strings schema value.
+<details><summary>Example</summary>
 
 ```typescript
-const schemaOneOf = { type: 'string', oneOf: ['user', 'guest'] };
-const { StringOneOf } = jbq(types, { StringOneOf: schemaOneOf });
+const schema = { type: 'string', oneOf: ['user', 'guest'] };
+const { OneOf } = jbq(types, { OneOf: schema });
 
-equal(StringOneOf('user'), undefined);
-equal(typeof StringOneOf('admin'), 'object');
+equal(OneOf('user'), undefined);
+equal(typeof OneOf('admin'), 'object');
 ```
 
+</details>
 
 #### *len*
 > Accepts [SchemaMinMax](#schemaminmax) schema value.
+<details><summary>Example</summary>
 
 ```typescript
-const schemasLen = {
-    SimpleLen: {
+const schemas = {
+    ExactLen: {
         type: 'string',
         len: 8,
     },
@@ -583,15 +627,16 @@ const schemasLen = {
     },
     // and so on...
 };
-const { SimpleLen, MinMaxLen } = jbq(types, schemasLen);
+const { ExactLen, MinMaxLen } = jbq(types, schemas);
 
-equal(SimpleLen('12345678'), undefined);
-equal(typeof SimpleLen('1234567890'), 'object');
+equal(ExactLen('12345678'), undefined);
+equal(typeof ExactLen('1234567890'), 'object');
 
 equal(MinMaxLen('1 to 16'), undefined);
 equal(typeof MinMaxLen(''), 'object');
 ```
 
+</details>
 
 
 ***
@@ -607,7 +652,6 @@ It can be used when you don't know exact schema values.
 - *string*: `len`
 
 Lets consider following object:
-
 ```typescript
 const settings = {
     globals: {
@@ -618,21 +662,31 @@ const settings = {
 };
 ```
 
-
 We can use `$dataPath` to try to reach one of its properties as in example below.
+<details><summary>Example</summary>
 
 ```typescript
+const settings = {
+    globals: {
+        requestRateLimit: 100,
+    },
+    premiumRequestRateLimit: 100,
+    regularRequestRateLimit: 80,
+};
+
 const getOverallLimit = {
     // During validation this path will resolve
     // to settings.globals.requestRateLimit
     $dataPath: 'globals/requestRateLimit',
 };
+
 const getPremiumLimit = {
     // During validation this path will resolve
     // to settings.premiumRequestRateLimit
     $dataPath: 'premiumRequestRateLimit',
 };
-const settingsSchema = {
+
+const schema = {
     type: 'object',
     [Symbol.for('schema_properties')]: {
         globals: {
@@ -659,7 +713,7 @@ const settingsSchema = {
     },
 };
 
-const { Settings } = jbq(types, { Settings: settingsSchema });
+const { Settings } = jbq(types, { Settings: schema });
 
 equal(Settings(settings), undefined);
 equal(
@@ -682,10 +736,11 @@ equal(
 );
 ```
 
+</details>
 
 
-#### SchemaMinMax
-
+<!-- #### SchemaMinMax -->
+<!--
 Definition:
 ```typescript
 interface DataPath {
@@ -712,22 +767,18 @@ const v1: SchemaMinMax = 1;
 const v2: SchemaMinMax = path;
 const v3: SchemaMinMax = { min: 10, max: path };
 const v4: SchemaMinMax = { max: 15 };
-```
+``` -->
 ***
-## Type Wrapper
+## Type Store
 ***
 Class responsible for holding a collection of types using during validation function compilation.
 
 This class enables an extension of existing types or even definin custom types.
 
-A type object is valid when all of its keys have corresponding schema value validation function defined in `Symbol.for('type_validate')` property.
-
-> Read more in docs: `SYM_TYPE_VALIDATE`, `SYM_TYPE_KEY_ORDER`, `SYM_METHOD_MACRO`, `SYM_METHOD_CLOSURE`, `SYM_TYPE_FOR_LOOP`.
-
 Example custom type definition.
+<details><summary>Example</summary>
 
 ```typescript
-const hexReg = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
 const HexColor = new TypeInstance('hex-color').setKeyword('type', {
     validator(_schemaValue: string, $DATA: unknown): ValidationResult {
         if (typeof $DATA !== 'string') {
@@ -736,7 +787,7 @@ const HexColor = new TypeInstance('hex-color').setKeyword('type', {
                 path: '{{schemaPath}}',
             };
         }
-        if (!hexReg.test($DATA)) {
+        if (!/^#?([0-9A-F]{3}|[0-9A-F]{6})$/i.test($DATA)) {
             return {
                 message: 'Received string is not a hex color value.',
                 path: '{{schemaPath}}',
@@ -754,6 +805,7 @@ equal(types.getType('hex-color'), HexColor);
 equal(types.hasType('hexcolor'), false);
 ```
 
+</details>
 
 Curious about the  &#123;&#123; *expression* &#125;&#125; syntax? Check out the `Compilation.prototype.evaluateExpressions` method in the docs.
 
@@ -766,6 +818,7 @@ Every keyword has its decorator. You can read more in the docs.
 
 Of course you need to use `compileClass` function to build the custom `build` method due to performance reasons. The `build` method could be compiled on first evaluation of the `build` method but that's one of the possibilities for the future.
 
+<details><summary>Example</summary>
 
 ```typescript
 class Address {
@@ -805,6 +858,7 @@ equal(user.address.zip, '22-99');
 throws((): User => new User().build({ name: 'j', id: 0, address: { zip: '22-872' } }));
 ```
 
+</details>
 
 **Alteration Decorators:**
 - `withDefault`
@@ -838,39 +892,4 @@ throws((): User => new User().build({ name: 'j', id: 0, address: { zip: '22-872'
 - `schema`
 - `shape`
 - `collection`
-
-
-***
-## Logging
-***
-You can set the logging function/library using `setLogger` function.
-Currently the JBQ logs only schema compilation progress but most probably it will be expanded in the future so it gives more information.
-
-Provided argument should match the following interface.
-```typescript
-interface Logger {
-    debug(message: string, ...args: unknown[]): void;
-}
-```
-
-
-```typescript
-const logger = pino({ name: 'CrazyLogs' });
-logger.level = 'trace';
-
-setLogger(logger);
-
-let called = false;
-const logFn = (msg: string, ...args: unknown[]): void => {
-    called = true;
-    return logger.debug(msg, ...args);
-};
-
-setLogger({ debug: logFn });
-const logService = new LogService(true);
-logService['log']('Example log');
-
-equal(called, true);
-```
-
 

@@ -1,7 +1,6 @@
 import { jbq, types } from '../../src/lib';
 import { equal } from 'assert';
 
-//example_region
 const settings = {
     globals: {
         requestRateLimit: 100,
@@ -9,18 +8,20 @@ const settings = {
     premiumRequestRateLimit: 100,
     regularRequestRateLimit: 80,
 };
-//example_region
+
 const getOverallLimit = {
     // During validation this path will resolve
     // to settings.globals.requestRateLimit
     $dataPath: 'globals/requestRateLimit',
 };
+
 const getPremiumLimit = {
     // During validation this path will resolve
     // to settings.premiumRequestRateLimit
     $dataPath: 'premiumRequestRateLimit',
 };
-const settingsSchema = {
+
+const schema = {
     type: 'object',
     [Symbol.for('schema_properties')]: {
         globals: {
@@ -47,7 +48,7 @@ const settingsSchema = {
     },
 };
 
-const { Settings } = jbq(types, { Settings: settingsSchema });
+const { Settings } = jbq(types, { Settings: schema });
 
 equal(Settings(settings), undefined);
 equal(

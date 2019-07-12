@@ -7,7 +7,9 @@ import {
     PROP_DATA_PATH,
     SYM_SCHEMA_PROPERTIES,
     TYPE,
-    TYPE_NAME,
+    TYPE_NUMBER,
+    TYPE_OBJECT,
+    TYPE_STRING,
     VALUE,
 } from '../../../../src/misc/constants';
 import { createTypes } from '../../../../src/type/mod';
@@ -18,20 +20,20 @@ describe('Compilation', (): void => {
         const suites = [
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         range: {
-                            [TYPE]: TYPE_NAME.OBJECT,
+                            [TYPE]: TYPE_OBJECT,
                             [SYM_SCHEMA_PROPERTIES]: {
                                 min: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                     [VALUE]: {
                                         min: 0,
                                         max: { [PROP_DATA_PATH]: 'range/max' },
                                     },
                                 },
                                 max: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                     [VALUE]: {
                                         min: { [PROP_DATA_PATH]: 'range/min' },
                                     },
@@ -39,7 +41,7 @@ describe('Compilation', (): void => {
                             },
                         },
                         username: {
-                            [TYPE]: TYPE_NAME.STRING,
+                            [TYPE]: TYPE_STRING,
                             [LEN]: {
                                 min: { [PROP_DATA_PATH]: 'range/min' },
                                 max: { [PROP_DATA_PATH]: 'range/max' },
@@ -77,10 +79,10 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         username: {
-                            [TYPE]: TYPE_NAME.STRING,
+                            [TYPE]: TYPE_STRING,
                             [LEN]: {
                                 min: { [PROP_DATA_PATH]: 'range/min' },
                                 max: { [PROP_DATA_PATH]: 'range/max' },
@@ -121,14 +123,14 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         username: {
-                            [TYPE]: TYPE_NAME.STRING,
+                            [TYPE]: TYPE_STRING,
                             [LEN]: {
                                 min: {
                                     [PROP_DATA_PATH]: 'range/min',
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                     [VALUE]: {
                                         min: 0,
                                         max: { [PROP_DATA_PATH]: 'range/max' },
@@ -136,7 +138,7 @@ describe('Compilation', (): void => {
                                 },
                                 max: {
                                     [PROP_DATA_PATH]: 'range/max',
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                     [VALUE]: {
                                         min: { [PROP_DATA_PATH]: 'range/min' },
                                     },
@@ -175,10 +177,10 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         username: {
-                            [TYPE]: TYPE_NAME.STRING,
+                            [TYPE]: TYPE_STRING,
                             [LEN]: {
                                 min: {
                                     [PROP_DATA_PATH]: 'range/min',

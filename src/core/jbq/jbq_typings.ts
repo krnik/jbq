@@ -29,11 +29,11 @@ export enum PathResolutionStrategy {
      */
     Schema = 'schema',
     /**
-     * Returns an error from validation function.
+     * Returns an error from validation function if `$dataPath` resolves to `undefined`.
      */
     Return = 'return',
     /**
-     * Ignores the fact that the `$dataPath` resolved to undefined.
+     * Ignores the fact that the `$dataPath` resolved to `undefined`.
      */
     Ignore = 'ignore',
 }

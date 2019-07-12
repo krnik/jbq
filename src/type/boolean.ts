@@ -1,10 +1,10 @@
 import { ValidationResult } from '../core/jbq/jbq_typings';
 import { TypeInstance } from '../core/type_store/type_instance';
-import { TYPE, TYPE_NAME, VALUE } from '../misc/constants';
+import { TYPE, TYPE_BOOLEAN, VALUE } from '../misc/constants';
 import { TypeAny } from './any';
 import { schemaValidate } from './schema_validator';
 
-export const TypeBoolean = new TypeInstance(TYPE_NAME.BOOLEAN)
+export const TypeBoolean = new TypeInstance(TYPE_BOOLEAN)
     .derive(TypeAny)
     .setKeyword(TYPE, {
         validator(_schemaValue: string, $DATA: unknown): ValidationResult {
@@ -14,7 +14,7 @@ export const TypeBoolean = new TypeInstance(TYPE_NAME.BOOLEAN)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.BOOLEAN, TYPE, 'string'),
+        schemaValidator: schemaValidate.primitive(TYPE_BOOLEAN, TYPE, 'string'),
     })
     .setKeyword(VALUE, {
         validator(schemaValue: boolean, $DATA: boolean): ValidationResult {
@@ -24,5 +24,5 @@ export const TypeBoolean = new TypeInstance(TYPE_NAME.BOOLEAN)
                     path: '{{schemaPath}}',
                 };
         },
-        schemaValidator: schemaValidate.primitive(TYPE_NAME.BOOLEAN, VALUE, 'boolean', true),
+        schemaValidator: schemaValidate.primitive(TYPE_BOOLEAN, VALUE, 'boolean', true),
     });

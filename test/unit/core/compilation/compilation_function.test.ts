@@ -6,7 +6,9 @@ import {
     PROP_DATA_PATH,
     SYM_SCHEMA_PROPERTIES,
     TYPE,
-    TYPE_NAME,
+    TYPE_BOOLEAN,
+    TYPE_NUMBER,
+    TYPE_OBJECT,
     VALUE,
 } from '../../../../src/misc/constants';
 import { createTypes } from '../../../../src/type/mod';
@@ -17,13 +19,13 @@ describe('Compilation', (): void => {
         const suites = [
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         verified: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                         },
                         active: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                             [VALUE]: {
                                 [PROP_DATA_PATH]: 'verified',
                             },
@@ -44,13 +46,13 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         received: {
-                            [TYPE]: TYPE_NAME.OBJECT,
+                            [TYPE]: TYPE_OBJECT,
                             [SYM_SCHEMA_PROPERTIES]: {
                                 age: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                     [VALUE]: {
                                         min: { [PROP_DATA_PATH]: 'valid/minimum' },
                                         max: { [PROP_DATA_PATH]: 'valid/maximum' },
@@ -59,13 +61,13 @@ describe('Compilation', (): void => {
                             },
                         },
                         valid: {
-                            [TYPE]: TYPE_NAME.OBJECT,
+                            [TYPE]: TYPE_OBJECT,
                             [SYM_SCHEMA_PROPERTIES]: {
                                 minimum: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                 },
                                 maximum: {
-                                    [TYPE]: TYPE_NAME.NUMBER,
+                                    [TYPE]: TYPE_NUMBER,
                                 },
                             },
                         },
@@ -85,13 +87,13 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         verified: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                         },
                         active: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                             [VALUE]: {
                                 [PROP_DATA_PATH]: 'missing',
                             },
@@ -116,7 +118,7 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [TYPE]: TYPE_BOOLEAN,
                     [VALUE]: {
                         [PROP_DATA_PATH]: 'missing',
                     },
@@ -131,13 +133,13 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         active: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                             [VALUE]: {
                                 [PROP_DATA_PATH]: 'verified',
-                                [TYPE]: TYPE_NAME.BOOLEAN,
+                                [TYPE]: TYPE_BOOLEAN,
                             },
                         },
                     },
@@ -158,7 +160,7 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [TYPE]: TYPE_BOOLEAN,
                     [VALUE]: {
                         [PROP_DATA_PATH]: 'missing',
                     },
@@ -171,13 +173,13 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         verified: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                         },
                         active: {
-                            [TYPE]: TYPE_NAME.BOOLEAN,
+                            [TYPE]: TYPE_BOOLEAN,
                             [VALUE]: {
                                 [PROP_DATA_PATH]: 'missing',
                             },
@@ -202,7 +204,7 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.BOOLEAN,
+                    [TYPE]: TYPE_BOOLEAN,
                     [VALUE]: {
                         [PROP_DATA_PATH]: 'missing',
                     },

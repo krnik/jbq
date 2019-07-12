@@ -12,6 +12,9 @@ import { ClassValidatorBuilder } from '../class_validator_builder';
  * The return value of provided function will be
  * assigned to a property. As a first argument default factory will receive
  * data that is received during building instance.
+ *
+ * # Example
+ * #example:class_syntax_with_default
  */
 export const withDefault = <T = unknown, R = unknown>(
     buildDefault: (data: T) => R,
@@ -36,6 +39,9 @@ export const withDefault = <T = unknown, R = unknown>(
  * instance. Since TypeScript does not support changing the class signature
  * via decorators this behaviour needs to be manually `hinted` by setting
  * `true` value in a generic parameter of `Validator` class.
+ *
+ * # Example
+ * #example:class_syntax_transform
  */
 export const transform = <P, D, R>(callback: (property: P, data: D) => R): PropertyDecorator => (
     prototype: object,

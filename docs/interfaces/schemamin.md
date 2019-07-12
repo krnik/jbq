@@ -22,7 +22,7 @@
 
 **● min**: *`number` \| [DataPath](datapath.md)*
 
-*Defined in [type/type_definition_typings.ts:4](https://github.com/krnik/vjs-validator/blob/4b489fe/src/type/type_definition_typings.ts#L4)*
+*Defined in [type/type_definition_typings.ts:4](https://github.com/krnik/vjs-validator/blob/557f235/src/type/type_definition_typings.ts#L4)*
 
 ___
 

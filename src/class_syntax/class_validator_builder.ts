@@ -1,7 +1,7 @@
-import { TYPE, TYPE_NAME, SYM_SCHEMA_PROPERTIES, SYM_SCHEMA_COLLECTION } from '../misc/constants';
-import { Constructor, Option } from '../misc/typings';
 import { Validator } from '../class_syntax';
 import { Schema } from '../core/compilation/compilation_typings';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES, TYPE, TYPE_OBJECT } from '../misc/constants';
+import { Constructor, Option } from '../misc/typings';
 
 const SCHEMA = Symbol('schema');
 const CREATE_INSTANCE = Symbol('create_instance');
@@ -57,7 +57,7 @@ export class ClassValidatorBuilder {
     public constructor(constructor: Constructor) {
         this.constr = constructor;
         this.schema = {
-            [TYPE]: TYPE_NAME.OBJECT,
+            [TYPE]: TYPE_OBJECT,
         };
     }
 

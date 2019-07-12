@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 import { check, gen, property } from 'testcheck';
-import { EVERY, INCLUDES, SOME, TYPE, TYPE_NAME, LEN } from '../../../src/misc/constants';
+import { EVERY, INCLUDES, SOME, TYPE, LEN, TYPE_ARRAY } from '../../../src/misc/constants';
 import { TypeArray } from '../../../src/type/array';
 import { isValidationError } from '../../utils';
 
 describe(
-    TYPE_NAME.ARRAY,
+    TYPE_ARRAY,
     (): void => {
         describe(
             TYPE,
             (): void => {
-                const schemaValue = TYPE_NAME.ARRAY;
+                const schemaValue = TYPE_ARRAY;
                 const { validator } = TypeArray.getKeyword(TYPE);
 
                 it('valid value', (): void => {

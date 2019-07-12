@@ -143,7 +143,7 @@ export class Compilation {
      * If type does not exists this function will throw.
      */
     private getType(this: Compilation, typeName: string): TypeInstance<Any, Any, Any> | never {
-        if (!this.types.hasType(typeName)) throw CompilationError.missingType(typeName);
+        if (!this.types.hasType(typeName)) throw Compilation.Error.missingType(typeName);
         return this.types.getType(typeName as Any) as TypeInstance<Any, Any, Any>;
     }
 

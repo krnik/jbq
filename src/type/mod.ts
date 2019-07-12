@@ -18,3 +18,5 @@ export function createTypes() {
 }
 
 export const types = createTypes();
+
+export { TypeAny, TypeArray, TypeBoolean, TypeNumber, TypeObject, TypeString };

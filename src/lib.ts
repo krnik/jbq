@@ -1,7 +1,10 @@
 import { jbq } from './core/jbq';
 import { types } from './type/mod';
-import { LogService } from './util/log_service';
+import { SYM_SCHEMA_COLLECTION, SYM_SCHEMA_PROPERTIES } from './misc/constants';
 
-const { setLogger } = LogService;
-
-export { jbq, types, setLogger };
+export {
+    jbq,
+    types,
+    SYM_SCHEMA_COLLECTION as SYM_COLLECTION,
+    SYM_SCHEMA_PROPERTIES as SYM_PROPERTIES,
+};

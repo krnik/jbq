@@ -21,4 +21,17 @@ export class TypeInstanceError {
         )} defined.\nDefined keywords for this type are: ${Print.array(existingKeywords)}`;
         return new Error(errorMessage);
     }
+
+    public static typeAlreadyDerives(
+        typeName: string,
+        currentDerivedTypeName: string,
+        derivedTypeName: string,
+    ): Error {
+        const errorMessage = `Could not set ${Print.typeDef(
+            derivedTypeName,
+        )} as type to derive from for type ${Print.typeDef(
+            typeName,
+        )} because it already derives from type ${Print.typeDef(currentDerivedTypeName)}.`;
+        return new Error(errorMessage);
+    }
 }

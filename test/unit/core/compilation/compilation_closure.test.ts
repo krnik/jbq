@@ -9,7 +9,8 @@ import {
     REQUIRED,
     SYM_SCHEMA_PROPERTIES,
     TYPE,
-    TYPE_NAME,
+    TYPE_OBJECT,
+    TYPE_ANY,
 } from '../../../../src/misc/constants';
 import { createTypes } from '../../../../src/type/mod';
 import { schemaValidate } from '../../../../src/type/schema_validator';
@@ -74,9 +75,9 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
-                        mailing: { [TYPE]: TYPE_NAME.ANY },
+                        mailing: { [TYPE]: TYPE_ANY },
                         enlistedOn: {
                             [TYPE]: 'NullableString',
                             logValue: { $dataPath: 'mailing' },
@@ -94,10 +95,10 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         compare: {
-                            [TYPE]: TYPE_NAME.ANY,
+                            [TYPE]: TYPE_ANY,
                         },
                         val: {
                             [TYPE]: 'NullableString',
@@ -124,13 +125,13 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         val: {
                             [TYPE]: 'NullableString',
                             value: {
                                 [PROP_DATA_PATH]: 'compare',
-                                [TYPE]: TYPE_NAME.ANY,
+                                [TYPE]: TYPE_ANY,
                                 [REQUIRED]: true,
                             },
                         },
@@ -153,7 +154,7 @@ describe('Compilation', (): void => {
             },
             {
                 schema: {
-                    [TYPE]: TYPE_NAME.OBJECT,
+                    [TYPE]: TYPE_OBJECT,
                     [SYM_SCHEMA_PROPERTIES]: {
                         val: {
                             [TYPE]: 'NullableString',

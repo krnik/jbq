@@ -26,7 +26,7 @@
 
 ⊕ **new Constructor**(...args: *[RestParams](../#restparams)*): `T`
 
-*Defined in [misc/typings.ts:12](https://github.com/krnik/vjs-validator/blob/4b489fe/src/misc/typings.ts#L12)*
+*Defined in [misc/typings.ts:12](https://github.com/krnik/vjs-validator/blob/557f235/src/misc/typings.ts#L12)*
 
 **Parameters:**
 

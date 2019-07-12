@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { check, gen, property } from 'testcheck';
-import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NAME, VALUE } from '../../../src/misc/constants';
+import { MULTIPLE_OF, ONE_OF, TYPE, TYPE_NUMBER, VALUE } from '../../../src/misc/constants';
 import { TypeNumber } from '../../../src/type/number';
 import { isValidationError } from '../../utils';
 
 describe(
-    TYPE_NAME.NUMBER,
+    TYPE_NUMBER,
     (): void => {
         describe(
             TYPE,

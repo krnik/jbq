@@ -8,7 +8,15 @@ It can be used when you don't know exact schema values.
 - *{{TYPE_NAME.STRING}}*: `{{LEN}}`
 
 Lets consider following object:
-{{example('data_path', 1)}}
+```typescript
+const settings = {
+    globals: {
+        requestRateLimit: 100,
+    },
+    premiumRequestRateLimit: 100,
+    regularRequestRateLimit: 80,
+};
+```
 
 We can use `{{PROP_DATA_PATH}}` to try to reach one of its properties as in example below.
-{{example('data_path', 2)}}
+{{example('data_path')}}

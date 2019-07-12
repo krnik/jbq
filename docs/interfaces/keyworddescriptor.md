@@ -2,6 +2,8 @@
 
 # Interface: KeywordDescriptor
 
+Defines the shape of an object passed as a second argument to the `TypeInstance.prototype.setKeyword` function.
+
 ## Hierarchy
 
 **KeywordDescriptor**
@@ -25,7 +27,7 @@
 
 **● acceptDataPath**: *`boolean`*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:16](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store/type_instance/type_instance_typings.ts#L16)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:77](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L77)*
 
 ___
 <a id="kind"></a>
@@ -34,7 +36,7 @@ ___
 
 **● kind**: *[KeywordValidationFunctionKind](../enums/keywordvalidationfunctionkind.md)*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:14](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store/type_instance/type_instance_typings.ts#L14)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:75](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L75)*
 
 ___
 <a id="schemavalidator"></a>
@@ -43,7 +45,7 @@ ___
 
 **● schemaValidator**: *`function`*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:15](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store/type_instance/type_instance_typings.ts#L15)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:76](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L76)*
 
 #### Type declaration
 ▸(schemaValue: *`unknown`*): `unknown`
@@ -63,7 +65,7 @@ ___
 
 **● validator**: *[KeywordValidationFunction](../#keywordvalidationfunction)*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:13](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store/type_instance/type_instance_typings.ts#L13)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:74](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L74)*
 
 ___
 

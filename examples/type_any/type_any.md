@@ -2,8 +2,9 @@
 
 #### *{{TYPE}}*
 > Any value will pass the test.
-{{example('type_any', 0)}}
+{{example('type_any_type')}}
 
 #### *{{REQUIRED}}*
-> If required is false and data is undefined then break current block.
-{{example('type_any', 1)}}
+> If required is equal to false and data is undefined then break current block.
+> Otherwise proceed with checks.
+{{example('type_any_required')}}

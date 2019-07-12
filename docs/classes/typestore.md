@@ -2,6 +2,8 @@
 
 # Class: TypeStore
 
+`TypeStore<TypeSignature>`. A class that stores all types that should be used during schema compilation.
+
 ## Type parameters
 #### T :  [TypeSignature](../#typesignature)
 ## Hierarchy
@@ -13,6 +15,7 @@
 ### Properties
 
 * [types](typestore.md#types)
+* [Error](typestore.md#error)
 
 ### Methods
 
@@ -31,7 +34,16 @@
 
 **● types**: *`Map`<`T["0"]`, [TypeInstance](typeinstance.md)<`string`, [Option](../#option)<`string`>, [Option](../#option)<`string`>>>* =  new Map()
 
-*Defined in [core/type_store.ts:40](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store.ts#L40)*
+*Defined in [core/type_store.ts:48](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L48)*
+
+___
+<a id="error"></a>
+
+### `<Static>``<Private>` Error
+
+**● Error**: *[TypeStoreError](typestoreerror.md)* =  TypeStoreError
+
+*Defined in [core/type_store.ts:99](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L99)*
 
 ___
 
@@ -43,7 +55,14 @@ ___
 
 ▸ **addType**<`N`,`M`,`D`>(type: *[TypeInstance](typeinstance.md)<[NotIn](../#notin)<`N`, `T`>, `M`, `D`>*): [TypeStore](typestore.md)<[Types](../#types)<`T` \| [`N`, `M`, `D`]>>
 
-*Defined in [core/type_store.ts:42](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store.ts#L42)*
+*Defined in [core/type_store.ts:57](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L57)*
+
+Adds a type to the store. Cannot add a type with name that already exists in the store.
+
+Example
+=======
+
+#example:type\_store\_add\_type
 
 **Type parameters:**
 
@@ -65,7 +84,14 @@ ___
 
 ▸ **getType**<`N`>(typeName: *`N`*): [Extract](../#extract)<`T`, `N`>
 
-*Defined in [core/type_store.ts:57](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store.ts#L57)*
+*Defined in [core/type_store.ts:81](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L81)*
+
+Returns `TypeInstance` instance if it was previously added to the store.
+
+Example
+=======
+
+#example:type\_store\_get\_type
 
 **Type parameters:**
 
@@ -83,11 +109,18 @@ ___
 
 ###  getTypeNames
 
-▸ **getTypeNames**(): `string`[]
+▸ **getTypeNames**(): `T[0]`[]
 
-*Defined in [core/type_store.ts:65](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store.ts#L65)*
+*Defined in [core/type_store.ts:95](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L95)*
 
-**Returns:** `string`[]
+Returns an array of names of all types that has been added to the store.
+
+Example
+=======
+
+#example:type\_store\_get\_type\_names
+
+**Returns:** `T[0]`[]
 
 ___
 <a id="hastype"></a>
@@ -96,7 +129,9 @@ ___
 
 ▸ **hasType**<`N`>(typeName: *`N`*): `boolean`
 
-*Defined in [core/type_store.ts:53](https://github.com/krnik/vjs-validator/blob/4b489fe/src/core/type_store.ts#L53)*
+*Defined in [core/type_store.ts:71](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L71)*
+
+Returns `true` if type with provided name has been added to the store.
 
 **Type parameters:**
 

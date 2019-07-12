@@ -1,10 +1,4 @@
 {
-    "search.usePCRE2": true,
-    "eslint.workingDirectories": [
-        "./src",
-        "./test",
-        "./examples"
-    ],
     "editor.formatOnPaste": false,
     "editor.formatOnSave": false,
     "editor.formatOnType": false,
