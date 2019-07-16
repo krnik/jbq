@@ -1,5 +1,5 @@
 import { statSync, readdirSync, existsSync, writeFileSync, readFileSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, basename } from 'path';
 
 export function walkDir(path: string, callback: (filePath: string) => void): void {
     if (!statSync(path).isDirectory()) throw new Error('Cannot walk non-directory.');
@@ -19,9 +19,10 @@ export function copyFiles(dest: string, files: string[]): void {
     const destPath = resolve(__dirname, dest);
 
     for (const file of files) {
+        const fileName = basename(file);
         const filePath = resolve(__dirname, file);
         if (!existsSync(filePath)) throw new Error('Cannot copy file that does not exist!');
 
-        writeFileSync(resolve(destPath, file), readFileSync(filePath));
+        writeFileSync(resolve(destPath, fileName), readFileSync(filePath));
     }
 }
