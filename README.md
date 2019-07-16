@@ -77,11 +77,11 @@ const { jbq } = require('jbq/cjs/lib.js');
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *[TYPE_NAME.ANY](#any)*: `required`, `type`
-- *[TYPE_NAME.ARRAY](#array)* `required`, `type`, `every`, `some`, `includes`, `len`
-- *[TYPE_NAME.NUMBER](#number)* `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *[TYPE_NAME.OBJECT](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *[TYPE_NAME.STRING](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
+- *[any](#any)*: `required`, `type`
+- *[array](#array)* `required`, `type`, `every`, `some`, `includes`, `len`
+- *[number](#number)* `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[object](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[string](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
 
 ***
 ## Usage Example
@@ -192,7 +192,7 @@ equal(typeof Required(undefined), 'object');
 
 ### Array
 #### *required*
-> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
+> Inherited from [any](#any).
 
 #### *type*
 <details><summary>Example</summary>
@@ -310,7 +310,7 @@ equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'object');
 
 ### Boolean
 #### *required*
-> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
+> Inherited from [any](#any).
 
 #### *type*
 <details><summary>Example</summary>
@@ -340,7 +340,7 @@ equal(typeof Value(false), 'object');
 
 ### Number
 #### *required*
-> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
+> Inherited from [any](#any).
 
 #### *type*
 <details><summary>Example</summary>
@@ -428,7 +428,7 @@ equal(typeof OneOf(1), 'object');
 
 ### Object
 #### *required*
-> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
+> Inherited from [any](#any).
 
 #### *type*
 <details><summary>Example</summary>
@@ -568,7 +568,7 @@ equal(typeof MinProp({}), 'object');
 
 ### String
 #### *required*
-> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
+> Inherited from [any](#any).
 
 #### *type*
 <details><summary>Example</summary>
@@ -646,10 +646,10 @@ Data path accepts a string or array of strings which will be used to resolve val
 It can be used when you don't know exact schema values.
 
 **Keywords that support $dataPath:**
-- *TYPE_NAME.ARRAY*: `includes`, `len`
-- *TYPE_NAME.NUMBER*: `value`, `multipleOf`
-- *TYPE_NAME.OBJECT*: `keyCount`, `propCount`
-- *TYPE_NAME.STRING*: `len`
+- *array*: `includes`, `len`
+- *number*: `value`, `multipleOf`
+- *object*: `keyCount`, `propCount`
+- *string*: `len`
 
 Lets consider following object:
 ```typescript
@@ -821,6 +821,7 @@ Of course you need to use `compileClass` function to build the custom `build` me
 <details><summary>Example</summary>
 
 ```typescript
+@compile()
 class Address {
     @string
     @regex(/^\d{2}-\d{2}$/)
@@ -835,6 +836,7 @@ class Address {
     public city?: string;
 }
 
+@compile()
 class User extends Validator {
     @string
     public name!: string;
@@ -842,20 +844,17 @@ class User extends Validator {
     @number
     public id!: number;
 
-    @object
     @shape(Address)
-    public address!: Shape<Address>;
+    public address!: Address;
 }
 
-compileClass(User);
-
-const user = new User().build({ name: 'J', id: 100, address: { zip: '22-99' } });
+const user = new User().from({ name: 'J', id: 100, address: { zip: '22-99' } });
 
 equal(user.name, 'J');
 equal(user.id, 100);
 equal(user.address.zip, '22-99');
 
-throws((): User => new User().build({ name: 'j', id: 0, address: { zip: '22-872' } }));
+throws((): User => new User().from({ name: 'j', id: 0, address: { zip: '22-872' } }));
 ```
 
 </details>

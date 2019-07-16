@@ -20,7 +20,7 @@
 
 **And**:  = "&&"
 
-*Defined in [core/code_gen/token/operator.ts:2](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/code_gen/token/operator.ts#L2)*
+*Defined in [core/code_gen/token/operator.ts:2](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/code_gen/token/operator.ts#L2)*
 
 ___
 <a id="not"></a>
@@ -29,7 +29,7 @@ ___
 
 **Not**:  = "!"
 
-*Defined in [core/code_gen/token/operator.ts:4](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/code_gen/token/operator.ts#L4)*
+*Defined in [core/code_gen/token/operator.ts:4](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/code_gen/token/operator.ts#L4)*
 
 ___
 <a id="or"></a>
@@ -38,7 +38,7 @@ ___
 
 **Or**:  = "||"
 
-*Defined in [core/code_gen/token/operator.ts:3](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/code_gen/token/operator.ts#L3)*
+*Defined in [core/code_gen/token/operator.ts:3](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/code_gen/token/operator.ts#L3)*
 
 ___
 

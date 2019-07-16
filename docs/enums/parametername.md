@@ -24,7 +24,7 @@ Enum representing parameter names of validation function.
 
 **Arguments**:  = "$ARGS"
 
-*Defined in [core/compilation/compilation_typings.ts:35](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L35)*
+*Defined in [core/compilation/compilation_typings.ts:35](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L35)*
 
 ___
 <a id="data"></a>
@@ -33,7 +33,7 @@ ___
 
 **Data**:  = "$DATA"
 
-*Defined in [core/compilation/compilation_typings.ts:34](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L34)*
+*Defined in [core/compilation/compilation_typings.ts:34](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L34)*
 
 ___
 <a id="resolvedvalue"></a>
@@ -42,7 +42,7 @@ ___
 
 **ResolvedValue**:  = "resolvedValue"
 
-*Defined in [core/compilation/compilation_typings.ts:38](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L38)*
+*Defined in [core/compilation/compilation_typings.ts:38](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L38)*
 
 ___
 <a id="schemapath"></a>
@@ -51,7 +51,7 @@ ___
 
 **SchemaPath**:  = "schemaPath"
 
-*Defined in [core/compilation/compilation_typings.ts:37](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L37)*
+*Defined in [core/compilation/compilation_typings.ts:37](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L37)*
 
 ___
 <a id="schemavalue"></a>
@@ -60,7 +60,7 @@ ___
 
 **SchemaValue**:  = "schemaValue"
 
-*Defined in [core/compilation/compilation_typings.ts:36](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L36)*
+*Defined in [core/compilation/compilation_typings.ts:36](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L36)*
 
 ___
 

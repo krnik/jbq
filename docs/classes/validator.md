@@ -4,6 +4,11 @@
 
 Dummy class used to hint TypeScript that a class was compiled and has `build` method.
 
+Example
+=======
+
+#example:class\_syntax
+
 ## Type parameters
 #### HasAsyncTransforms :  `boolean`
 ## Hierarchy
@@ -14,19 +19,19 @@ Dummy class used to hint TypeScript that a class was compiled and has `build` me
 
 ### Methods
 
-* [build](validator.md#build)
+* [from](validator.md#from)
 
 ---
 
 ## Methods
 
-<a id="build"></a>
+<a id="from"></a>
 
-###  build
+###  from
 
-▸ **build**(data?: *`unknown`*): `HasAsyncTransforms extends true ? Promise<this> : this`
+▸ **from**(data?: *`unknown`*): `HasAsyncTransforms extends true ? Promise<this> : this`
 
-*Defined in [class_syntax.ts:10](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax.ts#L10)*
+*Defined in [class_syntax.ts:10](https://github.com/krnik/vjs-validator/blob/c79d80e/src/class_syntax.ts#L10)*
 
 **Parameters:**
 

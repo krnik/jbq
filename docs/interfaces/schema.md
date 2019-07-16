@@ -29,8 +29,8 @@ Interface representing a Schema passed down to compilation functions.
 
 **● __computed**: *[Schema](schema.md)*
 
-*Defined in [core/compilation/compilation_typings.ts:7](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L7)*
-*Defined in [core/compilation/compilation_typings.ts:10](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L10)*
+*Defined in [core/compilation/compilation_typings.ts:7](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L7)*
+*Defined in [core/compilation/compilation_typings.ts:10](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_typings.ts#L10)*
 
 ___
 

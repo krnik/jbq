@@ -60,7 +60,7 @@ Examples
 
 ⊕ **new TypeInstance**(name: *`N`*): [TypeInstance](typeinstance.md)
 
-*Defined in [core/type_store/type_instance.ts:30](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L30)*
+*Defined in [core/type_store/type_instance.ts:30](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L30)*
 
 **Parameters:**
 
@@ -80,7 +80,7 @@ ___
 
 **● deriveType**: *[TypeInstance](typeinstance.md)<`string`, [Option](../#option)<`string`>, [Option](../#option)<`string`>>*
 
-*Defined in [core/type_store/type_instance.ts:28](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L28)*
+*Defined in [core/type_store/type_instance.ts:28](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L28)*
 
 ___
 <a id="keywordorder"></a>
@@ -89,7 +89,7 @@ ___
 
 **● keywordOrder**: *`string`[]*
 
-*Defined in [core/type_store/type_instance.ts:29](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L29)*
+*Defined in [core/type_store/type_instance.ts:29](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L29)*
 
 ___
 <a id="methods"></a>
@@ -98,7 +98,7 @@ ___
 
 **● methods**: *`Map`<`string`, [KeywordDescriptor](../interfaces/keyworddescriptor.md)>* =  new Map()
 
-*Defined in [core/type_store/type_instance.ts:27](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L27)*
+*Defined in [core/type_store/type_instance.ts:27](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L27)*
 
 ___
 <a id="name"></a>
@@ -107,7 +107,7 @@ ___
 
 **● name**: *`N`*
 
-*Defined in [core/type_store/type_instance.ts:26](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L26)*
+*Defined in [core/type_store/type_instance.ts:26](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L26)*
 
 ___
 <a id="useforofloop"></a>
@@ -116,7 +116,7 @@ ___
 
 **● useForOfLoop**: *`boolean`* = true
 
-*Defined in [core/type_store/type_instance.ts:30](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L30)*
+*Defined in [core/type_store/type_instance.ts:30](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L30)*
 
 ___
 <a id="error"></a>
@@ -125,7 +125,7 @@ ___
 
 **● Error**: *[TypeInstanceError](typeinstanceerror.md)* =  TypeInstanceError
 
-*Defined in [core/type_store/type_instance.ts:172](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L172)*
+*Defined in [core/type_store/type_instance.ts:172](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L172)*
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 ▸ **derive**<`Derived`>(this: *[TypeInstance](typeinstance.md)<`N`, `M`, `undefined`>*, proto: *[TypeInstance](typeinstance.md)<`Derived`, [Option](../#option)<`string`>, [Option](../#option)<`string`>>*): [TypeInstance](typeinstance.md)<`N`, `M`, `Derived`>
 
-*Defined in [core/type_store/type_instance.ts:46](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L46)*
+*Defined in [core/type_store/type_instance.ts:46](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L46)*
 
 Sets the derived type of the instance. Derived type acts as a 'backup' when compilator is looking for keywords.
 
@@ -167,7 +167,7 @@ ___
 
 ▸ **getKeyword**(keyword: *`string`*): [KeywordDescriptor](../interfaces/keyworddescriptor.md)
 
-*Defined in [core/type_store/type_instance.ts:81](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L81)*
+*Defined in [core/type_store/type_instance.ts:81](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L81)*
 
 Returns `KeywordDescriptor` for `keyword` if exists. Otherwise throws an error.
 
@@ -186,7 +186,7 @@ ___
 
 ▸ **getKeywordOrder**(): [Option](../#option)<`string`[]>
 
-*Defined in [core/type_store/type_instance.ts:145](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L145)*
+*Defined in [core/type_store/type_instance.ts:145](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L145)*
 
 Returns the desired order of keywords.
 
@@ -199,7 +199,7 @@ ___
 
 ▸ **getKeywords**(): `string`[]
 
-*Defined in [core/type_store/type_instance.ts:111](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L111)*
+*Defined in [core/type_store/type_instance.ts:111](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L111)*
 
 Returns list of all keywords instance has access to. Includes also keywords from derived types.
 
@@ -212,7 +212,7 @@ ___
 
 ▸ **getUseForOfLoop**(): `boolean`
 
-*Defined in [core/type_store/type_instance.ts:168](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L168)*
+*Defined in [core/type_store/type_instance.ts:168](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L168)*
 
 Returns current use `for..of` loop flag value setting.
 
@@ -225,7 +225,7 @@ ___
 
 ▸ **hasKeyword**(keyword: *`string`*): `boolean`
 
-*Defined in [core/type_store/type_instance.ts:99](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L99)*
+*Defined in [core/type_store/type_instance.ts:99](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L99)*
 
 Returns true if instance has `keyword` keyword defined.
 
@@ -244,7 +244,7 @@ ___
 
 ▸ **setKeyword**<`V`>(this: *[TypeInstance](typeinstance.md)<`N`, `M`, `D`>*, methodName: *`V`*, descriptor: *[PartialProps](../#partialprops)<[KeywordDescriptor](../interfaces/keyworddescriptor.md), "kind" \| "acceptDataPath">*): [TypeInstance](typeinstance.md)<`N`, [Methods](../#methods)<`V` \| `M`>, `D`>
 
-*Defined in [core/type_store/type_instance.ts:65](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L65)*
+*Defined in [core/type_store/type_instance.ts:65](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L65)*
 
 Adds a keyword to the instance.
 
@@ -268,7 +268,7 @@ ___
 
 ▸ **setKeywordOrder**(keywords: *`string`[]*): `this`
 
-*Defined in [core/type_store/type_instance.ts:124](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L124)*
+*Defined in [core/type_store/type_instance.ts:124](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L124)*
 
 Defines an order in which keywords should be validated during validation function execution.
 
@@ -292,7 +292,7 @@ ___
 
 ▸ **setUseForOfLoop**(useForOfLoop: *`boolean`*): `this`
 
-*Defined in [core/type_store/type_instance.ts:160](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance.ts#L160)*
+*Defined in [core/type_store/type_instance.ts:160](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/type_store/type_instance.ts#L160)*
 
 Boolean flag that defines whether instance types should use `for..of` loop when validating the elements of this type. Default value: `true`.
 

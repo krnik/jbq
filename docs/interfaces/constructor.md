@@ -8,8 +8,6 @@
 
 **Constructor**
 
-↳  [ValidatorClass](validatorclass.md)
-
 ## Index
 
 ### Constructors
@@ -26,7 +24,7 @@
 
 ⊕ **new Constructor**(...args: *[RestParams](../#restparams)*): `T`
 
-*Defined in [misc/typings.ts:12](https://github.com/krnik/vjs-validator/blob/0be452f/src/misc/typings.ts#L12)*
+*Defined in [misc/typings.ts:13](https://github.com/krnik/vjs-validator/blob/c79d80e/src/misc/typings.ts#L13)*
 
 **Parameters:**
 

@@ -24,7 +24,7 @@
 
 ▸ **missingSchemaTypeProperty**(schema: *`object`*, path: *`string`*): `Error`
 
-*Defined in [core/compilation/compilation_error.ts:10](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_error.ts#L10)*
+*Defined in [core/compilation/compilation_error.ts:10](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_error.ts#L10)*
 
 **Parameters:**
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **missingType**(typeName: *`string`*): `Error`
 
-*Defined in [core/compilation/compilation_error.ts:5](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_error.ts#L5)*
+*Defined in [core/compilation/compilation_error.ts:5](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_error.ts#L5)*
 
 **Parameters:**
 
@@ -59,7 +59,7 @@ ___
 
 ▸ **missingTypeMethod**(typeName: *`string`*, methodName: *`string`*): `Error`
 
-*Defined in [core/compilation/compilation_error.ts:25](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_error.ts#L25)*
+*Defined in [core/compilation/compilation_error.ts:25](https://github.com/krnik/vjs-validator/blob/c79d80e/src/core/compilation/compilation_error.ts#L25)*
 
 **Parameters:**
 
