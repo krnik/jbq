@@ -21,7 +21,7 @@
 
 **Data**:  = "$DATA"
 
-*Defined in [class_syntax/build_method_compile.ts:31](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L31)*
+*Defined in [class_syntax/build_method_compile.ts:31](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L31)*
 
 ___
 <a id="meta"></a>
@@ -30,7 +30,7 @@ ___
 
 **Meta**:  = "$META"
 
-*Defined in [class_syntax/build_method_compile.ts:32](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L32)*
+*Defined in [class_syntax/build_method_compile.ts:32](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L32)*
 
 ___
 <a id="self"></a>
@@ -39,7 +39,7 @@ ___
 
 **Self**:  = "$SELF"
 
-*Defined in [class_syntax/build_method_compile.ts:33](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L33)*
+*Defined in [class_syntax/build_method_compile.ts:33](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L33)*
 
 ___
 <a id="validator"></a>
@@ -48,7 +48,7 @@ ___
 
 **Validator**:  = "$VALIDATOR"
 
-*Defined in [class_syntax/build_method_compile.ts:34](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L34)*
+*Defined in [class_syntax/build_method_compile.ts:34](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L34)*
 
 ___
 

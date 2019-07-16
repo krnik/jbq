@@ -1,11 +1,11 @@
-import { Option, PartialProps } from '../../misc/typings';
+import { Option, PartialProps, Some } from '../../misc/typings';
 import { TypeInstanceError } from './type_instance/type_instance_error';
 import {
     KeywordDescriptor,
     KeywordValidationFunctionKind,
 } from './type_instance/type_instance_typings';
 
-type Methods<T> = Exclude<T, undefined>;
+type Methods<T> = Some<T>;
 
 /**
  * `TypeInstance<N, M, D>`. Generic class over validation type definition.

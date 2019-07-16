@@ -23,7 +23,7 @@
 
 **● message**: *`string`*
 
-*Defined in [core/jbq/jbq_typings.ts:62](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L62)*
+*Defined in [core/jbq/jbq_typings.ts:62](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L62)*
 
 ___
 <a id="path"></a>
@@ -32,7 +32,7 @@ ___
 
 **● path**: *`string`*
 
-*Defined in [core/jbq/jbq_typings.ts:63](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L63)*
+*Defined in [core/jbq/jbq_typings.ts:63](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L63)*
 
 ___
 

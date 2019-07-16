@@ -23,7 +23,7 @@
 
 **● schemaValue**: *[DataPath](datapath.md)*
 
-*Defined in [core/compilation/resolved_path_store.ts:5](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/resolved_path_store.ts#L5)*
+*Defined in [core/compilation/resolved_path_store.ts:5](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/resolved_path_store.ts#L5)*
 
 ___
 <a id="variablename"></a>
@@ -32,7 +32,7 @@ ___
 
 **● variableName**: *`string`*
 
-*Defined in [core/compilation/resolved_path_store.ts:4](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/resolved_path_store.ts#L4)*
+*Defined in [core/compilation/resolved_path_store.ts:4](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/resolved_path_store.ts#L4)*
 
 ___
 

@@ -1,7 +1,4 @@
-export * from './class_syntax/decorator/alteration_decorator';
-export * from './class_syntax/decorator/class_decorator';
-export * from './class_syntax/decorator/validation_decorator';
-export * from './class_syntax/build_method_compile';
+export * from './class_syntax/decorator';
 
 /**
  * Dummy class used to hint TypeScript that a class was compiled and has `build` method.

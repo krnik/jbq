@@ -25,7 +25,7 @@
 
 **● __computed**: *`string` \| `string`[]*
 
-*Defined in [core/compilation/compilation_typings.ts:15](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/compilation_typings.ts#L15)*
+*Defined in [core/compilation/compilation_typings.ts:15](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L15)*
 
 ___
 

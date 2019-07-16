@@ -27,7 +27,7 @@ Defines the shape of an object passed as a second argument to the `TypeInstance.
 
 **● acceptDataPath**: *`boolean`*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:77](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L77)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:77](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance/type_instance_typings.ts#L77)*
 
 ___
 <a id="kind"></a>
@@ -36,7 +36,7 @@ ___
 
 **● kind**: *[KeywordValidationFunctionKind](../enums/keywordvalidationfunctionkind.md)*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:75](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L75)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:75](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance/type_instance_typings.ts#L75)*
 
 ___
 <a id="schemavalidator"></a>
@@ -45,7 +45,7 @@ ___
 
 **● schemaValidator**: *`function`*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:76](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L76)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:76](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance/type_instance_typings.ts#L76)*
 
 #### Type declaration
 ▸(schemaValue: *`unknown`*): `unknown`
@@ -65,7 +65,7 @@ ___
 
 **● validator**: *[KeywordValidationFunction](../#keywordvalidationfunction)*
 
-*Defined in [core/type_store/type_instance/type_instance_typings.ts:74](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_instance/type_instance_typings.ts#L74)*
+*Defined in [core/type_store/type_instance/type_instance_typings.ts:74](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_instance/type_instance_typings.ts#L74)*
 
 ___
 

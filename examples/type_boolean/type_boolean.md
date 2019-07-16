@@ -1,5 +1,5 @@
 #### *{{REQUIRED}}*
-> Inherited from [{{TYPE_NAME.ANY}}](#{{TYPE_NAME.ANY.toLowerCase()}}).
+> Inherited from [{{TYPE_ANY}}](#{{TYPE_ANY.toLowerCase()}}).
 
 #### *{{TYPE}}*
 {{example('type_boolean_type')}}

@@ -25,7 +25,7 @@
 
 ▸ **array**(arr: *`string`[]*): `string`
 
-*Defined in [util/print_token.ts:14](https://github.com/krnik/vjs-validator/blob/557f235/src/util/print_token.ts#L14)*
+*Defined in [util/print_token.ts:14](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/print_token.ts#L14)*
 
 **Parameters:**
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **property**(propertyName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:6](https://github.com/krnik/vjs-validator/blob/557f235/src/util/print_token.ts#L6)*
+*Defined in [util/print_token.ts:6](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/print_token.ts#L6)*
 
 **Parameters:**
 
@@ -59,7 +59,7 @@ ___
 
 ▸ **type**(typeName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:10](https://github.com/krnik/vjs-validator/blob/557f235/src/util/print_token.ts#L10)*
+*Defined in [util/print_token.ts:10](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/print_token.ts#L10)*
 
 **Parameters:**
 
@@ -76,7 +76,7 @@ ___
 
 ▸ **typeDef**(typeName: *`string`*): `string`
 
-*Defined in [util/print_token.ts:2](https://github.com/krnik/vjs-validator/blob/557f235/src/util/print_token.ts#L2)*
+*Defined in [util/print_token.ts:2](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/print_token.ts#L2)*
 
 **Parameters:**
 

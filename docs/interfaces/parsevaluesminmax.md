@@ -29,7 +29,7 @@
 
 *Inherited from [ParseValues](parsevalues.md).[resolvedValue](parsevalues.md#resolvedvalue)*
 
-*Defined in [core/compilation/compilation_typings.ts:23](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/compilation_typings.ts#L23)*
+*Defined in [core/compilation/compilation_typings.ts:23](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L23)*
 
 ___
 <a id="schemapath"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from [ParseValues](parsevalues.md).[schemaPath](parsevalues.md#schemapath)*
 
-*Defined in [core/compilation/compilation_typings.ts:21](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/compilation_typings.ts#L21)*
+*Defined in [core/compilation/compilation_typings.ts:21](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L21)*
 
 ___
 <a id="schemavalue"></a>
@@ -51,7 +51,7 @@ ___
 
 *Overrides [ParseValues](parsevalues.md).[schemaValue](parsevalues.md#schemavalue)*
 
-*Defined in [type/type_definition_typings.ts:14](https://github.com/krnik/vjs-validator/blob/557f235/src/type/type_definition_typings.ts#L14)*
+*Defined in [type/type_definition_typings.ts:14](https://github.com/krnik/vjs-validator/blob/0be452f/src/type/type_definition_typings.ts#L14)*
 
 ___
 <a id="variablename"></a>
@@ -62,7 +62,7 @@ ___
 
 *Inherited from [ParseValues](parsevalues.md).[variableName](parsevalues.md#variablename)*
 
-*Defined in [core/compilation/compilation_typings.ts:22](https://github.com/krnik/vjs-validator/blob/557f235/src/core/compilation/compilation_typings.ts#L22)*
+*Defined in [core/compilation/compilation_typings.ts:22](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/compilation/compilation_typings.ts#L22)*
 
 ___
 

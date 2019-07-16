@@ -77,11 +77,11 @@ const { jbq } = require('jbq/cjs/lib.js');
 Every schema has only one required keywords which is `type`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *[any](#any)*: `required`, `type`
-- *[array](#array)* `required`, `type`, `every`, `some`, `includes`, `len`
-- *[number](#number)* `required`, `type`, `value`, `multipleOf`, `oneOf`
-- *[object](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
-- *[string](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
+- *[TYPE_NAME.ANY](#any)*: `required`, `type`
+- *[TYPE_NAME.ARRAY](#array)* `required`, `type`, `every`, `some`, `includes`, `len`
+- *[TYPE_NAME.NUMBER](#number)* `required`, `type`, `value`, `multipleOf`, `oneOf`
+- *[TYPE_NAME.OBJECT](#object)* `required`, `type`, `constructorName`, `instanceOf`, `properties`, `keyCount`, `propCount`
+- *[TYPE_NAME.STRING](#string)*: `required`, `type`, `regex`, `len`, `oneOf`
 
 ***
 ## Usage Example
@@ -93,12 +93,12 @@ First we want to define a schema. And then we need to compile schemas into valid
 const userSchema = {                //  Define `userSchema`
     type: 'object',                 //  ▶ that is an object
     properties: ['names', 'email'], //  ▶ that can have only two properies 'names' and 'email'
-    [SYM_PROPERTIES]: {             //  ▶ those properties have following schemas
+    [SYM_PROPERTIES]: {             //  ▶ properties of this object have following schemas
         names: {                    //  ⯁ `names` property:
             type: 'array',          //      ▷ is an array
             len: 2,                 //      ▷ that have length equal 2
             [SYM_COLLECTION]: {     //      ▷ all items in this array
-                type: 'string',     //      ▷ are a strings
+                type: 'string',     //      ▷ are strings
             },                      //
         },                          //
         email: {                    //  ⯁ `email` property
@@ -192,7 +192,7 @@ equal(typeof Required(undefined), 'object');
 
 ### Array
 #### *required*
-> Inherited from [any](#any).
+> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
 
 #### *type*
 <details><summary>Example</summary>
@@ -310,7 +310,7 @@ equal(typeof MinMaxLen([1, 2, 3, 4, 5, 6]), 'object');
 
 ### Boolean
 #### *required*
-> Inherited from [any](#any).
+> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
 
 #### *type*
 <details><summary>Example</summary>
@@ -340,7 +340,7 @@ equal(typeof Value(false), 'object');
 
 ### Number
 #### *required*
-> Inherited from [any](#any).
+> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
 
 #### *type*
 <details><summary>Example</summary>
@@ -428,7 +428,7 @@ equal(typeof OneOf(1), 'object');
 
 ### Object
 #### *required*
-> Inherited from [any](#any).
+> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
 
 #### *type*
 <details><summary>Example</summary>
@@ -568,7 +568,7 @@ equal(typeof MinProp({}), 'object');
 
 ### String
 #### *required*
-> Inherited from [any](#any).
+> Inherited from [TYPE_NAME.ANY](#TYPE_NAME.ANY.toLowerCase()).
 
 #### *type*
 <details><summary>Example</summary>
@@ -646,10 +646,10 @@ Data path accepts a string or array of strings which will be used to resolve val
 It can be used when you don't know exact schema values.
 
 **Keywords that support $dataPath:**
-- *array*: `includes`, `len`
-- *number*: `value`, `multipleOf`
-- *object*: `keyCount`, `propCount`
-- *string*: `len`
+- *TYPE_NAME.ARRAY*: `includes`, `len`
+- *TYPE_NAME.NUMBER*: `value`, `multipleOf`
+- *TYPE_NAME.OBJECT*: `keyCount`, `propCount`
+- *TYPE_NAME.STRING*: `len`
 
 Lets consider following object:
 ```typescript

@@ -34,7 +34,7 @@ Utility class that reduces the boilerplate code. It enables easy `if` statement 
 
 ▸ **array**<`T`>(value: *`unknown`*, allowEmpty?: *`undefined` \| `false` \| `true`*): `boolean`
 
-*Defined in [util/type_reflect.ts:43](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L43)*
+*Defined in [util/type_reflect.ts:43](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L43)*
 
 **Type parameters:**
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **arrayOf**<`T`>(value: *`unknown`*, elemCheck: *`function`*, allowEmpty?: *`undefined` \| `false` \| `true`*): `boolean`
 
-*Defined in [util/type_reflect.ts:47](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L47)*
+*Defined in [util/type_reflect.ts:47](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L47)*
 
 **Type parameters:**
 
@@ -77,7 +77,7 @@ ___
 
 ▸ **bigInt**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:18](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L18)*
+*Defined in [util/type_reflect.ts:18](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L18)*
 
 **Parameters:**
 
@@ -94,7 +94,7 @@ ___
 
 ▸ **boolean**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:10](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L10)*
+*Defined in [util/type_reflect.ts:10](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L10)*
 
 **Parameters:**
 
@@ -111,7 +111,7 @@ ___
 
 ▸ **instance**<`T`>(value: *`unknown`*, constructor: *`T`*): `boolean`
 
-*Defined in [util/type_reflect.ts:57](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L57)*
+*Defined in [util/type_reflect.ts:57](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L57)*
 
 **Type parameters:**
 
@@ -132,7 +132,7 @@ ___
 
 ▸ **number**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:14](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L14)*
+*Defined in [util/type_reflect.ts:14](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L14)*
 
 **Parameters:**
 
@@ -149,7 +149,7 @@ ___
 
 ▸ **object**<`T`>(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:30](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L30)*
+*Defined in [util/type_reflect.ts:30](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L30)*
 
 **Type parameters:**
 
@@ -169,7 +169,7 @@ ___
 
 ▸ **objectProps**<`P`,`V`>(value: *`unknown`*, keys: *`P`[]*): `boolean`
 
-*Defined in [util/type_reflect.ts:34](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L34)*
+*Defined in [util/type_reflect.ts:34](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L34)*
 
 **Type parameters:**
 
@@ -191,7 +191,7 @@ ___
 
 ▸ **primitiveLiteral**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:70](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L70)*
+*Defined in [util/type_reflect.ts:70](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L70)*
 
 This function will return true if it's possible to represent `value` argument as a literal.
 
@@ -210,7 +210,7 @@ ___
 
 ▸ **string**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:22](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L22)*
+*Defined in [util/type_reflect.ts:22](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L22)*
 
 **Parameters:**
 
@@ -227,7 +227,7 @@ ___
 
 ▸ **symbol**(value: *`unknown`*): `boolean`
 
-*Defined in [util/type_reflect.ts:26](https://github.com/krnik/vjs-validator/blob/557f235/src/util/type_reflect.ts#L26)*
+*Defined in [util/type_reflect.ts:26](https://github.com/krnik/vjs-validator/blob/0be452f/src/util/type_reflect.ts#L26)*
 
 **Parameters:**
 

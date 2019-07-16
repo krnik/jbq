@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "11"
+  - "12"
 script:
-  - npm run examples
+  - node --require ts-node/register ./utils/run_examples.ts
   - npm run test:cov
   - npm run test:perf
 branches:

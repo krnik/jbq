@@ -23,7 +23,7 @@ Enum representing a ways of dealing with `$dataPath` resolution. Each of the var
 
 **Ignore**:  = "ignore"
 
-*Defined in [core/jbq/jbq_typings.ts:38](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L38)*
+*Defined in [core/jbq/jbq_typings.ts:38](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L38)*
 
 Ignores the fact that the `$dataPath` resolved to `undefined`.
 
@@ -34,7 +34,7 @@ ___
 
 **Return**:  = "return"
 
-*Defined in [core/jbq/jbq_typings.ts:34](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L34)*
+*Defined in [core/jbq/jbq_typings.ts:34](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L34)*
 
 Returns an error from validation function if `$dataPath` resolves to `undefined`.
 
@@ -45,7 +45,7 @@ ___
 
 **Schema**:  = "schema"
 
-*Defined in [core/jbq/jbq_typings.ts:30](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L30)*
+*Defined in [core/jbq/jbq_typings.ts:30](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L30)*
 
 Validate resolved `$dataPath` is validated by schema.
 
@@ -71,7 +71,7 @@ ___
 
 **Skip**:  = "skip"
 
-*Defined in [core/jbq/jbq_typings.ts:13](https://github.com/krnik/vjs-validator/blob/557f235/src/core/jbq/jbq_typings.ts#L13)*
+*Defined in [core/jbq/jbq_typings.ts:13](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/jbq/jbq_typings.ts#L13)*
 
 If `$dataPath` resolves to `undefined` - skip the check of a property that expected value.
 

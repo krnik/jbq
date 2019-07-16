@@ -34,7 +34,7 @@
 
 **● types**: *`Map`<`T["0"]`, [TypeInstance](typeinstance.md)<`string`, [Option](../#option)<`string`>, [Option](../#option)<`string`>>>* =  new Map()
 
-*Defined in [core/type_store.ts:48](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L48)*
+*Defined in [core/type_store.ts:48](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L48)*
 
 ___
 <a id="error"></a>
@@ -43,7 +43,7 @@ ___
 
 **● Error**: *[TypeStoreError](typestoreerror.md)* =  TypeStoreError
 
-*Defined in [core/type_store.ts:99](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L99)*
+*Defined in [core/type_store.ts:99](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L99)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **addType**<`N`,`M`,`D`>(type: *[TypeInstance](typeinstance.md)<[NotIn](../#notin)<`N`, `T`>, `M`, `D`>*): [TypeStore](typestore.md)<[Types](../#types)<`T` \| [`N`, `M`, `D`]>>
 
-*Defined in [core/type_store.ts:57](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L57)*
+*Defined in [core/type_store.ts:57](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L57)*
 
 Adds a type to the store. Cannot add a type with name that already exists in the store.
 
@@ -84,7 +84,7 @@ ___
 
 ▸ **getType**<`N`>(typeName: *`N`*): [Extract](../#extract)<`T`, `N`>
 
-*Defined in [core/type_store.ts:81](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L81)*
+*Defined in [core/type_store.ts:81](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L81)*
 
 Returns `TypeInstance` instance if it was previously added to the store.
 
@@ -111,7 +111,7 @@ ___
 
 ▸ **getTypeNames**(): `T[0]`[]
 
-*Defined in [core/type_store.ts:95](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L95)*
+*Defined in [core/type_store.ts:95](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L95)*
 
 Returns an array of names of all types that has been added to the store.
 
@@ -129,7 +129,7 @@ ___
 
 ▸ **hasType**<`N`>(typeName: *`N`*): `boolean`
 
-*Defined in [core/type_store.ts:71](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store.ts#L71)*
+*Defined in [core/type_store.ts:71](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store.ts#L71)*
 
 Returns `true` if type with provided name has been added to the store.
 

@@ -77,11 +77,11 @@ const { jbq } = require('jbq/cjs/lib.js');
 Every schema has only one required keywords which is `{{TYPE}}`. This keyword allows to resolve all other keywords of the schema.
 
 **Types and Keywords:**
-- *[{{TYPE_NAME.ANY}}](#any)*: `{{REQUIRED}}`, `{{TYPE}}`
-- *[{{TYPE_NAME.ARRAY}}](#array)* `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
-- *[{{TYPE_NAME.NUMBER}}](#number)* `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
-- *[{{TYPE_NAME.OBJECT}}](#object)* `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
-- *[{{TYPE_NAME.STRING}}](#string)*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`
+- *[{{TYPE_ANY}}](#any)*: `{{REQUIRED}}`, `{{TYPE}}`
+- *[{{TYPE_ARRAY}}](#array)* `{{REQUIRED}}`, `{{TYPE}}`, `{{EVERY}}`, `{{SOME}}`, `{{INCLUDES}}`, `{{LEN}}`
+- *[{{TYPE_NUMBER}}](#number)* `{{REQUIRED}}`, `{{TYPE}}`, `{{VALUE}}`, `{{MULTIPLE_OF}}`, `{{ONE_OF}}`
+- *[{{TYPE_OBJECT}}](#object)* `{{REQUIRED}}`, `{{TYPE}}`, `{{CONSTRUCTOR_NAME}}`, `{{INSTANCE_OF}}`, `{{PROPERTIES}}`, `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *[{{TYPE_STRING}}](#string)*: `{{REQUIRED}}`, `{{TYPE}}`, `{{REGEX}}`, `{{LEN}}`, `{{ONE_OF}}`
 
 ***
 ## Usage Example

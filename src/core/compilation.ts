@@ -5,7 +5,7 @@ import {
     EXPRESSION_REGEX,
     TYPE,
 } from '../misc/constants';
-import { Option, Any } from '../misc/typings';
+import { Option, Any, Some } from '../misc/typings';
 import { schemaValidate } from '../type/schema_validator';
 import { LogService } from '../util/log_service';
 import { TypeReflect } from '../util/type_reflect';
@@ -92,9 +92,8 @@ export class Compilation {
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_PROPERTIES)) {
-            const subSchemas = schema[SYM_SCHEMA_PROPERTIES] as Exclude<
-                Schema[typeof SYM_SCHEMA_PROPERTIES],
-                undefined
+            const subSchemas = schema[SYM_SCHEMA_PROPERTIES] as Some<
+                Schema[typeof SYM_SCHEMA_PROPERTIES]
             >;
             const properties = [
                 ...Object.getOwnPropertyNames(subSchemas),
@@ -120,9 +119,8 @@ export class Compilation {
         }
 
         if (schema.hasOwnProperty(SYM_SCHEMA_COLLECTION)) {
-            const elementSchema = schema[SYM_SCHEMA_COLLECTION] as Exclude<
-                Schema[typeof SYM_SCHEMA_COLLECTION],
-                undefined
+            const elementSchema = schema[SYM_SCHEMA_COLLECTION] as Some<
+                Schema[typeof SYM_SCHEMA_COLLECTION]
             >;
             sourceBuilder.updateBuilderContext('[]', true);
             const useForOfLoop = type.getUseForOfLoop();

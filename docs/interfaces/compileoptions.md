@@ -23,7 +23,7 @@
 
 **● options**: *[Options](options.md)*
 
-*Defined in [class_syntax/build_method_compile.ts:27](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L27)*
+*Defined in [class_syntax/build_method_compile.ts:27](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L27)*
 
 ___
 <a id="types"></a>
@@ -32,7 +32,7 @@ ___
 
 **● types**: *[TypeStore](../classes/typestore.md)*
 
-*Defined in [class_syntax/build_method_compile.ts:26](https://github.com/krnik/vjs-validator/blob/557f235/src/class_syntax/build_method_compile.ts#L26)*
+*Defined in [class_syntax/build_method_compile.ts:26](https://github.com/krnik/vjs-validator/blob/0be452f/src/class_syntax/build_method_compile.ts#L26)*
 
 ___
 

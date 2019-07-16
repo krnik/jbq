@@ -1,4 +1,5 @@
 export type Option<T> = T | undefined;
+export type Some<T> = Exclude<T, undefined>;
 
 export type PartialProps<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>> & Partial<Pick<T, K>>;
 

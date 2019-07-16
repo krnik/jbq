@@ -2,10 +2,10 @@ Data path accepts a string or array of strings which will be used to resolve val
 It can be used when you don't know exact schema values.
 
 **Keywords that support {{PROP_DATA_PATH}}:**
-- *{{TYPE_NAME.ARRAY}}*: `{{INCLUDES}}`, `{{LEN}}`
-- *{{TYPE_NAME.NUMBER}}*: `{{VALUE}}`, `{{MULTIPLE_OF}}`
-- *{{TYPE_NAME.OBJECT}}*: `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
-- *{{TYPE_NAME.STRING}}*: `{{LEN}}`
+- *{{TYPE_ARRAY}}*: `{{INCLUDES}}`, `{{LEN}}`
+- *{{TYPE_NUMBER}}*: `{{VALUE}}`, `{{MULTIPLE_OF}}`
+- *{{TYPE_OBJECT}}*: `{{KEY_COUNT}}`, `{{PROP_COUNT}}`
+- *{{TYPE_STRING}}*: `{{LEN}}`
 
 Lets consider following object:
 ```typescript

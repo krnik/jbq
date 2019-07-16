@@ -23,7 +23,7 @@
 
 ▸ **typeAlreadyExists**(typeName: *`string`*): `Error`
 
-*Defined in [core/type_store/type_store_error.ts:4](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_store_error.ts#L4)*
+*Defined in [core/type_store/type_store_error.ts:4](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_store_error.ts#L4)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ ___
 
 ▸ **typeNotFound**(typeName: *`string`*): `Error`
 
-*Defined in [core/type_store/type_store_error.ts:11](https://github.com/krnik/vjs-validator/blob/557f235/src/core/type_store/type_store_error.ts#L11)*
+*Defined in [core/type_store/type_store_error.ts:11](https://github.com/krnik/vjs-validator/blob/0be452f/src/core/type_store/type_store_error.ts#L11)*
 
 **Parameters:**
 
