@@ -1,7 +1,7 @@
 import { Schema } from '../core/compilation/compilation_typings';
 import { SYM_PROPERTIES } from '../lib';
 import { TYPE, TYPE_OBJECT } from '../misc/constants';
-import { Any, Constructor, Some } from '../misc/typings';
+import { Constructor, Some } from '../misc/typings';
 import { PropertyMetadata } from './property_metadata';
 
 const SYM_BUILDER = Symbol('validator_builder');
@@ -12,7 +12,6 @@ type ClassWithBuilder = Constructor & {
 
 interface ClassMetadata {
     frozen: boolean;
-    // wasCompiled: boolean;
     schema: Schema;
 }
 
@@ -52,11 +51,6 @@ export class ValidatorBuilder {
         return this.propertiesMetadata.get(property) as PropertyMetadata;
     }
 
-    // public markCompiled(): this {
-    //     this.metadata.wasCompiled = true;
-    //     return this;
-    // }
-
     public getMeta(): [ClassMetadata, Map<string | symbol, PropertyMetadata>] {
         return [this.metadata, this.propertiesMetadata];
     }
@@ -70,23 +64,6 @@ export class ValidatorBuilder {
     }
 
     public buildSchema(): this {
-        // Clone schema object
-        function clone<T extends object>(obj: T): T {
-            const cloned: Partial<T> = {};
-            const properties = [
-                ...Object.getOwnPropertyNames(obj),
-                ...Object.getOwnPropertySymbols(obj),
-            ] as (keyof T)[];
-
-            for (const property of properties) {
-                const value: Any = obj[property];
-                cloned[property] =
-                    typeof value === 'object' && value !== null ? clone(value as object) : value;
-            }
-
-            return cloned as T;
-        }
-
         if (this.metadata.frozen) return this;
 
         const schema = this.metadata.schema;
@@ -109,7 +86,7 @@ export class ValidatorBuilder {
             }
 
             const symProperties = schema[SYM_PROPERTIES] as Some<Schema[typeof SYM_PROPERTIES]>;
-            symProperties[propertyPath] = clone(propMeta.schema);
+            symProperties[propertyPath] = propMeta.schema;
         }
 
         this.freeze();

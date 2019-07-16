@@ -40,8 +40,7 @@ function compileValidator(
 }
 
 function buildFromMethod(constructor: Function, options: CompileDecoratorOptions): Function {
-    // @ts-ignore
-    enum Param {
+    const enum Param {
         Data = '$DATA',
         Meta = '$META',
         Self = '$SELF',
@@ -52,10 +51,6 @@ function buildFromMethod(constructor: Function, options: CompileDecoratorOptions
     const [classMeta, propertiesMeta] = builder.getMeta();
     const className = constructor.name;
     const store = options.types || TYPE_STORE;
-
-    // if (classMeta.wasCompiled) {
-    //     return;
-    // }
 
     const metaArguments: unknown[] = [];
     const addArgument = (value: unknown): string => {
@@ -197,6 +192,9 @@ function buildFromMethod(constructor: Function, options: CompileDecoratorOptions
     return bound;
 }
 
+/**
+ * Compiles the schema of class and creates propert `[from]` method for class.
+ */
 export const compile: (options?: CompileDecoratorOptions) => ClassDecorator = (
     options?: CompileDecoratorOptions,
 ): ClassDecorator => (constructor: Function): void => {

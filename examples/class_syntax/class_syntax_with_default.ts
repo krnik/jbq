@@ -1,12 +1,5 @@
 import { deepEqual, equal } from 'assert';
-import {
-    number,
-    optional,
-    string,
-    Validator,
-    withDefault,
-    compileClass,
-} from '../../src/class_syntax';
+import { compile, number, optional, string, Validator, withDefault } from '../../src/class_syntax';
 
 const userData = { name: 'John Snow', email: 'illget@you.com' };
 function defaultAge(data: { name: string }): number {
@@ -14,6 +7,7 @@ function defaultAge(data: { name: string }): number {
     return 20;
 }
 
+@compile()
 class User extends Validator {
     @string
     public name!: string;
@@ -27,7 +21,5 @@ class User extends Validator {
     public age!: number;
 }
 
-compileClass(User);
-
-const user = new User().build(userData);
+const user = new User().from(userData);
 equal(user.age, 20);

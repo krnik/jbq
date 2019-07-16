@@ -1,4 +1,17 @@
 import {
+    CONSTRUCTOR_NAME,
+    EVERY,
+    INCLUDES,
+    INSTANCE_OF,
+    KEY_COUNT,
+    LEN,
+    MULTIPLE_OF,
+    ONE_OF,
+    PROPERTIES,
+    PROP_COUNT,
+    REGEX,
+    REQUIRED,
+    SOME,
     TYPE,
     TYPE_ANY,
     TYPE_ARRAY,
@@ -6,53 +19,42 @@ import {
     TYPE_NUMBER,
     TYPE_OBJECT,
     TYPE_STRING,
-    REQUIRED,
-    EVERY,
-    SOME,
-    INCLUDES,
-    LEN,
     VALUE,
-    MULTIPLE_OF,
-    REGEX,
-    ONE_OF,
-    KEY_COUNT,
-    PROP_COUNT,
-    PROPERTIES,
-    INSTANCE_OF,
-    CONSTRUCTOR_NAME,
 } from '../../misc/constants';
-import { ValidatorBuilder } from '../validator_builder';
 import { ArrIterCallback } from '../../misc/typings';
 import { ParseValuesMinMax } from '../../type/type_definition_typings';
+import { ValidatorBuilder } from '../validator_builder';
 
-type ClassDecoratorParams = [Function];
-type PropertyDecoratorParams = [object, string | symbol, unknown?];
-const isClassDecorator = (
-    params: ClassDecoratorParams | PropertyDecoratorParams,
-): params is ClassDecoratorParams => typeof params[0] === 'function';
+type ReturnsDecorator<V> = (value: V) => PropertyDecorator;
 
-const schemaKeywordDecoratorFactory = <V>(
-    keyword: string,
-): ((value: V) => PropertyDecorator | ClassDecorator) => (
-    value: V,
-): PropertyDecorator | ClassDecorator => (
-    ...params: ClassDecoratorParams | PropertyDecoratorParams
-): void => {
-    if (isClassDecorator(params)) {
-        ValidatorBuilder.extract(params[0]).addKeyword(keyword, value);
-    } else {
-        ValidatorBuilder.extract(params[0].constructor)
-            .getPropertyMetadata(params[1])
-            .addKeyword(keyword, value);
-    }
+export const schemaDecoratorFactory = <V = unknown>(keyword: string): ReturnsDecorator<V> => {
+    return (value: V): PropertyDecorator => {
+        return (prototype: object, property: string | symbol): void => {
+            ValidatorBuilder.extract(prototype.constructor)
+                .getPropertyMetadata(property)
+                .addKeyword(keyword, value);
+        };
+    };
 };
+
+// export const schemaDecoratorFactory = <V = unknown>(keyword: string): FactoryResult<V> => (
+//     value: V,
+// ): SchemaDecorator => (...params: ClassDecoratorParams | PropertyDecoratorParams): void => {
+//     if (isClassDecorator(params)) {
+//         ValidatorBuilder.extract(params[0]).addKeyword(keyword, value);
+//     } else {
+//         ValidatorBuilder.extract(params[0].constructor)
+//             .getPropertyMetadata(params[1])
+//             .addKeyword(keyword, value);
+//     }
+// };
 
 /**
  * *Property Decorator*
  *
  * Assigns `type` keyword to the schema.
  */
-export const type = schemaKeywordDecoratorFactory(TYPE);
+export const type = schemaDecoratorFactory<string>(TYPE);
 
 /** Shorthand `@type` decorator that assigns schema `type` keyword to `any` */
 export const any = type(TYPE_ANY);
@@ -73,47 +75,43 @@ export const object = type(TYPE_OBJECT);
 export const string = type(TYPE_STRING);
 
 /** Assigns schema `required` keyword to `false` */
-export const optional = schemaKeywordDecoratorFactory(REQUIRED)(false);
+export const optional = schemaDecoratorFactory(REQUIRED)(false);
 
 /** Assigns schema `every` keyword to provided callback */
-export const every = schemaKeywordDecoratorFactory<ArrIterCallback<unknown, boolean>>(EVERY);
+export const every = schemaDecoratorFactory<ArrIterCallback<boolean, unknown>>(EVERY);
 
 /** Assigns schema `some` keyword to provided callback */
-export const some = schemaKeywordDecoratorFactory<ArrIterCallback<unknown, boolean>>(SOME);
+export const some = schemaDecoratorFactory<ArrIterCallback<boolean, unknown>>(SOME);
 
 /** Assigns schema `includes` keyword to provided value */
-export const includes = schemaKeywordDecoratorFactory<unknown>(INCLUDES);
+export const includes = schemaDecoratorFactory<unknown>(INCLUDES);
 
 /** Assigns schema `len` keyword to provided value */
-export const len = schemaKeywordDecoratorFactory<ParseValuesMinMax['schemaValue']>(LEN);
+export const len = schemaDecoratorFactory<ParseValuesMinMax['schemaValue']>(LEN);
 
 /** Assigns schema `value` keyword to provided value */
-export const value = schemaKeywordDecoratorFactory<ParseValuesMinMax['schemaValue'] | boolean>(
-    VALUE,
-);
+export const value = schemaDecoratorFactory<ParseValuesMinMax['schemaValue'] | boolean>(VALUE);
 
 /** Assigns schema `multipleOf` keyword to provided number */
-export const multipleOf = schemaKeywordDecoratorFactory<number>(MULTIPLE_OF);
+export const multipleOf = schemaDecoratorFactory<number>(MULTIPLE_OF);
 
 /** Assigns schema `regex` keyword to provided RegExp instance */
-export const regex = schemaKeywordDecoratorFactory<RegExp>(REGEX);
+export const regex = schemaDecoratorFactory<RegExp>(REGEX);
 
 /** Assigns schema `oneOf` keyword to provided value */
-export const oneOf = schemaKeywordDecoratorFactory<string[] | number[]>(ONE_OF);
+export const oneOf = schemaDecoratorFactory<string[] | number[]>(ONE_OF);
 
 /** Assigns schema `keyCount` keyword to provided value */
-export const keyCount = schemaKeywordDecoratorFactory<ParseValuesMinMax['schemaValue']>(KEY_COUNT);
+export const keyCount = schemaDecoratorFactory<ParseValuesMinMax['schemaValue']>(KEY_COUNT);
 
 /** Assigns schema `propCount` keyword to provided value */
-export const propCount = schemaKeywordDecoratorFactory<ParseValuesMinMax['schemaValue']>(
-    PROP_COUNT,
-);
+export const propCount = schemaDecoratorFactory<ParseValuesMinMax['schemaValue']>(PROP_COUNT);
 
 /** Assigns schema `properties` keyword to provided value */
-export const properties = schemaKeywordDecoratorFactory<(string | symbol | number)[]>(PROPERTIES);
+export const properties = schemaDecoratorFactory<(string | symbol | number)[]>(PROPERTIES);
 
 /** Assigns schema `instanceOf` keyword to provided value */
-export const instanceOf = schemaKeywordDecoratorFactory<Function>(INSTANCE_OF);
+export const instanceOf = schemaDecoratorFactory<Function>(INSTANCE_OF);
 
 /** Assigns schema `constructorName` keyword to provided value */
-export const constructorName = schemaKeywordDecoratorFactory<string>(CONSTRUCTOR_NAME);
+export const constructorName = schemaDecoratorFactory<string>(CONSTRUCTOR_NAME);

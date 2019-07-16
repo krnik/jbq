@@ -57,10 +57,20 @@ export const withDefault = propMetaDecoratorFactory('defaultFn');
  */
 export const transform = propMetaDecoratorFactory('transformFn');
 
-// Data path
+/**
+ * Changes the property name of which data should be used for validation.
+ *
+ * # Example
+ * #example:class_syntax_path
+ */
 export const path = propMetaDecoratorFactory('dataPropertyPath');
 
-// SYM_COLLECTION
+/**
+ * Creates class instances out of each array member of the property.
+ *
+ * # Example
+ * #example:class_syntax_collection_of
+ */
 export const collectionOf = (value: Function): PropertyDecorator => {
     return (prototype: object, property: string | symbol): void => {
         ValidatorBuilder.extract(prototype.constructor)
@@ -70,7 +80,12 @@ export const collectionOf = (value: Function): PropertyDecorator => {
     };
 };
 
-// SYM_PROPERTIES
+/**
+ * Creates class instance out of decorated property.
+ *
+ * # Example
+ * #example:class_syntax_shape
+ */
 export const shape = (value: Function): PropertyDecorator => {
     return (prototype: object, property: string | symbol): void => {
         ValidatorBuilder.extract(prototype.constructor)

@@ -1,8 +1,12 @@
 import { expect } from 'chai';
+import { check, gen, Generator, property } from 'testcheck';
 import {
     array,
-    collection,
-    instantiate,
+    collectionOf,
+    compile,
+    every,
+    len,
+    number,
     object,
     optional,
     regex,
@@ -10,19 +14,14 @@ import {
     string,
     transform,
     Validator,
-    withDefault,
-    Shape,
-    number,
     value,
-    multipleOf,
-    len,
+    withDefault,
 } from '../../../src/class_syntax';
-import { compileClass } from '../../../src/class_syntax/build_method_compile';
-import { check, property, gen, Generator } from 'testcheck';
 import { Option } from '../../../src/misc/typings';
 
 describe('Class Syntax', (): void => {
     it('simple', (): void => {
+        @compile()
         class Address extends Validator {
             @string
             public zip!: string;
@@ -35,7 +34,6 @@ describe('Class Syntax', (): void => {
                 return true;
             }
         }
-        compileClass(Address);
 
         const validObject = gen.object({
             zip: gen.string,
@@ -46,7 +44,7 @@ describe('Class Syntax', (): void => {
             property(
                 validObject,
                 (data): void => {
-                    const instance = new Address().build(data);
+                    const instance = new Address().from(data);
 
                     expect(instance.constructed).to.be.equal(true);
                     expect(instance.hasMethod()).to.be.equal(true);
@@ -66,25 +64,24 @@ describe('Class Syntax', (): void => {
             property(
                 invalidObject,
                 (data): void => {
-                    expect((): Address => new Address().build(data)).to.throw();
+                    expect((): Address => new Address().from(data)).to.throw();
                 },
             ),
         );
     }).timeout(5000);
 
     it('simple with defaults', (): void => {
+        @compile()
         class Address extends Validator {
             @string
             @optional
-            @withDefault((data: Shape<Address>): string => data.address.split('@', 2)[0])
+            @withDefault((data: Address): string => data.address.split('@', 2)[0])
             public zip!: string;
 
             @string
             @regex(/^\d{1,3}@\.+$/)
             public address!: string;
         }
-
-        compileClass(Address);
 
         const validObject = gen.object({
             address: gen.string,
@@ -97,7 +94,7 @@ describe('Class Syntax', (): void => {
                 (zip, data): void => {
                     data.address = `${zip}@${data.address}`;
 
-                    const instance = new Address().build(data);
+                    const instance = new Address().from(data);
                     expect(instance.zip).to.be.equal(zip.toString());
                 },
             ),
@@ -112,40 +109,33 @@ describe('Class Syntax', (): void => {
             property(
                 invalidObject,
                 (data): void => {
-                    expect((): Address => new Address().build(data)).to.throw();
+                    expect((): Address => new Address().from(data)).to.throw();
                 },
             ),
         );
     }).timeout(5000);
 
     it('simple with transforms', (): void => {
-        @number
-        class Building {}
-
+        @compile()
         class Address extends Validator {
             @string
-            @transform((p: string): string => p.toUpperCase())
+            @transform((street: string): string => street.toUpperCase())
             public street!: string;
 
             @array
-            @collection(Building)
             @transform((buildings: number[]): number[] => buildings.map((n): number => n - 100))
             public buildings!: number[];
 
-            @transform(
-                (_, data: Shape<Address>): boolean[] => data.buildings.map((n): boolean => n > 100),
-            )
+            @transform((_, data: Address): boolean[] => data.buildings.map((n): boolean => n > 100))
             public bools!: boolean[];
         }
-
-        compileClass(Address);
 
         check(
             property(
                 gen.string,
                 gen.array(gen.number, { size: 10 }),
                 (street, buildings): void => {
-                    const instance = new Address().build({ street, buildings });
+                    const instance = new Address().from({ street, buildings });
                     expect(street.toUpperCase()).to.be.equal(instance.street);
                     for (const [index, buildingNo] of buildings.entries()) {
                         expect(buildingNo - 100).to.be.equal(instance.buildings[index]);
@@ -160,22 +150,21 @@ describe('Class Syntax', (): void => {
                 gen.string,
                 gen.array(gen.string, { size: 10 }),
                 (street, buildings): void => {
-                    expect((): Address => new Address().build({ street, buildings })).to.throw();
+                    expect((): Address => new Address().from({ street, buildings })).to.throw();
                 },
             ),
         );
     }).timeout(5000);
 
     it('composed', (): void => {
+        @compile()
         class Address extends Validator {
             @number
             @value({ min: 10, max: { $dataPath: 'max' } })
             public zip!: number;
         }
 
-        compileClass(Address);
-
-        @instantiate
+        @compile()
         class ID {
             @number
             public value!: number;
@@ -185,18 +174,15 @@ describe('Class Syntax', (): void => {
             }
         }
 
-        compileClass(ID);
-
+        @compile()
         class User extends Validator {
             @object
             @shape(Address)
-            public addres!: Shape<Address>;
+            public addres!: Address;
 
             @shape(ID)
             public id!: ID;
         }
-
-        compileClass(User);
 
         const max = 1000;
         check(
@@ -213,7 +199,7 @@ describe('Class Syntax', (): void => {
                         },
                     };
 
-                    const userInstance = new User().build(userData);
+                    const userInstance = new User().from(userData);
                     expect(userInstance.addres).to.not.be.instanceOf(Address);
                     expect(userInstance.addres)
                         .to.be.an('object')
@@ -225,9 +211,9 @@ describe('Class Syntax', (): void => {
 
                     const addressData = { zip: num, max: max / 2 };
                     if (num > max / 2) {
-                        expect((): Address => new Address().build(addressData)).to.throw();
+                        expect((): Address => new Address().from(addressData)).to.throw();
                     } else {
-                        const addresInstance = new Address().build(addressData);
+                        const addresInstance = new Address().from(addressData);
                         expect(addresInstance.zip).to.be.equal(num);
                     }
                 },
@@ -236,16 +222,14 @@ describe('Class Syntax', (): void => {
     }).timeout(5000);
 
     it('composed with defaults', (): void => {
+        @compile()
         class Address extends Validator {
             @number
             @value({ min: 10, max: { $dataPath: 'max' } })
             public zip!: number;
         }
 
-        compileClass(Address);
-
-        @instantiate
-        @optional
+        @compile()
         class ID extends Validator {
             @number
             @optional
@@ -253,19 +237,16 @@ describe('Class Syntax', (): void => {
             public value!: number;
         }
 
-        compileClass(ID);
-
+        @compile()
         class User extends Validator {
             @object
             @optional
             @shape(Address)
-            public address!: Option<Shape<Address>>;
+            public address!: Option<Address>;
 
             @shape(ID)
             public id!: ID;
         }
-
-        compileClass(User);
 
         const optionalNumber = gen.oneOf<unknown>([gen.number, gen.undefined]) as Generator<
             Option<number>
@@ -276,24 +257,24 @@ describe('Class Syntax', (): void => {
                 (num): void => {
                     if (num !== undefined) {
                         if (num < 10) {
-                            expect((): Address => new Address().build({ zip: num })).to.throw();
+                            expect((): Address => new Address().from({ zip: num })).to.throw();
                         } else {
-                            const addresInstance = new Address().build({ zip: num });
+                            const addresInstance = new Address().from({ zip: num });
                             expect(addresInstance.zip).to.be.equal(num);
                             expect(
-                                (): Address => new Address().build({ zip: num, max: num - 1 }),
+                                (): Address => new Address().from({ zip: num, max: num - 1 }),
                             ).to.throw();
                         }
                         return;
                     }
 
-                    const idInstance1 = new ID().build({ value: num });
+                    const idInstance1 = new ID().from({ value: num });
                     expect(idInstance1.value).to.be.equal(1);
 
-                    const idInstance2 = new ID().build(undefined);
+                    const idInstance2 = new ID().from(undefined);
                     expect(idInstance2.value).to.be.equal(1);
 
-                    const userInstance = new User().build({});
+                    const userInstance = new User().from({});
                     expect(userInstance.address).to.be.equal(undefined);
                     expect(userInstance.id).to.be.instanceOf(ID);
                     expect(userInstance.id.value).to.be.equal(1);
@@ -303,11 +284,7 @@ describe('Class Syntax', (): void => {
     }).timeout(5000);
 
     it('composed with transforms', (): void => {
-        @number
-        @multipleOf(1)
-        class Timestamp {}
-
-        @instantiate
+        @compile()
         class Check {
             private checked: boolean = false;
 
@@ -320,16 +297,14 @@ describe('Class Syntax', (): void => {
             }
         }
 
-        compileClass(Check);
-
+        @compile()
         class Dates extends Validator {
             @array
-            @collection(Timestamp)
             @transform((timestamp: number): Date => new Date(timestamp))
             public dates!: Date[];
 
             @array
-            @collection(Check)
+            @collectionOf(Check)
             @transform(
                 (checks: Check[]): Check[] =>
                     checks.map(
@@ -343,14 +318,12 @@ describe('Class Syntax', (): void => {
             public checks!: Check[];
         }
 
-        compileClass(Dates);
-
         const timestampGen = gen.array(gen.intWithin(Date.now() - Date.now() * 0.7, Date.now()));
         check(
             property(
                 timestampGen,
                 (stamp): void => {
-                    const instance = new Dates().build({ dates: stamp, checks: stamp });
+                    const instance = new Dates().from({ dates: stamp, checks: stamp });
                     expect(instance.dates)
                         .to.be.an('array')
                         .that.have.lengthOf(stamp.length);
@@ -365,23 +338,21 @@ describe('Class Syntax', (): void => {
     }).timeout(5000);
 
     it('composed async', async (): Promise<void> => {
-        @string
-        @regex(/^\d{4}-\d{2}-\d{2}$/)
-        class DateString {}
-
-        @optional
-        @instantiate
+        @compile()
         class SmartName {
+            @string
+            @optional
             @withDefault((): string => 'John')
             public first!: string;
 
+            @string
+            @optional
             @withDefault((): string => 'Doe')
             @transform(async (v: string): Promise<string> => v.toUpperCase())
             public last!: string;
         }
 
-        compileClass(SmartName);
-
+        @compile()
         class Address extends Validator {
             @string
             @len(4)
@@ -389,37 +360,35 @@ describe('Class Syntax', (): void => {
             public zip?: string;
         }
 
-        compileClass(Address);
-
         check(
             property(
                 gen.int,
                 (zip): void => {
                     if (zip.toString().length === 4) {
-                        const addressInstance = new Address().build({ zip });
+                        const addressInstance = new Address().from({ zip });
                         expect(addressInstance.zip).to.be.equal(zip);
                     } else {
-                        expect((): Address => new Address().build({ zip })).to.throw();
+                        expect((): Address => new Address().from({ zip })).to.throw();
                     }
                 },
             ),
         );
 
-        @instantiate
+        @compile()
         class User extends Validator {
             @string
             @optional
             public id!: string;
 
             @array
-            @collection(DateString)
+            @every((element): boolean => typeof element === 'string')
             public dates!: string[];
 
             @shape(SmartName)
             public name!: SmartName;
 
             @array
-            @collection(SmartName)
+            @collectionOf(SmartName)
             public names!: SmartName[];
 
             @object
@@ -427,8 +396,6 @@ describe('Class Syntax', (): void => {
             @shape(Address)
             public address?: Address;
         }
-
-        compileClass(User);
 
         const idGen = gen.oneOf<unknown>([gen.undefined, gen.string]);
         const addressGen = gen.oneOf<unknown>([
@@ -443,19 +410,20 @@ describe('Class Syntax', (): void => {
                 idGen,
                 addressGen,
                 (id, address): void => {
-                    const instance = new User().build({
+                    const instance = new User().from({
                         id,
                         address,
-                        names: new Array(10),
+                        names: new Array(10).fill(0).map((): object => ({})),
                         dates: ['2000-20-20'],
+                        name: {},
                     });
                     expect(instance.id).to.be.equal(id);
                     if (address === undefined) {
                         expect(instance.address).to.be.equal(address);
                     }
                     if (typeof address === 'object' && address !== null) {
-                        const zip = (address as Shape<Address>).zip;
-                        expect((instance.address as Shape<Address>).zip).to.be.equal(zip);
+                        const zip = (address as Address).zip;
+                        expect((instance.address as Address).zip).to.be.equal(zip);
                     }
                     expect(instance.name).to.be.instanceOf(Promise);
                     expect(instance.names).to.be.an('array');
@@ -464,9 +432,10 @@ describe('Class Syntax', (): void => {
             ),
         );
 
-        const instance = await new User().build({
+        const instance = await new User().from({
             dates: ['1222-12-12'],
-            names: new Array(10),
+            names: new Array(10).fill(0).map((): object => ({})),
+            name: {},
             address: { zip: '1234' },
         });
 

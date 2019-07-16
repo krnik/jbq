@@ -1,5 +1,5 @@
 import { deepEqual } from 'assert';
-import { compileClass, string, transform, Validator } from '../../src/class_syntax';
+import { compile, string, transform, Validator } from '../../src/class_syntax';
 
 interface UserDoc {
     id: string;
@@ -13,6 +13,7 @@ async function findUser(userId: string): Promise<UserDoc> {
     return DB.user.findById(userId);
 }
 
+@compile()
 class PostEntity extends Validator<true> {
     @string
     @transform(findUser)
@@ -22,9 +23,7 @@ class PostEntity extends Validator<true> {
     public message!: string;
 }
 
-compileClass(PostEntity);
-/* eslint-disable prettier/prettier */
-void async function(): Promise<void> {
-    const post = await new PostEntity().build({ user: '100', message: 'Hello...' });
+(async function(): Promise<void> {
+    const post = await new PostEntity().from({ user: '100', message: 'Hello...' });
     deepEqual(post.user, { id: '100', contact: {} });
-}();
+})();
